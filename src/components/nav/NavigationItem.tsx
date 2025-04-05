@@ -1,7 +1,5 @@
-import { ChevronDownIcon } from '@chakra-ui/icons';
+import { Box, ChevronDownIcon, Flex, Image } from '@chakra-ui/icons';
 import { useState } from 'react';
-
-import styles from './Navigation.module.scss';
 
 type Props = {
     title: string;
@@ -13,23 +11,49 @@ export function NavigationItem({ title, iconSrc, children }: Props) {
     const [isOpen, setIsOpen] = useState(false);
     return (
         <li>
-            <div className={styles.nav_item} onClick={() => setIsOpen((prev) => !prev)}>
-                <div className={styles.nav_title}>
-                    <img className={styles.nav_icon} src={iconSrc} alt='menu_item_icon' />
+            <Flex
+                gap='12px'
+                padding='12px 8px'
+                alignItems='center'
+                justifyContent='space-between'
+                fontWeight='500'
+                cursor='pointer'
+                onClick={() => setIsOpen((prev) => !prev)}
+                _active={{ backgroundColor: 'accent.100' }}
+            >
+                <Flex gap='12px' whiteSpace='nowrap' _hover={{ fontWeight: '700' }}>
+                    <Image width='24px' height='24px' src={iconSrc} alt='menu_item_icon' />
                     <span>{title}</span>
-                </div>
+                </Flex>
                 <ChevronDownIcon width='16px' height='16px' />
-            </div>
+            </Flex>
 
             {children && (
-                <ul className={styles.nav_sublist + ' ' + (isOpen ? styles.active : '')}>
-                    {children.map((child) => (
-                        <li className={styles.nav_sublist_title}>
-                            <div className={styles.divider}></div>
+                <Box role='group' as='ul' paddingLeft='40px' display={isOpen ? 'block' : 'none'}>
+                    {children.map((child, i) => (
+                        <Flex
+                            key={i}
+                            as='li'
+                            padding='6px 0'
+                            cursor='pointer'
+                            whiteSpace='nowrap'
+                            _hover={{
+                                fontWeight: '700',
+                                '& .divider': { width: '8px', transform: 'translateX(-100%)' },
+                            }}
+                        >
+                            <Box
+                                className='divider'
+                                marginRight='12px'
+                                width='1px'
+                                height='24px'
+                                bg='accent.500'
+                                transition='all 0.3s ease-in-out'
+                            ></Box>
                             {child}
-                        </li>
+                        </Flex>
                     ))}
-                </ul>
+                </Box>
             )}
         </li>
     );

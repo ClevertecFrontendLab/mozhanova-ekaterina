@@ -1,4 +1,6 @@
-import styles from './Navigation.module.scss';
+import { Box, Flex } from '@chakra-ui/react';
+
+import { Footer } from '../Footer';
 import { NavigationItem } from './NavigationItem';
 
 const navItems = [
@@ -64,8 +66,22 @@ const navItems = [
 
 export function Navigation() {
     return (
-        <div className={styles.nav_wrap}>
-            <nav className={styles.nav}>
+        <Flex
+            direction='column'
+            padding='24px 0 0 10px'
+            width='256px'
+            position='fixed'
+            top='80px'
+            bottom='0'
+            left='0'
+        >
+            <Box
+                as='nav'
+                overflowY='auto'
+                flexGrow='1'
+                borderRadius='0 0 12px 12px'
+                boxShadow='themeNeutral'
+            >
                 <ul>
                     {navItems.map((item) => (
                         <NavigationItem
@@ -76,15 +92,8 @@ export function Navigation() {
                         />
                     ))}
                 </ul>
-            </nav>
-            <div>
-                <div>Версия программы 03.25</div>
-                <div>Все права защищены, ученический файл, ©Клевер Технолоджи, 2025</div>
-                <div>
-                    <img src='/src/assets/icons/left-icon.svg' alt='left' />
-                    Выйти
-                </div>
-            </div>
-        </div>
+            </Box>
+            <Footer />
+        </Flex>
     );
 }
