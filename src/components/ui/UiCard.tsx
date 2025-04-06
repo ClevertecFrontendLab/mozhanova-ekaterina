@@ -1,27 +1,53 @@
-import { Card, CardBody, CardFooter, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
+import {
+    Box,
+    Card,
+    CardBody,
+    CardFooter,
+    Flex,
+    Heading,
+    Image,
+    Stack,
+    Text,
+} from '@chakra-ui/react';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
-import { EmojiHeartEyesIcon } from './icons/EmojiHeartEyesIcon';
 import { UiButton } from './UiButton';
+import { UiCardInfo } from './UiCardInfo';
 
 type Props = {
     title: string;
     text: string;
-    imgSrc: string;
     category: {
         title: string;
         iconSrc: string;
     };
     likes: number;
     favorites: number;
+    imgSrc?: string;
     recommendation?: string;
+    direction?: 'row' | 'column';
+    controls?: boolean;
+    infoPosition?: 'top' | 'bottom';
+    categoryBgColor?: 'accent.400' | 'accent.200';
 };
 
-export function UiCard({ title, text, imgSrc, category, recommendation, likes, favorites }: Props) {
+export function UiCard({
+    title,
+    text,
+    imgSrc,
+    category,
+    recommendation,
+    likes,
+    favorites,
+    direction = 'column',
+    controls,
+    infoPosition = 'bottom',
+    categoryBgColor = 'accent.200',
+}: Props) {
     return (
         <Card
             position='relative'
-            direction={{ base: 'column', sm: 'row' }}
+            direction={direction}
             overflow='hidden'
             variant='outline'
             transition='box-shadow 0.3s ease-in-out'
@@ -29,12 +55,15 @@ export function UiCard({ title, text, imgSrc, category, recommendation, likes, f
                 shadow: '0 2px 4px -1px rgba(32, 126, 0, 0.06), 0 4px 6px -1px rgba(32, 126, 0, 0.1)',
             }}
         >
-            <Image
-                objectFit='cover'
-                maxW={{ base: '100%', sm: '346px' }}
-                src={imgSrc}
-                alt='card image'
-            />
+            {imgSrc ? (
+                <Image
+                    objectFit='cover'
+                    maxW={{ base: '100%', sm: '346px' }}
+                    src={imgSrc}
+                    alt='card image'
+                />
+            ) : null}
+
             {recommendation && (
                 <Flex
                     position='absolute'
@@ -51,44 +80,19 @@ export function UiCard({ title, text, imgSrc, category, recommendation, likes, f
                 </Flex>
             )}
 
-            <Stack>
-                <CardBody>
-                    <Flex mb='24px' justifyContent='space-between' alignItems='center'>
-                        <Flex
-                            gap='8px'
-                            borderRadius='4px'
-                            padding='2px 8px'
-                            fontSize='14px'
-                            bg='accent.400'
-                            alignItems='center'
-                        >
-                            <Image w='16px' h='16px' src={category.iconSrc} alt='icon' />
-                            {category.title}
-                        </Flex>
-                        {favorites || likes ? (
-                            <Flex
-                                alignItems='center'
-                                fontSize='12px'
-                                gap='8px'
-                                color='brand.400'
-                                fontWeight='600'
-                            >
-                                {favorites ? (
-                                    <Flex p='4px' gap='6px'>
-                                        <BookmarkHeartIcon />
-                                        {favorites}
-                                    </Flex>
-                                ) : null}
-                                {likes ? (
-                                    <Flex p='4px' gap='6px'>
-                                        <EmojiHeartEyesIcon />
-                                        {likes}
-                                    </Flex>
-                                ) : null}
-                            </Flex>
-                        ) : null}
-                    </Flex>
-                    <Flex mb='24px' gap='8px' direction='column' maxW='274px'>
+            <Stack gap='0'>
+                <CardBody pl='24px' pr='24px'>
+                    {infoPosition === 'top' && (
+                        <Box pb='24px'>
+                            <UiCardInfo
+                                categoryBgColor={categoryBgColor}
+                                category={category}
+                                likes={likes}
+                                favorites={favorites}
+                            />
+                        </Box>
+                    )}
+                    <Flex gap='8px' direction='column'>
                         <Heading as='h3' fontWeight='500' size='md' noOfLines={1}>
                             {title}
                         </Heading>
@@ -98,9 +102,21 @@ export function UiCard({ title, text, imgSrc, category, recommendation, likes, f
                     </Flex>
                 </CardBody>
 
-                <CardFooter gap='8px' justifyContent='flex-end'>
-                    <UiButton text='Сохранить' leftIcon={<BookmarkHeartIcon />} />
-                    <UiButton text='Готовить' variant='solid' />
+                <CardFooter pl='24px' pr='24px' pt='0'>
+                    {infoPosition === 'bottom' && (
+                        <UiCardInfo
+                            categoryBgColor={categoryBgColor}
+                            category={category}
+                            likes={likes}
+                            favorites={favorites}
+                        />
+                    )}
+                    {controls ? (
+                        <Flex gap='8px' justifyContent='flex-end' w='100%'>
+                            <UiButton text='Сохранить' leftIcon={<BookmarkHeartIcon />} />
+                            <UiButton text='Готовить' variant='solid' />
+                        </Flex>
+                    ) : null}
                 </CardFooter>
             </Stack>
         </Card>
