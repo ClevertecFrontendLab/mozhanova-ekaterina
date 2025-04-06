@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router';
 
-import { MainLayout } from '~/components/layouts/MainLayout/MainLayout';
+import { MainLayout } from '~/components/layouts/MainLayout';
 import { Home } from '~/pages/HomePage';
 import { TheJuiciest } from '~/pages/TheJuiciestPage';
 import { VeganCuisine } from '~/pages/VeganCuisinePage';
