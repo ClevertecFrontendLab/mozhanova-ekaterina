@@ -24,7 +24,7 @@ export function UiSliderCard({ imgSrc, title, text, category, likes, favorites }
             }}
         >
             <Image src={imgSrc} alt='slider card image' />
-            <CardBody>
+            <CardBody p='16px 24px 24px 24px'>
                 <Stack>
                     <Heading as='h3' size='md' fontWeight='500' noOfLines={1}>
                         {title}
@@ -34,7 +34,7 @@ export function UiSliderCard({ imgSrc, title, text, category, likes, favorites }
                     </Text>
                 </Stack>
             </CardBody>
-            <CardFooter justifyContent='space-between'>
+            <CardFooter pl='24px' pr='24px' justifyContent='space-between'>
                 <Flex
                     gap='8px'
                     borderRadius='4px'
