@@ -2,39 +2,39 @@ import { Button } from '@chakra-ui/react';
 
 const variants = {
     primary: {
-        bg: 'accent.600',
+        bg: 'primary.300',
         borderColor: 'transparent',
         borderWidth: '1px',
         size: 'lg',
-        color: 'neutral.900',
+        color: 'neutral.400',
     },
     primaryGhost: {
         bg: 'transparent',
         borderColor: 'transparent',
         borderWidth: '1px',
         size: 'lg',
-        color: 'neutral.900',
+        color: 'neutral.400',
     },
     outline: {
         bg: 'transparent',
-        borderColor: 'neutral.900',
+        borderColor: 'neutral.400',
         borderWidth: '1px',
         size: 'sm',
         color: 'neutral.900',
     },
     accentOutline: {
         bg: 'transparent',
-        borderColor: 'brand.400',
+        borderColor: 'primary.400',
         borderWidth: '1px',
         size: 'sm',
-        color: 'brand.400',
+        color: 'primary.400',
     },
     solid: {
-        bg: 'neutral.900',
-        borderColor: 'neutral.900',
+        bg: 'neutral.400',
+        borderColor: 'neutral.400',
         borderWidth: '1px',
         size: 'sm',
-        color: 'neutral.50',
+        color: 'neutral.0',
     },
 };
 

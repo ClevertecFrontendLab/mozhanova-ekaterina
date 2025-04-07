@@ -10,7 +10,7 @@ type Props = {
     };
     likes: number;
     favorites: number;
-    categoryBgColor: 'accent.400' | 'accent.200';
+    categoryBgColor: 'secondary.100' | 'primary.100';
 };
 
 export function UiCardInfo({ category, likes, favorites, categoryBgColor }: Props) {
@@ -32,7 +32,7 @@ export function UiCardInfo({ category, likes, favorites, categoryBgColor }: Prop
                     alignItems='center'
                     fontSize='12px'
                     gap='8px'
-                    color='brand.400'
+                    color='primary.400'
                     fontWeight='600'
                 >
                     {favorites ? (

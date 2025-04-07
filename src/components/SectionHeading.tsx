@@ -19,7 +19,7 @@ export function SectionHeading({ title, description, linkTo, buttonText }: Props
             </Heading>
             <Flex basis='50%' justifyContent='flex-end' alignItems='center'>
                 {description && (
-                    <Text fontWeight='500' color='neutral.400'>
+                    <Text fontWeight='500' color='neutral.300'>
                         {description}
                     </Text>
                 )}

@@ -13,7 +13,7 @@ export function BlogCard({ avatarSrc, title, subtitle, text }: Props) {
             size='md'
             transition='box-shadow 0.3s ease-in-out'
             _hover={{
-                shadow: '0 2px 4px -1px rgba(32, 126, 0, 0.06), 0 4px 6px -1px rgba(32, 126, 0, 0.1)',
+                shadow: 'themeNeutralGreen',
             }}
         >
             <CardBody p='24px 24px 20px'>
@@ -23,7 +23,7 @@ export function BlogCard({ avatarSrc, title, subtitle, text }: Props) {
                         <Heading as='h3' fontSize='18px' fontWeight='500'>
                             {title}
                         </Heading>
-                        <Text color='neutral.400' fontSize='sm'>
+                        <Text color='neutral.300' fontSize='sm'>
                             {subtitle}
                         </Text>
                     </Box>

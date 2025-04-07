@@ -16,7 +16,7 @@ import { UiCardInfo } from './UiCardInfo';
 
 type Props = {
     title: string;
-    text: string;
+    text?: string;
     category: {
         title: string;
         iconSrc: string;
@@ -28,7 +28,7 @@ type Props = {
     direction?: 'row' | 'column';
     controls?: boolean;
     infoPosition?: 'top' | 'bottom';
-    categoryBgColor?: 'accent.400' | 'accent.200';
+    categoryBgColor?: 'secondary.100' | 'primary.100';
 };
 
 export function UiCard({
@@ -40,9 +40,9 @@ export function UiCard({
     likes,
     favorites,
     direction = 'column',
-    controls,
+    controls = false,
     infoPosition = 'bottom',
-    categoryBgColor = 'accent.200',
+    categoryBgColor = 'primary.100',
 }: Props) {
     return (
         <Card
@@ -52,7 +52,7 @@ export function UiCard({
             variant='outline'
             transition='box-shadow 0.3s ease-in-out'
             _hover={{
-                shadow: '0 2px 4px -1px rgba(32, 126, 0, 0.06), 0 4px 6px -1px rgba(32, 126, 0, 0.1)',
+                shadow: 'themeNeutralGreen',
             }}
         >
             {imgSrc ? (
@@ -69,7 +69,7 @@ export function UiCard({
                     position='absolute'
                     bottom='20px'
                     left='24px'
-                    bg='accent.200'
+                    bg='primary.100'
                     padding='4px 8px'
                     gap='8px'
                     fontSize='14px'
@@ -92,7 +92,7 @@ export function UiCard({
                             />
                         </Box>
                     )}
-                    <Flex gap='8px' direction='column'>
+                    <Flex gap='8px' direction='column' textAlign='left'>
                         <Heading as='h3' fontWeight='500' size='md' noOfLines={1}>
                             {title}
                         </Heading>

@@ -19,7 +19,7 @@ export function NavigationItem({ title, iconSrc, children }: Props) {
                 fontWeight='500'
                 cursor='pointer'
                 onClick={() => setIsOpen((prev) => !prev)}
-                _active={{ backgroundColor: 'accent.100' }}
+                _active={{ backgroundColor: 'primary.50' }}
             >
                 <Flex gap='12px' whiteSpace='nowrap' _hover={{ fontWeight: '700' }}>
                     <Image width='24px' height='24px' src={iconSrc} alt='menu_item_icon' />
@@ -47,7 +47,7 @@ export function NavigationItem({ title, iconSrc, children }: Props) {
                                 marginRight='12px'
                                 width='1px'
                                 height='24px'
-                                bg='accent.500'
+                                bg='primary.200'
                                 transition='all 0.3s ease-in-out'
                             ></Box>
                             {child}

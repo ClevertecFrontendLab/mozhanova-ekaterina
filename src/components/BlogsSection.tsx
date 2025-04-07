@@ -6,7 +6,7 @@ import { UiButton } from './ui/UiButton';
 
 export function BlogsSection() {
     return (
-        <Box bg='accent.500' p='24px' borderRadius='16px'>
+        <Box bg='primary.200' p='24px' borderRadius='16px'>
             <Flex justifyContent='space-between' pb='24px'>
                 <Heading as='h2' size='xl' fontWeight='400'>
                     Кулинарные блоги

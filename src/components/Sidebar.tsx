@@ -15,7 +15,7 @@ export function Sidebar() {
                     gap='10px'
                     alignItems='center'
                     fontWeight='600'
-                    color='brand.400'
+                    color='primary.400'
                 >
                     <BookmarkHeartIcon />
                     <div>185</div>
@@ -26,7 +26,7 @@ export function Sidebar() {
                     gap='10px'
                     alignItems='center'
                     fontWeight='600'
-                    color='brand.400'
+                    color='primary.400'
                 >
                     <PeopleIcon />
                     <div>589</div>
@@ -37,7 +37,7 @@ export function Sidebar() {
                     gap='10px'
                     alignItems='center'
                     fontWeight='600'
-                    color='brand.400'
+                    color='primary.400'
                 >
                     <EmojiHeartEyesIcon /> <div>587</div>
                 </Flex>
@@ -49,7 +49,7 @@ export function Sidebar() {
                     borderRadius='50%'
                     width='48px'
                     height='48px'
-                    bg='neutral.900'
+                    bg='neutral.400'
                     boxShadow='themeAccent'
                 >
                     <EditIcon color='#ffffd3' width='22px' height='22px' />
