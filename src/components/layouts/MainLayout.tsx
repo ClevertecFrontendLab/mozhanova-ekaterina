@@ -8,18 +8,10 @@ import { Sidebar } from '../Sidebar';
 
 export function MainLayout() {
     return (
-        <Flex maxW='100vw' overflow='hidden'>
+        <Flex overflow='hidden'>
             <Header />
-            <Flex>
-                <Flex
-                    justifyContent='space-between'
-                    direction='column'
-                    mt='80px'
-                    basis='256px'
-                    maxH='calc(100vh - 80px)'
-                    height='calc(100vh - 80px)'
-                    pt='24px'
-                >
+            <Flex w='100vw'>
+                <Flex direction='column' mt='80px' basis='256px' h='calc(100vh - 80px)' pt='24px'>
                     <Navigation />
                     <Footer />
                 </Flex>
@@ -29,7 +21,7 @@ export function MainLayout() {
                     maxH='calc(100vh - 80px)'
                     mt='80px'
                     padding='0 24px'
-                    flexBasis='1408px'
+                    flexGrow='1'
                 >
                     <Outlet />
                 </Box>

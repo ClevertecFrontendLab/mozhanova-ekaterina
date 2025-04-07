@@ -8,11 +8,14 @@ export function Navigation() {
     return (
         <Flex
             direction='column'
-            maxH='872px'
+            grow='1'
             //  boxShadow='themeNeutral'  ???:
             borderRadius='0 0 12px 12px'
+            overflowY='auto'
+            overflowX='hidden'
+            w='256px'
         >
-            <Box as='nav' overflowY='auto' flexGrow='1' p='10px 16px 0 10px'>
+            <Box as='nav' pl='10px' pt='10px'>
                 <ul>
                     {categories.map((item) => (
                         <NavigationItem

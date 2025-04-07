@@ -10,7 +10,7 @@ type Props = {
 export function NavigationItem({ title, iconSrc, children }: Props) {
     const [isOpen, setIsOpen] = useState(false);
     return (
-        <li>
+        <Box as='li' w='230px'>
             <Flex
                 gap='12px'
                 padding='12px 8px'
@@ -29,7 +29,7 @@ export function NavigationItem({ title, iconSrc, children }: Props) {
             </Flex>
 
             {children && (
-                <Box role='group' as='ul' paddingLeft='40px' display={isOpen ? 'block' : 'none'}>
+                <Box role='group' as='ul' paddingLeft='33px' display={isOpen ? 'block' : 'none'}>
                     {children.map((child, i) => (
                         <Flex
                             key={i}
@@ -55,6 +55,6 @@ export function NavigationItem({ title, iconSrc, children }: Props) {
                     ))}
                 </Box>
             )}
-        </li>
+        </Box>
     );
 }
