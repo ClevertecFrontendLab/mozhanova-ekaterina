@@ -31,7 +31,7 @@ export function PageToolbar({ title, description }: Props) {
                 {title}
             </Heading>
             {description && (
-                <Text textAlign='center' color='neutral.300' mt='12px'>
+                <Text textAlign='center' color='neutral.200' mt='12px'>
                     {description}
                 </Text>
             )}
@@ -39,7 +39,7 @@ export function PageToolbar({ title, description }: Props) {
                 <IconButton
                     aria-label='Сортировка'
                     size='lg'
-                    borderColor='neutral.300'
+                    borderColor='border.dark'
                     variant='outline'
                     icon={<SortIcon />}
                 ></IconButton>
@@ -48,10 +48,10 @@ export function PageToolbar({ title, description }: Props) {
                         size='lg'
                         placeholder='Название или ингредиент...'
                         fontSize='18px'
-                        color='brand.700'
+                        color='primary.700'
                         width='458px'
                         borderWidth='1px'
-                        borderColor='neutral.300'
+                        borderColor='border.dark'
                         _placeholder={{ color: 'inherit' }}
                     />
                     <Flex
@@ -80,7 +80,7 @@ export function PageToolbar({ title, description }: Props) {
                 <Select
                     width='234px'
                     height='40px'
-                    color='neutral.400'
+                    color='text.secondary'
                     placeholder='Выберите из списка...'
                 >
                     <option value='option1'>Option 1</option>

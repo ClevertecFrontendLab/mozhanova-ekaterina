@@ -15,6 +15,7 @@ export function BlogsSection() {
                     text='Все авторы'
                     variant='primaryGhost'
                     rightIcon={<ArrowForwardIcon />}
+                    size='lg'
                 />
             </Flex>
             <Flex gap='16px'>

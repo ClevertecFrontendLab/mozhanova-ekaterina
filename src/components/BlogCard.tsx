@@ -23,7 +23,7 @@ export function BlogCard({ avatarSrc, title, subtitle, text }: Props) {
                         <Heading as='h3' fontSize='18px' fontWeight='500'>
                             {title}
                         </Heading>
-                        <Text color='neutral.300' fontSize='sm'>
+                        <Text color='text.secondary' fontSize='sm'>
                             {subtitle}
                         </Text>
                     </Box>

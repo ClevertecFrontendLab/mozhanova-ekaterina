@@ -34,13 +34,13 @@ const theme = extendTheme({
             400: '#000000', // Чистый черный
         },
         text: {
-            primary: 'neutral.400',
-            secondary: 'neutral.300',
-            inverted: 'neutral.0',
+            primary: '#000000',
+            secondary: 'rgba(0, 0, 0, 0.64)',
+            inverted: '#FFFFFF',
         },
         border: {
-            light: 'neutral.50',
-            dark: 'neutral.200',
+            light: 'rgba(0, 0, 0, 0.08)',
+            dark: 'rgba(0, 0, 0, 0.48)',
         },
         background: {
             header: '#ffffd3',

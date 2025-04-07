@@ -19,7 +19,7 @@ export function SectionHeading({ title, description, linkTo, buttonText }: Props
             </Heading>
             <Flex basis='50%' justifyContent='flex-end' alignItems='center'>
                 {description && (
-                    <Text fontWeight='500' color='neutral.300'>
+                    <Text fontWeight='500' color='text.secondary'>
                         {description}
                     </Text>
                 )}
@@ -29,6 +29,7 @@ export function SectionHeading({ title, description, linkTo, buttonText }: Props
                             variant='primary'
                             rightIcon={<ArrowForwardIcon />}
                             text={buttonText}
+                            size='lg'
                         />
                     </Link>
                 )}

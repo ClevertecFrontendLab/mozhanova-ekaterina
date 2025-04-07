@@ -8,7 +8,7 @@ export function Footer() {
             <Text fontWeight='500' color='neutral.100' fontSize='sm'>
                 Версия программы 03.25
             </Text>
-            <Text fontSize='sm' noOfLines={3} color='neutral.400'>
+            <Text fontSize='sm' noOfLines={3} color='text.secondary'>
                 Все права защищены, ученический файл, ©Клевер Технолоджи, 2025
             </Text>
             <Flex gap='6px' alignItems='center'>
