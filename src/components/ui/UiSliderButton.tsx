@@ -17,7 +17,7 @@ export function UiSliderButton({ direction, ...props }: Props) {
                     left='-8px'
                     w='48px'
                     h='48px'
-                    bg='neutral.900'
+                    bg='background.black'
                     {...props}
                 >
                     <ArrowBackIcon color='neutral.50' />
@@ -31,7 +31,7 @@ export function UiSliderButton({ direction, ...props }: Props) {
                     right='-8px'
                     w='48px'
                     h='48px'
-                    bg='neutral.900'
+                    bg='background.black'
                     {...props}
                 >
                     <ArrowForwardIcon color='neutral.50' />

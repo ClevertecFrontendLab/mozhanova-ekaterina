@@ -11,7 +11,7 @@ export function UiCardMini({ iconSrc, title }: Props) {
     return (
         <Flex
             borderWidth='1px'
-            borderColor='neutral.200'
+            borderColor='border.light'
             borderRadius='8px'
             p={{
                 base: '10px 12px',
