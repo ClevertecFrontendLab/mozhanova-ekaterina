@@ -20,7 +20,7 @@ export function UiSliderButton({ direction, ...props }: Props) {
                     bg='background.black'
                     {...props}
                 >
-                    <ArrowBackIcon color='neutral.50' />
+                    <ArrowBackIcon color='neutral.0' />
                 </IconButton>
             )}
             {direction === 'right' && (
@@ -34,7 +34,7 @@ export function UiSliderButton({ direction, ...props }: Props) {
                     bg='background.black'
                     {...props}
                 >
-                    <ArrowForwardIcon color='neutral.50' />
+                    <ArrowForwardIcon color='neutral.0' />
                 </IconButton>
             )}
         </>
