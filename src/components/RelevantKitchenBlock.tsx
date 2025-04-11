@@ -1,10 +1,9 @@
-import { Box, Flex, Grid } from '@chakra-ui/react';
+import { Box, Flex, Grid, Heading, Text } from '@chakra-ui/react';
 
 import { TRecipe } from '~/types';
 
-import { SectionHeading } from './SectionHeading';
-import { UiCard } from './ui/UiCard';
 import { UiCardMini } from './ui/UiCardMini';
+import { UiCardSimple } from './ui/UiCardSimple';
 
 type Props = {
     heading: string;
@@ -14,27 +13,105 @@ type Props = {
 
 export function RelevantKitchenBlock({ heading, description, data }: Props) {
     return (
-        <Flex direction='column' gap='24px'>
-            <Box pt='24px' borderTop='1px solid' borderColor='border.light'>
-                <SectionHeading title={heading} description={description} />
-            </Box>
-            <Flex gap='24px'>
-                <Grid templateColumns='repeat(2, 1fr)' gap='24px' flexBasis='50%'>
+        <Box pb={4}>
+            <Grid
+                pt={{
+                    base: 2,
+                    md: 6,
+                }}
+                pb={{
+                    base: 4,
+                    md: 6,
+                }}
+                gap={{
+                    base: 3,
+                    lg: 4,
+                    xl: 6,
+                }}
+                borderTop='1px solid'
+                borderColor='border.light'
+                templateColumns={{
+                    base: '1fr',
+                    lg: 'repeat(3, 1fr)',
+                    xl: 'repeat(2, 1fr)',
+                }}
+            >
+                <Heading
+                    as='h2'
+                    fontSize={{
+                        base: '2xl',
+                        md: '4xl',
+                        lg: '5xl',
+                    }}
+                    fontWeight='500'
+                >
+                    {heading}
+                </Heading>
+
+                <Text
+                    gridColumn={{
+                        lg: '2/4',
+                        xl: '2/3',
+                    }}
+                    fontWeight='500'
+                    color='text.secondary'
+                    fontSize={{
+                        base: 'sm',
+                        md: 'md',
+                    }}
+                >
+                    {description}
+                </Text>
+            </Grid>
+
+            <Grid
+                gap={{
+                    base: 3,
+                    lg: 4,
+                    xl: 6,
+                }}
+                templateColumns={{
+                    base: '1fr',
+                    md: 'repeat(3, 1fr)',
+                    xl: 'repeat(2, 1fr)',
+                }}
+            >
+                <Grid
+                    gap={{
+                        base: 3,
+                        lg: 4,
+                        xl: 6,
+                    }}
+                    templateColumns={{
+                        base: '1fr',
+                        md: 'repeat(2, 1fr)',
+                    }}
+                    gridColumn={{
+                        md: '1/3',
+                        xl: '1/2',
+                    }}
+                >
                     {data.slice(0, 2).map((recipe) => (
-                        <UiCard
+                        <UiCardSimple
                             key={recipe.id}
-                            imgSrc={recipe.imageSrc}
-                            title={recipe.title}
-                            text={recipe.description}
-                            category={recipe.category}
-                            favorites={recipe.favorites}
-                            likes={recipe.likes}
                             categoryBgColor='secondary.100'
+                            title={recipe.title}
+                            description={recipe.description}
+                            category={recipe.category}
+                            likes={recipe.likes}
+                            favorites={recipe.favorites}
                         />
                     ))}
                 </Grid>
 
-                <Flex basis='50%' direction='column' gap='12px'>
+                <Flex
+                    direction='column'
+                    gap={{
+                        base: 2.5,
+                        md: 1.5,
+                        lg: 3,
+                    }}
+                >
                     {data.slice(-3).map((recipe) => (
                         <UiCardMini
                             key={recipe.id}
@@ -43,7 +120,7 @@ export function RelevantKitchenBlock({ heading, description, data }: Props) {
                         />
                     ))}
                 </Flex>
-            </Flex>
-        </Flex>
+            </Grid>
+        </Box>
     );
 }

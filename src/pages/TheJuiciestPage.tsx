@@ -1,4 +1,4 @@
-import { Box, Flex, Grid } from '@chakra-ui/react';
+import { Flex, SimpleGrid, useMediaQuery } from '@chakra-ui/react';
 
 import { PageToolbar } from '~/components/PageToolbar';
 import { RelevantKitchenBlock } from '~/components/RelevantKitchenBlock';
@@ -7,16 +7,18 @@ import { UiCard } from '~/components/ui/UiCard';
 import { data_relevant_vegan, data_vegan } from '~/constants';
 
 export function TheJuiciest() {
+    const [isLargerThanMD] = useMediaQuery('(min-width: 768px)');
+
     return (
         <div>
-            <Box>
-                <PageToolbar title='Самое сочное' />
-            </Box>
-            <Grid
-                templateColumns='repeat(2, 1fr)'
-                templateRows='repeat(4, 1fr)'
-                rowGap='16px'
-                columnGap='24px'
+            <PageToolbar title='Самое сочное' />
+            <SimpleGrid
+                rowGap={4}
+                columnGap={6}
+                columns={{
+                    base: 1,
+                    sm: 2,
+                }}
             >
                 {data_vegan.map((recipe) => (
                     <UiCard
@@ -31,9 +33,10 @@ export function TheJuiciest() {
                         infoPosition='top'
                         controls
                         categoryBgColor='secondary.100'
+                        size={isLargerThanMD ? 'lg' : 'sm'}
                     />
                 ))}
-            </Grid>
+            </SimpleGrid>
             <Flex justifyContent='center' mt='16px' mb='40px'>
                 <UiButton size='md' text='Загрузить еще' variant='primary' />
             </Flex>

@@ -1,8 +1,7 @@
-import { Flex, Grid } from '@chakra-ui/react';
+import { Box, Flex, Heading, useMediaQuery } from '@chakra-ui/react';
 
 import { TRecipe } from '~/types';
 
-import { SectionHeading } from './SectionHeading';
 import { UiCard } from './ui/UiCard';
 import { UiSliderButton } from './ui/UiSliderButton';
 
@@ -11,24 +10,56 @@ type Props = {
 };
 
 export function Slider({ data }: Props) {
+    const [isLargerThanMD] = useMediaQuery('(min-width: 768px)');
+
     return (
         <Flex direction='column' gap='24px'>
-            <SectionHeading title='Новые рецепты' />
-            <Grid position='relative' templateColumns='repeat(4, 1fr)' gap='24px'>
-                {data.map((recipe) => (
-                    <UiCard
-                        key={recipe.id}
-                        imgSrc={recipe.imageSrc}
-                        title={recipe.title}
-                        text={recipe.description}
-                        category={recipe.category}
-                        favorites={recipe.favorites}
-                        likes={recipe.likes}
-                    />
-                ))}
-                <UiSliderButton direction='left' />
-                <UiSliderButton direction='right' />
-            </Grid>
+            <Heading
+                as='h2'
+                fontSize={{
+                    base: '2xl',
+                    md: '5xl',
+                }}
+                fontWeight='500'
+            >
+                Новые рецепты
+            </Heading>
+            <Box position='relative'>
+                <Box w='100%' overflowX='hidden'>
+                    <Flex
+                        gap={{
+                            base: 3,
+                            xl: 6,
+                        }}
+                    >
+                        {data.map((recipe) => (
+                            <Box
+                                minW={{
+                                    md: '322px',
+                                }}
+                                flexBasis='322px'
+                            >
+                                <UiCard
+                                    key={recipe.id}
+                                    imgSrc={recipe.imageSrc}
+                                    title={recipe.title}
+                                    text={recipe.description}
+                                    category={recipe.category}
+                                    favorites={recipe.favorites}
+                                    likes={recipe.likes}
+                                    size={isLargerThanMD ? 'lg' : 'sm'}
+                                />
+                            </Box>
+                        ))}
+                    </Flex>
+                </Box>
+                {isLargerThanMD && (
+                    <>
+                        <UiSliderButton direction='left' />
+                        <UiSliderButton direction='right' />
+                    </>
+                )}
+            </Box>
         </Flex>
     );
 }

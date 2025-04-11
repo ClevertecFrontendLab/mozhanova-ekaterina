@@ -1,8 +1,10 @@
-import { Flex, Grid } from '@chakra-ui/react';
+import { ArrowForwardIcon } from '@chakra-ui/icons';
+import { Box, Flex, Heading, SimpleGrid, useMediaQuery } from '@chakra-ui/react';
+import { Link } from 'react-router';
 
 import { TRecipe } from '~/types';
 
-import { SectionHeading } from './SectionHeading';
+import { UiButton } from './ui/UiButton';
 import { UiCard } from './ui/UiCard';
 
 type Props = {
@@ -10,10 +12,48 @@ type Props = {
 };
 
 export function TheJuiciestSection({ data }: Props) {
+    const [isLargerThanMD] = useMediaQuery('(min-width: 768px)');
+
     return (
-        <Flex direction='column' gap='24px'>
-            <SectionHeading title='Самое сочное' linkTo='/the-juiciest' buttonText='Вся подборка' />
-            <Grid templateColumns='repeat(2, 1fr)' gap='24px'>
+        <Flex
+            direction='column'
+            gap={{
+                base: 3,
+                md: 6,
+            }}
+        >
+            <Flex justifyContent='space-between' alignItems='center' gap='24px'>
+                <Heading
+                    as='h2'
+                    fontSize={{
+                        base: '2xl',
+                        md: '5xl',
+                    }}
+                    fontWeight='500'
+                >
+                    Самое сочное
+                </Heading>
+                {isLargerThanMD && (
+                    <Link to='/the-juiciest'>
+                        <UiButton
+                            dataTest='juiciest-link'
+                            variant='primary'
+                            rightIcon={<ArrowForwardIcon />}
+                            text='Вся подборка'
+                            size='lg'
+                        />
+                    </Link>
+                )}
+            </Flex>
+
+            <SimpleGrid
+                templateColumns={{
+                    sm: 'repeat(2, 1fr)',
+                    md: '1fr',
+                    xl: 'repeat(2, 1fr)',
+                }}
+                spacing={6}
+            >
                 {data.map((recipe) => (
                     <UiCard
                         key={recipe.id}
@@ -27,9 +67,24 @@ export function TheJuiciestSection({ data }: Props) {
                         infoPosition='top'
                         controls
                         categoryBgColor='secondary.100'
+                        size={isLargerThanMD ? 'lg' : 'sm'}
                     />
                 ))}
-            </Grid>
+            </SimpleGrid>
+
+            {!isLargerThanMD && (
+                <Box textAlign='center'>
+                    <Link to='/the-juiciest'>
+                        <UiButton
+                            dataTest='juiciest-link-mobile'
+                            variant='primary'
+                            rightIcon={<ArrowForwardIcon />}
+                            text='Вся подборка'
+                            size={isLargerThanMD ? 'lg' : 'md'}
+                        />
+                    </Link>
+                </Box>
+            )}
         </Flex>
     );
 }

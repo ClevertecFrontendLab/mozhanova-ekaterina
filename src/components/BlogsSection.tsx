@@ -1,24 +1,56 @@
 import { ArrowForwardIcon } from '@chakra-ui/icons';
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Flex, Heading, SimpleGrid, useMediaQuery } from '@chakra-ui/react';
 
 import { BlogCard } from './BlogCard';
 import { UiButton } from './ui/UiButton';
 
 export function BlogsSection() {
+    const [isLargerThanMD] = useMediaQuery('(min-width: 768px)');
+
     return (
-        <Box bg='primary.200' p='24px' borderRadius='16px'>
-            <Flex justifyContent='space-between' pb='24px'>
-                <Heading as='h2' size='xl' fontWeight='400'>
+        <Flex
+            direction='column'
+            bg='primary.200'
+            p={{
+                base: 3,
+                md: 6,
+            }}
+            borderRadius='16px'
+            gap={{
+                base: 3,
+                md: 4,
+            }}
+        >
+            <Flex justifyContent='space-between'>
+                <Heading
+                    as='h2'
+                    fontSize={{
+                        base: '24px',
+                        md: '36px',
+                    }}
+                    fontWeight='500'
+                >
                     Кулинарные блоги
                 </Heading>
-                <UiButton
-                    text='Все авторы'
-                    variant='primaryGhost'
-                    rightIcon={<ArrowForwardIcon />}
-                    size='lg'
-                />
+                {isLargerThanMD && (
+                    <UiButton
+                        text='Все авторы'
+                        variant='primaryGhost'
+                        rightIcon={<ArrowForwardIcon />}
+                        size='lg'
+                    />
+                )}
             </Flex>
-            <Flex gap='16px'>
+            <SimpleGrid
+                columns={{
+                    base: 1,
+                    sm: 3,
+                }}
+                gap={{
+                    base: 3,
+                    md: 4,
+                }}
+            >
                 <BlogCard
                     avatarSrc='/src/assets/blog_avatar_1.png'
                     title='Елена Высоцкая'
@@ -37,7 +69,15 @@ export function BlogsSection() {
                     subtitle='@bake_and_pie'
                     text='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
                 />
-            </Flex>
-        </Box>
+            </SimpleGrid>
+            {!isLargerThanMD && (
+                <UiButton
+                    text='Все авторы'
+                    variant='primaryGhost'
+                    rightIcon={<ArrowForwardIcon />}
+                    size='md'
+                />
+            )}
+        </Flex>
     );
 }

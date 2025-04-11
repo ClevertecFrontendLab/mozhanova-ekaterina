@@ -10,25 +10,58 @@ type Props = {
 export function BlogCard({ avatarSrc, title, subtitle, text }: Props) {
     return (
         <Card
-            size='md'
+            size={{
+                base: 'md',
+                md: 'lg',
+            }}
             transition='box-shadow 0.3s ease-in-out'
             _hover={{
                 shadow: 'themeNeutralGreen',
             }}
         >
-            <CardBody p='24px 24px 20px'>
-                <Flex gap='12px' pb='16px'>
+            <CardBody pt={6}>
+                <Flex
+                    gap={{
+                        base: 2,
+                        md: 3,
+                    }}
+                    pb={{
+                        base: 2,
+                        md: 4,
+                    }}
+                >
                     <Image w='48px' h='48px' src={avatarSrc} alt='avatar' />
                     <Box>
-                        <Heading as='h3' fontSize='18px' fontWeight='500'>
+                        <Heading
+                            as='h3'
+                            fontSize={{
+                                base: 'md',
+                                md: 'lg',
+                            }}
+                            fontWeight='500'
+                            noOfLines={1}
+                        >
                             {title}
                         </Heading>
-                        <Text color='text.secondary' fontSize='sm'>
+                        <Text
+                            color='text.secondary'
+                            fontSize={{
+                                base: 'xs',
+                                md: 'sm',
+                            }}
+                        >
                             {subtitle}
                         </Text>
                     </Box>
                 </Flex>
-                <Text fontSize='sm' noOfLines={3} pt='12px'>
+                <Text
+                    fontSize='sm'
+                    noOfLines={3}
+                    pt={{
+                        base: 2,
+                        md: 3,
+                    }}
+                >
                     {text}
                 </Text>
             </CardBody>

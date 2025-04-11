@@ -1,4 +1,12 @@
-import { Grid, Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import {
+    SimpleGrid,
+    Tab,
+    TabList,
+    TabPanel,
+    TabPanels,
+    Tabs,
+    useMediaQuery,
+} from '@chakra-ui/react';
 
 import { data_vegan } from '~/constants';
 
@@ -9,11 +17,15 @@ type Props = {
 };
 
 export function PageTabs({ tabs }: Props) {
+    const [isLargerThanMD] = useMediaQuery('(min-width: 768px)');
+
     return (
         <Tabs variant='line' align='center'>
-            <TabList w='fit-content'>
+            <TabList w='fit-content' maxW='100%' overflowX='scroll' overflowY='hidden'>
                 {tabs.map((tab, i) => (
-                    <Tab key={i}>{tab}</Tab>
+                    <Tab whiteSpace='nowrap' key={i}>
+                        {tab}
+                    </Tab>
                 ))}
             </TabList>
 
@@ -25,12 +37,14 @@ export function PageTabs({ tabs }: Props) {
                     <p>two!</p>
                 </TabPanel>
                 <TabPanel>
-                    <Grid
-                        templateColumns='repeat(2, 1fr)'
-                        templateRows='repeat(4, 1fr)'
-                        rowGap='16px'
-                        columnGap='24px'
-                        pt='24px'
+                    <SimpleGrid
+                        rowGap={4}
+                        columnGap={6}
+                        pt={6}
+                        columns={{
+                            base: 1,
+                            sm: 2,
+                        }}
                     >
                         {data_vegan.map((recipe) => (
                             <UiCard
@@ -45,9 +59,10 @@ export function PageTabs({ tabs }: Props) {
                                 infoPosition='top'
                                 controls
                                 categoryBgColor='secondary.100'
+                                size={isLargerThanMD ? 'lg' : 'sm'}
                             />
                         ))}
-                    </Grid>
+                    </SimpleGrid>
                 </TabPanel>
             </TabPanels>
         </Tabs>

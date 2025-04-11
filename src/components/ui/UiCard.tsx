@@ -8,6 +8,7 @@ import {
     Image,
     Stack,
     Text,
+    useMediaQuery,
 } from '@chakra-ui/react';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
@@ -23,6 +24,7 @@ type Props = {
     };
     likes: number;
     favorites: number;
+    size?: 'sm' | 'md' | 'lg';
     imgSrc?: string;
     recommendation?: string;
     direction?: 'row' | 'column';
@@ -39,11 +41,14 @@ export function UiCard({
     recommendation,
     likes,
     favorites,
+    size = 'lg',
     direction = 'column',
     controls = false,
     infoPosition = 'bottom',
     categoryBgColor = 'primary.100',
 }: Props) {
+    const [isLargerThanMD] = useMediaQuery('(min-width: 768px)');
+
     return (
         <Card
             position='relative'
@@ -54,11 +59,13 @@ export function UiCard({
             _hover={{
                 shadow: 'themeNeutralGreen',
             }}
+            size={size}
         >
             {imgSrc ? (
                 <Image
                     objectFit='cover'
-                    maxW={{ base: '100%', sm: '346px' }}
+                    maxW={{ base: '158px', md: '100%' }}
+                    maxH={{ base: '128px', md: '100%' }}
                     src={imgSrc}
                     alt='card image'
                 />
@@ -80,10 +87,15 @@ export function UiCard({
                 </Flex>
             )}
 
-            <Stack gap='0'>
-                <CardBody pl='24px' pr='24px'>
+            <Stack spacing={0} flexGrow={1}>
+                <CardBody>
                     {infoPosition === 'top' && (
-                        <Box pb='24px'>
+                        <Box
+                            pb={{
+                                base: 0,
+                                md: 6,
+                            }}
+                        >
                             <UiCardInfo
                                 categoryBgColor={categoryBgColor}
                                 category={category}
@@ -92,17 +104,35 @@ export function UiCard({
                             />
                         </Box>
                     )}
-                    <Flex gap='8px' direction='column' textAlign='left'>
-                        <Heading as='h3' fontWeight='500' size='md' noOfLines={1}>
+                    <Flex
+                        gap={{
+                            base: 5,
+                            md: 2,
+                        }}
+                        direction='column'
+                        textAlign='left'
+                    >
+                        <Heading
+                            as='h3'
+                            fontWeight='500'
+                            size={{
+                                base: 'sm',
+                                md: 'md',
+                            }}
+                            noOfLines={{
+                                base: 2,
+                                md: 1,
+                            }}
+                        >
                             {title}
                         </Heading>
                         <Text fontSize='sm' noOfLines={3}>
-                            {text}
+                            {isLargerThanMD ? text : null}
                         </Text>
                     </Flex>
                 </CardBody>
 
-                <CardFooter pl='24px' pr='24px' pt='0'>
+                <CardFooter>
                     {infoPosition === 'bottom' && (
                         <UiCardInfo
                             categoryBgColor={categoryBgColor}
@@ -113,8 +143,18 @@ export function UiCard({
                     )}
                     {controls ? (
                         <Flex gap='8px' justifyContent='flex-end' w='100%'>
-                            <UiButton text='Сохранить' leftIcon={<BookmarkHeartIcon />} />
-                            <UiButton text='Готовить' variant='solid' />
+                            <UiButton
+                                size={isLargerThanMD ? 'sm' : 'xs'}
+                                text='Сохранить'
+                                leftIcon={<BookmarkHeartIcon />}
+                                icon={<BookmarkHeartIcon />}
+                                iconButton={!isLargerThanMD}
+                            />
+                            <UiButton
+                                size={isLargerThanMD ? 'sm' : 'xs'}
+                                text='Готовить'
+                                variant='solid'
+                            />
                         </Flex>
                     ) : null}
                 </CardFooter>

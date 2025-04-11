@@ -13,17 +13,31 @@ export function UiCardMini({ iconSrc, title }: Props) {
             borderWidth='1px'
             borderColor='neutral.200'
             borderRadius='8px'
-            p='16px 24px'
-            justifyContent='space-between'
+            p={{
+                base: '10px 12px',
+                xl: '12px 24px',
+            }}
             alignItems='center'
+            gap={{
+                base: 2,
+                md: 3,
+            }}
         >
-            <Flex gap='12px' alignItems='center'>
-                <Image src={iconSrc} alt='category icon' />
-                <Heading fontSize='xl' fontWeight='500'>
-                    {title}
-                </Heading>
-            </Flex>
-            <UiButton text='Готовить' variant='accentOutline' />
+            <Image src={iconSrc} alt='category icon' />
+            <Heading
+                fontSize={{
+                    base: 'md',
+                    md: 'xl',
+                }}
+                fontWeight='500'
+                noOfLines={1}
+                flexGrow={1}
+            >
+                {title}
+            </Heading>
+            <Box flexBasis='70px'>
+                <UiButton fontSize='12px' text='Готовить' variant='accentOutline' />
+            </Box>
         </Flex>
     );
 }
