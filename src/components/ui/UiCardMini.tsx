@@ -1,4 +1,4 @@
-import { Flex, Heading, Image } from '@chakra-ui/react';
+import { Box, Flex, Heading, Image } from '@chakra-ui/react';
 
 import { UiButton } from './UiButton';
 
@@ -10,6 +10,10 @@ type Props = {
 export function UiCardMini({ iconSrc, title }: Props) {
     return (
         <Flex
+            transition='box-shadow 0.3s ease-in-out'
+            _hover={{
+                shadow: 'themeNeutralGreen',
+            }}
             borderWidth='1px'
             borderColor='border.light'
             borderRadius='8px'
