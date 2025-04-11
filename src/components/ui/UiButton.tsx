@@ -1,4 +1,4 @@
-import { Button } from '@chakra-ui/react';
+import { Button, IconButton } from '@chakra-ui/react';
 
 const variants = {
     primary: {
@@ -37,8 +37,12 @@ type Props = {
     text: string;
     rightIcon?: React.ReactElement;
     leftIcon?: React.ReactElement;
+    icon?: React.ReactElement;
     variant?: keyof typeof variants;
-    size?: string;
+    size?: 'xs' | 'sm' | 'md' | 'lg';
+    iconButton?: boolean;
+    fontSize?: string;
+    dataTest?: string | null;
     onClick?: () => void;
 };
 
@@ -48,9 +52,22 @@ export function UiButton({
     leftIcon,
     size = 'sm',
     variant = 'outline',
-    ...props
+    iconButton = false,
+    icon,
+    fontSize,
+    dataTest = null,
 }: Props) {
-    return (
+    return iconButton ? (
+        <IconButton
+            size={size}
+            bg={variants[variant].bg}
+            borderColor={variants[variant].borderColor}
+            borderWidth={variants[variant].borderWidth}
+            color={variants[variant].color}
+            aria-label='button'
+            icon={icon}
+        />
+    ) : (
         <Button
             size={size}
             bg={variants[variant].bg}
@@ -59,7 +76,8 @@ export function UiButton({
             rightIcon={rightIcon}
             leftIcon={leftIcon}
             color={variants[variant].color}
-            {...props}
+            fontSize={fontSize}
+            data-test-id={dataTest}
         >
             {text}
         </Button>

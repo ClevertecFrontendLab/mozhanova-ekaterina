@@ -10,7 +10,7 @@ type Props = {
 export function NavigationItem({ title, iconSrc, children }: Props) {
     const [isOpen, setIsOpen] = useState(false);
     return (
-        <Box as='li' w='230px'>
+        <Box as='li' w='230px' data-test-id={title === 'Веганская кухня' ? 'vegan-cuisine' : null}>
             <Flex
                 gap='12px'
                 padding='12px 8px'
