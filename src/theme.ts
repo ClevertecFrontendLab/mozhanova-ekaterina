@@ -33,18 +33,23 @@ const theme = extendTheme({
             300: 'rgba(0, 0, 0, 0.64)', // Text light
             400: '#000000', // Чистый черный
         },
-        text: {
-            primary: '#000000',
-            secondary: 'rgba(0, 0, 0, 0.64)',
-            inverted: '#FFFFFF',
-        },
-        border: {
-            light: 'rgba(0, 0, 0, 0.08)',
-            dark: 'rgba(0, 0, 0, 0.48)',
-        },
-        background: {
-            header: '#ffffd3',
-            base: '#FFFFFF',
+    },
+    semanticTokens: {
+        colors: {
+            text: {
+                primary: 'neutral.400',
+                secondary: 'neutral.300',
+                inverted: 'neutral.0',
+            },
+            border: {
+                light: 'neutral.50',
+                dark: 'neutral.200',
+            },
+            background: {
+                header: 'secondary.100',
+                base: 'neutral.0',
+                black: 'neutral.400',
+            },
         },
     },
     fonts: {
@@ -56,14 +61,6 @@ const theme = extendTheme({
         themeNeutral: '0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 4px 6px -1px rgba(0, 0, 0, 0.1)',
         themeNeutralGreen:
             '0 2px 4px -1px rgba(32, 126, 0, 0.06), 0 4px 6px -1px rgba(32, 126, 0, 0.1)',
-    },
-    sizes: {
-        container: {
-            sm: '360px',
-            md: '768px',
-            lg: '1440px',
-            xl: '1920px',
-        },
     },
     components: {
         Tabs: {
@@ -82,6 +79,50 @@ const theme = extendTheme({
                 },
             },
         },
+        Card: {
+            sizes: {
+                lg: {
+                    body: {
+                        pl: 6,
+                        pr: 6,
+                        pb: 6,
+                        pt: 5,
+                    },
+                    footer: {
+                        pl: 6,
+                        pr: 6,
+                        pt: 0,
+                        pb: 5,
+                    },
+                },
+                md: {
+                    body: {
+                        p: 4,
+                    },
+                },
+                sm: {
+                    body: {
+                        pl: 2,
+                        pr: 2,
+                        pb: 2,
+                        pt: 2,
+                    },
+                    footer: {
+                        pl: 2,
+                        pr: 2,
+                        pt: 0,
+                        pb: 1,
+                    },
+                },
+            },
+        },
+    },
+    breakpoints: {
+        base: '0px',
+        sm: '360px',
+        md: '768px',
+        lg: '1440px',
+        xl: '1920px',
     },
 });
 
