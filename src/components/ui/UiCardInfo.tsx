@@ -1,4 +1,4 @@
-import { Flex, Image } from '@chakra-ui/react';
+import { Flex, Image, Text } from '@chakra-ui/react';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { EmojiHeartEyesIcon } from './icons/EmojiHeartEyesIcon';
@@ -23,9 +23,17 @@ export function UiCardInfo({ category, likes, favorites, categoryBgColor }: Prop
                 fontSize='14px'
                 bg={categoryBgColor}
                 alignItems='center'
+                position={{
+                    base: 'absolute',
+                    md: 'static',
+                }}
+                top='8px'
+                left='8px'
             >
                 <Image w='16px' h='16px' src={category.iconSrc} alt='icon' />
-                {category.title}
+                <Text fontSize='sm' whiteSpace='nowrap'>
+                    {category.title}
+                </Text>
             </Flex>
             {favorites || likes ? (
                 <Flex
