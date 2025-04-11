@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 
 import { PageTabs } from '~/components/PageTabs';
 import { PageToolbar } from '~/components/PageToolbar';
@@ -9,12 +9,10 @@ import { data_relevant_desert } from '~/constants';
 export function VeganCuisine() {
     return (
         <div>
-            <Box pb='24px'>
-                <PageToolbar
-                    title='Веганская кухня'
-                    description='Интересны не только убеждённым вегетарианцам, но и тем, кто хочет  попробовать вегетарианскую диету и готовить вкусные  вегетарианские блюда.'
-                />
-            </Box>
+            <PageToolbar
+                title='Веганская кухня'
+                description='Интересны не только убеждённым вегетарианцам, но и тем, кто хочет  попробовать вегетарианскую диету и готовить вкусные  вегетарианские блюда.'
+            />
 
             <PageTabs
                 tabs={[

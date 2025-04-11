@@ -10,10 +10,15 @@ import { data_juiciest, data_relevant_vegan, data_slider } from '~/constants';
 export function Home() {
     return (
         <Box>
-            <Box pb='24px'>
-                <PageToolbar title='Приятного аппетита!' />
-            </Box>
-            <Flex direction='column' gap='40px'>
+            <PageToolbar title='Приятного аппетита!' />
+
+            <Flex
+                direction='column'
+                gap={{
+                    base: '32px',
+                    lg: '40px',
+                }}
+            >
                 <Slider data={data_slider} />
                 <TheJuiciestSection data={data_juiciest} />
                 <BlogsSection />
