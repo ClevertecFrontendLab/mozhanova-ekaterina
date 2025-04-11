@@ -9,7 +9,7 @@ export function Navigation() {
         <Flex
             direction='column'
             grow='1'
-            //  boxShadow='themeNeutral'  ???:
+            boxShadow='themeNeutral'
             borderRadius='0 0 12px 12px'
             overflowY='auto'
             overflowX='hidden'
