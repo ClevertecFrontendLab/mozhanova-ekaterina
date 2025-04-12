@@ -8,52 +8,75 @@ import { Navigation } from '../nav/Navigation';
 import { Sidebar } from '../Sidebar';
 
 export function MainLayout() {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 768px)');
+    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
 
     return (
-        <Flex overflow='hidden'>
+        <Box
+            pt={{
+                base: '64px',
+                md: '80px',
+            }}
+            pb={{
+                base: '84px',
+                md: '0',
+            }}
+            pl={{
+                base: '0',
+                md: '256px',
+            }}
+            pr={{
+                base: '0',
+                md: '256px',
+            }}
+        >
             <Header />
-            <Flex w='100vw'>
-                {isLargerThanMD && (
-                    <Flex
-                        direction='column'
-                        mt='80px'
-                        basis='256px'
-                        h='calc(100vh - 80px)'
-                        pt='24px'
-                    >
-                        <Navigation />
-                        <Footer />
-                    </Flex>
-                )}
-                <Box
-                    as='main'
-                    overflow='auto'
-                    maxH='calc(100vh - 80px)'
-                    mt={{
-                        base: '64px',
-                        lg: '80px',
-                    }}
-                    mb={{
-                        base: '84px',
-                        lg: '0',
-                    }}
-                    padding={{
-                        base: '0 16px',
-                        md: '0 20px',
-                        lg: '0 24px',
-                    }}
-                    flexGrow='1'
+
+            {isLargerThanMD && (
+                <Flex
+                    direction='column'
+                    w='256px'
+                    pt='24px'
+                    position='fixed'
+                    top='80px'
+                    left='0'
+                    bottom='0'
+                    bg='background.base'
+                    zIndex={100}
                 >
-                    <Outlet />
+                    <Navigation />
+                    <Footer />
+                </Flex>
+            )}
+
+            <Box
+                as='main'
+                // overflow='auto'
+                // maxH='calc(100vh - 80px)'
+
+                padding={{
+                    base: '0 16px',
+                    md: '0 20px',
+                    lg: '0 24px',
+                }}
+            >
+                <Outlet />
+            </Box>
+
+            {isLargerThanMD ? (
+                <Box
+                    bg='background.base'
+                    position='fixed'
+                    right='0'
+                    bottom='0'
+                    top='80px'
+                    w='256px'
+                    zIndex={100}
+                >
+                    <Sidebar />
                 </Box>
-                {isLargerThanMD ? (
-                    <Box mt='80px' height='calc(100vh - 80px)' flexBasis='256px'>
-                        <Sidebar />
-                    </Box>
-                ) : null}
-            </Flex>
+            ) : null}
+
             {!isLargerThanMD && <FooterMobile />}
-        </Flex>
+        </Box>
     );
 }

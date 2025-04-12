@@ -20,7 +20,7 @@ type Props = {
 };
 
 export function PageToolbar({ title, description }: Props) {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 768px)');
+    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
 
     return (
         <Flex

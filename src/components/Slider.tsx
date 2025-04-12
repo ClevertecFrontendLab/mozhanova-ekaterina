@@ -10,7 +10,7 @@ type Props = {
 };
 
 export function Slider({ data }: Props) {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 768px)');
+    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
 
     return (
         <Flex direction='column' gap='24px'>
@@ -18,7 +18,8 @@ export function Slider({ data }: Props) {
                 as='h2'
                 fontSize={{
                     base: '2xl',
-                    md: '5xl',
+                    md: '4xl',
+                    lg: '5xl',
                 }}
                 fontWeight='500'
             >

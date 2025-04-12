@@ -16,7 +16,8 @@ import { ProfileInfo } from './ProfileInfo';
 import { ProfileNotification } from './ProfileNotification';
 
 export function Header() {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 768px)');
+    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const [isLargerThanSM] = useMediaQuery('(min-width: 361px)');
     const location = useLocation();
     const pathnames = location.pathname.split('/').filter((x) => x);
 
@@ -44,19 +45,21 @@ export function Header() {
             data-test-id='header'
         >
             <Box width='256px'>
-                <Image
-                    w={{
-                        base: '32px',
-                        md: '135px',
-                    }}
-                    h='32px'
-                    src={
-                        isLargerThanMD
-                            ? '/src/assets/logo/logo.png'
-                            : '/src/assets/logo/mobile_logo.png'
-                    }
-                    alt='logo'
-                />
+                <Link to='/'>
+                    <Image
+                        w={{
+                            base: '32px',
+                            sm: '135px',
+                        }}
+                        h='32px'
+                        src={
+                            isLargerThanSM
+                                ? '/src/assets/logo/logo.png'
+                                : '/src/assets/logo/mobile_logo.png'
+                        }
+                        alt='logo'
+                    />
+                </Link>
             </Box>
             {isLargerThanMD ? (
                 <>

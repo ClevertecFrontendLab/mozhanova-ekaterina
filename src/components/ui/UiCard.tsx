@@ -47,7 +47,7 @@ export function UiCard({
     infoPosition = 'bottom',
     categoryBgColor = 'primary.100',
 }: Props) {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 768px)');
+    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
 
     return (
         <Card
@@ -59,7 +59,8 @@ export function UiCard({
             _hover={{
                 shadow: 'themeNeutralGreen',
             }}
-            size={size}
+            size={isLargerThanMD ? size : 'sm'}
+            h={direction === 'row' ? 'auto' : '100%'}
         >
             {imgSrc ? (
                 <Image

@@ -12,7 +12,7 @@ type Props = {
 };
 
 export function TheJuiciestSection({ data }: Props) {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 768px)');
+    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
 
     return (
         <Flex
@@ -27,23 +27,23 @@ export function TheJuiciestSection({ data }: Props) {
                     as='h2'
                     fontSize={{
                         base: '2xl',
-                        md: '5xl',
+                        md: '4xl',
+                        lg: '5xl',
                     }}
                     fontWeight='500'
                 >
                     Самое сочное
                 </Heading>
-                {isLargerThanMD && (
-                    <Link to='/the-juiciest'>
-                        <UiButton
-                            dataTest='juiciest-link'
-                            variant='primary'
-                            rightIcon={<ArrowForwardIcon />}
-                            text='Вся подборка'
-                            size='lg'
-                        />
-                    </Link>
-                )}
+
+                <Link to='/the-juiciest' hidden={!isLargerThanMD}>
+                    <UiButton
+                        dataTest='juiciest-link'
+                        variant='primary'
+                        rightIcon={<ArrowForwardIcon />}
+                        text='Вся подборка'
+                        size='lg'
+                    />
+                </Link>
             </Flex>
 
             <SimpleGrid
@@ -72,19 +72,17 @@ export function TheJuiciestSection({ data }: Props) {
                 ))}
             </SimpleGrid>
 
-            {!isLargerThanMD && (
-                <Box textAlign='center'>
-                    <Link to='/the-juiciest'>
-                        <UiButton
-                            dataTest='juiciest-link-mobile'
-                            variant='primary'
-                            rightIcon={<ArrowForwardIcon />}
-                            text='Вся подборка'
-                            size={isLargerThanMD ? 'lg' : 'md'}
-                        />
-                    </Link>
-                </Box>
-            )}
+            <Box textAlign='center'>
+                <Link to='/the-juiciest' hidden={isLargerThanMD}>
+                    <UiButton
+                        dataTest='juiciest-link-mobile'
+                        variant='primary'
+                        rightIcon={<ArrowForwardIcon />}
+                        text='Вся подборка'
+                        size={isLargerThanMD ? 'lg' : 'md'}
+                    />
+                </Link>
+            </Box>
         </Flex>
     );
 }
