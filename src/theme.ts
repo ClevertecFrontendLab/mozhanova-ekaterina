@@ -135,10 +135,10 @@ const theme = extendTheme({
     },
     breakpoints: {
         base: '0px',
-        sm: '360px',
-        md: '768px',
-        lg: '1440px',
-        xl: '1920px',
+        sm: '361px',
+        md: '769px',
+        lg: '1441px',
+        xl: '1921px',
     },
 });
 
