@@ -8,13 +8,17 @@ import {
     Image,
     useMediaQuery,
 } from '@chakra-ui/react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
+
+import { categories } from '~/constants';
 
 import { ProfileInfo } from './ProfileInfo';
 import { ProfileNotification } from './ProfileNotification';
 
 export function Header() {
     const [isLargerThanMD] = useMediaQuery('(min-width: 768px)');
+    const location = useLocation();
+    const pathnames = location.pathname.split('/').filter((x) => x);
 
     return (
         <Flex
@@ -61,23 +65,36 @@ export function Header() {
                         spacing='8px'
                         separator={<ChevronRightIcon color='gray.500' />}
                     >
-                        <BreadcrumbItem>
+                        <BreadcrumbItem isCurrentPage={pathnames.length === 0}>
                             <BreadcrumbLink as={Link} to='/'>
                                 Главная
                             </BreadcrumbLink>
                         </BreadcrumbItem>
 
-                        <BreadcrumbItem>
-                            <BreadcrumbLink as={Link} to='/vegan-cuisine'>
-                                Веганская кухня
-                            </BreadcrumbLink>
-                        </BreadcrumbItem>
-
-                        <BreadcrumbItem isCurrentPage>
-                            <BreadcrumbLink as={Link} to='/the-juiciest'>
-                                Вторые блюда
-                            </BreadcrumbLink>
-                        </BreadcrumbItem>
+                        {pathnames.length > 0 &&
+                            pathnames.map((path, i) => {
+                                const routeTo = pathnames.slice(0, i + 1).join('/');
+                                const label =
+                                    categories.find((category) => category.id === path)?.label ||
+                                    categories
+                                        .find((category) =>
+                                            category.subCategories?.find(
+                                                (subCategory) => subCategory.id === path,
+                                            ),
+                                        )
+                                        ?.subCategories?.find(
+                                            (subCategory) => subCategory.id === path,
+                                        )?.label ||
+                                    (path === 'the-juiciest' && 'Самое сочное') ||
+                                    '';
+                                return (
+                                    <BreadcrumbItem isCurrentPage={i === pathnames.length - 1}>
+                                        <BreadcrumbLink as={Link} to={routeTo}>
+                                            {label}
+                                        </BreadcrumbLink>
+                                    </BreadcrumbItem>
+                                );
+                            })}
                     </Breadcrumb>
 
                     <ProfileInfo />
