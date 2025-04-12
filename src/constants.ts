@@ -2,61 +2,73 @@ import { TRecipe } from './types';
 
 export const categories = [
     {
-        title: 'Салаты',
+        id: 'salads',
+        label: 'Салаты',
         iconSrc: '/src/assets/icons/menu_icon_1.png',
     },
     {
-        title: 'Закуски',
+        id: 'appetizers',
+        label: 'Закуски',
         iconSrc: '/src/assets/icons/menu_icon_2.png',
     },
     {
-        title: 'Первые блюда',
+        id: 'first-course',
+        label: 'Первые блюда',
         iconSrc: '/src/assets/icons/menu_icon_3.png',
     },
     {
-        title: 'Вторые блюда',
+        id: 'main-course',
+        label: 'Вторые блюда',
         iconSrc: '/src/assets/icons/menu_icon_4.png',
     },
     {
-        title: 'Десерты, выпечка',
+        id: 'desserts-bakery',
+        label: 'Десерты, выпечка',
         iconSrc: '/src/assets/icons/menu_icon_5.png',
     },
     {
-        title: 'Блюда на гриле',
+        id: 'grill',
+        label: 'Блюда на гриле',
         iconSrc: '/src/assets/icons/menu_icon_6.png',
     },
     {
-        title: 'Веганская кухня',
+        id: 'vegan-cuisine',
+        label: 'Веганская кухня',
         iconSrc: '/src/assets/icons/menu_icon_7.png',
-        children: [
-            'Закуски',
-            'Первые блюда',
-            'Вторые блюда',
-            'Гарниры',
-            'Десерты',
-            'Выпечка',
-            'Сыроедческие блюда',
-            'Напитки',
+        subCategories: [
+            { id: 'vegan-appetizers', label: 'Закуски' },
+            { id: 'vegan-first-course', label: 'Первые блюда' },
+            { id: 'vegan-main-course', label: 'Вторые блюда' },
+            { id: 'vegan-side-dishes', label: 'Гарниры' },
+            { id: 'vegan-desserts', label: 'Десерты' },
+            { id: 'vegan-bakery', label: 'Выпечка' },
+            { id: 'vegan-raw-food', label: 'Сыроедческие блюда' },
+            { id: 'vegan-drinks', label: 'Напитки' },
         ],
     },
     {
-        title: 'Детские блюда',
+        id: 'kids',
+        label: 'Детские блюда',
         iconSrc: '/src/assets/icons/menu_icon_8.png',
     },
     {
-        title: 'Лечебное питание',
+        id: 'dietary',
+        label: 'Лечебное питание',
         iconSrc: '/src/assets/icons/menu_icon_9.png',
     },
     {
-        title: 'Национальные',
+        id: 'national',
+        label: 'Национальные',
         iconSrc: '/src/assets/icons/menu_icon_10.png',
     },
     {
-        title: 'Соусы',
+        id: 'sauces',
+        label: 'Соусы',
         iconSrc: '/src/assets/icons/menu_icon_11.png',
     },
     {
-        title: 'Напитки',
+        id: 'drinks',
+        label: 'Напитки',
         iconSrc: '/src/assets/icons/menu_icon_12.png',
     },
 ];
@@ -72,7 +84,7 @@ export const data_juiciest: TRecipe[] = [
             title: 'Вторые блюда',
             iconSrc: 'src/assets/icons/menu_icon_4.png',
         },
-        imageSrc: 'src/assets/card_img_1.png',
+        imageSrc: '/src/assets/card_img_1.png',
     },
     {
         id: 2,
@@ -85,7 +97,7 @@ export const data_juiciest: TRecipe[] = [
             title: 'Вторые блюда',
             iconSrc: 'src/assets/icons/menu_icon_4.png',
         },
-        imageSrc: 'src/assets/card_img_2.png',
+        imageSrc: '/src/assets/card_img_2.png',
     },
     {
         id: 3,
@@ -98,7 +110,7 @@ export const data_juiciest: TRecipe[] = [
             title: 'Вторые блюда',
             iconSrc: 'src/assets/icons/menu_icon_4.png',
         },
-        imageSrc: 'src/assets/card_img_3.png',
+        imageSrc: '/src/assets/card_img_3.png',
     },
     {
         id: 4,
@@ -111,7 +123,7 @@ export const data_juiciest: TRecipe[] = [
             title: 'Национальные',
             iconSrc: 'src/assets/icons/menu_icon_10.png',
         },
-        imageSrc: 'src/assets/card_img_4.png',
+        imageSrc: '/src/assets/card_img_4.png',
     },
 ];
 export const data_slider: TRecipe[] = [
@@ -126,7 +138,7 @@ export const data_slider: TRecipe[] = [
             title: 'Первые блюда',
             iconSrc: 'src/assets/icons/menu_icon_3.png',
         },
-        imageSrc: 'src/assets/slider_1.png',
+        imageSrc: '/src/assets/slider_1.png',
     },
     {
         id: 6,
@@ -139,7 +151,7 @@ export const data_slider: TRecipe[] = [
             title: 'Веганские блюда',
             iconSrc: 'src/assets/icons/menu_icon_7.png',
         },
-        imageSrc: 'src/assets/slider_2.png',
+        imageSrc: '/src/assets/slider_2.png',
     },
     {
         id: 7,
@@ -152,7 +164,7 @@ export const data_slider: TRecipe[] = [
             title: 'Десерты, выпечка',
             iconSrc: 'src/assets/icons/menu_icon_5.png',
         },
-        imageSrc: 'src/assets/slider_3.png',
+        imageSrc: '/src/assets/slider_3.png',
     },
     {
         id: 8,
@@ -165,7 +177,7 @@ export const data_slider: TRecipe[] = [
             title: 'Салаты',
             iconSrc: 'src/assets/icons/menu_icon_1.png',
         },
-        imageSrc: 'src/assets/slider_4.png',
+        imageSrc: '/src/assets/slider_4.png',
     },
 ];
 export const data_relevant_vegan: TRecipe[] = [
@@ -178,7 +190,7 @@ export const data_relevant_vegan: TRecipe[] = [
         favorites: 1,
         category: {
             title: 'Вторые блюда',
-            iconSrc: 'src/assets/icons/menu_icon_4.png',
+            iconSrc: '/src/assets/icons/menu_icon_4.png',
         },
     },
     {
@@ -190,7 +202,7 @@ export const data_relevant_vegan: TRecipe[] = [
         favorites: 1,
         category: {
             title: 'Вторые блюда',
-            iconSrc: 'src/assets/icons/menu_icon_4.png',
+            iconSrc: '/src/assets/icons/menu_icon_4.png',
         },
     },
     {
@@ -202,7 +214,7 @@ export const data_relevant_vegan: TRecipe[] = [
         favorites: 1,
         category: {
             title: 'Вторые блюда',
-            iconSrc: 'src/assets/icons/menu_icon_4.png',
+            iconSrc: '/src/assets/icons/menu_icon_4.png',
         },
     },
     {
@@ -214,7 +226,7 @@ export const data_relevant_vegan: TRecipe[] = [
         favorites: 1,
         category: {
             title: 'Вторые блюда',
-            iconSrc: 'src/assets/icons/menu_icon_4.png',
+            iconSrc: '/src/assets/icons/menu_icon_4.png',
         },
     },
     {
@@ -226,7 +238,7 @@ export const data_relevant_vegan: TRecipe[] = [
         favorites: 1,
         category: {
             title: 'Вторые блюда',
-            iconSrc: 'src/assets/icons/menu_icon_3.png',
+            iconSrc: '/src/assets/icons/menu_icon_3.png',
         },
     },
 ];
@@ -240,7 +252,7 @@ export const data_relevant_desert: TRecipe[] = [
         favorites: 1,
         category: {
             title: 'Детские блюда',
-            iconSrc: 'src/assets/icons/menu_icon_8.png',
+            iconSrc: '/src/assets/icons/menu_icon_8.png',
         },
     },
     {
@@ -252,7 +264,7 @@ export const data_relevant_desert: TRecipe[] = [
         favorites: 1,
         category: {
             title: 'Детские блюда',
-            iconSrc: 'src/assets/icons/menu_icon_8.png',
+            iconSrc: '/src/assets/icons/menu_icon_8.png',
         },
     },
     {
@@ -264,7 +276,7 @@ export const data_relevant_desert: TRecipe[] = [
         favorites: 1,
         category: {
             title: 'Детские блюда',
-            iconSrc: 'src/assets/icons/menu_icon_8.png',
+            iconSrc: '/src/assets/icons/menu_icon_8.png',
         },
     },
     {
@@ -276,7 +288,7 @@ export const data_relevant_desert: TRecipe[] = [
         favorites: 1,
         category: {
             title: 'Вторые блюда',
-            iconSrc: 'src/assets/icons/menu_icon_10.png',
+            iconSrc: '/src/assets/icons/menu_icon_10.png',
         },
     },
     {
@@ -288,7 +300,7 @@ export const data_relevant_desert: TRecipe[] = [
         favorites: 1,
         category: {
             title: 'Вторые блюда',
-            iconSrc: 'src/assets/icons/menu_icon_7.png',
+            iconSrc: '/src/assets/icons/menu_icon_7.png',
         },
     },
 ];
@@ -303,9 +315,9 @@ export const data_vegan: TRecipe[] = [
         favorites: 85,
         category: {
             title: 'Национальные',
-            iconSrc: 'src/assets/icons/menu_icon_10.png',
+            iconSrc: '/src/assets/icons/menu_icon_10.png',
         },
-        imageSrc: 'src/assets/card_img_10.png',
+        imageSrc: '/src/assets/card_img_10.png',
     },
     {
         id: 2,
@@ -316,9 +328,9 @@ export const data_vegan: TRecipe[] = [
         favorites: 85,
         category: {
             title: 'Детские блюда',
-            iconSrc: 'src/assets/icons/menu_icon_8.png',
+            iconSrc: '/src/assets/icons/menu_icon_8.png',
         },
-        imageSrc: 'src/assets/card_img_5.png',
+        imageSrc: '/src/assets/card_img_5.png',
     },
     {
         id: 3,
@@ -329,9 +341,9 @@ export const data_vegan: TRecipe[] = [
         favorites: 324,
         category: {
             title: 'Национальные',
-            iconSrc: 'src/assets/icons/menu_icon_10.png',
+            iconSrc: '/src/assets/icons/menu_icon_10.png',
         },
-        imageSrc: 'src/assets/card_img_4.png',
+        imageSrc: '/src/assets/card_img_4.png',
     },
     {
         id: 4,
@@ -342,9 +354,9 @@ export const data_vegan: TRecipe[] = [
         favorites: 85,
         category: {
             title: 'Блюда на гриле',
-            iconSrc: 'src/assets/icons/menu_icon_6.png',
+            iconSrc: '/src/assets/icons/menu_icon_6.png',
         },
-        imageSrc: 'src/assets/card_img_6.png',
+        imageSrc: '/src/assets/card_img_6.png',
     },
     {
         id: 5,
@@ -355,9 +367,9 @@ export const data_vegan: TRecipe[] = [
         favorites: 85,
         category: {
             title: 'Вторые блюда',
-            iconSrc: 'src/assets/icons/menu_icon_4.png',
+            iconSrc: '/src/assets/icons/menu_icon_4.png',
         },
-        imageSrc: 'src/assets/card_img_7.png',
+        imageSrc: '/src/assets/card_img_7.png',
     },
     {
         id: 6,
@@ -368,9 +380,9 @@ export const data_vegan: TRecipe[] = [
         favorites: 85,
         category: {
             title: 'Вторые блюда',
-            iconSrc: 'src/assets/icons/menu_icon_4.png',
+            iconSrc: '/src/assets/icons/menu_icon_4.png',
         },
-        imageSrc: 'src/assets/card_img_7.png',
+        imageSrc: '/src/assets/card_img_7.png',
     },
     {
         id: 7,
@@ -381,9 +393,9 @@ export const data_vegan: TRecipe[] = [
         favorites: 124,
         category: {
             title: 'Национальные',
-            iconSrc: 'src/assets/icons/menu_icon_10.png',
+            iconSrc: '/src/assets/icons/menu_icon_10.png',
         },
-        imageSrc: 'src/assets/card_img_8.png',
+        imageSrc: '/src/assets/card_img_8.png',
     },
     {
         id: 8,
@@ -394,8 +406,8 @@ export const data_vegan: TRecipe[] = [
         favorites: 124,
         category: {
             title: 'Национальные',
-            iconSrc: 'src/assets/icons/menu_icon_10.png',
+            iconSrc: '/src/assets/icons/menu_icon_10.png',
         },
-        imageSrc: 'src/assets/card_img_9.png',
+        imageSrc: '/src/assets/card_img_9.png',
     },
 ];
