@@ -67,7 +67,7 @@ export function TheJuiciestSection({ data }: Props) {
                         infoPosition='top'
                         controls
                         categoryBgColor='secondary.100'
-                        size={isLargerThanMD ? 'lg' : 'sm'}
+                        size='lg'
                     />
                 ))}
             </SimpleGrid>
