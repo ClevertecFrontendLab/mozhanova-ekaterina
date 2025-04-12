@@ -63,6 +63,20 @@ const theme = extendTheme({
             '0 2px 4px -1px rgba(32, 126, 0, 0.06), 0 4px 6px -1px rgba(32, 126, 0, 0.1)',
     },
     components: {
+        Breadcrumb: {
+            baseStyle: {
+                link: {
+                    color: 'neutral.300',
+                    _hover: {
+                        textDecoration: 'none',
+                        color: 'neutral.400',
+                    },
+                    '&[aria-current=page]': {
+                        color: 'neutral.400',
+                    },
+                },
+            },
+        },
         Tabs: {
             variants: {
                 line: {
@@ -71,6 +85,8 @@ const theme = extendTheme({
                         _selected: {
                             color: 'primary.400',
                             fontWeight: '500',
+                            borderBottomWidth: '2px',
+                            borderBottomColor: 'primary.400',
                         },
                     },
                     tabpanel: {
