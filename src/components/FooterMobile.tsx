@@ -1,12 +1,14 @@
 import { EditIcon } from '@chakra-ui/icons';
 import { Grid, Image } from '@chakra-ui/react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 import { HomeIcon } from './ui/icons/HomeIcon';
 import { SearchIcon } from './ui/icons/SearchIcon';
 import { UiIconButton } from './ui/UiIconButton';
 
 export function FooterMobile() {
+    const location = useLocation();
+
     return (
         <Grid
             data-test-id='footer'
