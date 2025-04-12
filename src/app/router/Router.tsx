@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router';
 
 import { MainLayout } from '~/components/layouts/MainLayout';
-import { DishesByType } from '~/pages/DishesByType ';
+import { DishesByType } from '~/pages/DishesByType';
 import { Home } from '~/pages/HomePage';
 import { TheJuiciest } from '~/pages/TheJuiciestPage';
 import { VeganCuisine } from '~/pages/VeganCuisinePage';
