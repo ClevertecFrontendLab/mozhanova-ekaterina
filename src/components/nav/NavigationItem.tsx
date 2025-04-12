@@ -4,7 +4,7 @@ import { useState } from 'react';
 type Props = {
     title: string;
     iconSrc: string;
-    children?: string[];
+    subCategories?: { id: string; label: string }[];
 };
 
 export function NavigationItem({ title, iconSrc, children }: Props) {

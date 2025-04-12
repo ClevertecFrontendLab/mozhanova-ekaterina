@@ -19,10 +19,10 @@ export function Navigation() {
                 <ul>
                     {categories.map((item) => (
                         <NavigationItem
-                            key={item.title}
-                            title={item.title}
+                            key={item.id}
+                            title={item.label}
                             iconSrc={item.iconSrc}
-                            children={item.children}
+                            subCategories={item.subCategories}
                         />
                     ))}
                 </ul>
