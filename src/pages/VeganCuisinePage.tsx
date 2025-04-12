@@ -1,6 +1,6 @@
 import { Flex } from '@chakra-ui/react';
+import { Outlet } from 'react-router';
 
-import { PageTabs } from '~/components/PageTabs';
 import { PageToolbar } from '~/components/PageToolbar';
 import { RelevantKitchenBlock } from '~/components/RelevantKitchenBlock';
 import { UiButton } from '~/components/ui/UiButton';
@@ -13,19 +13,7 @@ export function VeganCuisine() {
                 title='Веганская кухня'
                 description='Интересны не только убеждённым вегетарианцам, но и тем, кто хочет  попробовать вегетарианскую диету и готовить вкусные  вегетарианские блюда.'
             />
-
-            <PageTabs
-                tabs={[
-                    'Закуски',
-                    'Первые блюда',
-                    'Вторые блюда',
-                    'Гарниры',
-                    'Десерты',
-                    'Выпечка',
-                    'Сыроедческие блюда',
-                    'Напитки',
-                ]}
-            />
+            <Outlet />
             <Flex justifyContent='center' mt='16px' mb='40px'>
                 <UiButton size='md' text='Загрузить еще' variant='primary' />
             </Flex>
