@@ -20,7 +20,16 @@ export function FooterMobile() {
             pb={2.5}
         >
             <Link to='/'>
-                <UiIconButton variant='primary' text='Главная' icon={<HomeIcon />} />
+                <UiIconButton
+                    variant={location.pathname === '/' ? 'primary' : 'default'}
+                    text='Главная'
+                    icon={
+                        <HomeIcon
+                            width={location.pathname === '/' ? '16px' : '24px'}
+                            height={location.pathname === '/' ? '16px' : '24px'}
+                        />
+                    }
+                />
             </Link>
             <Link to='/'>
                 <UiIconButton text='Поиск' icon={<SearchIcon />} />
