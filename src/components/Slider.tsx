@@ -44,10 +44,12 @@ export function Slider({ data }: Props) {
                                 minW={{
                                     base: '158px',
                                     md: '277px',
+                                    lg: '322px',
                                 }}
                                 flexBasis={{
                                     base: '158px',
                                     md: '277px',
+                                    lg: '322px',
                                 }}
                             >
                                 <UiCard
