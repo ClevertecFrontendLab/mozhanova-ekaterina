@@ -20,7 +20,7 @@ export function NavigationItem({ title, iconSrc, currentCategory, subCategories 
     }, [currentPage, currentCategory]);
     return (
         <Box as='li' w='230px' data-test-id={title === 'Веганская кухня' ? 'vegan-cuisine' : null}>
-            <Link to='/vegan-cuisine/'>
+            <Link to='/vegan-cuisine/vegan-main-course'>
                 <Flex
                     gap='12px'
                     padding='12px 8px'

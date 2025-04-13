@@ -148,7 +148,12 @@ export function UiCard({
                                 size={isLargerThanMD ? 'sm' : 'xs'}
                                 text='Сохранить'
                                 leftIcon={<BookmarkHeartIcon />}
-                                icon={<BookmarkHeartIcon />}
+                                icon={
+                                    <BookmarkHeartIcon
+                                        width={!isLargerThanMD ? '12px' : '16px'}
+                                        height={!isLargerThanMD ? '12px' : '16px'}
+                                    />
+                                } //???:
                                 iconButton={!isLargerThanMD}
                             />
                             <UiButton
