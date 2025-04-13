@@ -49,11 +49,10 @@ export function UiCardSimple({
                             base: 'sm',
                             md: 'md',
                         }}
-                        noOfLines={{
-                            base: 2,
-                            md: 1,
-                        }}
                         pb={2}
+                        textOverflow='ellipsis'
+                        whiteSpace='nowrap'
+                        overflowX='hidden'
                     >
                         {title}
                     </Heading>

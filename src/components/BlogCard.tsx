@@ -10,6 +10,7 @@ type Props = {
 export function BlogCard({ avatarSrc, title, subtitle, text }: Props) {
     return (
         <Card
+            overflow='hidden'
             size={{
                 base: 'md',
                 md: 'lg',
@@ -30,8 +31,19 @@ export function BlogCard({ avatarSrc, title, subtitle, text }: Props) {
                         md: 4,
                     }}
                 >
-                    <Image w='48px' h='48px' src={avatarSrc} alt='avatar' />
-                    <Box>
+                    <Image
+                        w={{
+                            base: '32px',
+                            md: '48px',
+                        }}
+                        h={{
+                            base: '32px',
+                            md: '48px',
+                        }}
+                        src={avatarSrc}
+                        alt='avatar'
+                    />
+                    <Box minW={0}>
                         <Heading
                             as='h3'
                             fontSize={{
@@ -39,7 +51,9 @@ export function BlogCard({ avatarSrc, title, subtitle, text }: Props) {
                                 md: 'lg',
                             }}
                             fontWeight='500'
-                            noOfLines={1}
+                            textOverflow='ellipsis'
+                            whiteSpace='nowrap'
+                            overflowX='hidden'
                         >
                             {title}
                         </Heading>

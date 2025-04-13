@@ -13,7 +13,13 @@ export function Slider({ data }: Props) {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
 
     return (
-        <Flex direction='column' gap='24px'>
+        <Flex
+            direction='column'
+            gap={{
+                base: 3,
+                md: 6,
+            }}
+        >
             <Heading
                 as='h2'
                 fontSize={{
@@ -36,9 +42,13 @@ export function Slider({ data }: Props) {
                         {data.map((recipe) => (
                             <Box
                                 minW={{
-                                    md: '322px',
+                                    base: '158px',
+                                    md: '277px',
                                 }}
-                                flexBasis='322px'
+                                flexBasis={{
+                                    base: '158px',
+                                    md: '277px',
+                                }}
                             >
                                 <UiCard
                                     key={recipe.id}

@@ -1,17 +1,23 @@
 import { Box, ChevronDownIcon, ChevronUpIcon, Flex, Image } from '@chakra-ui/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router';
 
 type Props = {
     title: string;
     iconSrc: string;
+    currentCategory: string;
     subCategories?: { id: string; label: string }[];
 };
 
-export function NavigationItem({ title, iconSrc, subCategories }: Props) {
+export function NavigationItem({ title, iconSrc, currentCategory, subCategories }: Props) {
     const [isOpen, setIsOpen] = useState(false);
     const location = useLocation();
-    const currentCategory = location.pathname.split('/').pop() ?? '';
+    const currentSubCategory = location.pathname.split('/').pop() ?? '';
+    const currentPage = location.pathname.split('/').filter((x) => x)[0] ?? '';
+
+    useEffect(() => {
+        currentPage === currentCategory ? setIsOpen(true) : setIsOpen(false);
+    }, [currentPage, currentCategory]);
     return (
         <Box as='li' w='230px' data-test-id={title === 'Веганская кухня' ? 'vegan-cuisine' : null}>
             <Link to='/vegan-cuisine/'>
@@ -23,7 +29,7 @@ export function NavigationItem({ title, iconSrc, subCategories }: Props) {
                     fontWeight='500'
                     cursor='pointer'
                     onClick={() => setIsOpen((prev) => !prev)}
-                    bgColor={isOpen ? 'primary.50' : 'transparent'}
+                    bgColor={currentPage === currentCategory ? 'primary.50' : 'transparent'}
                 >
                     <Flex gap='12px' whiteSpace='nowrap' _hover={{ fontWeight: '700' }}>
                         <Image width='24px' height='24px' src={iconSrc} alt='menu_item_icon' />
@@ -50,7 +56,7 @@ export function NavigationItem({ title, iconSrc, subCategories }: Props) {
                                 fontWeight: '700',
                                 '& .divider': { width: '8px', transform: 'translateX(-100%)' },
                             }}
-                            aria-current={child.id === currentCategory ? 'page' : undefined}
+                            aria-current={child.id === currentSubCategory ? 'page' : undefined}
                             _activeLink={{
                                 fontWeight: '700',
                                 '& .divider': { width: '8px', transform: 'translateX(-100%)' },

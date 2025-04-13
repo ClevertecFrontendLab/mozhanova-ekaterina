@@ -62,6 +62,7 @@ export function PageToolbar({ title, description }: Props) {
                         base: 4,
                         lg: 3,
                     }}
+                    maxW='696px'
                 >
                     {description}
                 </Text>

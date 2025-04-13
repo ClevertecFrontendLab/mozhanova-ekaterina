@@ -179,6 +179,32 @@ export const data_slider: TRecipe[] = [
         },
         imageSrc: '/src/assets/slider_4.png',
     },
+    {
+        id: 9,
+        title: 'Салат "Здоровье"',
+        description:
+            'Сельдерей очень полезен для здоровья, пора набираться витаминов. Не  салат, а сплошное удовольствие:) Вкусный, необычный, а главное быстрый.',
+        likes: 0,
+        favorites: 0,
+        category: {
+            title: 'Салаты',
+            iconSrc: 'src/assets/icons/menu_icon_1.png',
+        },
+        imageSrc: '/src/assets/slider_4.png',
+    },
+    {
+        id: 10,
+        title: 'Салат "Здоровье"',
+        description:
+            'Сельдерей очень полезен для здоровья, пора набираться витаминов. Не  салат, а сплошное удовольствие:) Вкусный, необычный, а главное быстрый.',
+        likes: 0,
+        favorites: 0,
+        category: {
+            title: 'Салаты',
+            iconSrc: 'src/assets/icons/menu_icon_1.png',
+        },
+        imageSrc: '/src/assets/slider_4.png',
+    },
 ];
 export const data_relevant_vegan: TRecipe[] = [
     {

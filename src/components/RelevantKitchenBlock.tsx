@@ -32,8 +32,8 @@ export function RelevantKitchenBlock({ heading, description, data }: Props) {
                 borderColor='border.light'
                 templateColumns={{
                     base: '1fr',
-                    lg: 'repeat(3, 1fr)',
-                    xl: 'repeat(2, 1fr)',
+                    sm: 'repeat(3, 1fr)',
+                    lg: 'repeat(2, 1fr)',
                 }}
             >
                 <Heading
@@ -50,8 +50,8 @@ export function RelevantKitchenBlock({ heading, description, data }: Props) {
 
                 <Text
                     gridColumn={{
-                        lg: '2/4',
-                        xl: '2/3',
+                        sm: '2/4',
+                        lg: '2/3',
                     }}
                     fontWeight='500'
                     color='text.secondary'
@@ -72,7 +72,7 @@ export function RelevantKitchenBlock({ heading, description, data }: Props) {
                 }}
                 templateColumns={{
                     base: '1fr',
-                    md: 'repeat(3, 1fr)',
+                    sm: 'repeat(3, 1fr)',
                     xl: 'repeat(2, 1fr)',
                 }}
             >
@@ -84,10 +84,10 @@ export function RelevantKitchenBlock({ heading, description, data }: Props) {
                     }}
                     templateColumns={{
                         base: '1fr',
-                        md: 'repeat(2, 1fr)',
+                        sm: 'repeat(2, 1fr)',
                     }}
                     gridColumn={{
-                        md: '1/3',
+                        sm: '1/3',
                         xl: '1/2',
                     }}
                 >
@@ -111,6 +111,7 @@ export function RelevantKitchenBlock({ heading, description, data }: Props) {
                         md: 1.5,
                         lg: 3,
                     }}
+                    minW={0}
                 >
                     {data.slice(-3).map((recipe) => (
                         <UiCardMini

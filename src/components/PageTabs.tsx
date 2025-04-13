@@ -1,4 +1,5 @@
 import {
+    Flex,
     SimpleGrid,
     Tab,
     TabList,
@@ -12,10 +13,12 @@ import { useLocation, useNavigate } from 'react-router';
 
 import { categories, data_vegan } from '~/constants';
 
+import { UiButton } from './ui/UiButton';
 import { UiCard } from './ui/UiCard';
 
 export function PageTabs() {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const [isLargerThanLG] = useMediaQuery('(min-width: 1441px)');
     const [tabIndex, setTabIndex] = useState(0);
     const navigate = useNavigate();
     const location = useLocation();
@@ -38,7 +41,7 @@ export function PageTabs() {
     return (
         <Tabs
             variant='line'
-            align={isLargerThanMD ? 'center' : 'start'}
+            align={isLargerThanLG ? 'center' : 'start'}
             defaultIndex={defaultIndex}
             index={tabIndex}
             onChange={handleTabChange}
@@ -74,6 +77,8 @@ export function PageTabs() {
                                 columns={{
                                     base: 1,
                                     sm: 2,
+                                    md: 1,
+                                    lg: 2,
                                 }}
                             >
                                 {data_vegan.map((recipe) => (
@@ -96,6 +101,9 @@ export function PageTabs() {
                         </TabPanel>
                     ))}
             </TabPanels>
+            <Flex justifyContent='center' mt='16px' mb='40px'>
+                <UiButton size='md' text='Загрузить еще' variant='primary' />
+            </Flex>
         </Tabs>
     );
 }

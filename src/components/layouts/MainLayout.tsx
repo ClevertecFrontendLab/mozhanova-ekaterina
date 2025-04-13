@@ -38,8 +38,8 @@ export function MainLayout() {
                     pt='24px'
                     position='fixed'
                     top='80px'
-                    left='0'
                     bottom='0'
+                    left='0'
                     bg='background.base'
                     zIndex={100}
                 >

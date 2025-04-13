@@ -20,6 +20,7 @@ export function Navigation() {
                     {categories.map((item) => (
                         <NavigationItem
                             key={item.id}
+                            currentCategory={item.id}
                             title={item.label}
                             iconSrc={item.iconSrc}
                             subCategories={item.subCategories}

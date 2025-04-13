@@ -1,9 +1,7 @@
-import { Flex } from '@chakra-ui/react';
 import { Outlet } from 'react-router';
 
 import { PageToolbar } from '~/components/PageToolbar';
 import { RelevantKitchenBlock } from '~/components/RelevantKitchenBlock';
-import { UiButton } from '~/components/ui/UiButton';
 import { data_relevant_desert } from '~/constants';
 
 export function VeganCuisine() {
@@ -14,9 +12,6 @@ export function VeganCuisine() {
                 description='Интересны не только убеждённым вегетарианцам, но и тем, кто хочет  попробовать вегетарианскую диету и готовить вкусные  вегетарианские блюда.'
             />
             <Outlet />
-            <Flex justifyContent='center' mt='16px' mb='40px'>
-                <UiButton size='md' text='Загрузить еще' variant='primary' />
-            </Flex>
             <RelevantKitchenBlock
                 data={data_relevant_desert}
                 heading='Десерты, выпечка'

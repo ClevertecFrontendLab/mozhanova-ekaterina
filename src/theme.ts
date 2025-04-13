@@ -1,6 +1,25 @@
 import { extendTheme } from '@chakra-ui/react';
 
 const theme = extendTheme({
+    styles: {
+        global: {
+            '::-webkit-scrollbar': {
+                width: '8px',
+                height: '8px',
+            },
+            '::-webkit-scrollbar-track': {
+                background: 'rgba(0, 0, 0, 0.04);',
+                borderRadius: '8px',
+            },
+            '::-webkit-scrollbar-thumb': {
+                background: 'rgba(0, 0, 0, 0.16)',
+                borderRadius: '8px',
+                '&:hover': {
+                    background: 'teal.500',
+                },
+            },
+        },
+    },
     colors: {
         // Основные цвета бренда
         primary: {
@@ -138,7 +157,7 @@ const theme = extendTheme({
         sm: '361px',
         md: '769px',
         lg: '1441px',
-        xl: '1921px',
+        xl: '1920px',
     },
 });
 

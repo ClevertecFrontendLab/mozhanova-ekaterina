@@ -28,13 +28,16 @@ export function UiCardMini({ iconSrc, title }: Props) {
             }}
         >
             <Image src={iconSrc} alt='category icon' />
+
             <Heading
                 fontSize={{
                     base: 'md',
                     md: 'xl',
                 }}
                 fontWeight='500'
-                noOfLines={1}
+                textOverflow='ellipsis'
+                whiteSpace='nowrap'
+                overflowX='hidden'
                 flexGrow={1}
             >
                 {title}
