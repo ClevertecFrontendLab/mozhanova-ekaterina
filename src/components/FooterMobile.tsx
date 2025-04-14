@@ -41,9 +41,7 @@ export function FooterMobile() {
             </Link>
             <Link to='/'>
                 <UiIconButton
-                    icon={
-                        <Image src='/src/assets/Avatar.png' w='40px' h='40px' borderRadius='50%' />
-                    }
+                    icon={<Image src='/src/assets/ava.png' w='40px' h='40px' borderRadius='50%' />}
                     text='Мой профиль'
                 />
             </Link>

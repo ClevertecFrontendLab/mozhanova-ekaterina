@@ -60,8 +60,9 @@ export function UiCardSimple({
                         {description}
                     </Text>
                 </Box>
-                <Flex w='100%' justifyContent='space-between' alignItems='center'>
+                <Flex>
                     <Flex
+                        position='relative'
                         gap='8px'
                         borderRadius='4px'
                         padding='2px 8px'
@@ -76,6 +77,15 @@ export function UiCardSimple({
                     </Flex>
                     {favorites || likes ? (
                         <Flex
+                            right={{
+                                base: '12px',
+                                lg: '24px',
+                            }}
+                            bottom={{
+                                base: '12px',
+                                lg: '20px',
+                            }}
+                            position='absolute'
                             alignItems='center'
                             fontSize='12px'
                             gap='8px'

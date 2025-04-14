@@ -7,7 +7,7 @@ export function ProfileInfo() {
                 width='48px'
                 height='48px'
                 borderRadius='50%'
-                src='/src/assets/Avatar.png'
+                src='/src/assets/ava.png'
                 alt='avatar'
             />
             <div>
