@@ -68,7 +68,7 @@ export function PageToolbar({ title, description }: Props) {
                 </Text>
             )}
             <Flex
-                gap='12px'
+                gap={3}
                 mt={{
                     base: 4,
                     md: 8,
@@ -81,8 +81,16 @@ export function PageToolbar({ title, description }: Props) {
                     variant='outline'
                     icon={<SortIcon />}
                 />
-                <Box position='relative'>
+                <Box
+                    position='relative'
+                    w={{
+                        base: '284px',
+                        sm: '404px',
+                        md: '458px',
+                    }}
+                >
                     <Input
+                        focusBorderColor='primary.300'
                         size={{
                             base: 'sm',
                             md: 'lg',
@@ -93,11 +101,6 @@ export function PageToolbar({ title, description }: Props) {
                         }}
                         placeholder='Название или ингредиент...'
                         color='primary.700'
-                        w={{
-                            base: '284px',
-                            md: '404px',
-                            lg: '458px',
-                        }}
                         borderColor='border.dark'
                         _placeholder={{ color: 'inherit' }}
                     />
@@ -132,7 +135,13 @@ export function PageToolbar({ title, description }: Props) {
                         <Switch id='allergens' />
                     </Flex>
 
-                    <Select size='md' color='text.secondary' placeholder='Выберите из списка...'>
+                    <Select
+                        focusBorderColor='primary.300'
+                        w='234px'
+                        size='md'
+                        color='text.secondary'
+                        placeholder='Выберите из списка...'
+                    >
                         <option value='option1'>Option 1</option>
                         <option value='option2'>Option 2</option>
                         <option value='option3'>Option 3</option>

@@ -153,7 +153,7 @@ export function UiCard({
                                         width={!isLargerThanMD ? '12px' : '16px'}
                                         height={!isLargerThanMD ? '12px' : '16px'}
                                     />
-                                } //???:
+                                }
                                 iconButton={!isLargerThanMD}
                             />
                             <UiButton

@@ -42,7 +42,7 @@ export function FooterMobile() {
             <Link to='/'>
                 <UiIconButton
                     icon={
-                        <Image src='/src/assets/avatar.png' w='40px' h='40px' borderRadius='50%' />
+                        <Image src='/src/assets/Avatar.png' w='40px' h='40px' borderRadius='50%' />
                     }
                     text='Мой профиль'
                 />

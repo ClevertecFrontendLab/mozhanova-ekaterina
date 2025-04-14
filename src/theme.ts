@@ -111,6 +111,11 @@ const theme = extendTheme({
                     tabpanel: {
                         p: '0',
                     },
+                    tablist: {
+                        '::-webkit-scrollbar': {
+                            display: 'none',
+                        },
+                    },
                 },
             },
         },
