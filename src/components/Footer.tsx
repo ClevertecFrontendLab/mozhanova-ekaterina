@@ -4,7 +4,7 @@ import { LeftIcon } from './ui/icons/LeftIcon';
 
 export function Footer() {
     return (
-        <Flex gap='16px' direction='column' padding='0 24px 32px 24px'>
+        <Flex gap='16px' direction='column' padding='16px 24px 32px'>
             <Text fontWeight='500' color='neutral.100' fontSize='sm'>
                 Версия программы 03.25
             </Text>

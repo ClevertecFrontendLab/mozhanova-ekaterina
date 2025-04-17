@@ -21,7 +21,13 @@ export function NavigationItem({ category }: Props) {
     }, [currentCategory, category.id]);
 
     return (
-        <Box as='li' w='230px'>
+        <Box
+            as='li'
+            w={{
+                base: 'unset',
+                md: '230px',
+            }}
+        >
             <Flex
                 gap='12px'
                 padding='12px 8px'

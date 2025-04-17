@@ -1,4 +1,4 @@
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { Box, Flex, Image, useMediaQuery } from '@chakra-ui/react';
 import { Link } from 'react-router';
 
@@ -6,7 +6,13 @@ import { ProfileInfo } from '../ProfileInfo';
 import { ProfileNotification } from '../ProfileNotification';
 import { Breadcrumbs } from './Breadcrumbs';
 
-export function Header() {
+export function Header({
+    setMobileMenuOpen,
+    isMenuOpen,
+}: {
+    setMobileMenuOpen: (value: boolean) => void;
+    isMenuOpen: boolean;
+}) {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
     const [isLargerThanSM] = useMediaQuery('(min-width: 361px)');
 
@@ -58,7 +64,23 @@ export function Header() {
             ) : (
                 <Flex justify='flex-end' align='center' flexGrow={1}>
                     <ProfileNotification />
-                    <HamburgerIcon w={6} h={6} />
+                    <Flex w={6} h={6} alignItems='center' justifyContent='center'>
+                        {isMenuOpen ? (
+                            <CloseIcon
+                                onClick={() => {
+                                    setMobileMenuOpen(false);
+                                }}
+                            />
+                        ) : (
+                            <HamburgerIcon
+                                w={6}
+                                h={6}
+                                onClick={() => {
+                                    setMobileMenuOpen(true);
+                                }}
+                            />
+                        )}
+                    </Flex>
                 </Flex>
             )}
         </Flex>

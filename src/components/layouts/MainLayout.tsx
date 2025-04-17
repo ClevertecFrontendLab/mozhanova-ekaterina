@@ -1,14 +1,15 @@
-import { Box, Flex, useMediaQuery } from '@chakra-ui/react';
+import { Box, useMediaQuery } from '@chakra-ui/react';
+import { useState } from 'react';
 import { Outlet } from 'react-router';
 
-import { Footer } from '../Footer';
 import { FooterMobile } from '../FooterMobile';
 import { Header } from '../header/Header';
-import { Navigation } from '../nav/Navigation';
+import { Navbar } from '../Navbar';
 import { Sidebar } from '../Sidebar';
 
 export function MainLayout() {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(isLargerThanMD);
 
     return (
         <Box
@@ -29,30 +30,12 @@ export function MainLayout() {
                 md: '256px',
             }}
         >
-            <Header />
+            <Header isMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
 
-            {isLargerThanMD && (
-                <Flex
-                    direction='column'
-                    w='256px'
-                    pt='24px'
-                    position='fixed'
-                    top='80px'
-                    bottom='0'
-                    left='0'
-                    bg='background.base'
-                    zIndex={100}
-                >
-                    <Navigation />
-                    <Footer />
-                </Flex>
-            )}
+            <Navbar mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
 
             <Box
                 as='main'
-                // overflow='auto'
-                // maxH='calc(100vh - 80px)'
-
                 padding={{
                     base: '0 16px',
                     md: '0 20px',
@@ -61,7 +44,6 @@ export function MainLayout() {
             >
                 <Outlet />
             </Box>
-
             {isLargerThanMD ? (
                 <Box
                     bg='background.base'

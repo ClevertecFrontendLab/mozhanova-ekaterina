@@ -10,7 +10,18 @@ export function Breadcrumbs() {
     const pathnames = location.pathname.split('/').filter((x) => x);
 
     return (
-        <Breadcrumb flexGrow={1} spacing='8px' separator={<ChevronRightIcon color='gray.500' />}>
+        <Breadcrumb
+            p={{
+                base: '0 20px',
+                md: 'unset',
+            }}
+            flexGrow={{
+                base: 0,
+                md: 1,
+            }}
+            spacing='8px'
+            separator={<ChevronRightIcon color='gray.500' />}
+        >
             <BreadcrumbItem isCurrentPage={pathnames.length === 0}>
                 <BreadcrumbLink as={Link} to='/'>
                     Главная
@@ -34,7 +45,7 @@ export function Breadcrumbs() {
                         '';
                     return (
                         <BreadcrumbItem isCurrentPage={i === pathnames.length - 1}>
-                            <BreadcrumbLink as={Link} to={routeTo}>
+                            <BreadcrumbLink as={Link} to={routeTo} whiteSpace='nowrap'>
                                 {label}
                             </BreadcrumbLink>
                         </BreadcrumbItem>
