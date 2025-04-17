@@ -3,7 +3,7 @@ import { Outlet } from 'react-router';
 
 import { Footer } from '../Footer';
 import { FooterMobile } from '../FooterMobile';
-import { Header } from '../Header';
+import { Header } from '../header/Header';
 import { Navigation } from '../nav/Navigation';
 import { Sidebar } from '../Sidebar';
 
