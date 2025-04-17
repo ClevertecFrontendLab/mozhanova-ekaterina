@@ -1,6 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 
-import { categories } from '~/constants';
+import { categories } from '~/mocks/categories';
 
 import { NavigationItem } from './NavigationItem';
 
@@ -17,14 +17,8 @@ export function Navigation() {
         >
             <Box as='nav' pl='10px' pt='10px'>
                 <ul>
-                    {categories.map((item) => (
-                        <NavigationItem
-                            key={item.id}
-                            currentCategory={item.id}
-                            title={item.label}
-                            iconSrc={item.iconSrc}
-                            subCategories={item.subCategories}
-                        />
+                    {categories.map((category) => (
+                        <NavigationItem key={category.id} category={category} />
                     ))}
                 </ul>
             </Box>

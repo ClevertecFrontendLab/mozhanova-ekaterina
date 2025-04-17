@@ -9,9 +9,10 @@ import {
     useMediaQuery,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 
-import { categories, data_vegan } from '~/constants';
+import { categories } from '~/mocks/categories';
+import { data } from '~/mocks/recipes';
 
 import { UiButton } from './ui/UiButton';
 import { UiCard } from './ui/UiCard';
@@ -19,30 +20,34 @@ import { UiCard } from './ui/UiCard';
 export function PageTabs() {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
     const [isLargerThanLG] = useMediaQuery('(min-width: 1441px)');
+
     const [tabIndex, setTabIndex] = useState(0);
     const navigate = useNavigate();
     const location = useLocation();
+    const params = useParams();
 
-    const currentPage = location.pathname.split('/').filter((x) => x)[0];
-    const currentCategory = location.pathname.split('/').pop();
-    const subCategories = categories.find((category) => category.id === currentPage)?.subCategories;
-    const defaultIndex = subCategories?.findIndex((category) => category.id === currentCategory);
+    const currentCategory = location.pathname.split('/').filter((x) => x)[0];
+    const currentSubCategory = params.subCategoryId;
+    const subCategories = categories.find(
+        (category) => category.id === currentCategory,
+    )!.subCategories;
 
     const handleTabChange = (index: number) => {
-        const selectedCategory = subCategories![index];
-        navigate(`/vegan-cuisine/${selectedCategory.id}`);
+        const selectedCategory = subCategories[index];
+        navigate(`/${currentCategory}/${selectedCategory.id}`);
     };
 
     useEffect(() => {
-        const activeIndex = subCategories?.findIndex((category) => category.id === currentCategory);
+        const activeIndex = subCategories.findIndex(
+            (category) => category.id === currentSubCategory,
+        );
         setTabIndex(activeIndex || 0);
-    }, [currentCategory, subCategories]);
+    }, [currentSubCategory, subCategories]);
 
     return (
         <Tabs
             variant='line'
             align={isLargerThanLG ? 'center' : 'start'}
-            defaultIndex={defaultIndex}
             index={tabIndex}
             onChange={handleTabChange}
         >
@@ -57,49 +62,46 @@ export function PageTabs() {
                     base: 'hidden',
                     md: 'unset',
                 }}
+                flexWrap={{
+                    base: 'nowrap',
+                    lg: 'wrap',
+                }}
             >
-                {subCategories &&
-                    subCategories.map((category) => (
-                        <Tab whiteSpace='nowrap' key={category.id}>
-                            {category.label}
-                        </Tab>
-                    ))}
+                {subCategories.map((category) => (
+                    <Tab whiteSpace='nowrap' key={category.id}>
+                        {category.label}
+                    </Tab>
+                ))}
             </TabList>
 
             <TabPanels>
-                {subCategories &&
-                    subCategories.map((category) => (
-                        <TabPanel key={category.id}>
-                            <SimpleGrid
-                                rowGap={4}
-                                columnGap={6}
-                                pt={6}
-                                columns={{
-                                    base: 1,
-                                    sm: 2,
-                                    md: 1,
-                                    lg: 2,
-                                }}
-                            >
-                                {data_vegan.map((recipe) => (
-                                    <UiCard
-                                        key={recipe.id}
-                                        title={recipe.title}
-                                        text={recipe.description}
-                                        imgSrc={recipe.imageSrc}
-                                        category={recipe.category}
-                                        likes={recipe.likes}
-                                        favorites={recipe.favorites}
-                                        direction='row'
-                                        infoPosition='top'
-                                        controls
-                                        categoryBgColor='secondary.100'
-                                        size={isLargerThanMD ? 'lg' : 'sm'}
-                                    />
-                                ))}
-                            </SimpleGrid>
-                        </TabPanel>
-                    ))}
+                {subCategories.map((category) => (
+                    <TabPanel key={category.id}>
+                        <SimpleGrid
+                            rowGap={4}
+                            columnGap={6}
+                            pt={6}
+                            columns={{
+                                base: 1,
+                                sm: 2,
+                                md: 1,
+                                lg: 2,
+                            }}
+                        >
+                            {data.slice(0, 8).map((recipe) => (
+                                <UiCard
+                                    key={recipe.id}
+                                    data={recipe}
+                                    direction='row'
+                                    infoPosition='top'
+                                    controls
+                                    categoryBgColor='secondary.100'
+                                    size={isLargerThanMD ? 'lg' : 'sm'}
+                                />
+                            ))}
+                        </SimpleGrid>
+                    </TabPanel>
+                ))}
             </TabPanels>
             <Flex justifyContent='center' mt='16px' mb='40px'>
                 <UiButton size='md' text='Загрузить еще' variant='primary' />
