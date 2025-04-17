@@ -4,7 +4,7 @@ import { PageToolbar } from '~/components/PageToolbar';
 import { RelevantKitchenBlock } from '~/components/RelevantKitchenBlock';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCard } from '~/components/ui/UiCard';
-import { data_relevant_vegan, data_vegan } from '~/constants';
+import { data } from '~/mocks/recipes';
 
 export function TheJuiciest() {
     const [isLargerThanMD] = useMediaQuery('(min-width: 768px)');
@@ -20,15 +20,10 @@ export function TheJuiciest() {
                     sm: 2,
                 }}
             >
-                {data_vegan.map((recipe) => (
+                {data.map((recipe) => (
                     <UiCard
                         key={recipe.id}
-                        title={recipe.title}
-                        text={recipe.description}
-                        imgSrc={recipe.imageSrc}
-                        category={recipe.category}
-                        likes={recipe.likes}
-                        favorites={recipe.favorites}
+                        data={recipe}
                         direction='row'
                         infoPosition='top'
                         controls

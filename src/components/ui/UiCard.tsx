@@ -11,21 +11,15 @@ import {
     useMediaQuery,
 } from '@chakra-ui/react';
 
+import { TRecipe } from '~/types';
+
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { UiButton } from './UiButton';
 import { UiCardInfo } from './UiCardInfo';
 
 type Props = {
-    title: string;
-    text?: string;
-    category: {
-        title: string;
-        iconSrc: string;
-    };
-    likes: number;
-    favorites: number;
+    data: TRecipe;
     size?: 'sm' | 'md' | 'lg';
-    imgSrc?: string;
     recommendation?: string;
     direction?: 'row' | 'column';
     controls?: boolean;
@@ -34,13 +28,8 @@ type Props = {
 };
 
 export function UiCard({
-    title,
-    text,
-    imgSrc,
-    category,
+    data: { title, description, image, category, likes, bookmarks },
     recommendation,
-    likes,
-    favorites,
     size = 'lg',
     direction = 'column',
     controls = false,
@@ -62,15 +51,13 @@ export function UiCard({
             size={isLargerThanMD ? size : 'sm'}
             h={direction === 'row' ? 'auto' : '100%'}
         >
-            {imgSrc ? (
-                <Image
-                    objectFit='cover'
-                    maxW={{ base: '158px', md: '100%' }}
-                    maxH={{ base: '128px', md: '100%' }}
-                    src={imgSrc}
-                    alt='card image'
-                />
-            ) : null}
+            <Image
+                objectFit='cover'
+                maxW={{ base: '158px', md: '100%' }}
+                maxH={{ base: '128px', md: '100%' }}
+                src={image}
+                alt='card image'
+            />
 
             {recommendation && (
                 <Flex
@@ -101,7 +88,7 @@ export function UiCard({
                                 categoryBgColor={categoryBgColor}
                                 category={category}
                                 likes={likes}
-                                favorites={favorites}
+                                bookmarks={bookmarks}
                             />
                         </Box>
                     )}
@@ -128,7 +115,7 @@ export function UiCard({
                             {title}
                         </Heading>
                         <Text fontSize='sm' noOfLines={3}>
-                            {isLargerThanMD ? text : null}
+                            {isLargerThanMD ? description : null}
                         </Text>
                     </Flex>
                 </CardBody>
@@ -139,7 +126,7 @@ export function UiCard({
                             categoryBgColor={categoryBgColor}
                             category={category}
                             likes={likes}
-                            favorites={favorites}
+                            bookmarks={bookmarks}
                         />
                     )}
                     {controls ? (

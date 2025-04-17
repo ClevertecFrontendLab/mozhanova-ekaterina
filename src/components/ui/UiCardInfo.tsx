@@ -4,16 +4,13 @@ import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { EmojiHeartEyesIcon } from './icons/EmojiHeartEyesIcon';
 
 type Props = {
-    category: {
-        title: string;
-        iconSrc: string;
-    };
+    category: string[];
     likes: number;
-    favorites: number;
+    bookmarks: number;
     categoryBgColor: 'secondary.100' | 'primary.100';
 };
 
-export function UiCardInfo({ category, likes, favorites, categoryBgColor }: Props) {
+export function UiCardInfo({ category, likes, bookmarks, categoryBgColor }: Props) {
     return (
         <Flex w='100%' justifyContent='space-between' alignItems='center'>
             <Flex
@@ -30,12 +27,16 @@ export function UiCardInfo({ category, likes, favorites, categoryBgColor }: Prop
                 top='8px'
                 left='8px'
             >
-                <Image w='16px' h='16px' src={category.iconSrc} alt='icon' />
-                <Text fontSize='sm' whiteSpace='nowrap'>
-                    {category.title}
-                </Text>
+                {category.map((item) => (
+                    <>
+                        <Image w='16px' h='16px' src='' alt='icon' />
+                        <Text fontSize='sm' whiteSpace='nowrap'>
+                            {item}
+                        </Text>
+                    </>
+                ))}
             </Flex>
-            {favorites || likes ? (
+            {bookmarks || likes ? (
                 <Flex
                     alignItems='center'
                     fontSize='12px'
@@ -43,10 +44,10 @@ export function UiCardInfo({ category, likes, favorites, categoryBgColor }: Prop
                     color='primary.400'
                     fontWeight='600'
                 >
-                    {favorites ? (
+                    {bookmarks ? (
                         <Flex p='4px' gap='6px'>
                             <BookmarkHeartIcon />
-                            {favorites}
+                            {bookmarks}
                         </Flex>
                     ) : null}
                     {likes ? (
