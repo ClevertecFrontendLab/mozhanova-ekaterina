@@ -11,11 +11,10 @@ import {
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
 
+import { UiButton } from '~/components/ui/UiButton';
+import { UiCard } from '~/components/ui/UiCard';
 import { categories } from '~/mocks/categories';
 import { data } from '~/mocks/recipes';
-
-import { UiButton } from './ui/UiButton';
-import { UiCard } from './ui/UiCard';
 
 export function PageTabs() {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');

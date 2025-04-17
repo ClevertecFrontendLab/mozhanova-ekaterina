@@ -1,8 +1,22 @@
-import { Outlet } from 'react-router';
+import { useEffect } from 'react';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router';
 
-import { PageToolbar } from '~/components/PageToolbar';
+import { PageToolbar } from '~/components/shared/PageToolbar';
+import { categories } from '~/mocks/categories';
 
 export function DishesByType() {
+    const location = useLocation();
+    const params = useParams();
+    const navigate = useNavigate();
+    const currentCategory = location.pathname.split('/').filter((x) => x)[0];
+    const subCategories = categories.find(
+        (category) => category.id === currentCategory,
+    )!.subCategories;
+    useEffect(() => {
+        if (!params.subCategoryId) {
+            navigate(`/${currentCategory}/${subCategories[0].id}`);
+        }
+    }, [params.subCategoryId, currentCategory, subCategories, navigate]);
     return (
         <div>
             <PageToolbar

@@ -2,7 +2,7 @@ import { Box, useMediaQuery } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Outlet } from 'react-router';
 
-import { FooterMobile } from '../FooterMobile';
+import { FooterMobile } from '../footer/FooterMobile';
 import { Header } from '../header/Header';
 import { Navbar } from '../Navbar';
 import { Sidebar } from '../Sidebar';

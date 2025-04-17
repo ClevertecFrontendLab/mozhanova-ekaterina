@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router';
 
 import { MainLayout } from '~/components/layouts/MainLayout';
-import { PageTabs } from '~/components/PageTabs';
+import { PageTabs } from '~/components/shared/PageTabs';
 import { categories } from '~/mocks/categories';
 import { DishesByType } from '~/pages/DishesByType';
 import { Home } from '~/pages/HomePage';

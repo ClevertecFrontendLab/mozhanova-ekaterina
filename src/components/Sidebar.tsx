@@ -1,7 +1,7 @@
 import { EditIcon } from '@chakra-ui/icons';
 import { Flex } from '@chakra-ui/react';
 
-import { ProfileNotification } from './ProfileNotification';
+import { ProfileNotification } from './shared/ProfileNotification';
 import { UiIconButton } from './ui/UiIconButton';
 
 export function Sidebar() {

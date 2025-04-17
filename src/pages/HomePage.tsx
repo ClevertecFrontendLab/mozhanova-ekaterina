@@ -1,11 +1,9 @@
 import { Box, Flex } from '@chakra-ui/react';
 
-import { BlogsSection } from '~/components/BlogsSection';
-import { PageToolbar } from '~/components/PageToolbar';
-import { RelevantKitchenBlock } from '~/components/RelevantKitchenBlock';
-import { Slider } from '~/components/Slider';
-import { TheJuiciestSection } from '~/components/TheJuiciestSection';
-import { data_juiciest, data_relevant_vegan, data_slider } from '~/constants';
+import { BlogsSection } from '~/components/shared/blogs/BlogsSection';
+import { PageToolbar } from '~/components/shared/PageToolbar';
+import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
+import { TheJuiciestSection } from '~/components/shared/TheJuiciestSection';
 
 export function Home() {
     return (

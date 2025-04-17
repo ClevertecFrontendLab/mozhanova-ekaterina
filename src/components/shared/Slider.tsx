@@ -2,8 +2,8 @@ import { Box, Flex, Heading, useMediaQuery } from '@chakra-ui/react';
 
 import { TRecipe } from '~/types';
 
-import { UiCard } from './ui/UiCard';
-import { UiSliderButton } from './ui/UiSliderButton';
+import { UiCard } from '../ui/UiCard';
+import { UiSliderButton } from '../ui/UiSliderButton';
 
 type Props = {
     data: TRecipe[];

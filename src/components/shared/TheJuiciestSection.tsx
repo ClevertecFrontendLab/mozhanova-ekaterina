@@ -4,8 +4,8 @@ import { Link } from 'react-router';
 
 import { data } from '~/mocks/recipes';
 
-import { UiButton } from './ui/UiButton';
-import { UiCard } from './ui/UiCard';
+import { UiButton } from '../ui/UiButton';
+import { UiCard } from '../ui/UiCard';
 
 export function TheJuiciestSection() {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
@@ -50,7 +50,7 @@ export function TheJuiciestSection() {
                 }}
                 spacing={6}
             >
-                {data.map((recipe) => (
+                {data.slice(0, 4).map((recipe) => (
                     <UiCard
                         key={recipe.id}
                         data={recipe}

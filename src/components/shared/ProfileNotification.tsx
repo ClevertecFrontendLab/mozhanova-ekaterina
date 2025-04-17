@@ -1,8 +1,8 @@
 import { Flex } from '@chakra-ui/react';
 
-import { BookmarkHeartIcon } from './ui/icons/BookmarkHeartIcon';
-import { EmojiHeartEyesIcon } from './ui/icons/EmojiHeartEyesIcon';
-import { PeopleIcon } from './ui/icons/PeopleIcon';
+import { BookmarkHeartIcon } from '../ui/icons/BookmarkHeartIcon';
+import { EmojiHeartEyesIcon } from '../ui/icons/EmojiHeartEyesIcon';
+import { PeopleIcon } from '../ui/icons/PeopleIcon';
 
 export function ProfileNotification() {
     return (

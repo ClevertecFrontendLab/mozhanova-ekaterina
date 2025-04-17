@@ -2,8 +2,8 @@ import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { Box, Flex, Image, useMediaQuery } from '@chakra-ui/react';
 import { Link } from 'react-router';
 
-import { ProfileInfo } from '../ProfileInfo';
-import { ProfileNotification } from '../ProfileNotification';
+import { ProfileInfo } from '../shared/ProfileInfo';
+import { ProfileNotification } from '../shared/ProfileNotification';
 import { Breadcrumbs } from './Breadcrumbs';
 
 export function Header({

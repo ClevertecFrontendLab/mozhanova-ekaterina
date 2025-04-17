@@ -1,7 +1,6 @@
 import { Flex, SimpleGrid, useMediaQuery } from '@chakra-ui/react';
 
-import { PageToolbar } from '~/components/PageToolbar';
-import { RelevantKitchenBlock } from '~/components/RelevantKitchenBlock';
+import { PageToolbar } from '~/components/shared/PageToolbar';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCard } from '~/components/ui/UiCard';
 import { data } from '~/mocks/recipes';

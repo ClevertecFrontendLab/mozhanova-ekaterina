@@ -1,17 +1,16 @@
 import { Box, Flex, Grid, Heading, Text } from '@chakra-ui/react';
 
-import { TRecipe } from '~/types';
+import { data } from '~/mocks/recipes';
 
-import { UiCardMini } from './ui/UiCardMini';
-import { UiCardSimple } from './ui/UiCardSimple';
+import { UiCardMini } from '../ui/UiCardMini';
+import { UiCardSimple } from '../ui/UiCardSimple';
 
 type Props = {
     heading: string;
     description: string;
-    data: TRecipe[];
 };
 
-export function RelevantKitchenBlock({ heading, description, data }: Props) {
+export function RelevantKitchenBlock({ heading, description }: Props) {
     return (
         <Box pb={4}>
             <Grid
@@ -99,7 +98,7 @@ export function RelevantKitchenBlock({ heading, description, data }: Props) {
                             description={recipe.description}
                             category={recipe.category}
                             likes={recipe.likes}
-                            favorites={recipe.favorites}
+                            bookmarks={recipe.bookmarks}
                         />
                     ))}
                 </Grid>
@@ -114,11 +113,7 @@ export function RelevantKitchenBlock({ heading, description, data }: Props) {
                     minW={0}
                 >
                     {data.slice(-3).map((recipe) => (
-                        <UiCardMini
-                            key={recipe.id}
-                            title={recipe.title}
-                            iconSrc={recipe.category.iconSrc}
-                        />
+                        <UiCardMini key={recipe.id} title={recipe.title} />
                     ))}
                 </Flex>
             </Grid>

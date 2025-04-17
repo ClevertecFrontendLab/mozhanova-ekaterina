@@ -1,6 +1,6 @@
 import { Flex, Text } from '@chakra-ui/react';
 
-import { LeftIcon } from './ui/icons/LeftIcon';
+import { LeftIcon } from '../ui/icons/LeftIcon';
 
 export function Footer() {
     return (

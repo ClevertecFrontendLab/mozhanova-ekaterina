@@ -2,7 +2,7 @@ import { Box, Flex, useMediaQuery } from '@chakra-ui/react';
 
 import { useBodyScrollLock } from '~/hooks/useBodyScrollLock';
 
-import { Footer } from './Footer';
+import { Footer } from './footer/Footer';
 import { Navigation } from './nav/Navigation';
 
 export function Navbar({
