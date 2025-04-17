@@ -1,13 +1,10 @@
-import { Box, Flex, useMediaQuery } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import { categories } from '~/mocks/categories';
 
-import { Breadcrumbs } from '../header/Breadcrumbs';
 import { NavigationItem } from './NavigationItem';
 
 export function Navigation() {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
-
     return (
         <Flex
             direction='column'
@@ -27,17 +24,7 @@ export function Navigation() {
                 },
             }}
         >
-            {!isLargerThanMD && <Breadcrumbs />}
-
-            <Box
-                as='nav'
-                pl='10px'
-                pt='10px'
-                mt={{
-                    base: 5,
-                    md: 'unset',
-                }}
-            >
+            <Box as='nav' pl='10px' pt='10px'>
                 <ul>
                     {categories.map((category) => (
                         <NavigationItem key={category.id} category={category} />

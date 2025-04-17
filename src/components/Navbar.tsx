@@ -3,6 +3,7 @@ import { Box, Flex, useMediaQuery } from '@chakra-ui/react';
 import { useBodyScrollLock } from '~/hooks/useBodyScrollLock';
 
 import { Footer } from './footer/Footer';
+import { Breadcrumbs } from './header/Breadcrumbs';
 import { Navigation } from './nav/Navigation';
 
 export function Navbar({
@@ -60,6 +61,14 @@ export function Navbar({
                 bg='background.base'
                 zIndex={100}
             >
+                <Box
+                    mb={{
+                        base: 5,
+                        md: 'unset',
+                    }}
+                >
+                    {!isLargerThanMD && <Breadcrumbs />}
+                </Box>
                 <Navigation />
                 <Footer />
             </Flex>
