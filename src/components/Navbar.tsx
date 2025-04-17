@@ -12,8 +12,8 @@ export function Navbar({
     mobileMenuOpen: boolean;
     setMobileMenuOpen: (value: boolean) => void;
 }) {
-    useBodyScrollLock(mobileMenuOpen);
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
+    useBodyScrollLock(mobileMenuOpen && !isLargerThanMD);
 
     return (
         <>
