@@ -15,7 +15,7 @@ const theme = extendTheme({
                 background: 'rgba(0, 0, 0, 0.16)',
                 borderRadius: '8px',
                 '&:hover': {
-                    background: 'teal.500',
+                    background: 'primary.300',
                 },
             },
         },
