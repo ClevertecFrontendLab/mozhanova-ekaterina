@@ -29,11 +29,13 @@ export function Header({
                 md: '80px',
             }}
             pr={{
-                base: 5,
+                base: 4,
+                sm: 5,
                 md: 14,
             }}
             pl={{
-                base: 5,
+                base: 4,
+                sm: 5,
                 md: 4,
             }}
             bg='background.header'
