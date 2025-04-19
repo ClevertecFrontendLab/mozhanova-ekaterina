@@ -138,7 +138,6 @@ export function PageToolbar({ title, description }: Props) {
                     <Select
                         focusBorderColor='primary.300'
                         w='234px'
-                        size='md'
                         color='text.secondary'
                         placeholder='Выберите из списка...'
                     >

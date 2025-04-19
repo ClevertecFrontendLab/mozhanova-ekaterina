@@ -113,7 +113,11 @@ export function RelevantKitchenBlock({ heading, description }: Props) {
                     minW={0}
                 >
                     {data.slice(-3).map((recipe) => (
-                        <UiCardMini key={recipe.id} title={recipe.title} />
+                        <UiCardMini
+                            key={recipe.id}
+                            category={recipe.category}
+                            title={recipe.title}
+                        />
                     ))}
                 </Flex>
             </Grid>

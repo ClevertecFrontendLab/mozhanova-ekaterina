@@ -1,12 +1,15 @@
 import { Box, Flex, Heading, Image } from '@chakra-ui/react';
 
+import { defineCategoryImage } from '~/helper';
+
 import { UiButton } from './UiButton';
 
 type Props = {
     title: string;
+    category: string[];
 };
 
-export function UiCardMini({ title }: Props) {
+export function UiCardMini({ title, category }: Props) {
     return (
         <Flex
             transition='box-shadow 0.3s ease-in-out'
@@ -26,7 +29,7 @@ export function UiCardMini({ title }: Props) {
                 md: 3,
             }}
         >
-            <Image src='' alt='category icon' />
+            <Image src={defineCategoryImage(category[0])} alt='category icon' />
 
             <Heading
                 fontSize={{

@@ -21,6 +21,7 @@ export function FooterMobile() {
             templateColumns='repeat(4, 1fr)'
             pt={2.5}
             pb={2.5}
+            zIndex={100}
         >
             <Link to='/'>
                 <UiIconButton

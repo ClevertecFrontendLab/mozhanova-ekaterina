@@ -1,5 +1,7 @@
 import { Box, Card, CardBody, Flex, Heading, Image, Text } from '@chakra-ui/react';
 
+import { defineCategoryImage, defineCategoryLabel } from '~/helper';
+
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { EmojiHeartEyesIcon } from './icons/EmojiHeartEyesIcon';
 
@@ -70,14 +72,18 @@ export function UiCardSimple({
                         bg={categoryBgColor}
                         alignItems='center'
                     >
-                        {category.map((item) => (
-                            <>
-                                <Image w='16px' h='16px' src='' alt='icon' />
-                                <Text fontSize='sm' whiteSpace='nowrap'>
-                                    {item}
-                                </Text>
-                            </>
-                        ))}
+                        {/* {category.map((item) => ( */}
+                        <>
+                            <Image
+                                w='16px'
+                                h='16px'
+                                src={defineCategoryImage(category[0])}
+                                alt='icon'
+                            />
+                            <Text fontSize='sm' whiteSpace='nowrap'>
+                                {defineCategoryLabel(category[0])}
+                            </Text>
+                        </>
                     </Flex>
                     {bookmarks || likes ? (
                         <Flex
@@ -95,6 +101,8 @@ export function UiCardSimple({
                             gap='8px'
                             color='primary.400'
                             fontWeight='600'
+                            zIndex={50}
+                            bgColor='neutral.0'
                         >
                             {bookmarks ? (
                                 <Flex p='4px' gap='6px'>
