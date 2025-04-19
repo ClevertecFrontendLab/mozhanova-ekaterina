@@ -2,9 +2,8 @@ export type TRecipe = {
     id: string;
     title: string;
     description: string;
-    imageSrc?: string;
     category: string[];
-    subcategory?: string[];
+    subcategory: string[];
     image: string;
     bookmarks: number;
     likes: number;
