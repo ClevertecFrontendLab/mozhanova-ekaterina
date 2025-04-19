@@ -4,7 +4,7 @@ export const categories: TCategory[] = [
     {
         id: 'salads',
         label: 'Салаты',
-        iconSrc: '/src/assets/icons/menu_icon_1.png',
+        iconSrc: '/src/assets/icons/menu_icon_0.png',
         subCategories: [
             { id: 'meat-salads', label: 'Мясные салаты' },
             { id: 'fish-salads', label: 'Рыбные салаты' },
@@ -15,7 +15,7 @@ export const categories: TCategory[] = [
     {
         id: 'snacks',
         label: 'Закуски',
-        iconSrc: '/src/assets/icons/menu_icon_2.png',
+        iconSrc: '/src/assets/icons/menu_icon_1.png',
         subCategories: [
             { id: 'meat-snacks', label: 'Мясные закуски' },
             { id: 'fish-snacks', label: 'Рыбные закуски' },
@@ -28,7 +28,7 @@ export const categories: TCategory[] = [
     {
         id: 'first-dish',
         label: 'Первые блюда',
-        iconSrc: '/src/assets/icons/menu_icon_3.png',
+        iconSrc: '/src/assets/icons/menu_icon_2.png',
         subCategories: [
             { id: 'meat-dish-first', label: 'Мясные супы' },
             { id: 'vegetables-first', label: 'Овощные супы' },
@@ -40,7 +40,7 @@ export const categories: TCategory[] = [
     {
         id: 'second-dish',
         label: 'Вторые блюда',
-        iconSrc: '/src/assets/icons/menu_icon_4.png',
+        iconSrc: '/src/assets/icons/menu_icon_3.png',
         subCategories: [
             { id: 'meat-dish', label: 'Мясные' },
             { id: 'fish-dish', label: 'Рыбные' },
@@ -59,7 +59,7 @@ export const categories: TCategory[] = [
     {
         id: 'desserts-bakery',
         label: 'Десерты, выпечка',
-        iconSrc: '/src/assets/icons/menu_icon_5.png',
+        iconSrc: '/src/assets/icons/menu_icon_4.png',
         subCategories: [
             { id: 'pancakes-and-fritters', label: 'Блины и оладьи' },
             { id: 'pies-and-donuts', label: 'Пироги и пончики' },
@@ -79,7 +79,7 @@ export const categories: TCategory[] = [
     {
         id: 'grill',
         label: 'Блюда на гриле',
-        iconSrc: '/src/assets/icons/menu_icon_6.png',
+        iconSrc: '/src/assets/icons/menu_icon_5.png',
         subCategories: [
             { id: 'meat-dish', label: 'Мясные' },
             { id: 'fish-dish', label: 'Рыбные' },
@@ -92,12 +92,12 @@ export const categories: TCategory[] = [
     {
         id: 'vegan',
         label: 'Веганская кухня',
-        iconSrc: '/src/assets/icons/menu_icon_7.png',
+        iconSrc: '/src/assets/icons/menu_icon_6.png',
         subCategories: [
             { id: 'snacks', label: 'Закуски' },
             { id: 'first-dish', label: 'Первые блюда' },
             { id: 'second-dish', label: 'Вторые блюда' },
-            { id: 'side-dish', label: 'Гарниры' },
+            { id: 'side-dishes', label: 'Гарниры' },
             { id: 'desserts', label: 'Десерты' },
             { id: 'bakery', label: 'Выпечка' },
             { id: 'raw-food', label: 'Сыроедческие блюда' },
@@ -107,79 +107,41 @@ export const categories: TCategory[] = [
     {
         id: 'kids',
         label: 'Детские блюда',
-        iconSrc: '/src/assets/icons/menu_icon_8.png',
-        subCategories: [
-            { id: 'snacks', label: 'Закуски' },
-            { id: 'first-dish', label: 'Первые блюда' },
-            { id: 'second-dish', label: 'Вторые блюда' },
-            { id: 'side-dish', label: 'Гарниры' },
-            { id: 'desserts', label: 'Десерты' },
-            { id: 'bakery', label: 'Выпечка' },
-            { id: 'raw-food', label: 'Сыроедческие блюда' },
-            { id: 'drinks', label: 'Напитки' },
-        ],
+        iconSrc: '/src/assets/icons/menu_icon_7.png',
+        subCategories: [{ id: 'snacks', label: 'Закуски' }],
     },
     {
         id: 'dietary',
         label: 'Лечебное питание',
-        iconSrc: '/src/assets/icons/menu_icon_9.png',
-        subCategories: [
-            { id: 'snacks', label: 'Закуски' },
-            { id: 'first-dish', label: 'Первые блюда' },
-            { id: 'second-dish', label: 'Вторые блюда' },
-            { id: 'side-dish', label: 'Гарниры' },
-            { id: 'desserts', label: 'Десерты' },
-            { id: 'bakery', label: 'Выпечка' },
-            { id: 'raw-food', label: 'Сыроедческие блюда' },
-            { id: 'drinks', label: 'Напитки' },
-        ],
+        iconSrc: '/src/assets/icons/menu_icon_8.png',
+        subCategories: [{ id: 'snacks', label: 'Закуски' }],
     },
     {
         id: 'national',
         label: 'Национальные',
-        iconSrc: '/src/assets/icons/menu_icon_10.png',
-        subCategories: [
-            { id: 'snacks', label: 'Закуски' },
-            { id: 'first-dish', label: 'Первые блюда' },
-            { id: 'second-dish', label: 'Вторые блюда' },
-            { id: 'side-dish', label: 'Гарниры' },
-            { id: 'desserts', label: 'Десерты' },
-            { id: 'bakery', label: 'Выпечка' },
-            { id: 'raw-food', label: 'Сыроедческие блюда' },
-            { id: 'drinks', label: 'Напитки' },
-        ],
+        iconSrc: '/src/assets/icons/menu_icon_9.png',
+        subCategories: [{ id: 'snacks', label: 'Закуски' }],
     },
     {
         id: 'sauces',
         label: 'Соусы',
-        iconSrc: '/src/assets/icons/menu_icon_11.png',
+        iconSrc: '/src/assets/icons/menu_icon_10.png',
         subCategories: [
-            { id: 'snacks', label: 'Закуски' },
-            { id: 'first-dish', label: 'Первые блюда' },
-            { id: 'second-dish', label: 'Вторые блюда' },
-            { id: 'side-dish', label: 'Гарниры' },
-            { id: 'desserts', label: 'Десерты' },
-            { id: 'bakery', label: 'Выпечка' },
-            { id: 'raw-food', label: 'Сыроедческие блюда' },
-            { id: 'drinks', label: 'Напитки' },
+            { id: 'meat-souces', label: 'Соусы мясные' },
+            { id: 'cheese-souces', label: 'Соусы сырные' },
+            { id: 'marinades', label: 'Маринады' },
         ],
     },
     {
         id: 'drinks',
         label: 'Напитки',
-        iconSrc: '/src/assets/icons/menu_icon_12.png',
-        subCategories: [
-            { id: 'snacks', label: 'Закуски' },
-            { id: 'first-dish', label: 'Первые блюда' },
-        ],
+        iconSrc: '/src/assets/icons/menu_icon_11.png',
+        subCategories: [{ id: 'snacks', label: 'Закуски' }],
     },
     {
         id: 'preparation',
         label: 'Заготовки',
-        iconSrc: '/src/assets/icons/menu_icon_13.png',
-        subCategories: [
-            { id: 'snacks', label: 'Закуски' },
-            { id: 'first-dish', label: 'Первые блюда' },
-        ],
+        iconSrc: '/src/assets/icons/menu_icon_12.png',
+        subCategories: [{ id: 'snacks', label: 'Закуски' }],
     },
 ];
