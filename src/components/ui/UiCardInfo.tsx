@@ -1,25 +1,30 @@
-import { Flex, Image, Text } from '@chakra-ui/react';
+import { Flex, useMediaQuery } from '@chakra-ui/react';
 
-import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
-import { EmojiHeartEyesIcon } from './icons/EmojiHeartEyesIcon';
+import { UiCardBadge } from './UiCardBadge';
+import { UiCardStats } from './UiCardStats';
 
 type Props = {
     category: string[];
     likes: number;
     bookmarks: number;
     categoryBgColor: 'secondary.100' | 'primary.100';
+    alignItems?: string;
 };
 
-export function UiCardInfo({ category, likes, bookmarks, categoryBgColor }: Props) {
+export function UiCardInfo({
+    category,
+    likes,
+    bookmarks,
+    categoryBgColor,
+    alignItems = 'flex-end',
+}: Props) {
+    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+
     return (
-        <Flex w='100%' justifyContent='space-between' alignItems='center'>
+        <Flex w='100%' justifyContent='space-between' alignItems={alignItems}>
             <Flex
-                gap='8px'
-                borderRadius='4px'
-                padding='2px 8px'
-                fontSize='14px'
-                bg={categoryBgColor}
-                alignItems='center'
+                direction='column'
+                gap={3}
                 position={{
                     base: 'absolute',
                     md: 'static',
@@ -27,37 +32,15 @@ export function UiCardInfo({ category, likes, bookmarks, categoryBgColor }: Prop
                 top='8px'
                 left='8px'
             >
-                {category.map((item) => (
-                    <>
-                        <Image w='16px' h='16px' src='' alt='icon' />
-                        <Text fontSize='sm' whiteSpace='nowrap'>
-                            {item}
-                        </Text>
-                    </>
-                ))}
+                {isLargerThanMD ? (
+                    category.map((item) => (
+                        <UiCardBadge color={categoryBgColor} key={item} category={item} />
+                    ))
+                ) : (
+                    <UiCardBadge color={categoryBgColor} category={category[0]} />
+                )}
             </Flex>
-            {bookmarks || likes ? (
-                <Flex
-                    alignItems='center'
-                    fontSize='12px'
-                    gap='8px'
-                    color='primary.400'
-                    fontWeight='600'
-                >
-                    {bookmarks ? (
-                        <Flex p='4px' gap='6px'>
-                            <BookmarkHeartIcon />
-                            {bookmarks}
-                        </Flex>
-                    ) : null}
-                    {likes ? (
-                        <Flex p='4px' gap='6px'>
-                            <EmojiHeartEyesIcon />
-                            {likes}
-                        </Flex>
-                    ) : null}
-                </Flex>
-            ) : null}
+            {bookmarks || likes ? <UiCardStats bookmarks={bookmarks} likes={likes} /> : null}
         </Flex>
     );
 }

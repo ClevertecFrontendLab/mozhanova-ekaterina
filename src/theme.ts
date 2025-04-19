@@ -156,6 +156,42 @@ const theme = extendTheme({
                 },
             },
         },
+        Table: {
+            variants: {
+                custom: {
+                    thead: {
+                        tr: {
+                            height: '56px',
+                        },
+                        th: {
+                            pt: 0,
+                            pb: 0,
+                            color: 'primary.400',
+                            '&:nth-of-type(2)': {
+                                textAlign: 'right',
+                            },
+                        },
+                    },
+                    tbody: {
+                        color: 'neutral.350',
+                        fontSize: '14px',
+                        tr: {
+                            '&:nth-of-type(odd)': {
+                                bg: 'neutral.20',
+                            },
+                            textTransform: 'lowercase',
+                        },
+                        td: {
+                            '&:nth-of-type(2)': {
+                                textAlign: 'right',
+                            },
+                            pt: 0,
+                            pb: 0,
+                        },
+                    },
+                },
+            },
+        },
     },
     breakpoints: {
         base: '0px',

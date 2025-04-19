@@ -1,15 +1,21 @@
-import { Button, IconButton } from '@chakra-ui/react';
+import { Button, IconButton, ResponsiveValue } from '@chakra-ui/react';
 
 const variants = {
     primary: {
         bg: 'primary.300',
-        borderColor: 'transparent',
+        borderColor: 'primary.300',
         borderWidth: '1px',
         color: 'neutral.400',
     },
     primaryGhost: {
         bg: 'transparent',
         borderColor: 'transparent',
+        borderWidth: '1px',
+        color: 'neutral.400',
+    },
+    primaryOutline: {
+        bg: 'transparent',
+        borderColor: 'neutral.200',
         borderWidth: '1px',
         color: 'neutral.400',
     },
@@ -39,7 +45,7 @@ type Props = {
     leftIcon?: React.ReactElement;
     icon?: React.ReactElement;
     variant?: keyof typeof variants;
-    size?: 'xs' | 'sm' | 'md' | 'lg';
+    size?: ResponsiveValue<string>;
     iconButton?: boolean;
     fontSize?: string;
     dataTest?: string | null;
