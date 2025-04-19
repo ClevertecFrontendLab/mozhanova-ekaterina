@@ -3,6 +3,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router';
 
 import { categories } from '~/mocks/categories';
+import { data } from '~/mocks/recipes';
 
 export function Breadcrumbs() {
     const location = useLocation();
@@ -42,6 +43,7 @@ export function Breadcrumbs() {
                             ?.subCategories?.find((subCategory) => subCategory.id === path)
                             ?.label ||
                         (path === 'the-juiciest' && 'Самое сочное') ||
+                        data.find((recipe) => recipe.id === path)?.title ||
                         '';
                     return (
                         <BreadcrumbItem isCurrentPage={i === pathnames.length - 1}>

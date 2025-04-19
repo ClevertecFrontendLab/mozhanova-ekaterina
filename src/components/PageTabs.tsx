@@ -9,7 +9,7 @@ import {
     useMediaQuery,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCard } from '~/components/ui/UiCard';
@@ -22,11 +22,10 @@ export function PageTabs() {
 
     const [tabIndex, setTabIndex] = useState(0);
     const navigate = useNavigate();
-    const location = useLocation();
     const params = useParams();
 
-    const currentCategory = location.pathname.split('/').filter((x) => x)[0];
-    const currentSubCategory = params.subCategoryId;
+    const currentCategory = params.category;
+    const currentSubCategory = params.subCategory;
     const subCategories = categories.find(
         (category) => category.id === currentCategory,
     )!.subCategories;

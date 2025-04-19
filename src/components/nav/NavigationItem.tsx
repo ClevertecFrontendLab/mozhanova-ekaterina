@@ -1,6 +1,6 @@
 import { Box, ChevronDownIcon, ChevronUpIcon, Flex, Image } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router';
+import { Link, useParams } from 'react-router';
 
 import { TCategory } from '~/types';
 
@@ -10,11 +10,10 @@ type Props = {
 
 export function NavigationItem({ category }: Props) {
     const [isOpen, setIsOpen] = useState(false);
-    const location = useLocation();
     const params = useParams();
 
-    const currentCategory = location.pathname.split('/').filter((x) => x)[0];
-    const currentSubCategory = params.subCategoryId;
+    const currentCategory = params.category;
+    const currentSubCategory = params.subCategory;
 
     useEffect(() => {
         currentCategory === category.id ? setIsOpen(true) : setIsOpen(false);
@@ -40,7 +39,7 @@ export function NavigationItem({ category }: Props) {
                 <Flex gap='12px' whiteSpace='nowrap' _hover={{ fontWeight: '700' }}>
                     <Image width='24px' height='24px' src={category.iconSrc} alt='menu_item_icon' />
                     <Link to={`/${category.id}/${category.subCategories[0].id}`}>
-                        {category.label}{' '}
+                        {category.label}
                     </Link>
                 </Flex>
                 {isOpen ? (
