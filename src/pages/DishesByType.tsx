@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router';
 
@@ -18,16 +19,24 @@ export function DishesByType() {
         }
     }, [params.subCategory, currentCategory, subCategories, navigate]);
     return (
-        <div>
+        <>
             <PageToolbar
                 title='Веганская кухня'
                 description='Интересны не только убеждённым вегетарианцам, но и тем, кто хочет  попробовать вегетарианскую диету и готовить вкусные  вегетарианские блюда.'
             />
-            <Outlet />
-            <RelevantKitchenBlock
-                heading='Десерты, выпечка'
-                description='Без них невозможно представить себе ни современную, ни традиционную  кулинарию. Пироги и печенья, блины, пончики, вареники и, конечно, хлеб - рецепты изделий из теста многообразны и невероятно популярны.'
-            />
-        </div>
+            <Box
+                padding={{
+                    base: '0 16px',
+                    md: '0 20px',
+                    lg: '0 24px',
+                }}
+            >
+                <Outlet />
+                <RelevantKitchenBlock
+                    heading='Десерты, выпечка'
+                    description='Без них невозможно представить себе ни современную, ни традиционную  кулинарию. Пироги и печенья, блины, пончики, вареники и, конечно, хлеб - рецепты изделий из теста многообразны и невероятно популярны.'
+                />
+            </Box>
+        </>
     );
 }

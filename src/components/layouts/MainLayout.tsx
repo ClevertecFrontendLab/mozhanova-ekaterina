@@ -34,16 +34,9 @@ export function MainLayout() {
 
             <Navbar mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
 
-            <Box
-                as='main'
-                padding={{
-                    base: '0 16px',
-                    md: '0 20px',
-                    lg: '0 24px',
-                }}
-            >
+            <main>
                 <Outlet />
-            </Box>
+            </main>
             {isLargerThanMD ? (
                 <Box
                     bg='background.base'

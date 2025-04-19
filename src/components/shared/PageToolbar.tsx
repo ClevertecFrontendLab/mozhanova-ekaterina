@@ -11,6 +11,7 @@ import {
     Text,
     useMediaQuery,
 } from '@chakra-ui/react';
+import { useState } from 'react';
 
 import { SortIcon } from '~/components/ui/icons/SortIcon';
 
@@ -21,30 +22,39 @@ type Props = {
 
 export function PageToolbar({ title, description }: Props) {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const [searchOnFocus, setSearchOnFocus] = useState(false);
 
     return (
         <Flex
-            mt={{
-                base: 4,
-                lg: 0,
-            }}
+            shadow={
+                searchOnFocus
+                    ? '0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 20px 25px -5px rgba(0, 0, 0, 0.1)'
+                    : 'unset'
+            }
+            transition='shadow 0.3s ease-in-out'
+            borderRadius={{ base: '0 0 8px 8px', lg: '24px' }}
             mb={{
-                base: 8,
+                base: 4,
                 lg: 6,
             }}
             direction='column'
             alignItems='center'
-            w='100%'
+            maxW={{
+                sm: '480px',
+                md: '578px',
+                lg: '898px',
+            }}
+            mx='auto'
             p={{
-                base: 0,
-                lg: '32px 100px',
+                base: 4,
+                md: '32px 0',
             }}
         >
             <Heading
                 as='h1'
                 fontSize={{
                     base: '24px',
-                    lg: '48px',
+                    md: '48px',
                 }}
                 fontWeight='700'
             >
@@ -90,6 +100,8 @@ export function PageToolbar({ title, description }: Props) {
                     }}
                 >
                     <Input
+                        onFocus={() => setSearchOnFocus(true)}
+                        onBlur={() => setSearchOnFocus(false)}
                         focusBorderColor='primary.300'
                         size={{
                             base: 'sm',
