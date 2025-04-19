@@ -3,7 +3,6 @@ import { Box, Flex, useMediaQuery } from '@chakra-ui/react';
 import { useBodyScrollLock } from '~/hooks/useBodyScrollLock';
 
 import { Footer } from './footer/Footer';
-import { Breadcrumbs } from './header/Breadcrumbs';
 import { Navigation } from './nav/Navigation';
 
 export function Navbar({
@@ -21,14 +20,17 @@ export function Navbar({
             {!isLargerThanMD && (
                 <Box
                     display={mobileMenuOpen ? 'block' : 'none'}
-                    zIndex={50}
-                    position='absolute'
+                    zIndex={99}
+                    position='fixed'
                     top={0}
                     bottom={0}
                     left={0}
                     w='100vw'
                     h='100vh'
-                    bg='neutral.200'
+                    bg='rgba(0, 0, 0, 0.16)'
+                    css={{
+                        backdropFilter: 'blur(4px)',
+                    }}
                     onClick={() => setMobileMenuOpen(false)}
                 />
             )}
@@ -39,8 +41,18 @@ export function Navbar({
                     base: 'absolute',
                     md: 'fixed',
                 }}
-                left={0}
-                bottom={0}
+                right={{
+                    base: 0,
+                    md: 'unset',
+                }}
+                left={{
+                    base: 'unset',
+                    md: 0,
+                }}
+                bottom={{
+                    base: 'unset',
+                    md: 0,
+                }}
                 top={{
                     base: '64px',
                     md: '80px',
@@ -51,26 +63,23 @@ export function Navbar({
                     md: '256px',
                 }}
                 h={{
-                    base: 'calc(100vh - 64px)',
+                    base: 'fit-content',
                     md: 'auto',
                 }}
+                maxH={{ base: 'calc(100vh - 64px - 84px)', md: 'unset' }}
                 pt={{
                     base: 4,
                     md: 6,
                 }}
                 bg='background.base'
                 zIndex={100}
+                borderRadius={{
+                    base: '0 0 12px 12px',
+                    md: 0,
+                }}
             >
-                <Box
-                    mb={{
-                        base: 5,
-                        md: 'unset',
-                    }}
-                >
-                    {!isLargerThanMD && <Breadcrumbs />}
-                </Box>
                 <Navigation />
-                <Footer />
+                {isLargerThanMD && <Footer />}
             </Flex>
         </>
     );

@@ -1,15 +1,22 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, useMediaQuery } from '@chakra-ui/react';
 
 import { categories } from '~/mocks/categories';
 
+import { Footer } from '../footer/Footer';
+import { Breadcrumbs } from '../header/Breadcrumbs';
 import { NavigationItem } from './NavigationItem';
 
 export function Navigation() {
+    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
+
     return (
         <Flex
             direction='column'
             grow='1'
-            boxShadow='themeNeutral'
+            boxShadow={{
+                base: 'unset',
+                md: 'themeNeutral',
+            }}
             borderRadius='0 0 12px 12px'
             overflowY='auto'
             overflowX='hidden'
@@ -23,7 +30,9 @@ export function Navigation() {
                     },
                 },
             }}
+            gap={3}
         >
+            {!isLargerThanMD && <Breadcrumbs />}
             <Box as='nav' pl='10px' pt='10px'>
                 <ul>
                     {categories.map((category) => (
@@ -31,6 +40,7 @@ export function Navigation() {
                     ))}
                 </ul>
             </Box>
+            {!isLargerThanMD && <Footer />}
         </Flex>
     );
 }

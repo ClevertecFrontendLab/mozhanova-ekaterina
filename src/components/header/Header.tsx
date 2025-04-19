@@ -38,7 +38,7 @@ export function Header({
                 sm: 5,
                 md: 4,
             }}
-            bg='background.header'
+            bg={isMenuOpen && !isLargerThanMD ? 'background.base' : 'background.header'}
             data-test-id='header'
         >
             <Box width='256px'>
@@ -65,7 +65,7 @@ export function Header({
                 </>
             ) : (
                 <Flex justify='flex-end' align='center' flexGrow={1}>
-                    <ProfileNotification />
+                    {!isMenuOpen && <ProfileNotification />}
                     <Flex w={6} h={6} alignItems='center' justifyContent='center'>
                         {isMenuOpen ? (
                             <CloseIcon
