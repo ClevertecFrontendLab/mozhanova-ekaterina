@@ -7,11 +7,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { data } from '~/mocks/recipes';
 import { TRecipe } from '~/types';
 
-import { UiCard } from '../../ui/UiCard';
 import { NavigationButtons } from './NavigationButtons';
+import { SliderCard } from './SliderCard';
 
 export function Slider() {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const [isLargerThanLG] = useMediaQuery('(min-width: 1441px)');
 
     const sortedData: TRecipe[] = [...data].sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
@@ -46,23 +46,20 @@ export function Slider() {
                         nextEl: '.custom-next',
                         prevEl: '.custom-prev',
                     }}
-                    spaceBetween={24}
+                    spaceBetween={isLargerThanLG ? 24 : 12}
                     slidesPerView={4}
                     breakpoints={{
-                        360: { slidesPerView: 2 },
-                        768: { slidesPerView: 4 },
-                        1440: { slidesPerView: 3 },
+                        0: { slidesPerView: 2.1 },
+                        768: { slidesPerView: 4.5 },
+                        1440: { slidesPerView: 3.1 },
                         1920: { slidesPerView: 4 },
                     }}
                     loop
+                    freeMode
                 >
                     {sortedData.slice(0, 10).map((recipe) => (
                         <SwiperSlide>
-                            <UiCard
-                                key={recipe.id}
-                                data={recipe}
-                                size={isLargerThanMD ? 'lg' : 'sm'}
-                            />
+                            <SliderCard key={recipe.id} data={recipe} />
                         </SwiperSlide>
                     ))}
                 </Swiper>
