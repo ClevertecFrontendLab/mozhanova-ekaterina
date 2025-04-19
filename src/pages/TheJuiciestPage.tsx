@@ -19,13 +19,10 @@ export function TheJuiciest() {
                     sm: 2,
                 }}
             >
-                {data.map((recipe) => (
+                {data.slice(0, 8).map((recipe) => (
                     <UiCard
                         key={recipe.id}
                         data={recipe}
-                        direction='row'
-                        infoPosition='top'
-                        controls
                         categoryBgColor='secondary.100'
                         size={isLargerThanMD ? 'lg' : 'sm'}
                     />
@@ -34,11 +31,11 @@ export function TheJuiciest() {
             <Flex justifyContent='center' mt='16px' mb='40px'>
                 <UiButton size='md' text='Загрузить еще' variant='primary' />
             </Flex>
-            <RelevantKitchenBlock
+            {/* <RelevantKitchenBlock
                 data={data_relevant_vegan}
                 heading='Веганская кухня'
                 description='Интересны не только убеждённым вегетарианцам, но и тем, кто хочет  попробовать вегетарианскую диету и готовить вкусные  вегетарианские блюда.'
-            />
+            /> */}
         </div>
     );
 }

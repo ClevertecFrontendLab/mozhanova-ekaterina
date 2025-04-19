@@ -29,6 +29,11 @@ export function PageTabs() {
     const subCategories = categories.find(
         (category) => category.id === currentCategory,
     )!.subCategories;
+    const filteredData = data.filter(
+        (recipe) =>
+            recipe.category.some((category) => category === currentCategory) &&
+            recipe.subcategory.some((category) => category === currentSubCategory),
+    );
 
     const handleTabChange = (index: number) => {
         const selectedCategory = subCategories[index];
@@ -86,13 +91,10 @@ export function PageTabs() {
                                 lg: 2,
                             }}
                         >
-                            {data.slice(0, 8).map((recipe) => (
+                            {filteredData.slice(0, 8).map((recipe) => (
                                 <UiCard
                                     key={recipe.id}
                                     data={recipe}
-                                    direction='row'
-                                    infoPosition='top'
-                                    controls
                                     categoryBgColor='secondary.100'
                                     size={isLargerThanMD ? 'lg' : 'sm'}
                                 />
