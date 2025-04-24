@@ -5,7 +5,8 @@ import { PageTabs } from '~/components/PageTabs';
 import { DishesByType } from '~/pages/DishesByType';
 import { Home } from '~/pages/HomePage';
 import { RecipePage } from '~/pages/ResipePage';
-import { TheJuiciest } from '~/pages/TheJuiciestPage';
+import SearchPage from '~/pages/SearchPage';
+import { TheJuiciestPage } from '~/pages/TheJuiciestPage';
 
 export const Router = () => (
     <Routes>
@@ -18,7 +19,9 @@ export const Router = () => (
 
             <Route path='/:category/:subCategory/:id' element={<RecipePage />} errorElement='' />
 
-            <Route path='/the-juiciest' element={<TheJuiciest />} />
+            <Route path='/the-juiciest' element={<TheJuiciestPage />} />
+
+            <Route path='/search' element={<SearchPage />} />
         </Route>
     </Routes>
 );
