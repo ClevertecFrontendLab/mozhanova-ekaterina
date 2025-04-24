@@ -10,8 +10,11 @@ import {
     Text,
     useMediaQuery,
 } from '@chakra-ui/react';
+import { JSX } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router';
 
+import { RecipesState } from '~/store/recipe-slice';
 import { TRecipe } from '~/types';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
@@ -30,6 +33,9 @@ export function UiCard({
     recommendation,
     size = 'lg',
 }: Props) {
+    const searchQuery = useSelector(
+        (state: { recipe: RecipesState }) => state.recipe.filters.searchQuery,
+    );
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
     const params = useParams();
 
@@ -117,7 +123,7 @@ export function UiCard({
                                     md: 1,
                                 }}
                             >
-                                {title}
+                                {searchQuery ? highlightMatches(title, searchQuery) : title}
                             </Heading>
                             <Text fontSize='sm' noOfLines={3}>
                                 {isLargerThanMD ? description : null}
@@ -145,4 +151,42 @@ export function UiCard({
             </Stack>
         </Card>
     );
+}
+
+function highlightMatches(str: string, substr: string) {
+    const lowerStr = str.toLowerCase();
+    const lowerSub = substr.toLowerCase();
+    const result: JSX.Element[] = [];
+
+    let lastIndex = 0;
+    let index = lowerStr.indexOf(lowerSub);
+
+    while (index !== -1) {
+        if (index > lastIndex) {
+            result.push(
+                <Text as='span' key={`text-${lastIndex}`}>
+                    {str.slice(lastIndex, index)}
+                </Text>,
+            );
+        }
+
+        result.push(
+            <Text as='span' key={`match-${index}`} color='text.primary'>
+                {str.slice(index, index + substr.length)}
+            </Text>,
+        );
+
+        lastIndex = index + substr.length;
+        index = lowerStr.indexOf(lowerSub, lastIndex);
+    }
+
+    if (lastIndex < str.length) {
+        result.push(
+            <Text as='span' key={`text-${lastIndex}`}>
+                {str.slice(lastIndex)}
+            </Text>,
+        );
+    }
+
+    return <>{result}</>;
 }
