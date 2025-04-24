@@ -51,7 +51,7 @@ export const categories: TCategory[] = [
             { id: 'steamed-dishes', label: 'На пару' },
             { id: 'dumplings', label: 'Пельмени, вареники' },
             { id: 'flour-side-dish', label: 'Мучные гарниры ' },
-            { id: 'vegetables', label: 'Овощные гарниры ' },
+            { id: 'vegetables-garnish', label: 'Овощные гарниры ' },
             { id: 'pizza', label: 'Пицца' },
             { id: 'sushi', label: 'Суши' },
         ],

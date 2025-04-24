@@ -58,7 +58,7 @@ export function Slider() {
                     freeMode
                 >
                     {sortedData.slice(0, 10).map((recipe) => (
-                        <SwiperSlide>
+                        <SwiperSlide key={recipe.id}>
                             <SliderCard key={recipe.id} data={recipe} />
                         </SwiperSlide>
                     ))}

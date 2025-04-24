@@ -60,7 +60,7 @@ export function NavigationItem({ category }: Props) {
             <Box role='group' as='ul' paddingLeft='33px' display={isOpen ? 'block' : 'none'}>
                 {category.subCategories.map((item) => (
                     <Flex
-                        key={item.id}
+                        key={`${category.id}-${item.id}`}
                         as='li'
                         padding='6px 0'
                         cursor='pointer'
