@@ -1,0 +1,307 @@
+import {
+    Box,
+    Checkbox,
+    CheckboxGroup,
+    Drawer,
+    DrawerBody,
+    DrawerCloseButton,
+    DrawerContent,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerOverlay,
+    Flex,
+    FormLabel,
+    Heading,
+    Switch,
+    Tag,
+    TagCloseButton,
+    TagLabel,
+    VStack,
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+
+import { UiButton } from '~/components/ui/UiButton';
+import { defineCategoryId, defineCategoryLabel } from '~/helper';
+import { allergens } from '~/mocks/allergens';
+import { authors } from '~/mocks/authors';
+import { categories } from '~/mocks/categories';
+import { garnish } from '~/mocks/garnish';
+import { meat } from '~/mocks/meat';
+import {
+    cleanFilters,
+    RecipesState,
+    setAllergensFilter,
+    setAuthorsFilter,
+    setCategoryFilter,
+    setGarnishFilter,
+    setMeatFilter,
+} from '~/store/recipe-slice';
+
+import { SelectOptions } from './SelectOptions';
+
+export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+    const dispatch = useDispatch();
+    const filters = useSelector((state: { recipe: RecipesState }) => state.recipe.filters);
+
+    const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
+    const [selectedAllergens, setSelectedAllergens] = useState<string[]>([]);
+    const [selectedAuthors, setSelectedAuthors] = useState<string[]>([]);
+    const [selectedMeat, setSelectedMeat] = useState<string[]>([]);
+    const [selectedGarnish, setSelectedGarnish] = useState<string[]>([]);
+
+    const [allergenInput, setAllergenInput] = useState('');
+    const [switchAllergens, setSwitchAllergens] = useState(
+        filters.allergens.length > 0 ? true : false,
+    );
+    const navigate = useNavigate();
+
+    const handleClean = () => {
+        dispatch(cleanFilters());
+        setSelectedCategory([]);
+        setSelectedAllergens([]);
+        setSelectedAuthors([]);
+        setSelectedMeat([]);
+        setSelectedGarnish([]);
+    };
+
+    const handleApply = () => {
+        dispatch(cleanFilters());
+        dispatch(setAllergensFilter(selectedAllergens));
+        dispatch(setCategoryFilter(selectedCategory.map((item) => defineCategoryId(item))));
+        dispatch(setAuthorsFilter(selectedAuthors));
+        dispatch(setMeatFilter(selectedMeat));
+        dispatch(setGarnishFilter(selectedGarnish));
+        onClose();
+        navigate('/search');
+    };
+
+    const isDisabled = () =>
+        selectedCategory.length === 0 &&
+        selectedAllergens.length === 0 &&
+        selectedAuthors.length === 0 &&
+        selectedMeat.length === 0 &&
+        selectedGarnish.length === 0;
+
+    useEffect(() => {
+        setSelectedAllergens(filters.allergens);
+        if (filters.allergens.length > 0) {
+            setSwitchAllergens(true);
+        } else {
+            setSwitchAllergens(false);
+        }
+    }, [filters.allergens]);
+
+    useEffect(() => {
+        setSelectedCategory(filters.category.map((item) => defineCategoryLabel(item)));
+    }, [filters.category]);
+
+    useEffect(() => {
+        setSelectedAuthors(filters.authors);
+    }, [filters.authors]);
+
+    useEffect(() => {
+        setSelectedMeat(filters.meat);
+    }, [filters.meat]);
+
+    useEffect(() => {
+        setSelectedGarnish(filters.garnish);
+    }, [filters.garnish]);
+
+    return (
+        <Drawer
+            size={{
+                base: 'xs',
+                md: 'custom',
+            }}
+            variant='filter'
+            isOpen={isOpen}
+            placement='right'
+            onClose={onClose}
+        >
+            <DrawerOverlay />
+            <DrawerContent>
+                <DrawerCloseButton />
+                <DrawerHeader>Фильтр</DrawerHeader>
+                <DrawerBody>
+                    <VStack spacing={{ base: 4, md: 6 }} align='start'>
+                        <SelectOptions
+                            selected={selectedCategory}
+                            setSelected={setSelectedCategory}
+                            placeholder='Категория'
+                            options={categories.map((item) => item.label)}
+                            readOnly
+                        />
+                        <SelectOptions
+                            selected={selectedAuthors}
+                            setSelected={setSelectedAuthors}
+                            placeholder='Поиск по автору'
+                            options={authors}
+                            readOnly
+                        >
+                            <Checkbox
+                                p='6px 16px'
+                                _odd={{ bg: 'neutral.20' }}
+                                variant='select'
+                                key='Только новые авторы'
+                                value='Только новые авторы'
+                                bg='neutral.0 !important'
+                            >
+                                Только новые авторы
+                            </Checkbox>
+                        </SelectOptions>
+                        <VStack align='start' spacing={3}>
+                            <Heading fontSize='md' fontWeight={500}>
+                                Тип мяса:
+                            </Heading>
+                            <CheckboxGroup
+                                value={selectedMeat}
+                                onChange={(value: string[]) => setSelectedMeat(value)}
+                            >
+                                {meat.map((item) => (
+                                    <Checkbox variant='select' value={item} key={item}>
+                                        {item}
+                                    </Checkbox>
+                                ))}
+                            </CheckboxGroup>
+                        </VStack>
+                        <VStack align='start' spacing={3}>
+                            <Heading fontSize='md' fontWeight={500}>
+                                Тип гарнира:
+                            </Heading>
+                            <CheckboxGroup
+                                value={selectedGarnish}
+                                onChange={(value: string[]) => setSelectedGarnish(value)}
+                            >
+                                {garnish.map((item) => (
+                                    <Checkbox variant='select' value={item} key={item}>
+                                        {item}
+                                    </Checkbox>
+                                ))}
+                            </CheckboxGroup>
+                        </VStack>
+                        <Box w='100%'>
+                            <Flex gap={3} p='6px 8px' mb={2}>
+                                <FormLabel
+                                    fontWeight='500'
+                                    m='0'
+                                    htmlFor='allergens'
+                                    whiteSpace='nowrap'
+                                >
+                                    Исключить мои аллергены
+                                </FormLabel>
+                                <Switch
+                                    isChecked={switchAllergens}
+                                    onChange={() => {
+                                        setSwitchAllergens(!switchAllergens);
+                                        setSelectedAllergens([]);
+                                    }}
+                                    id='allergens'
+                                />
+                            </Flex>
+                            <Box>
+                                <SelectOptions
+                                    isDisabled={!switchAllergens}
+                                    selected={selectedAllergens}
+                                    setSelected={setSelectedAllergens}
+                                    placeholder='Выберите из списка аллергенов...'
+                                    options={allergens.map((allergen) => Object.keys(allergen)[0])}
+                                    inputValue={allergenInput}
+                                    setInputValue={setAllergenInput}
+                                />
+                            </Box>
+                        </Box>
+                    </VStack>
+                </DrawerBody>
+
+                <DrawerFooter>
+                    <VStack align='start' spacing={8}>
+                        <Flex gap={4} wrap='wrap'>
+                            {selectedCategory.length > 0 &&
+                                selectedCategory.map((item) => (
+                                    <Tag size='md' key={item} variant='outline' bg='primary.50'>
+                                        <TagLabel>{item}</TagLabel>
+                                        <TagCloseButton
+                                            onClick={() =>
+                                                setSelectedCategory([
+                                                    ...selectedCategory.filter((i) => i !== item),
+                                                ])
+                                            }
+                                        />
+                                    </Tag>
+                                ))}
+                            {selectedAuthors.length > 0 &&
+                                selectedAuthors.map((item) => (
+                                    <Tag size='md' key={item} variant='outline' bg='primary.50'>
+                                        <TagLabel>{item}</TagLabel>
+                                        <TagCloseButton
+                                            onClick={() =>
+                                                setSelectedAuthors([
+                                                    ...selectedAuthors.filter((i) => i !== item),
+                                                ])
+                                            }
+                                        />
+                                    </Tag>
+                                ))}
+                            {selectedMeat.length > 0 &&
+                                selectedMeat.map((item) => (
+                                    <Tag size='md' key={item} variant='outline' bg='primary.50'>
+                                        <TagLabel>{item}</TagLabel>
+                                        <TagCloseButton
+                                            onClick={() =>
+                                                setSelectedMeat([
+                                                    ...selectedMeat.filter((i) => i !== item),
+                                                ])
+                                            }
+                                        />
+                                    </Tag>
+                                ))}
+                            {selectedGarnish.length > 0 &&
+                                selectedGarnish.map((item) => (
+                                    <Tag size='md' key={item} variant='outline' bg='primary.50'>
+                                        <TagLabel>{item}</TagLabel>
+                                        <TagCloseButton
+                                            onClick={() =>
+                                                setSelectedGarnish([
+                                                    ...selectedGarnish.filter((i) => i !== item),
+                                                ])
+                                            }
+                                        />
+                                    </Tag>
+                                ))}
+                            {selectedAllergens.length > 0 &&
+                                selectedAllergens.map((item) => (
+                                    <Tag size='md' key={item} variant='outline' bg='primary.50'>
+                                        <TagLabel>{item}</TagLabel>
+                                        <TagCloseButton
+                                            onClick={() =>
+                                                setSelectedAllergens([
+                                                    ...selectedAllergens.filter((i) => i !== item),
+                                                ])
+                                            }
+                                        />
+                                    </Tag>
+                                ))}
+                        </Flex>
+                        <Flex justifyContent='flex-end' gap={2}>
+                            <UiButton
+                                size={{ base: 'sm', md: 'lg' }}
+                                variant='outline'
+                                onClick={handleClean}
+                                text='Очистить фильтр'
+                            />
+                            <UiButton
+                                size={{ base: 'sm', md: 'lg' }}
+                                variant='solid'
+                                onClick={handleApply}
+                                text='Найти рецепт'
+                                isDisabled={isDisabled()}
+                            />
+                        </Flex>
+                    </VStack>
+                </DrawerFooter>
+            </DrawerContent>
+        </Drawer>
+    );
+}
