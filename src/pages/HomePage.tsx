@@ -1,7 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 
 import { BlogsSection } from '~/components/shared/blogs/BlogsSection';
-import { PageToolbar } from '~/components/shared/PageToolbar';
+import { PageToolbar } from '~/components/shared/PageToolbar/PageToolbar';
 import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
 import { Slider } from '~/components/shared/slider/Slider';
 import { TheJuiciestSection } from '~/components/shared/TheJuiciestSection';
