@@ -1,12 +1,20 @@
 import { Box, Flex } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { BlogsSection } from '~/components/shared/blogs/BlogsSection';
 import { PageToolbar } from '~/components/shared/PageToolbar/PageToolbar';
 import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
 import { Slider } from '~/components/shared/slider/Slider';
 import { TheJuiciestSection } from '~/components/shared/TheJuiciestSection';
+import { cleanFilters } from '~/store/recipe-slice';
 
 export function Home() {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(cleanFilters());
+    }, []);
+
     return (
         <Box>
             <PageToolbar title='Приятного аппетита!' />
