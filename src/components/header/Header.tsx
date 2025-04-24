@@ -74,13 +74,16 @@ export function Header({
                                 }}
                             />
                         ) : (
-                            <HamburgerIcon
-                                w={6}
-                                h={6}
-                                onClick={() => {
-                                    setMobileMenuOpen(true);
-                                }}
-                            />
+                            <>
+                                {/* <UiLogoutButton /> */}
+                                <HamburgerIcon
+                                    w={6}
+                                    h={6}
+                                    onClick={() => {
+                                        setMobileMenuOpen(true);
+                                    }}
+                                />
+                            </>
                         )}
                     </Flex>
                 </Flex>
