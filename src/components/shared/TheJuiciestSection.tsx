@@ -54,11 +54,8 @@ export function TheJuiciestSection() {
                     <UiCard
                         key={recipe.id}
                         data={recipe}
-                        direction='row'
-                        infoPosition='top'
-                        controls
-                        categoryBgColor='secondary.100'
                         size='lg'
+                        recommendation='Елена Высоцкая'
                     />
                 ))}
             </SimpleGrid>
