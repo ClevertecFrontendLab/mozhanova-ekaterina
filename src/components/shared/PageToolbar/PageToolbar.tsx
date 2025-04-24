@@ -1,9 +1,9 @@
 import { Flex, Heading, Text, useDisclosure, useMediaQuery } from '@chakra-ui/react';
 import { useState } from 'react';
 
-import { Allergens } from './Allergens';
 import { FiltersDrawer } from './FiltersDrawer';
 import { SearchForm } from './SearchForm';
+import { SelectAllergens } from './selectAllergens';
 
 type Props = {
     title: string;
@@ -71,7 +71,7 @@ export function PageToolbar({ title, description }: Props) {
 
             <SearchForm onOpen={onOpen} setSearchOnFocus={setSearchOnFocus} />
 
-            {isLargerThanMD && <Allergens />}
+            {isLargerThanMD && <SelectAllergens />}
             <FiltersDrawer isOpen={isOpen} onClose={onClose} />
         </Flex>
     );
