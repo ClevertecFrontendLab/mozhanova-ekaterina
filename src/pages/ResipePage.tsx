@@ -15,18 +15,38 @@ export function RecipePage() {
     const recipe = data.find((recipe) => recipe.id === params.id) as TRecipe;
 
     return (
-        <Box pt={14}>
+        <Box
+            padding={{
+                base: '16px 16px 32px',
+                md: '56px 20px 0',
+                lg: '56px 24px 0',
+            }}
+        >
             <Hero recipe={recipe} />
+            <Box
+                mx='auto'
+                maxW={{
+                    base: '100%',
+                    md: '578px',
+                    lg: '668px',
+                }}
+            >
+                <NutritionValue nutritionValue={recipe.nutritionValue} />
+            </Box>
             <Flex
                 direction='column'
                 gap={{
                     base: 6,
                     lg: 10,
                 }}
-                maxW='668px'
+                maxW={{
+                    base: '100%',
+                    sm: '604px',
+                    md: '578px',
+                    lg: '668px',
+                }}
                 mx='auto'
             >
-                <NutritionValue nutritionValue={recipe.nutritionValue} />
                 <IngredientsTable ingredients={recipe.ingredients} />
                 <Steps steps={recipe.steps} />
                 <AuthorInfo />
