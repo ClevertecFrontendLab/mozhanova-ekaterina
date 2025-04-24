@@ -58,7 +58,7 @@ const theme = extendTheme({
     semanticTokens: {
         colors: {
             text: {
-                primary: 'neutral.400',
+                primary: 'primary.400',
                 secondary: 'neutral.300',
                 inverted: 'neutral.0',
             },
@@ -193,6 +193,180 @@ const theme = extendTheme({
                             pt: 0,
                             pb: 0,
                         },
+                    },
+                },
+            },
+        },
+        Switch: {
+            baseStyle: {
+                track: {
+                    _checked: {
+                        bg: 'primary.300',
+                    },
+                    _focus: {
+                        boxShadow: 'none',
+                    },
+                },
+            },
+        },
+        Checkbox: {
+            variants: {
+                select: {
+                    container: {
+                        w: '100%',
+                    },
+                    control: {
+                        borderColor: 'primary.300',
+                        borderWidth: '2px',
+                        outline: 'none',
+                        _checked: {
+                            bg: 'primary.300',
+                            borderColor: 'primary.300',
+                        },
+                        _focus: {
+                            boxShadow: 'none',
+                        },
+                    },
+                    icon: {
+                        color: 'neutral.400',
+                    },
+                    label: {
+                        fontSize: '14px',
+                    },
+                },
+            },
+        },
+        Tag: {
+            variants: {
+                outline: {
+                    container: {
+                        borderColor: 'primary.300',
+                        borderWidth: '1px',
+                        shadow: 'none',
+                    },
+                    closeButton: {
+                        color: 'primary.400',
+                    },
+                    label: {
+                        color: 'primary.400',
+                    },
+                },
+                cardBadge: {
+                    container: {},
+                    closeButton: {},
+                    label: {
+                        color: 'inherit',
+                        fontSize: '14px',
+                    },
+                },
+            },
+        },
+        Menu: {
+            variants: {
+                select: {
+                    button: {},
+                    list: {
+                        p: 0,
+                        border: 'none',
+                        borderRadius: 'md',
+                        boxShadow: 'md',
+                        width: { base: '280px', md: '391px' },
+                    },
+                    item: {
+                        _hover: {
+                            bg: 'neutral.50',
+                        },
+                        _focus: {
+                            bg: 'neutral.100',
+                        },
+                    },
+                },
+            },
+        },
+        Select: {
+            variants: {
+                select: {
+                    field: {
+                        borderWidth: '1px',
+                        borderColor: 'border.light',
+                        color: 'neutral.300',
+                        _placeholder: {
+                            color: 'neutral.300',
+                            fontWeight: '400',
+                        },
+                        _focus: {
+                            boxShadow: 'none',
+                        },
+                    },
+                },
+            },
+        },
+        Input: {
+            sizes: {
+                sm: {
+                    field: {
+                        borderRadius: '4px',
+                    },
+                },
+                lg: {
+                    field: {
+                        borderRadius: '6px',
+                    },
+                },
+            },
+            variants: {
+                custom: {
+                    field: {
+                        borderWidth: '1px',
+                        borderColor: 'border.dark',
+                        color: 'primary.700',
+                        _placeholder: {
+                            color: 'primary.700',
+                            fontWeight: '400',
+                        },
+                        _focus: {
+                            boxShadow: 'none',
+                        },
+                    },
+                },
+                select: {
+                    field: {
+                        borderWidth: '1px',
+                        borderColor: 'border.light',
+                        color: 'neutral.300',
+                        _placeholder: {
+                            color: 'neutral.300',
+                            fontWeight: '400',
+                        },
+                        _focus: {
+                            boxShadow: 'none',
+                        },
+                    },
+                },
+            },
+        },
+        Drawer: {
+            sizes: {
+                custom: {
+                    dialog: { maxWidth: { base: '344px', sm: '463px' } },
+                },
+            },
+            variants: {
+                filter: {
+                    header: {
+                        fontSize: '2xl',
+                        p: { base: '16px 20px 16px 16px', md: 8 },
+                    },
+                    body: {
+                        p: { base: 4, md: '0 32px' },
+                    },
+                    closeButton: {
+                        bg: 'background.black',
+                        borderRadius: '50%',
+                        color: 'neutral.0',
+                    },
+                    footer: {
+                        p: { base: '16px 20px 16px 16px', md: 8 },
                     },
                 },
             },
