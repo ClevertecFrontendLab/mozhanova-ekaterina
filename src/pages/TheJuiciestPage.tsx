@@ -1,13 +1,23 @@
 import { Box, Flex, SimpleGrid, useMediaQuery } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { PageToolbar } from '~/components/shared/PageToolbar';
+import { PageToolbar } from '~/components/shared/PageToolbar/PageToolbar';
 import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCard } from '~/components/ui/UiCard';
-import { data } from '~/mocks/recipes';
+import { setCategoryFilter, setSubCategoryFilter } from '~/store/recipe-slice';
+import { selectFilteredRecipes } from '~/store/selectors';
 
-export function TheJuiciest() {
+export function TheJuiciestPage() {
     const [isLargerThanMD] = useMediaQuery('(min-width: 768px)');
+    const filteredRecipes = useSelector(selectFilteredRecipes);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setCategoryFilter([]));
+        dispatch(setSubCategoryFilter([]));
+    }, []);
 
     return (
         <>
@@ -27,7 +37,7 @@ export function TheJuiciest() {
                         sm: 2,
                     }}
                 >
-                    {data.slice(0, 8).map((recipe) => (
+                    {filteredRecipes.slice(0, 8).map((recipe) => (
                         <UiCard
                             key={recipe.id}
                             data={recipe}
