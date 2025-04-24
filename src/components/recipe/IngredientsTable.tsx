@@ -44,7 +44,6 @@ export function IngredientsTable({
                             >
                                 ПОРЦИЙ
                                 <NumberInput
-                                    defaultValue={portionsQuantity}
                                     value={portionsQuantity}
                                     color='neutral.400'
                                     focusBorderColor='primary.300'

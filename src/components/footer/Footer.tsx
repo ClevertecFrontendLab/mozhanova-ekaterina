@@ -1,8 +1,10 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Text, useMediaQuery } from '@chakra-ui/react';
 
-import { LeftIcon } from '../ui/icons/LeftIcon';
+import { UiLogoutButton } from '../ui/UiLogoutButton';
 
 export function Footer() {
+    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
+
     return (
         <Flex gap='16px' direction='column' padding='16px 24px 32px'>
             <Text fontWeight='500' color='neutral.100' fontSize='sm'>
@@ -11,12 +13,7 @@ export function Footer() {
             <Text fontSize='sm' noOfLines={3} color='text.secondary'>
                 Все права защищены, ученический файл, ©Клевер Технолоджи, 2025
             </Text>
-            <Flex gap='6px' alignItems='center'>
-                <LeftIcon />
-                <Text fontWeight='600' fontSize='sm'>
-                    Выйти
-                </Text>
-            </Flex>
+            {isLargerThanMD && <UiLogoutButton />}
         </Flex>
     );
 }
