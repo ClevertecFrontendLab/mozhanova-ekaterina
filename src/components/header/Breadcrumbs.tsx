@@ -43,10 +43,11 @@ export function Breadcrumbs() {
                             ?.subCategories?.find((subCategory) => subCategory.id === path)
                             ?.label ||
                         (path === 'the-juiciest' && 'Самое сочное') ||
+                        (path === 'search' && 'Поиск по рецептам') ||
                         data.find((recipe) => recipe.id === path)?.title ||
                         '';
                     return (
-                        <BreadcrumbItem isCurrentPage={i === pathnames.length - 1}>
+                        <BreadcrumbItem key={path} isCurrentPage={i === pathnames.length - 1}>
                             <BreadcrumbLink as={Link} to={routeTo} whiteSpace='nowrap'>
                                 {label}
                             </BreadcrumbLink>
