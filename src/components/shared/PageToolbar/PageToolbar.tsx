@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { Allergens } from './Allergens';
 import { Filters } from './Filters';
-import { FiltersSlideOver } from './FiltersSlideOver';
+import { FiltersDrawer } from './FiltersDrawer';
 
 type Props = {
     title: string;
@@ -72,7 +72,7 @@ export function PageToolbar({ title, description }: Props) {
             <Filters onOpen={onOpen} setSearchOnFocus={setSearchOnFocus} />
 
             {isLargerThanMD && <Allergens />}
-            <FiltersSlideOver isOpen={isOpen} onClose={onClose} />
+            <FiltersDrawer isOpen={isOpen} onClose={onClose} />
         </Flex>
     );
 }
