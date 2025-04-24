@@ -1,9 +1,8 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { memo } from 'react';
 import { useSelector } from 'react-redux';
 
 import { PageToolbar } from '~/components/shared/PageToolbar/PageToolbar';
-import { UiButton } from '~/components/ui/UiButton';
 import UiCardGrid from '~/components/ui/UiCardGrid';
 import { selectFilteredRecipes } from '~/store/selectors';
 
@@ -22,12 +21,7 @@ function SearchPage() {
             >
                 <Box mb={10}>
                     {filteredRecipes.length > 0 ? (
-                        <>
-                            <UiCardGrid data={filteredRecipes} />
-                            <Flex justifyContent='center' mt='16px' mb='40px'>
-                                <UiButton size='md' text='Загрузить еще' variant='primary' />
-                            </Flex>
-                        </>
+                        <UiCardGrid data={filteredRecipes} />
                     ) : (
                         <Box p={4}>Ничего не нашлось</Box>
                     )}
