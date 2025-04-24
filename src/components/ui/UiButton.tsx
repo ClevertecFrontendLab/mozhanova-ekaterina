@@ -21,7 +21,7 @@ const variants = {
     },
     outline: {
         bg: 'transparent',
-        borderColor: 'neutral.400',
+        borderColor: 'border.dark',
         borderWidth: '1px',
         color: 'neutral.900',
     },
@@ -49,6 +49,7 @@ type Props = {
     iconButton?: boolean;
     fontSize?: string;
     dataTest?: string | null;
+    isDisabled?: boolean;
     onClick?: () => void;
 };
 
@@ -62,6 +63,7 @@ export function UiButton({
     icon,
     fontSize,
     dataTest = null,
+    ...props
 }: Props) {
     return iconButton ? (
         <IconButton
@@ -72,6 +74,7 @@ export function UiButton({
             color={variants[variant].color}
             aria-label='button'
             icon={icon}
+            {...props}
         />
     ) : (
         <Button
@@ -84,6 +87,14 @@ export function UiButton({
             color={variants[variant].color}
             fontSize={fontSize}
             data-test-id={dataTest}
+            _hover={{
+                bg: variants[variant].bg,
+                opacity: 0.8,
+            }}
+            _active={{
+                boxShadow: 'none',
+            }}
+            {...props}
         >
             {text}
         </Button>

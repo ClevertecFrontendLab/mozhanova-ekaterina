@@ -1,4 +1,4 @@
-import { Flex, Image, Text } from '@chakra-ui/react';
+import { Image, Tag, TagLabel, TagLeftIcon } from '@chakra-ui/react';
 
 import { defineCategoryImage, defineCategoryLabel } from '~/helper';
 
@@ -8,25 +8,16 @@ type Props = {
 };
 export function UiCardBadge({ category, color: categoryBgColor }: Props) {
     return (
-        <Flex
+        <Tag
             w='fit-content'
-            gap={{
-                base: '2px',
-                lg: '8px',
-            }}
-            alignItems='center'
-            borderRadius='4px'
-            padding={{
-                base: '2px 4px',
-                lg: '2px 8px',
-            }}
-            fontSize='14px'
+            size='md'
+            variant='cardBadge'
             bg={categoryBgColor}
+            pl={{ base: 1, md: 2 }}
+            pr={{ base: 1, md: 2 }}
         >
-            <Image w='16px' h='16px' src={defineCategoryImage(category)} alt='icon' />
-            <Text fontSize='sm' whiteSpace='nowrap'>
-                {defineCategoryLabel(category)}
-            </Text>
-        </Flex>
+            <TagLeftIcon as={Image} src={defineCategoryImage(category)} alt={category} />
+            <TagLabel>{defineCategoryLabel(category)}</TagLabel>
+        </Tag>
     );
 }
