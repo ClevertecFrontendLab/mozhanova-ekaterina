@@ -111,6 +111,7 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
 
     return (
         <Drawer
+            data-test-id='filter-drawer'
             size={{
                 base: 'xs',
                 md: 'custom',
@@ -122,11 +123,12 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
         >
             <DrawerOverlay />
             <DrawerContent>
-                <DrawerCloseButton />
+                <DrawerCloseButton data-test-id='close-filter-drawer' />
                 <DrawerHeader>Фильтр</DrawerHeader>
                 <DrawerBody>
                     <VStack spacing={{ base: 4, md: 6 }} align='start'>
                         <SelectOptions
+                            data-test-id='filter-menu-button-категория'
                             selected={selectedCategory}
                             setSelected={setSelectedCategory}
                             placeholder='Категория'
@@ -175,7 +177,12 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
                                 onChange={(value: string[]) => setSelectedGarnish(value)}
                             >
                                 {garnish.map((item) => (
-                                    <Checkbox variant='select' value={item} key={item}>
+                                    <Checkbox
+                                        data-test-id={item === 'Картошка' && 'checkbox-картошка'}
+                                        variant='select'
+                                        value={item}
+                                        key={item}
+                                    >
                                         {item}
                                     </Checkbox>
                                 ))}
@@ -192,6 +199,7 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
                                     Исключить мои аллергены
                                 </FormLabel>
                                 <Switch
+                                    data-test-id='allergens-switcher-filter'
                                     isChecked={switchAllergens}
                                     onChange={() => {
                                         setSwitchAllergens(!switchAllergens);
@@ -209,6 +217,7 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
                                     options={allergens.map((allergen) => Object.keys(allergen)[0])}
                                     inputValue={allergenInput}
                                     setInputValue={setAllergenInput}
+                                    test='allergens'
                                 />
                             </Box>
                         </Box>
@@ -220,7 +229,13 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
                         <Flex gap={4} wrap='wrap'>
                             {selectedCategory.length > 0 &&
                                 selectedCategory.map((item) => (
-                                    <Tag size='md' key={item} variant='outline' bg='primary.50'>
+                                    <Tag
+                                        data-test-id='filter-tag'
+                                        size='md'
+                                        key={item}
+                                        variant='outline'
+                                        bg='primary.50'
+                                    >
                                         <TagLabel>{item}</TagLabel>
                                         <TagCloseButton
                                             onClick={() =>
@@ -233,7 +248,13 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
                                 ))}
                             {selectedAuthors.length > 0 &&
                                 selectedAuthors.map((item) => (
-                                    <Tag size='md' key={item} variant='outline' bg='primary.50'>
+                                    <Tag
+                                        data-test-id='filter-tag'
+                                        size='md'
+                                        key={item}
+                                        variant='outline'
+                                        bg='primary.50'
+                                    >
                                         <TagLabel>{item}</TagLabel>
                                         <TagCloseButton
                                             onClick={() =>
@@ -246,7 +267,13 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
                                 ))}
                             {selectedMeat.length > 0 &&
                                 selectedMeat.map((item) => (
-                                    <Tag size='md' key={item} variant='outline' bg='primary.50'>
+                                    <Tag
+                                        data-test-id='filter-tag'
+                                        size='md'
+                                        key={item}
+                                        variant='outline'
+                                        bg='primary.50'
+                                    >
                                         <TagLabel>{item}</TagLabel>
                                         <TagCloseButton
                                             onClick={() =>
@@ -259,7 +286,13 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
                                 ))}
                             {selectedGarnish.length > 0 &&
                                 selectedGarnish.map((item) => (
-                                    <Tag size='md' key={item} variant='outline' bg='primary.50'>
+                                    <Tag
+                                        data-test-id='filter-tag'
+                                        size='md'
+                                        key={item}
+                                        variant='outline'
+                                        bg='primary.50'
+                                    >
                                         <TagLabel>{item}</TagLabel>
                                         <TagCloseButton
                                             onClick={() =>
@@ -272,7 +305,13 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
                                 ))}
                             {selectedAllergens.length > 0 &&
                                 selectedAllergens.map((item) => (
-                                    <Tag size='md' key={item} variant='outline' bg='primary.50'>
+                                    <Tag
+                                        data-test-id='filter-tag'
+                                        size='md'
+                                        key={item}
+                                        variant='outline'
+                                        bg='primary.50'
+                                    >
                                         <TagLabel>{item}</TagLabel>
                                         <TagCloseButton
                                             onClick={() =>
@@ -286,12 +325,14 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
                         </Flex>
                         <Flex justifyContent='flex-end' gap={2}>
                             <UiButton
+                                data-test-id='clear-filter-button'
                                 size={{ base: 'sm', md: 'lg' }}
                                 variant='outline'
                                 onClick={handleClean}
                                 text='Очистить фильтр'
                             />
                             <UiButton
+                                data-test-id='find-recipe-button'
                                 size={{ base: 'sm', md: 'lg' }}
                                 variant='solid'
                                 onClick={handleApply}

@@ -14,6 +14,7 @@ export function NavigationButtons() {
                 h='48px'
                 bg='background.black'
                 zIndex={100}
+                data-test-id='carousel-back'
             >
                 <ArrowBackIcon w='24px' h='24px' color='neutral.0' />
             </IconButton>
@@ -27,6 +28,7 @@ export function NavigationButtons() {
                 h='48px'
                 bg='background.black'
                 zIndex={100}
+                data-test-id='carousel-forward'
             >
                 <ArrowForwardIcon w='24px' h='24px' color='neutral.0' />
             </IconButton>

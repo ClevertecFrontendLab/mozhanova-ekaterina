@@ -26,12 +26,14 @@ type Props = {
     size?: 'sm' | 'md' | 'lg';
     recommendation?: string;
     categoryBgColor?: 'secondary.100' | 'primary.100';
+    index?: number;
 };
 
 export function UiCard({
     data: { title, description, image, category, likes, bookmarks, subcategory, id },
     recommendation,
     size = 'lg',
+    index,
 }: Props) {
     const searchQuery = useSelector(
         (state: { recipe: RecipesState }) => state.recipe.filters.searchQuery,
@@ -100,36 +102,33 @@ export function UiCard({
                             alignItems='flex-start'
                         />
                     </Box>
-                    <Link
-                        to={`/${params.category || category[0]}/${params.subCategory || subcategory[0]}/${id}`}
+
+                    <Flex
+                        gap={{
+                            base: 5,
+                            md: 2,
+                        }}
+                        direction='column'
+                        textAlign='left'
                     >
-                        <Flex
-                            gap={{
-                                base: 5,
-                                md: 2,
+                        <Heading
+                            as='h3'
+                            fontWeight='500'
+                            size={{
+                                base: 'sm',
+                                md: 'md',
                             }}
-                            direction='column'
-                            textAlign='left'
+                            noOfLines={{
+                                base: 2,
+                                md: 1,
+                            }}
                         >
-                            <Heading
-                                as='h3'
-                                fontWeight='500'
-                                size={{
-                                    base: 'sm',
-                                    md: 'md',
-                                }}
-                                noOfLines={{
-                                    base: 2,
-                                    md: 1,
-                                }}
-                            >
-                                {searchQuery ? highlightMatches(title, searchQuery) : title}
-                            </Heading>
-                            <Text fontSize='sm' noOfLines={3}>
-                                {isLargerThanMD ? description : null}
-                            </Text>
-                        </Flex>
-                    </Link>
+                            {searchQuery ? highlightMatches(title, searchQuery) : title}
+                        </Heading>
+                        <Text fontSize='sm' noOfLines={3}>
+                            {isLargerThanMD ? description : null}
+                        </Text>
+                    </Flex>
                 </CardBody>
 
                 <CardFooter>
@@ -141,11 +140,16 @@ export function UiCard({
                             icon={<BookmarkHeartIcon size={!isLargerThanMD ? '12px' : '16px'} />}
                             iconButton={!isLargerThanMD}
                         />
-                        <UiButton
-                            size={isLargerThanMD ? 'sm' : 'xs'}
-                            text='Готовить'
-                            variant='solid'
-                        />
+                        <Link
+                            to={`/${params.category || category[0]}/${params.subCategory || subcategory[0]}/${id}`}
+                        >
+                            <UiButton
+                                data-test-id={`card-link-${index}`}
+                                size={isLargerThanMD ? 'sm' : 'xs'}
+                                text='Готовить'
+                                variant='solid'
+                            />
+                        </Link>
                     </Flex>
                 </CardFooter>
             </Stack>

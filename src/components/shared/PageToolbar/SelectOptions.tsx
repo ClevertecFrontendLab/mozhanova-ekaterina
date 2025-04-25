@@ -17,6 +17,8 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 
+import { PlusIcon } from '~/components/ui/icons/PlusIcon';
+
 type Props = {
     options: string[];
     placeholder: string;
@@ -26,6 +28,7 @@ type Props = {
     inputValue?: string;
     isDisabled?: boolean;
     readOnly?: boolean;
+    test?: string;
     setInputValue?: (value: string) => void;
     setSelected: (value: string[]) => void;
 };
@@ -41,6 +44,7 @@ export function SelectOptions({
     setInputValue,
     isDisabled = false,
     readOnly = false,
+    test,
 }: Props) {
     const { isOpen, onToggle, onClose } = useDisclosure();
     const handleRemove = (value: string) => {
@@ -51,6 +55,7 @@ export function SelectOptions({
         <Menu variant='select' isOpen={isOpen} onClose={onClose}>
             {showSelected ? (
                 <MenuButton
+                    data-test-id={test === 'allergens' && 'allergens-menu-button'}
                     as={Button}
                     rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
                     onClick={onToggle}
@@ -92,6 +97,7 @@ export function SelectOptions({
                 </MenuButton>
             ) : (
                 <MenuButton
+                    data-test-id='allergens-menu-button-filter'
                     w='100%'
                     css={{
                         pointerEvents: 'auto',
@@ -103,6 +109,7 @@ export function SelectOptions({
                 >
                     <InputGroup>
                         <Input
+                            data-test-id='add-other-allergen'
                             readOnly={readOnly}
                             disabled={isDisabled}
                             variant='select'
@@ -113,18 +120,33 @@ export function SelectOptions({
                                 e.key === 'Enter' && setSelected([...selected, inputValue!.trim()])
                             }
                         />
-                        <InputRightElement>
-                            <ChevronDownIcon cursor='pointer' />
+                        <InputRightElement data-test-id='add-allergen-button'>
+                            <PlusIcon
+                                onClick={() =>
+                                    selected.length > 0 &&
+                                    setSelected([...selected, inputValue!.trim()])
+                                }
+                                size='15px'
+                            />
                         </InputRightElement>
                     </InputGroup>
                 </MenuButton>
             )}
 
-            <MenuList zIndex={2} overflow='hidden'>
+            <MenuList
+                zIndex={2}
+                overflow='hidden'
+                data-test-id={test === 'allergens' && 'allergens-menu'}
+            >
                 <CheckboxGroup value={selected} onChange={(value: string[]) => setSelected(value)}>
                     <Box overflowY='auto'>
-                        {options.map((option) => (
+                        {options.map((option, i) => (
                             <Checkbox
+                                data-test-id={
+                                    option === 'Веганская кухня'
+                                        ? 'checkbox-веганская кухня'
+                                        : test === 'allergens' && `allergen-${i}`
+                                }
                                 p='6px 16px'
                                 _odd={{ bg: 'neutral.20' }}
                                 variant='select'

@@ -51,8 +51,8 @@ export function IngredientsTable({
                                 >
                                     <NumberInputField w='90px' />
                                     <NumberInputStepper>
-                                        <NumberIncrementStepper />
-                                        <NumberDecrementStepper />
+                                        <NumberIncrementStepper data-test-id='increment-stepper' />
+                                        <NumberDecrementStepper data-test-id='decrement-stepper' />
                                     </NumberInputStepper>
                                 </NumberInput>
                             </Flex>
@@ -60,12 +60,16 @@ export function IngredientsTable({
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {ingredients.map((ingredient) => (
+                    {ingredients.map((ingredient, i) => (
                         <Tr h={{ base: '40px', md: '52px' }}>
                             <Td pr={0} pl={{ base: 2, sm: 6 }}>
                                 {ingredient.title}
                             </Td>
-                            <Td pl={0} pr={{ base: 2, sm: 6 }}>
+                            <Td
+                                data-test-id={`ingredient-quantity-${i}`}
+                                pl={0}
+                                pr={{ base: 2, sm: 6 }}
+                            >
                                 {Number(ingredient.count) * portionsQuantity || ''}
                                 {' ' + ingredient.measureUnit}
                             </Td>

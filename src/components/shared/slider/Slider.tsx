@@ -41,6 +41,7 @@ export function Slider() {
                 <NavigationButtons />
 
                 <Swiper
+                    data-test-id='carousel'
                     modules={[Navigation]}
                     navigation={{
                         nextEl: '.custom-next',
@@ -57,9 +58,13 @@ export function Slider() {
                     loop
                     freeMode
                 >
-                    {sortedData.slice(0, 10).map((recipe) => (
+                    {sortedData.slice(0, 10).map((recipe, i) => (
                         <SwiperSlide key={recipe.id}>
-                            <SliderCard key={recipe.id} data={recipe} />
+                            <SliderCard
+                                data-test-id={`carousel-card-${i}`}
+                                key={recipe.id}
+                                data={recipe}
+                            />
                         </SwiperSlide>
                     ))}
                 </Swiper>

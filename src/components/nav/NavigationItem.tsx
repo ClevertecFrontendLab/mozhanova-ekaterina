@@ -21,6 +21,7 @@ export function NavigationItem({ category }: Props) {
 
     return (
         <Box
+            data-test-id={`${category.id}`}
             as='li'
             w={{
                 base: 'unset',
@@ -74,6 +75,7 @@ export function NavigationItem({ category }: Props) {
                             fontWeight: '700',
                             '& .divider': { width: '8px', transform: 'translateX(-100%)' },
                         }}
+                        data-test-id={item.id === currentSubCategory && `${item.id}-active`}
                     >
                         <Box
                             className='divider'

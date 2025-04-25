@@ -11,6 +11,7 @@ export function Navigation() {
 
     return (
         <Flex
+            data-test-id='nav'
             direction='column'
             grow='1'
             boxShadow={{

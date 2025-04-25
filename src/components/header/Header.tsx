@@ -69,6 +69,7 @@ export function Header({
                     <Flex w={6} h={6} alignItems='center' justifyContent='center'>
                         {isMenuOpen ? (
                             <CloseIcon
+                                data-test-id='close-icon'
                                 onClick={() => {
                                     setMobileMenuOpen(false);
                                 }}
@@ -82,6 +83,7 @@ export function Header({
                                     onClick={() => {
                                         setMobileMenuOpen(true);
                                     }}
+                                    data-test-id='hamburger-icon'
                                 />
                             </>
                         )}

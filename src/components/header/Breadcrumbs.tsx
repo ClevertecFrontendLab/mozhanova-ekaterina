@@ -12,6 +12,7 @@ export function Breadcrumbs() {
 
     return (
         <Breadcrumb
+            data-test-id='breadcrumbs'
             p={{
                 base: '0 20px',
                 md: 'unset',

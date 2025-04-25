@@ -59,8 +59,12 @@ export function PageTabs() {
                     lg: 'wrap',
                 }}
             >
-                {subCategories.map((category) => (
-                    <Tab whiteSpace='nowrap' key={category.id}>
+                {subCategories.map((category, i) => (
+                    <Tab
+                        data-test-id={`tab-${category.id}-${i}`}
+                        whiteSpace='nowrap'
+                        key={category.id}
+                    >
                         {category.label}
                     </Tab>
                 ))}

@@ -21,8 +21,9 @@ function UiCardGrid({ data }: { data: TRecipe[] }) {
                     lg: 2,
                 }}
             >
-                {data.slice(0, 8).map((recipe) => (
+                {data.slice(0, 8).map((recipe, i) => (
                     <UiCard
+                        data-test-id={`food-card-${i}`}
                         key={recipe.id}
                         data={recipe}
                         categoryBgColor='secondary.100'

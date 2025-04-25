@@ -50,6 +50,7 @@ type Props = {
     fontSize?: string;
     dataTest?: string | null;
     isDisabled?: boolean;
+    'data-test-id'?: string;
     onClick?: () => void;
 };
 
@@ -62,7 +63,6 @@ export function UiButton({
     iconButton = false,
     icon,
     fontSize,
-    dataTest = null,
     ...props
 }: Props) {
     return iconButton ? (
@@ -86,7 +86,6 @@ export function UiButton({
             leftIcon={leftIcon}
             color={variants[variant].color}
             fontSize={fontSize}
-            data-test-id={dataTest}
             _hover={{
                 bg: variants[variant].bg,
                 opacity: 0.8,

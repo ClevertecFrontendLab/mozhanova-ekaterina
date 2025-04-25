@@ -63,6 +63,7 @@ export function SearchForm({
                 variant='outline'
                 icon={<SortIcon />}
                 onClick={onOpen}
+                data-test-id='filter-button'
             />
             <FormControl isInvalid={!!isError}>
                 <Box
@@ -74,6 +75,7 @@ export function SearchForm({
                     }}
                 >
                     <Input
+                        data-test-id='search-input'
                         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                         onFocus={() => setSearchOnFocus(true)}
                         onBlur={() => setSearchOnFocus(false)}
@@ -108,7 +110,7 @@ export function SearchForm({
                                 }}
                             />
                         </button>
-                        <button onClick={handleSearch}>
+                        <button onClick={handleSearch} data-test-id='search-button'>
                             <SearchIcon
                                 w={{
                                     base: '14px',

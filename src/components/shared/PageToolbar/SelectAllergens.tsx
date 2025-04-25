@@ -39,6 +39,7 @@ export function SelectAllergens() {
                     Исключить мои аллергены
                 </FormLabel>
                 <Switch
+                    data-test-id='allergens-switcher'
                     isChecked={switchAllergens}
                     onChange={(e) => setSwitchAllergens(e.target.checked)}
                     id='allergens'
@@ -47,6 +48,7 @@ export function SelectAllergens() {
 
             <Box w='269px'>
                 <SelectOptions
+                    test='allergens'
                     setSelected={setSelected}
                     selected={selected}
                     placeholder='Выберите из списка...'
@@ -57,6 +59,7 @@ export function SelectAllergens() {
                 >
                     <Flex p='8px 14px 8px 24px' gap='14px' alignItems='center'>
                         <Input
+                            data-test-id='add-other-allergen'
                             variant='custom'
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
@@ -69,7 +72,13 @@ export function SelectAllergens() {
                             size='sm'
                             placeholder='Другой аллерген'
                         />
-                        <Button size='xs' p={0} bg='transparent' _hover={{ bg: 'neutral.50' }}>
+                        <Button
+                            data-test-id='add-allergen-button'
+                            size='xs'
+                            p={0}
+                            bg='transparent'
+                            _hover={{ bg: 'neutral.50' }}
+                        >
                             <PlusIcon />
                         </Button>
                     </Flex>
