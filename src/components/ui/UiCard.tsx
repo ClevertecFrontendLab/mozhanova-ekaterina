@@ -27,6 +27,7 @@ type Props = {
     recommendation?: string;
     categoryBgColor?: 'secondary.100' | 'primary.100';
     index?: number;
+    'data-test-id'?: string;
 };
 
 export function UiCard({
@@ -34,6 +35,7 @@ export function UiCard({
     recommendation,
     size = 'lg',
     index,
+    ...props
 }: Props) {
     const searchQuery = useSelector(
         (state: { recipe: RecipesState }) => state.recipe.filters.searchQuery,
@@ -53,6 +55,7 @@ export function UiCard({
             }}
             size={isLargerThanMD ? size : 'sm'}
             h='auto'
+            {...props}
         >
             <Image
                 objectFit='cover'

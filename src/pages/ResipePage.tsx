@@ -47,7 +47,7 @@ export function RecipePage() {
                 }}
                 mx='auto'
             >
-                <IngredientsTable ingredients={recipe.ingredients} />
+                <IngredientsTable portions={recipe.portions} ingredients={recipe.ingredients} />
                 <Steps steps={recipe.steps} />
                 <AuthorInfo />
             </Flex>

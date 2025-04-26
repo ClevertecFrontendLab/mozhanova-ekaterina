@@ -48,7 +48,6 @@ type Props = {
     size?: ResponsiveValue<string>;
     iconButton?: boolean;
     fontSize?: string;
-    dataTest?: string | null;
     isDisabled?: boolean;
     'data-test-id'?: string;
     onClick?: () => void;
@@ -93,6 +92,7 @@ export function UiButton({
             _active={{
                 boxShadow: 'none',
             }}
+            pointerEvents={props.isDisabled ? 'none' : 'auto'}
             {...props}
         >
             {text}

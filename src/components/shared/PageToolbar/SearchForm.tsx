@@ -1,5 +1,6 @@
 import {
     Box,
+    Button,
     CloseIcon,
     Flex,
     FormControl,
@@ -28,15 +29,18 @@ export function SearchForm({
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [value, setValue] = useState(filters.searchQuery);
-    const [isError, setIsError] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [isError, setIsError] = useState(true);
 
     const handleSearch = () => {
         if (value.trim().length >= 3) {
             navigate('/search');
-            setIsError('');
+            setIsError(false);
+            setErrorMessage('');
             dispatch(setSearchQuery(value));
         } else {
-            setIsError('Введите не менее 3-ёх символов');
+            setIsError(true);
+            setErrorMessage('Введите не менее 3-ёх символов');
         }
     };
 
@@ -47,6 +51,13 @@ export function SearchForm({
     useEffect(() => {
         setValue(filters.searchQuery);
     }, [filters.searchQuery]);
+
+    useEffect(() => {
+        if (value.trim().length >= 3) {
+            setIsError(false);
+            setErrorMessage('');
+        }
+    }, [value]);
 
     return (
         <Flex
@@ -65,7 +76,7 @@ export function SearchForm({
                 onClick={onOpen}
                 data-test-id='filter-button'
             />
-            <FormControl isInvalid={!!isError}>
+            <FormControl isInvalid={!!errorMessage}>
                 <Box
                     position='relative'
                     w={{
@@ -75,8 +86,9 @@ export function SearchForm({
                     }}
                 >
                     <Input
+                        pr={0}
                         data-test-id='search-input'
-                        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                        onKeyDown={(e) => !errorMessage && e.key === 'Enter' && handleSearch()}
                         onFocus={() => setSearchOnFocus(true)}
                         onBlur={() => setSearchOnFocus(false)}
                         value={value}
@@ -88,16 +100,13 @@ export function SearchForm({
                         }}
                         placeholder='Название или ингредиент...'
                     />
-                    <Flex
-                        alignItems='center'
-                        justifyContent='center'
-                        position='absolute'
-                        right={{ base: '9px', md: '16px' }}
-                        top='0'
-                        bottom='0'
-                        gap={3}
-                    >
-                        <button onClick={handleClear}>
+                    <Flex alignItems='center' position='absolute' right='0' top='0' bottom='0'>
+                        <Button
+                            bg='transparent'
+                            onClick={handleClear}
+                            _hover={{ bg: 'transparent', color: 'text.primary' }}
+                            p={0}
+                        >
                             <CloseIcon
                                 color='text.primary'
                                 w={{
@@ -109,8 +118,15 @@ export function SearchForm({
                                     md: '14px',
                                 }}
                             />
-                        </button>
-                        <button onClick={handleSearch} data-test-id='search-button'>
+                        </Button>
+                        <Button
+                            onClick={handleSearch}
+                            bg='transparent'
+                            p={0}
+                            data-test-id='search-button'
+                            pointerEvents={isError ? 'none' : 'auto'}
+                            _hover={{ bg: 'transparent' }}
+                        >
                             <SearchIcon
                                 w={{
                                     base: '14px',
@@ -121,10 +137,10 @@ export function SearchForm({
                                     md: '18px',
                                 }}
                             />
-                        </button>
+                        </Button>
                     </Flex>
                 </Box>
-                {isError && <FormErrorMessage>{isError}</FormErrorMessage>}
+                {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
             </FormControl>
         </Flex>
     );

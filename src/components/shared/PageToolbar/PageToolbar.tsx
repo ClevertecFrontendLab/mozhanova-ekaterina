@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { FiltersDrawer } from './FiltersDrawer';
 import { SearchForm } from './SearchForm';
-import { SelectAllergens } from './selectAllergens';
+import { SelectAllergens } from './SelectAllergens';
 
 type Props = {
     title: string;

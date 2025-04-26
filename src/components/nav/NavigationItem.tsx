@@ -6,6 +6,7 @@ import { TCategory } from '~/types';
 
 type Props = {
     category: TCategory;
+    setMenuOpen: (value: boolean) => void;
 };
 
 export function NavigationItem({ category }: Props) {
@@ -21,7 +22,7 @@ export function NavigationItem({ category }: Props) {
 
     return (
         <Box
-            data-test-id={`${category.id}`}
+            data-test-id={category.id === 'vegan' ? 'vegan-cuisine' : `${category.id}`}
             as='li'
             w={{
                 base: 'unset',

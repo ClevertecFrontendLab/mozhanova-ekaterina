@@ -17,14 +17,16 @@ import { useState } from 'react';
 
 export function IngredientsTable({
     ingredients,
+    portions,
 }: {
     ingredients: {
         title: string;
         count: string;
         measureUnit: string;
     }[];
+    portions: number;
 }) {
-    const [portionsQuantity, setPortionsQuantity] = useState(1);
+    const [portionsQuantity, setPortionsQuantity] = useState(portions);
     return (
         <TableContainer>
             <Table variant='custom'>
@@ -61,7 +63,7 @@ export function IngredientsTable({
                 </Thead>
                 <Tbody>
                     {ingredients.map((ingredient, i) => (
-                        <Tr h={{ base: '40px', md: '52px' }}>
+                        <Tr key={i} h={{ base: '40px', md: '52px' }}>
                             <Td pr={0} pl={{ base: 2, sm: 6 }}>
                                 {ingredient.title}
                             </Td>
@@ -70,7 +72,7 @@ export function IngredientsTable({
                                 pl={0}
                                 pr={{ base: 2, sm: 6 }}
                             >
-                                {Number(ingredient.count) * portionsQuantity || ''}
+                                {(Number(ingredient.count) / portions) * portionsQuantity || ''}
                                 {' ' + ingredient.measureUnit}
                             </Td>
                         </Tr>

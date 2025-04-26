@@ -1,5 +1,6 @@
 import {
     Box,
+    Button,
     Checkbox,
     CheckboxGroup,
     Drawer,
@@ -12,6 +13,7 @@ import {
     Flex,
     FormLabel,
     Heading,
+    Input,
     Switch,
     Tag,
     TagCloseButton,
@@ -22,8 +24,9 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
+import { PlusIcon } from '~/components/ui/icons/PlusIcon';
 import { UiButton } from '~/components/ui/UiButton';
-import { defineCategoryId, defineCategoryLabel } from '~/helper';
+import { defineCategoryId } from '~/helper';
 import { allergens } from '~/mocks/allergens';
 import { authors } from '~/mocks/authors';
 import { categories } from '~/mocks/categories';
@@ -93,25 +96,24 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
         }
     }, [filters.allergens]);
 
-    useEffect(() => {
-        setSelectedCategory(filters.category.map((item) => defineCategoryLabel(item)));
-    }, [filters.category]);
+    // useEffect(() => {
+    //     setSelectedCategory(filters.category.map((item) => defineCategoryLabel(item)));
+    // }, [filters.category]);
 
-    useEffect(() => {
-        setSelectedAuthors(filters.authors);
-    }, [filters.authors]);
+    // useEffect(() => {
+    //     setSelectedAuthors(filters.authors);
+    // }, [filters.authors]);
 
-    useEffect(() => {
-        setSelectedMeat(filters.meat);
-    }, [filters.meat]);
+    // useEffect(() => {
+    //     setSelectedMeat(filters.meat);
+    // }, [filters.meat]);
 
-    useEffect(() => {
-        setSelectedGarnish(filters.garnish);
-    }, [filters.garnish]);
+    // useEffect(() => {
+    //     setSelectedGarnish(filters.garnish);
+    // }, [filters.garnish]);
 
     return (
         <Drawer
-            data-test-id='filter-drawer'
             size={{
                 base: 'xs',
                 md: 'custom',
@@ -122,13 +124,13 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
             onClose={onClose}
         >
             <DrawerOverlay />
-            <DrawerContent>
+            <DrawerContent data-test-id='filter-drawer'>
                 <DrawerCloseButton data-test-id='close-filter-drawer' />
                 <DrawerHeader>Фильтр</DrawerHeader>
                 <DrawerBody>
                     <VStack spacing={{ base: 4, md: 6 }} align='start'>
                         <SelectOptions
-                            data-test-id='filter-menu-button-категория'
+                            dataButton='filter-menu-button-категория'
                             selected={selectedCategory}
                             setSelected={setSelectedCategory}
                             placeholder='Категория'
@@ -178,12 +180,14 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
                             >
                                 {garnish.map((item) => (
                                     <Checkbox
-                                        data-test-id={item === 'Картошка' && 'checkbox-картошка'}
+                                        data-test-id={
+                                            item.label === 'Картошка' && 'checkbox-картошка'
+                                        }
                                         variant='select'
-                                        value={item}
-                                        key={item}
+                                        value={item.label}
+                                        key={item.id}
                                     >
-                                        {item}
+                                        {item.label}
                                     </Checkbox>
                                 ))}
                             </CheckboxGroup>
@@ -210,15 +214,50 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
                             </Flex>
                             <Box>
                                 <SelectOptions
+                                    readOnly
                                     isDisabled={!switchAllergens}
                                     selected={selectedAllergens}
                                     setSelected={setSelectedAllergens}
                                     placeholder='Выберите из списка аллергенов...'
                                     options={allergens.map((allergen) => Object.keys(allergen)[0])}
-                                    inputValue={allergenInput}
-                                    setInputValue={setAllergenInput}
-                                    test='allergens'
-                                />
+                                    dataButton='allergens-menu-button-filter'
+                                    testSubject='allergens'
+                                >
+                                    <Flex p='8px 14px 8px 24px' gap='14px' alignItems='center'>
+                                        <Input
+                                            data-test-id='add-other-allergen'
+                                            variant='custom'
+                                            value={allergenInput}
+                                            onChange={(e) => setAllergenInput(e.target.value)}
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    setSelectedAllergens([
+                                                        ...selectedAllergens,
+                                                        allergenInput,
+                                                    ]);
+                                                    setAllergenInput('');
+                                                }
+                                            }}
+                                            size='sm'
+                                            placeholder='Другой аллерген'
+                                        />
+                                        <Button
+                                            data-test-id='add-allergen-button'
+                                            size='xs'
+                                            p={0}
+                                            bg='transparent'
+                                            _hover={{ bg: 'neutral.50' }}
+                                            onClick={() =>
+                                                setSelectedAllergens([
+                                                    ...selectedAllergens,
+                                                    allergenInput,
+                                                ])
+                                            }
+                                        >
+                                            <PlusIcon />
+                                        </Button>
+                                    </Flex>
+                                </SelectOptions>
                             </Box>
                         </Box>
                     </VStack>

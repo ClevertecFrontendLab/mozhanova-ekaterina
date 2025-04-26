@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { allergens } from '~/mocks/allergens';
+import { garnish } from '~/mocks/garnish';
 
 import { ApplicationState } from './configure-store';
 
@@ -57,14 +58,23 @@ export const selectFilteredRecipes = createSelector(
                           )
                         : true;
 
-                const matchesGarnish =
-                    filters.garnish.length > 0
-                        ? recipe.ingredients.some((ingredient) =>
-                              filters.garnish
-                                  .map((item) => item.toLowerCase())
-                                  .includes(ingredient.title.toLowerCase()),
-                          )
-                        : true;
+                const matchesGarnish = () => {
+                    if (filters.garnish.length > 0) {
+                        if (recipe.side) {
+                            return garnish.some((item) => filters.garnish.includes(item.label));
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return true;
+                    }
+                };
+                // filters.garnish.length > 0
+                //     ? garnish
+                //           .filter((item) => filters.garnish.includes(item.label))
+                //           .map((item) => item.id.toLowerCase())
+                //           .includes(recipe.side.toLowerCase())
+                //     : true;
 
                 const matchesSearchQuery =
                     filters.searchQuery.length > 0
@@ -78,7 +88,7 @@ export const selectFilteredRecipes = createSelector(
                     !matchesAllergens &&
                     matchesAuthors &&
                     matchesMeat &&
-                    matchesGarnish &&
+                    matchesGarnish() &&
                     matchesSearchQuery
                 );
             });

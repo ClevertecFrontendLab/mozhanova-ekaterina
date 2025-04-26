@@ -3,12 +3,14 @@ import { Box, Flex, Heading, SimpleGrid, useMediaQuery } from '@chakra-ui/react'
 import { Link } from 'react-router';
 
 import { data } from '~/mocks/recipes';
+import { TRecipe } from '~/types';
 
 import { UiButton } from '../ui/UiButton';
 import { UiCard } from '../ui/UiCard';
 
 export function TheJuiciestSection() {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const sortedData: TRecipe[] = [...data].sort((a, b) => b.likes - a.likes);
 
     return (
         <Flex
@@ -33,7 +35,7 @@ export function TheJuiciestSection() {
 
                 <Link to='/the-juiciest' hidden={!isLargerThanMD}>
                     <UiButton
-                        dataTest='juiciest-link'
+                        data-test-id='juiciest-link'
                         variant='primary'
                         rightIcon={<ArrowForwardIcon />}
                         text='Вся подборка'
@@ -50,8 +52,9 @@ export function TheJuiciestSection() {
                 }}
                 spacing={6}
             >
-                {data.slice(0, 4).map((recipe) => (
+                {sortedData.slice(0, 4).map((recipe, i) => (
                     <UiCard
+                        index={i}
                         key={recipe.id}
                         data={recipe}
                         size='lg'
@@ -63,7 +66,7 @@ export function TheJuiciestSection() {
             <Box textAlign='center'>
                 <Link to='/the-juiciest' hidden={isLargerThanMD}>
                     <UiButton
-                        dataTest='juiciest-link-mobile'
+                        data-test-id='juiciest-link-mobile'
                         variant='primary'
                         rightIcon={<ArrowForwardIcon />}
                         text='Вся подборка'

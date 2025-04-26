@@ -17,19 +17,17 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 
-import { PlusIcon } from '~/components/ui/icons/PlusIcon';
-
 type Props = {
     options: string[];
     placeholder: string;
     selected: string[];
     children?: React.ReactNode;
     showSelected?: boolean;
-    inputValue?: string;
     isDisabled?: boolean;
     readOnly?: boolean;
-    test?: string;
-    setInputValue?: (value: string) => void;
+    dataButton?: string;
+    dataList?: string;
+    testSubject?: string;
     setSelected: (value: string[]) => void;
 };
 
@@ -40,11 +38,11 @@ export function SelectOptions({
     placeholder,
     children,
     showSelected = false,
-    inputValue,
-    setInputValue,
     isDisabled = false,
     readOnly = false,
-    test,
+    dataButton,
+    dataList,
+    testSubject,
 }: Props) {
     const { isOpen, onToggle, onClose } = useDisclosure();
     const handleRemove = (value: string) => {
@@ -55,7 +53,8 @@ export function SelectOptions({
         <Menu variant='select' isOpen={isOpen} onClose={onClose}>
             {showSelected ? (
                 <MenuButton
-                    data-test-id={test === 'allergens' && 'allergens-menu-button'}
+                    isDisabled={isDisabled}
+                    data-test-id={dataButton}
                     as={Button}
                     rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
                     onClick={onToggle}
@@ -97,7 +96,8 @@ export function SelectOptions({
                 </MenuButton>
             ) : (
                 <MenuButton
-                    data-test-id='allergens-menu-button-filter'
+                    as={Box}
+                    data-test-id={dataButton}
                     w='100%'
                     css={{
                         pointerEvents: 'auto',
@@ -109,44 +109,27 @@ export function SelectOptions({
                 >
                     <InputGroup>
                         <Input
-                            data-test-id='add-other-allergen'
+                            pr={0}
                             readOnly={readOnly}
                             disabled={isDisabled}
                             variant='select'
-                            value={inputValue}
-                            onChange={(e) => setInputValue!(e.target.value)}
                             placeholder={placeholder}
-                            onKeyDown={(e) =>
-                                e.key === 'Enter' && setSelected([...selected, inputValue!.trim()])
-                            }
                         />
-                        <InputRightElement data-test-id='add-allergen-button'>
-                            <PlusIcon
-                                onClick={() =>
-                                    selected.length > 0 &&
-                                    setSelected([...selected, inputValue!.trim()])
-                                }
-                                size='15px'
-                            />
+                        <InputRightElement>
+                            <Button p={0} bg='background.base' size='sm'>
+                                {isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                            </Button>
                         </InputRightElement>
                     </InputGroup>
                 </MenuButton>
             )}
 
-            <MenuList
-                zIndex={2}
-                overflow='hidden'
-                data-test-id={test === 'allergens' && 'allergens-menu'}
-            >
+            <MenuList zIndex={2} overflow='hidden' data-test-id={dataList}>
                 <CheckboxGroup value={selected} onChange={(value: string[]) => setSelected(value)}>
                     <Box overflowY='auto'>
                         {options.map((option, i) => (
                             <Checkbox
-                                data-test-id={
-                                    option === 'Веганская кухня'
-                                        ? 'checkbox-веганская кухня'
-                                        : test === 'allergens' && `allergen-${i}`
-                                }
+                                data-test-id={defineDataTestId(option, i, testSubject as string)}
                                 p='6px 16px'
                                 _odd={{ bg: 'neutral.20' }}
                                 variant='select'
@@ -156,10 +139,21 @@ export function SelectOptions({
                                 {option}
                             </Checkbox>
                         ))}
-                        {children}
+                        {isOpen && children}
                     </Box>
                 </CheckboxGroup>
             </MenuList>
         </Menu>
     );
+}
+
+function defineDataTestId(option: string, i: number, testSubject: string) {
+    switch (option) {
+        case 'Картошка':
+            return 'checkbox-картошка';
+        case 'Веганская кухня':
+            return 'checkbox-веганская кухня';
+        default:
+            return testSubject === 'allergens' ? `allergen-${i}` : '';
+    }
 }
