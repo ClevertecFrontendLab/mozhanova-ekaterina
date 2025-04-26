@@ -7,10 +7,10 @@ import { ProfileNotification } from '../shared/ProfileNotification';
 import { Breadcrumbs } from './Breadcrumbs';
 
 export function Header({
-    setMobileMenuOpen,
+    setMenuOpen,
     isMenuOpen,
 }: {
-    setMobileMenuOpen: (value: boolean) => void;
+    setMenuOpen: (value: boolean) => void;
     isMenuOpen: boolean;
 }) {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
@@ -58,38 +58,43 @@ export function Header({
                     />
                 </Link>
             </Box>
-            {isLargerThanMD ? (
+            {isLargerThanMD && (
                 <>
                     <Breadcrumbs />
                     <ProfileInfo />
                 </>
-            ) : (
-                <Flex justify='flex-end' align='center' flexGrow={1}>
-                    {!isMenuOpen && <ProfileNotification />}
-                    <Flex w={6} h={6} alignItems='center' justifyContent='center'>
-                        {isMenuOpen ? (
-                            <CloseIcon
-                                data-test-id='close-icon'
-                                onClick={() => {
-                                    setMobileMenuOpen(false);
-                                }}
-                            />
-                        ) : (
-                            <>
-                                {/* <UiLogoutButton /> */}
-                                <HamburgerIcon
-                                    w={6}
-                                    h={6}
-                                    onClick={() => {
-                                        setMobileMenuOpen(true);
-                                    }}
-                                    data-test-id='hamburger-icon'
-                                />
-                            </>
-                        )}
-                    </Flex>
-                </Flex>
             )}
+
+            <Flex
+                display={isLargerThanMD ? 'none' : 'flex'}
+                justify='flex-end'
+                align='center'
+                flexGrow={1}
+            >
+                {!isMenuOpen && <ProfileNotification />}
+                <Flex w={6} h={6} alignItems='center' justifyContent='center'>
+                    {!isLargerThanMD && isMenuOpen && (
+                        <CloseIcon
+                            data-test-id='close-icon'
+                            onClick={() => {
+                                setMenuOpen(false);
+                            }}
+                        />
+                    )}
+
+                    {/* <UiLogoutButton /> */}
+                    {(isLargerThanMD || !isMenuOpen) && (
+                        <HamburgerIcon
+                            w={6}
+                            h={6}
+                            onClick={() => {
+                                setMenuOpen(true);
+                            }}
+                            data-test-id='hamburger-icon'
+                        />
+                    )}
+                </Flex>
+            </Flex>
         </Flex>
     );
 }

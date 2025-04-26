@@ -7,15 +7,17 @@ import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
 import UiCardGrid from '~/components/ui/UiCardGrid';
 import { setCategoryFilter, setSubCategoryFilter } from '~/store/recipe-slice';
 import { selectFilteredRecipes } from '~/store/selectors';
+import { TRecipe } from '~/types';
 
 export function TheJuiciestPage() {
     const filteredRecipes = useSelector(selectFilteredRecipes);
     const dispatch = useDispatch();
+    const sortedData: TRecipe[] = [...filteredRecipes].sort((a, b) => b.likes - a.likes);
 
     useEffect(() => {
         dispatch(setCategoryFilter([]));
         dispatch(setSubCategoryFilter([]));
-    }, []);
+    }, [dispatch]);
 
     return (
         <>
@@ -27,7 +29,7 @@ export function TheJuiciestPage() {
                     lg: '0 24px',
                 }}
             >
-                <UiCardGrid data={filteredRecipes} />
+                <UiCardGrid data={sortedData} />
                 <RelevantKitchenBlock
                     heading='Веганская кухня'
                     description='Интересны не только убеждённым вегетарианцам, но и тем, кто хочет  попробовать вегетарианскую диету и готовить вкусные  вегетарианские блюда.'

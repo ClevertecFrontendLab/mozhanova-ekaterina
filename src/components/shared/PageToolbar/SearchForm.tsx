@@ -1,5 +1,6 @@
 import {
     Box,
+    Button,
     CloseIcon,
     Flex,
     FormControl,
@@ -15,6 +16,7 @@ import { useNavigate } from 'react-router';
 
 import { SortIcon } from '~/components/ui/icons/SortIcon';
 import { RecipesState, setSearchQuery } from '~/store/recipe-slice';
+import { selectFilteredRecipes } from '~/store/selectors';
 
 export function SearchForm({
     setSearchOnFocus,
@@ -24,29 +26,66 @@ export function SearchForm({
     onOpen: () => void;
 }) {
     const filters = useSelector((state: { recipe: RecipesState }) => state.recipe.filters);
+    const filteredRecipes = useSelector(selectFilteredRecipes);
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [value, setValue] = useState(filters.searchQuery);
-    const [isError, setIsError] = useState('');
+    const [value, setValue] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [isError, setIsError] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
 
     const handleSearch = () => {
         if (value.trim().length >= 3) {
-            navigate('/search');
-            setIsError('');
+            setErrorMessage('');
             dispatch(setSearchQuery(value));
+            navigate('/search');
         } else {
-            setIsError('Введите не менее 3-ёх символов');
+            setIsError(true);
+            setErrorMessage('Введите не менее 3-ёх символов');
         }
     };
 
     const handleClear = () => {
         dispatch(setSearchQuery(''));
+        setIsError(false);
+        setIsSuccess(false);
+        setErrorMessage('');
     };
+
+    // useEffect(() => {
+    //     if (filteredRecipes.length === 0 && value.trim().length >= 3) {
+    //         setIsSuccess(false);
+    //         setIsError(true);
+    //     } else if (filteredRecipes.length > 0 && value.trim().length >= 3) {
+    //         setIsSuccess(true);
+    //         setIsError(false);
+    //     }
+    // }, [filteredRecipes, value]);
+
+    useEffect(() => {
+        if (value.trim().length >= 3) {
+            setIsError(false);
+            setErrorMessage('');
+        }
+    }, [value]);
 
     useEffect(() => {
         setValue(filters.searchQuery);
     }, [filters.searchQuery]);
+
+    useEffect(() => {
+        if (filteredRecipes.length === 0 && value.trim().length >= 3) {
+            setIsError(true);
+            setIsSuccess(false);
+        } else if (filteredRecipes.length > 0 && value.trim().length >= 3) {
+            setIsError(false);
+            setIsSuccess(true);
+        } else {
+            setIsError(false);
+            setIsSuccess(false);
+        }
+    }, [filteredRecipes, value]);
 
     return (
         <Flex
@@ -65,7 +104,7 @@ export function SearchForm({
                 onClick={onOpen}
                 data-test-id='filter-button'
             />
-            <FormControl isInvalid={!!isError}>
+            <FormControl isInvalid={!!errorMessage}>
                 <Box
                     position='relative'
                     w={{
@@ -75,8 +114,9 @@ export function SearchForm({
                     }}
                 >
                     <Input
+                        pr={0}
                         data-test-id='search-input'
-                        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                        onKeyDown={(e) => !errorMessage && e.key === 'Enter' && handleSearch()}
                         onFocus={() => setSearchOnFocus(true)}
                         onBlur={() => setSearchOnFocus(false)}
                         value={value}
@@ -87,17 +127,17 @@ export function SearchForm({
                             md: 'lg',
                         }}
                         placeholder='Название или ингредиент...'
+                        borderColor={
+                            isError ? 'error.400' : isSuccess ? 'primary.400' : 'border.dark'
+                        }
                     />
-                    <Flex
-                        alignItems='center'
-                        justifyContent='center'
-                        position='absolute'
-                        right={{ base: '9px', md: '16px' }}
-                        top='0'
-                        bottom='0'
-                        gap={3}
-                    >
-                        <button onClick={handleClear}>
+                    <Flex alignItems='center' position='absolute' right='0' top='0' bottom='0'>
+                        <Button
+                            bg='transparent'
+                            onClick={handleClear}
+                            _hover={{ bg: 'transparent', color: 'text.primary' }}
+                            p={0}
+                        >
                             <CloseIcon
                                 color='text.primary'
                                 w={{
@@ -109,8 +149,15 @@ export function SearchForm({
                                     md: '14px',
                                 }}
                             />
-                        </button>
-                        <button onClick={handleSearch} data-test-id='search-button'>
+                        </Button>
+                        <Button
+                            onClick={handleSearch}
+                            bg='transparent'
+                            p={0}
+                            data-test-id='search-button'
+                            pointerEvents={value.length < 3 ? 'none' : 'auto'}
+                            _hover={{ bg: 'transparent' }}
+                        >
                             <SearchIcon
                                 w={{
                                     base: '14px',
@@ -121,10 +168,10 @@ export function SearchForm({
                                     md: '18px',
                                 }}
                             />
-                        </button>
+                        </Button>
                     </Flex>
                 </Box>
-                {isError && <FormErrorMessage>{isError}</FormErrorMessage>}
+                {errorMessage && <FormErrorMessage>{errorMessage}</FormErrorMessage>}
             </FormControl>
         </Flex>
     );

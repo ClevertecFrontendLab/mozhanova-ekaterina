@@ -26,6 +26,7 @@ function UiCardGrid({ data }: { data: TRecipe[] }) {
                         data-test-id={`food-card-${i}`}
                         key={recipe.id}
                         data={recipe}
+                        index={i}
                         categoryBgColor='secondary.100'
                         size={isLargerThanMD ? 'lg' : 'sm'}
                     />

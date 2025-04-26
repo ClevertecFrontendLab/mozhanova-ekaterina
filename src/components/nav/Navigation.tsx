@@ -6,12 +6,11 @@ import { Footer } from '../footer/Footer';
 import { Breadcrumbs } from '../header/Breadcrumbs';
 import { NavigationItem } from './NavigationItem';
 
-export function Navigation() {
+export function Navigation({ setMenuOpen }: { setMenuOpen: (value: boolean) => void }) {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
 
     return (
         <Flex
-            data-test-id='nav'
             direction='column'
             grow='1'
             boxShadow={{
@@ -33,11 +32,15 @@ export function Navigation() {
             }}
             gap={3}
         >
-            {!isLargerThanMD && <Breadcrumbs />}
+            {!isLargerThanMD && <Breadcrumbs setMenuOpen={setMenuOpen} />}
             <Box as='nav' pl='10px' pt='10px'>
                 <ul>
                     {categories.map((category) => (
-                        <NavigationItem key={category.id} category={category} />
+                        <NavigationItem
+                            setMenuOpen={setMenuOpen}
+                            key={category.id}
+                            category={category}
+                        />
                     ))}
                 </ul>
             </Box>

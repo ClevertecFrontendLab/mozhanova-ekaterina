@@ -1,36 +1,26 @@
 import { Box, Button, Flex, FormLabel, Input, Switch } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { PlusIcon } from '~/components/ui/icons/PlusIcon';
 import { allergens } from '~/mocks/allergens';
-import { RecipesState, setAllergensFilter } from '~/store/recipe-slice';
+import { setAllergensFilter } from '~/store/recipe-slice';
 
 import { SelectOptions } from './SelectOptions';
 
 export function SelectAllergens() {
-    const allergensQuery = useSelector(
-        (state: { recipe: RecipesState }) => state.recipe.filters.allergens,
-    );
     const [selected, setSelected] = useState<string[]>([]);
     const [switchAllergens, setSwitchAllergens] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (switchAllergens) {
-            dispatch(setAllergensFilter(selected));
-        } else if (!switchAllergens) {
-            dispatch(setAllergensFilter([]));
-        }
-    }, [selected, switchAllergens, dispatch]);
+        dispatch(setAllergensFilter(selected));
+    }, [selected, dispatch]);
 
     useEffect(() => {
-        if (allergensQuery.length > 0) {
-            setSelected(allergensQuery);
-            setSwitchAllergens(true);
-        }
-    }, [allergensQuery]);
+        !switchAllergens && setSelected([]);
+    }, [switchAllergens]);
 
     return (
         <Flex alignItems='center' gap={4} mt='18px' justifyContent='space-between'>
@@ -48,14 +38,14 @@ export function SelectAllergens() {
 
             <Box w='269px'>
                 <SelectOptions
-                    test='allergens'
                     setSelected={setSelected}
                     selected={selected}
                     placeholder='Выберите из списка...'
                     options={allergens.map((allergen) => Object.keys(allergen)[0])}
-                    showSelected
-                    inputValue={inputValue}
-                    setInputValue={setInputValue}
+                    isDisabled={!switchAllergens}
+                    testSubject='allergens'
+                    dataButton='allergens-menu-button'
+                    dataList='allergens-menu'
                 >
                     <Flex p='8px 14px 8px 24px' gap='14px' alignItems='center'>
                         <Input
@@ -78,6 +68,7 @@ export function SelectAllergens() {
                             p={0}
                             bg='transparent'
                             _hover={{ bg: 'neutral.50' }}
+                            onClick={() => setSelected([...selected, inputValue])}
                         >
                             <PlusIcon />
                         </Button>

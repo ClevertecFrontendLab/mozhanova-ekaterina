@@ -1,12 +1,13 @@
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, useMediaQuery } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router';
 
 import { categories } from '~/mocks/categories';
 import { data } from '~/mocks/recipes';
 
-export function Breadcrumbs() {
+export function Breadcrumbs({ setMenuOpen }: { setMenuOpen: (value: boolean) => void }) {
     const location = useLocation();
+    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
 
     const pathnames = location.pathname.split('/').filter((x) => x);
 
@@ -25,7 +26,11 @@ export function Breadcrumbs() {
             separator={<ChevronRightIcon color='gray.500' />}
         >
             <BreadcrumbItem isCurrentPage={pathnames.length === 0}>
-                <BreadcrumbLink as={Link} to='/'>
+                <BreadcrumbLink
+                    as={Link}
+                    to='/'
+                    onClick={() => !isLargerThanMD && setMenuOpen(false)}
+                >
                     Главная
                 </BreadcrumbLink>
             </BreadcrumbItem>
@@ -49,7 +54,12 @@ export function Breadcrumbs() {
                         '';
                     return (
                         <BreadcrumbItem key={path} isCurrentPage={i === pathnames.length - 1}>
-                            <BreadcrumbLink as={Link} to={routeTo} whiteSpace='nowrap'>
+                            <BreadcrumbLink
+                                as={Link}
+                                to={routeTo}
+                                whiteSpace='nowrap'
+                                onClick={() => !isLargerThanMD && setMenuOpen(false)}
+                            >
                                 {label}
                             </BreadcrumbLink>
                         </BreadcrumbItem>

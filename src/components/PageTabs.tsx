@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
 import { categories } from '~/mocks/categories';
-import { cleanFilters, setCategoryFilter, setSubCategoryFilter } from '~/store/recipe-slice';
+import { setCategoryFilter, setSubCategoryFilter } from '~/store/recipe-slice';
 import { selectFilteredRecipes } from '~/store/selectors';
 
 import UiCardGrid from './ui/UiCardGrid';
@@ -31,7 +31,6 @@ export function PageTabs() {
 
     useEffect(() => {
         setTabIndex(activeIndex || 0);
-        dispatch(cleanFilters());
         dispatch(setCategoryFilter([currentCategory]));
         dispatch(setSubCategoryFilter([currentSubCategory]));
     }, [currentSubCategory, currentCategory, dispatch, activeIndex]);
@@ -74,7 +73,9 @@ export function PageTabs() {
                     <TabPanels>
                         {subCategories.map((category) => (
                             <TabPanel key={category.id}>
-                                <UiCardGrid data={filteredRecipes} />
+                                {category.id === currentSubCategory && (
+                                    <UiCardGrid data={filteredRecipes} />
+                                )}
                             </TabPanel>
                         ))}
                     </TabPanels>

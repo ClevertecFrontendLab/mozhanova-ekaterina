@@ -54,6 +54,9 @@ const theme = extendTheme({
             350: 'rgba(0, 0, 0, 0.92)',
             400: '#000000', // Чистый черный
         },
+        error: {
+            400: '#e53e3e',
+        },
     },
     semanticTokens: {
         colors: {
@@ -70,6 +73,9 @@ const theme = extendTheme({
                 header: 'secondary.100',
                 base: 'neutral.0',
                 black: 'neutral.400',
+            },
+            error: {
+                default: 'error.400',
             },
         },
     },

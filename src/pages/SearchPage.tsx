@@ -2,7 +2,6 @@ import { Box } from '@chakra-ui/react';
 import { memo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { PageToolbar } from '~/components/shared/PageToolbar/PageToolbar';
 import UiCardGrid from '~/components/ui/UiCardGrid';
 import { selectFilteredRecipes } from '~/store/selectors';
 
@@ -11,7 +10,6 @@ function SearchPage() {
 
     return (
         <>
-            <PageToolbar title='Приятного аппетита!' />
             <Box
                 padding={{
                     base: '0 16px',

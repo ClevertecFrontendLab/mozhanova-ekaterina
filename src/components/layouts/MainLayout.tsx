@@ -1,5 +1,5 @@
 import { Box, useMediaQuery } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router';
 
 import { FooterMobile } from '../footer/FooterMobile';
@@ -9,7 +9,9 @@ import { Sidebar } from '../Sidebar';
 
 export function MainLayout() {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(isLargerThanMD);
+    const [menuOpen, setMenuOpen] = useState<boolean>(true);
+
+    useEffect(() => setMenuOpen(isLargerThanMD), [isLargerThanMD]);
 
     return (
         <Box
@@ -30,9 +32,9 @@ export function MainLayout() {
                 md: '256px',
             }}
         >
-            <Header isMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
+            <Header isMenuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
-            <Navbar mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} />
+            <Navbar isMenuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
             <main>
                 <Outlet />

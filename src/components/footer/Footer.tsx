@@ -6,7 +6,7 @@ export function Footer() {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
 
     return (
-        <Flex gap='16px' direction='column' padding='16px 24px 32px'>
+        <Flex data-test-id='footer' gap='16px' direction='column' padding='16px 24px 32px'>
             <Text fontWeight='500' color='neutral.100' fontSize='sm'>
                 Версия программы 03.25
             </Text>
