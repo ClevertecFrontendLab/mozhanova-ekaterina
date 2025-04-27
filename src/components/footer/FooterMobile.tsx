@@ -2,9 +2,10 @@ import { EditIcon } from '@chakra-ui/icons';
 import { Grid, Image } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router';
 
-import { HomeIcon } from './ui/icons/HomeIcon';
-import { SearchIcon } from './ui/icons/SearchIcon';
-import { UiIconButton } from './ui/UiIconButton';
+import { HomeIcon } from '~/components/ui/icons/HomeIcon';
+import { UiIconButton } from '~/components/ui/UiIconButton';
+
+import { SearchIcon } from '../ui/icons/SearchIcon';
 
 export function FooterMobile() {
     const location = useLocation();
@@ -20,6 +21,7 @@ export function FooterMobile() {
             templateColumns='repeat(4, 1fr)'
             pt={2.5}
             pb={2.5}
+            zIndex={98}
         >
             <Link to='/'>
                 <UiIconButton

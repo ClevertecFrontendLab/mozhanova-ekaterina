@@ -10,49 +10,43 @@ import {
     Text,
     useMediaQuery,
 } from '@chakra-ui/react';
+import { JSX } from 'react';
+import { useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router';
+
+import { RecipesState } from '~/store/recipe-slice';
+import { TRecipe } from '~/types';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { UiButton } from './UiButton';
 import { UiCardInfo } from './UiCardInfo';
 
 type Props = {
-    title: string;
-    text?: string;
-    category: {
-        title: string;
-        iconSrc: string;
-    };
-    likes: number;
-    favorites: number;
+    data: TRecipe;
     size?: 'sm' | 'md' | 'lg';
-    imgSrc?: string;
     recommendation?: string;
-    direction?: 'row' | 'column';
-    controls?: boolean;
-    infoPosition?: 'top' | 'bottom';
     categoryBgColor?: 'secondary.100' | 'primary.100';
+    index?: number;
+    'data-test-id'?: string;
 };
 
 export function UiCard({
-    title,
-    text,
-    imgSrc,
-    category,
+    data: { title, description, image, category, likes, bookmarks, subcategory, id },
     recommendation,
-    likes,
-    favorites,
     size = 'lg',
-    direction = 'column',
-    controls = false,
-    infoPosition = 'bottom',
-    categoryBgColor = 'primary.100',
+    index,
+    ...props
 }: Props) {
+    const searchQuery = useSelector(
+        (state: { recipe: RecipesState }) => state.recipe.filters.searchQuery,
+    );
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const params = useParams();
 
     return (
         <Card
             position='relative'
-            direction={direction}
+            direction='row'
             overflow='hidden'
             variant='outline'
             transition='box-shadow 0.3s ease-in-out'
@@ -60,19 +54,21 @@ export function UiCard({
                 shadow: 'themeNeutralGreen',
             }}
             size={isLargerThanMD ? size : 'sm'}
-            h={direction === 'row' ? 'auto' : '100%'}
+            h='auto'
+            {...props}
         >
-            {imgSrc ? (
-                <Image
-                    objectFit='cover'
-                    maxW={{ base: '158px', md: '100%' }}
-                    maxH={{ base: '128px', md: '100%' }}
-                    src={imgSrc}
-                    alt='card image'
-                />
-            ) : null}
+            <Image
+                objectFit='cover'
+                maxW={{
+                    base: '158px',
+                    md: '346px',
+                }}
+                maxH='100%'
+                src={image}
+                alt='card image'
+            />
 
-            {recommendation && (
+            {recommendation && isLargerThanMD && (
                 <Flex
                     position='absolute'
                     bottom='20px'
@@ -83,28 +79,33 @@ export function UiCard({
                     fontSize='14px'
                     borderRadius='4px'
                 >
-                    <img src='/src/assets/Avatar.png' alt='avatar' />
+                    <img
+                        width='16px'
+                        height='16px'
+                        src='/src/assets/blog_avatar_1.png'
+                        alt='avatar'
+                    />
                     {recommendation} рекомендует
                 </Flex>
             )}
 
             <Stack spacing={0} flexGrow={1}>
                 <CardBody>
-                    {infoPosition === 'top' && (
-                        <Box
-                            pb={{
-                                base: 0,
-                                md: 6,
-                            }}
-                        >
-                            <UiCardInfo
-                                categoryBgColor={categoryBgColor}
-                                category={category}
-                                likes={likes}
-                                favorites={favorites}
-                            />
-                        </Box>
-                    )}
+                    <Box
+                        pb={{
+                            base: 0,
+                            md: 6,
+                        }}
+                    >
+                        <UiCardInfo
+                            categoryBgColor='secondary.100'
+                            category={category}
+                            likes={likes}
+                            bookmarks={bookmarks}
+                            alignItems='flex-start'
+                        />
+                    </Box>
+
                     <Flex
                         gap={{
                             base: 5,
@@ -125,46 +126,74 @@ export function UiCard({
                                 md: 1,
                             }}
                         >
-                            {title}
+                            {searchQuery ? highlightMatches(title, searchQuery) : title}
                         </Heading>
                         <Text fontSize='sm' noOfLines={3}>
-                            {isLargerThanMD ? text : null}
+                            {isLargerThanMD ? description : null}
                         </Text>
                     </Flex>
                 </CardBody>
 
                 <CardFooter>
-                    {infoPosition === 'bottom' && (
-                        <UiCardInfo
-                            categoryBgColor={categoryBgColor}
-                            category={category}
-                            likes={likes}
-                            favorites={favorites}
+                    <Flex gap='8px' justifyContent='flex-end' w='100%'>
+                        <UiButton
+                            size={isLargerThanMD ? 'sm' : 'xs'}
+                            text='Сохранить'
+                            leftIcon={<BookmarkHeartIcon />}
+                            icon={<BookmarkHeartIcon size={!isLargerThanMD ? '12px' : '16px'} />}
+                            iconButton={!isLargerThanMD}
                         />
-                    )}
-                    {controls ? (
-                        <Flex gap='8px' justifyContent='flex-end' w='100%'>
+                        <Link
+                            to={`/${params.category || category[0]}/${params.subCategory || subcategory[0]}/${id}`}
+                        >
                             <UiButton
-                                size={isLargerThanMD ? 'sm' : 'xs'}
-                                text='Сохранить'
-                                leftIcon={<BookmarkHeartIcon />}
-                                icon={
-                                    <BookmarkHeartIcon
-                                        width={!isLargerThanMD ? '12px' : '16px'}
-                                        height={!isLargerThanMD ? '12px' : '16px'}
-                                    />
-                                }
-                                iconButton={!isLargerThanMD}
-                            />
-                            <UiButton
+                                data-test-id={`card-link-${index}`}
                                 size={isLargerThanMD ? 'sm' : 'xs'}
                                 text='Готовить'
                                 variant='solid'
                             />
-                        </Flex>
-                    ) : null}
+                        </Link>
+                    </Flex>
                 </CardFooter>
             </Stack>
         </Card>
     );
+}
+
+function highlightMatches(str: string, substr: string) {
+    const lowerStr = str.toLowerCase();
+    const lowerSub = substr.toLowerCase();
+    const result: JSX.Element[] = [];
+
+    let lastIndex = 0;
+    let index = lowerStr.indexOf(lowerSub);
+
+    while (index !== -1) {
+        if (index > lastIndex) {
+            result.push(
+                <Text as='span' key={`text-${lastIndex}`}>
+                    {str.slice(lastIndex, index)}
+                </Text>,
+            );
+        }
+
+        result.push(
+            <Text as='span' key={`match-${index}`} color='text.primary'>
+                {str.slice(index, index + substr.length)}
+            </Text>,
+        );
+
+        lastIndex = index + substr.length;
+        index = lowerStr.indexOf(lowerSub, lastIndex);
+    }
+
+    if (lastIndex < str.length) {
+        result.push(
+            <Text as='span' key={`text-${lastIndex}`}>
+                {str.slice(lastIndex)}
+            </Text>,
+        );
+    }
+
+    return <>{result}</>;
 }

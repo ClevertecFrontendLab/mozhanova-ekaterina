@@ -43,3 +43,17 @@ h6 {
     font-weight: normal;
     font-size: inherit;
 }
+
+.body-no-scroll {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide {
+    height: auto !important;
+}
+.swiper {
+    padding: 6px 0 !important;
+}

@@ -1,50 +1,40 @@
-import { Flex, SimpleGrid, useMediaQuery } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { PageToolbar } from '~/components/PageToolbar';
-import { RelevantKitchenBlock } from '~/components/RelevantKitchenBlock';
-import { UiButton } from '~/components/ui/UiButton';
-import { UiCard } from '~/components/ui/UiCard';
-import { data_relevant_vegan, data_vegan } from '~/constants';
+import { PageToolbar } from '~/components/shared/PageToolbar/PageToolbar';
+import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
+import UiCardGrid from '~/components/ui/UiCardGrid';
+import { setCategoryFilter, setSubCategoryFilter } from '~/store/recipe-slice';
+import { selectFilteredRecipes } from '~/store/selectors';
+import { TRecipe } from '~/types';
 
-export function TheJuiciest() {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 768px)');
+export function TheJuiciestPage() {
+    const filteredRecipes = useSelector(selectFilteredRecipes);
+    const dispatch = useDispatch();
+    const sortedData: TRecipe[] = [...filteredRecipes].sort((a, b) => b.likes - a.likes);
+
+    useEffect(() => {
+        dispatch(setCategoryFilter([]));
+        dispatch(setSubCategoryFilter([]));
+    }, [dispatch]);
 
     return (
-        <div>
+        <>
             <PageToolbar title='Самое сочное' />
-            <SimpleGrid
-                rowGap={4}
-                columnGap={6}
-                columns={{
-                    base: 1,
-                    sm: 2,
+            <Box
+                padding={{
+                    base: '0 16px',
+                    md: '0 20px',
+                    lg: '0 24px',
                 }}
             >
-                {data_vegan.map((recipe) => (
-                    <UiCard
-                        key={recipe.id}
-                        title={recipe.title}
-                        text={recipe.description}
-                        imgSrc={recipe.imageSrc}
-                        category={recipe.category}
-                        likes={recipe.likes}
-                        favorites={recipe.favorites}
-                        direction='row'
-                        infoPosition='top'
-                        controls
-                        categoryBgColor='secondary.100'
-                        size={isLargerThanMD ? 'lg' : 'sm'}
-                    />
-                ))}
-            </SimpleGrid>
-            <Flex justifyContent='center' mt='16px' mb='40px'>
-                <UiButton size='md' text='Загрузить еще' variant='primary' />
-            </Flex>
-            <RelevantKitchenBlock
-                data={data_relevant_vegan}
-                heading='Веганская кухня'
-                description='Интересны не только убеждённым вегетарианцам, но и тем, кто хочет  попробовать вегетарианскую диету и готовить вкусные  вегетарианские блюда.'
-            />
-        </div>
+                <UiCardGrid data={sortedData} />
+                <RelevantKitchenBlock
+                    heading='Веганская кухня'
+                    description='Интересны не только убеждённым вегетарианцам, но и тем, кто хочет  попробовать вегетарианскую диету и готовить вкусные  вегетарианские блюда.'
+                />
+            </Box>
+        </>
     );
 }

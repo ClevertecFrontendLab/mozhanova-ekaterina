@@ -1,33 +1,50 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, useMediaQuery } from '@chakra-ui/react';
 
-import { categories } from '~/constants';
+import { categories } from '~/mocks/categories';
 
+import { Footer } from '../footer/Footer';
+import { Breadcrumbs } from '../header/Breadcrumbs';
 import { NavigationItem } from './NavigationItem';
 
-export function Navigation() {
+export function Navigation({ setMenuOpen }: { setMenuOpen: (value: boolean) => void }) {
+    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
+
     return (
         <Flex
             direction='column'
             grow='1'
-            boxShadow='themeNeutral'
+            boxShadow={{
+                base: 'unset',
+                md: 'themeNeutral',
+            }}
             borderRadius='0 0 12px 12px'
             overflowY='auto'
             overflowX='hidden'
-            w='256px'
+            sx={{
+                '&::-webkit-scrollbar': {
+                    display: 'none',
+                },
+                '@media (min-width: 769px)': {
+                    '&::-webkit-scrollbar': {
+                        display: 'block',
+                    },
+                },
+            }}
+            gap={3}
         >
+            {!isLargerThanMD && <Breadcrumbs setMenuOpen={setMenuOpen} />}
             <Box as='nav' pl='10px' pt='10px'>
                 <ul>
-                    {categories.map((item) => (
+                    {categories.map((category) => (
                         <NavigationItem
-                            key={item.id}
-                            currentCategory={item.id}
-                            title={item.label}
-                            iconSrc={item.iconSrc}
-                            subCategories={item.subCategories}
+                            setMenuOpen={setMenuOpen}
+                            key={category.id}
+                            category={category}
                         />
                     ))}
                 </ul>
             </Box>
+            {!isLargerThanMD && <Footer />}
         </Flex>
     );
 }

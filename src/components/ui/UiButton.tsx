@@ -1,9 +1,9 @@
-import { Button, IconButton } from '@chakra-ui/react';
+import { Button, IconButton, ResponsiveValue } from '@chakra-ui/react';
 
 const variants = {
     primary: {
         bg: 'primary.300',
-        borderColor: 'transparent',
+        borderColor: 'primary.300',
         borderWidth: '1px',
         color: 'neutral.400',
     },
@@ -13,9 +13,15 @@ const variants = {
         borderWidth: '1px',
         color: 'neutral.400',
     },
+    primaryOutline: {
+        bg: 'transparent',
+        borderColor: 'neutral.200',
+        borderWidth: '1px',
+        color: 'neutral.400',
+    },
     outline: {
         bg: 'transparent',
-        borderColor: 'neutral.400',
+        borderColor: 'border.dark',
         borderWidth: '1px',
         color: 'neutral.900',
     },
@@ -39,10 +45,11 @@ type Props = {
     leftIcon?: React.ReactElement;
     icon?: React.ReactElement;
     variant?: keyof typeof variants;
-    size?: 'xs' | 'sm' | 'md' | 'lg';
+    size?: ResponsiveValue<string>;
     iconButton?: boolean;
     fontSize?: string;
-    dataTest?: string | null;
+    isDisabled?: boolean;
+    'data-test-id'?: string;
     onClick?: () => void;
 };
 
@@ -55,7 +62,7 @@ export function UiButton({
     iconButton = false,
     icon,
     fontSize,
-    dataTest = null,
+    ...props
 }: Props) {
     return iconButton ? (
         <IconButton
@@ -66,6 +73,7 @@ export function UiButton({
             color={variants[variant].color}
             aria-label='button'
             icon={icon}
+            {...props}
         />
     ) : (
         <Button
@@ -77,7 +85,15 @@ export function UiButton({
             leftIcon={leftIcon}
             color={variants[variant].color}
             fontSize={fontSize}
-            data-test-id={dataTest}
+            _hover={{
+                bg: variants[variant].bg,
+                opacity: 0.8,
+            }}
+            _active={{
+                boxShadow: 'none',
+            }}
+            pointerEvents={props.isDisabled ? 'none' : 'auto'}
+            {...props}
         >
             {text}
         </Button>

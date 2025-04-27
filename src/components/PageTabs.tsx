@@ -1,48 +1,44 @@
-import {
-    Flex,
-    SimpleGrid,
-    Tab,
-    TabList,
-    TabPanel,
-    TabPanels,
-    Tabs,
-    useMediaQuery,
-} from '@chakra-ui/react';
+import { Flex, Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router';
 
-import { categories, data_vegan } from '~/constants';
+import { categories } from '~/mocks/categories';
+import { setCategoryFilter, setSubCategoryFilter } from '~/store/recipe-slice';
+import { selectFilteredRecipes } from '~/store/selectors';
 
-import { UiButton } from './ui/UiButton';
-import { UiCard } from './ui/UiCard';
+import UiCardGrid from './ui/UiCardGrid';
 
 export function PageTabs() {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
     const [isLargerThanLG] = useMediaQuery('(min-width: 1441px)');
     const [tabIndex, setTabIndex] = useState(0);
     const navigate = useNavigate();
-    const location = useLocation();
+    const params = useParams();
+    const dispatch = useDispatch();
+    const filteredRecipes = useSelector(selectFilteredRecipes);
 
-    const currentPage = location.pathname.split('/').filter((x) => x)[0];
-    const currentCategory = location.pathname.split('/').pop();
-    const subCategories = categories.find((category) => category.id === currentPage)?.subCategories;
-    const defaultIndex = subCategories?.findIndex((category) => category.id === currentCategory);
+    const currentCategory = params.category as string;
+    const currentSubCategory = params.subCategory as string;
+    const subCategories = categories.find(
+        (category) => category.id === currentCategory,
+    )!.subCategories;
+    const activeIndex = subCategories.findIndex((category) => category.id === currentSubCategory);
 
     const handleTabChange = (index: number) => {
-        const selectedCategory = subCategories![index];
-        navigate(`/vegan-cuisine/${selectedCategory.id}`);
+        const selectedCategory = subCategories[index];
+        navigate(`/${currentCategory}/${selectedCategory.id}`);
     };
 
     useEffect(() => {
-        const activeIndex = subCategories?.findIndex((category) => category.id === currentCategory);
         setTabIndex(activeIndex || 0);
-    }, [currentCategory, subCategories]);
+        dispatch(setCategoryFilter([currentCategory]));
+        dispatch(setSubCategoryFilter([currentSubCategory]));
+    }, [currentSubCategory, currentCategory, dispatch, activeIndex]);
 
     return (
         <Tabs
             variant='line'
             align={isLargerThanLG ? 'center' : 'start'}
-            defaultIndex={defaultIndex}
             index={tabIndex}
             onChange={handleTabChange}
         >
@@ -57,53 +53,36 @@ export function PageTabs() {
                     base: 'hidden',
                     md: 'unset',
                 }}
+                flexWrap={{
+                    base: 'nowrap',
+                    lg: 'wrap',
+                }}
             >
-                {subCategories &&
-                    subCategories.map((category) => (
-                        <Tab whiteSpace='nowrap' key={category.id}>
-                            {category.label}
-                        </Tab>
-                    ))}
+                {subCategories.map((category, i) => (
+                    <Tab
+                        data-test-id={`tab-${category.id}-${i}`}
+                        whiteSpace='nowrap'
+                        key={category.id}
+                    >
+                        {category.label}
+                    </Tab>
+                ))}
             </TabList>
-
-            <TabPanels>
-                {subCategories &&
-                    subCategories.map((category) => (
-                        <TabPanel key={category.id}>
-                            <SimpleGrid
-                                rowGap={4}
-                                columnGap={6}
-                                pt={6}
-                                columns={{
-                                    base: 1,
-                                    sm: 2,
-                                    md: 1,
-                                    lg: 2,
-                                }}
-                            >
-                                {data_vegan.map((recipe) => (
-                                    <UiCard
-                                        key={recipe.id}
-                                        title={recipe.title}
-                                        text={recipe.description}
-                                        imgSrc={recipe.imageSrc}
-                                        category={recipe.category}
-                                        likes={recipe.likes}
-                                        favorites={recipe.favorites}
-                                        direction='row'
-                                        infoPosition='top'
-                                        controls
-                                        categoryBgColor='secondary.100'
-                                        size={isLargerThanMD ? 'lg' : 'sm'}
-                                    />
-                                ))}
-                            </SimpleGrid>
-                        </TabPanel>
-                    ))}
-            </TabPanels>
-            <Flex justifyContent='center' mt='16px' mb='40px'>
-                <UiButton size='md' text='Загрузить еще' variant='primary' />
-            </Flex>
+            {filteredRecipes.length > 0 ? (
+                <>
+                    <TabPanels>
+                        {subCategories.map((category) => (
+                            <TabPanel key={category.id}>
+                                {category.id === currentSubCategory && (
+                                    <UiCardGrid data={filteredRecipes} />
+                                )}
+                            </TabPanel>
+                        ))}
+                    </TabPanels>
+                </>
+            ) : (
+                <Flex p={4}>Ничего не нашлось</Flex>
+            )}
         </Tabs>
     );
 }

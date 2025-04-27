@@ -2,17 +2,15 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { Box, Flex, Heading, SimpleGrid, useMediaQuery } from '@chakra-ui/react';
 import { Link } from 'react-router';
 
+import { data } from '~/mocks/recipes';
 import { TRecipe } from '~/types';
 
-import { UiButton } from './ui/UiButton';
-import { UiCard } from './ui/UiCard';
+import { UiButton } from '../ui/UiButton';
+import { UiCard } from '../ui/UiCard';
 
-type Props = {
-    data: TRecipe[];
-};
-
-export function TheJuiciestSection({ data }: Props) {
+export function TheJuiciestSection() {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const sortedData: TRecipe[] = [...data].sort((a, b) => b.likes - a.likes);
 
     return (
         <Flex
@@ -37,7 +35,7 @@ export function TheJuiciestSection({ data }: Props) {
 
                 <Link to='/the-juiciest' hidden={!isLargerThanMD}>
                     <UiButton
-                        dataTest='juiciest-link'
+                        data-test-id='juiciest-link'
                         variant='primary'
                         rightIcon={<ArrowForwardIcon />}
                         text='Вся подборка'
@@ -54,20 +52,13 @@ export function TheJuiciestSection({ data }: Props) {
                 }}
                 spacing={6}
             >
-                {data.map((recipe) => (
+                {sortedData.slice(0, 4).map((recipe, i) => (
                     <UiCard
+                        index={i}
                         key={recipe.id}
-                        title={recipe.title}
-                        text={recipe.description}
-                        imgSrc={recipe.imageSrc}
-                        category={recipe.category}
-                        likes={recipe.likes}
-                        favorites={recipe.favorites}
-                        direction='row'
-                        infoPosition='top'
-                        controls
-                        categoryBgColor='secondary.100'
+                        data={recipe}
                         size='lg'
+                        recommendation='Елена Высоцкая'
                     />
                 ))}
             </SimpleGrid>
@@ -75,7 +66,7 @@ export function TheJuiciestSection({ data }: Props) {
             <Box textAlign='center'>
                 <Link to='/the-juiciest' hidden={isLargerThanMD}>
                     <UiButton
-                        dataTest='juiciest-link-mobile'
+                        data-test-id='juiciest-link-mobile'
                         variant='primary'
                         rightIcon={<ArrowForwardIcon />}
                         text='Вся подборка'

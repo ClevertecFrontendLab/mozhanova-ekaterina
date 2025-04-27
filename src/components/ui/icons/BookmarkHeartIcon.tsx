@@ -1,14 +1,8 @@
-export function BookmarkHeartIcon({
-    width = '16px',
-    height = '16px',
-}: {
-    width?: string;
-    height?: string;
-}) {
+export function BookmarkHeartIcon({ size = '16px' }: { size?: string }) {
     return (
         <svg
-            width={width}
-            height={height}
+            width={size}
+            height={size}
             viewBox='0 0 16 16'
             fill='none'
             xmlns='http://www.w3.org/2000/svg'

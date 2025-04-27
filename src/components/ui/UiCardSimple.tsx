@@ -1,15 +1,17 @@
 import { Box, Card, CardBody, Flex, Heading, Image, Text } from '@chakra-ui/react';
 
+import { defineCategoryImage, defineCategoryLabel } from '~/helper';
+
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { EmojiHeartEyesIcon } from './icons/EmojiHeartEyesIcon';
 
 type Props = {
     categoryBgColor: string;
     title: string;
-    description?: string;
-    category: { title: string; iconSrc: string };
+    description: string;
+    category: string[];
     likes: number;
-    favorites: number;
+    bookmarks: number;
 };
 
 export function UiCardSimple({
@@ -18,7 +20,7 @@ export function UiCardSimple({
     description,
     category,
     likes,
-    favorites,
+    bookmarks,
 }: Props) {
     return (
         <Card
@@ -70,12 +72,20 @@ export function UiCardSimple({
                         bg={categoryBgColor}
                         alignItems='center'
                     >
-                        <Image w='16px' h='16px' src={category.iconSrc} alt='icon' />
-                        <Text fontSize='sm' whiteSpace='nowrap'>
-                            {category.title}
-                        </Text>
+                        {/* {category.map((item) => ( */}
+                        <>
+                            <Image
+                                w='16px'
+                                h='16px'
+                                src={defineCategoryImage(category[0])}
+                                alt='icon'
+                            />
+                            <Text fontSize='sm' whiteSpace='nowrap'>
+                                {defineCategoryLabel(category[0])}
+                            </Text>
+                        </>
                     </Flex>
-                    {favorites || likes ? (
+                    {bookmarks || likes ? (
                         <Flex
                             right={{
                                 base: '12px',
@@ -91,11 +101,13 @@ export function UiCardSimple({
                             gap='8px'
                             color='primary.400'
                             fontWeight='600'
+                            zIndex={50}
+                            bgColor='neutral.0'
                         >
-                            {favorites ? (
+                            {bookmarks ? (
                                 <Flex p='4px' gap='6px'>
                                     <BookmarkHeartIcon />
-                                    {favorites}
+                                    {bookmarks}
                                 </Flex>
                             ) : null}
                             {likes ? (

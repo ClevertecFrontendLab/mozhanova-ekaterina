@@ -1,8 +1,8 @@
 import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { Flex, Heading, SimpleGrid, useMediaQuery } from '@chakra-ui/react';
 
+import { UiButton } from '../../ui/UiButton';
 import { BlogCard } from './BlogCard';
-import { UiButton } from './ui/UiButton';
 
 export function BlogsSection() {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');

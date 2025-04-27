@@ -1,11 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
+import { Outlet } from 'react-router';
 
-import { BlogsSection } from '~/components/BlogsSection';
-import { PageToolbar } from '~/components/PageToolbar';
-import { RelevantKitchenBlock } from '~/components/RelevantKitchenBlock';
-import { Slider } from '~/components/Slider';
-import { TheJuiciestSection } from '~/components/TheJuiciestSection';
-import { data_juiciest, data_relevant_vegan, data_slider } from '~/constants';
+import { PageToolbar } from '~/components/shared/PageToolbar/PageToolbar';
 
 export function Home() {
     return (
@@ -18,15 +14,13 @@ export function Home() {
                     base: '32px',
                     lg: '40px',
                 }}
+                padding={{
+                    base: '0 16px',
+                    md: '0 20px',
+                    lg: '0 24px',
+                }}
             >
-                <Slider data={data_slider} />
-                <TheJuiciestSection data={data_juiciest} />
-                <BlogsSection />
-                <RelevantKitchenBlock
-                    data={data_relevant_vegan}
-                    heading='Веганская кухня'
-                    description='Интересны не только убеждённым вегетарианцам, но и тем, кто хочет  попробовать вегетарианскую диету и готовить вкусные  вегетарианские блюда.'
-                />
+                <Outlet />
             </Flex>
         </Box>
     );
