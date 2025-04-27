@@ -8,6 +8,8 @@ import { selectFilteredRecipes } from '~/store/selectors';
 function SearchPage() {
     const filteredRecipes = useSelector(selectFilteredRecipes);
 
+    console.log(filteredRecipes);
+
     return (
         <>
             <Box

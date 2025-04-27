@@ -83,6 +83,7 @@ export const selectFilteredRecipes = createSelector(
                     matchesAuthors &&
                     matchesMeat &&
                     matchesGarnish() &&
+                    matchesGarnish() &&
                     matchesSearchQuery
                 );
             });

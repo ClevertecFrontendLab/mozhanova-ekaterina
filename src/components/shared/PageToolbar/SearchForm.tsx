@@ -53,16 +53,6 @@ export function SearchForm({
         setErrorMessage('');
     };
 
-    // useEffect(() => {
-    //     if (filteredRecipes.length === 0 && value.trim().length >= 3) {
-    //         setIsSuccess(false);
-    //         setIsError(true);
-    //     } else if (filteredRecipes.length > 0 && value.trim().length >= 3) {
-    //         setIsSuccess(true);
-    //         setIsError(false);
-    //     }
-    // }, [filteredRecipes, value]);
-
     useEffect(() => {
         if (value.trim().length >= 3) {
             setIsError(false);

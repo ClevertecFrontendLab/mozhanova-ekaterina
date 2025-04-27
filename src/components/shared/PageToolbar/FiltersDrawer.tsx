@@ -219,6 +219,7 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
                             </Flex>
                             <Box>
                                 <SelectOptions
+                                    tagsCloseBtn={false}
                                     isDisabled={!switchAllergens}
                                     selected={selectedAllergens}
                                     setSelected={setSelectedAllergens}
