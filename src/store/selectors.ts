@@ -90,3 +90,21 @@ export const selectFilteredRecipes = createSelector(
         }
     },
 );
+
+export const selectGlobalLoading = createSelector(
+    (state: ApplicationState) => state,
+    (state) => {
+        // Получаем состояния из всех API
+        const apiStates = [
+            state.recipeApi?.queries || {},
+            state.recipeApi?.mutations || {},
+            state.categoryApi?.queries || {},
+            state.categoryApi?.mutations || {},
+        ];
+
+        // Проверяем все типы запросов
+        return apiStates.some((apiState) =>
+            Object.values(apiState).some((item) => item?.status === 'pending'),
+        );
+    },
+);
