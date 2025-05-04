@@ -2,15 +2,18 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { Box, Flex, Heading, SimpleGrid, useMediaQuery } from '@chakra-ui/react';
 import { Link } from 'react-router';
 
-import { data } from '~/mocks/recipes';
-import { TRecipe } from '~/types';
+import { useGetPopularRecipesQuery } from '~/query/recipe-api';
 
 import { UiButton } from '../ui/UiButton';
 import { UiCard } from '../ui/UiCard';
 
 export function TheJuiciestSection() {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
-    const sortedData: TRecipe[] = [...data].sort((a, b) => b.likes - a.likes);
+    const { data, isLoading, isError } = useGetPopularRecipesQuery({
+        limit: 4,
+    });
+
+    if (isError || isLoading) return null;
 
     return (
         <Flex
@@ -52,10 +55,10 @@ export function TheJuiciestSection() {
                 }}
                 spacing={6}
             >
-                {sortedData.slice(0, 4).map((recipe, i) => (
+                {data?.data.map((recipe, i) => (
                     <UiCard
                         index={i}
-                        key={recipe.id}
+                        key={recipe._id}
                         data={recipe}
                         size='lg'
                         recommendation='Елена Высоцкая'

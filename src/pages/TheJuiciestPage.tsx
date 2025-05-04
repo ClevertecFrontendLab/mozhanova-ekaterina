@@ -1,23 +1,55 @@
-import { Box } from '@chakra-ui/react';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { Box, Flex } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { PageToolbar } from '~/components/shared/PageToolbar/PageToolbar';
 import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
+import { UiButton } from '~/components/ui/UiButton';
 import UiCardGrid from '~/components/ui/UiCardGrid';
-import { setCategoryFilter, setSubCategoryFilter } from '~/store/recipe-slice';
-import { selectFilteredRecipes } from '~/store/selectors';
-import { TRecipe } from '~/types';
+import { TRecipe, useGetPopularRecipesQuery } from '~/query/recipe-api';
+import { ApplicationState } from '~/store/configure-store';
 
 export function TheJuiciestPage() {
-    const filteredRecipes = useSelector(selectFilteredRecipes);
-    const dispatch = useDispatch();
-    const sortedData: TRecipe[] = [...filteredRecipes].sort((a, b) => b.likes - a.likes);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [allRecipes, setAllRecipes] = useState<TRecipe[]>([]);
+    const filters = useSelector((state: ApplicationState) => state.recipe.filters);
+    const { data, isLoading, isError } = useGetPopularRecipesQuery(
+        {
+            limit: 8,
+            page: currentPage,
+            ...(filters.allergens.length > 0 && { allergens: filters.allergens }),
+        },
+        {
+            refetchOnMountOrArgChange: true,
+        },
+    );
+    const hasMore = data?.meta ? currentPage < data.meta.totalPages : false;
 
     useEffect(() => {
-        dispatch(setCategoryFilter([]));
-        dispatch(setSubCategoryFilter([]));
-    }, [dispatch]);
+        if (data?.data) {
+            if (currentPage === 1) {
+                // Первая страница - полная замена данных
+                setAllRecipes(data.data);
+            } else {
+                // Последующие страницы - добавление данных
+                setAllRecipes((prev) => [...prev, ...data.data]);
+            }
+        }
+    }, [data?.data, currentPage]);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [filters]);
+
+    const loadMore = () => {
+        if (hasMore) {
+            setCurrentPage((prev) => prev + 1);
+        }
+    };
+
+    if (isError || isLoading) return null;
+
+    console.log(allRecipes);
 
     return (
         <>
@@ -29,11 +61,18 @@ export function TheJuiciestPage() {
                     lg: '0 24px',
                 }}
             >
-                <UiCardGrid data={sortedData} />
-                <RelevantKitchenBlock
-                    heading='Веганская кухня'
-                    description='Интересны не только убеждённым вегетарианцам, но и тем, кто хочет  попробовать вегетарианскую диету и готовить вкусные  вегетарианские блюда.'
-                />
+                <UiCardGrid data={allRecipes} />
+                {hasMore && (
+                    <Flex justifyContent='center' mt={4} mb={10}>
+                        <UiButton
+                            onClick={loadMore}
+                            size='md'
+                            text='Загрузить еще'
+                            variant='primary'
+                        />
+                    </Flex>
+                )}
+                <RelevantKitchenBlock />
             </Box>
         </>
     );
