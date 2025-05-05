@@ -1,5 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { useParams } from 'react-router';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router';
 
 import { AuthorInfo } from '~/components/recipe/AuthorInfo';
 import { Hero } from '~/components/recipe/Hero';
@@ -7,13 +8,23 @@ import { IngredientsTable } from '~/components/recipe/IngredientsTable';
 import { NutritionValue } from '~/components/recipe/NutritionValue';
 import { Steps } from '~/components/recipe/Steps';
 import { Slider } from '~/components/shared/slider/Slider';
-import { data } from '~/mocks/recipes';
-import { TRecipe } from '~/types';
+import { useToast } from '~/hooks/use-toast';
+import { useGetRecipeByIdQuery } from '~/query/recipe-api';
 
 export function RecipePage() {
-    const params = useParams();
-    const recipe = data.find((recipe) => recipe.id === params.id) as TRecipe;
+    const { id } = useParams();
+    const { showError } = useToast();
+    const navigate = useNavigate();
+    const { data, isLoading, isError } = useGetRecipeByIdQuery(id || '', { skip: !id });
 
+    useEffect(() => {
+        if (isError) {
+            showError('Ошибка сервера', 'Попробуйте попозже');
+            navigate(-1);
+        }
+    }, [isError, showError, navigate]);
+
+    if (isLoading || isError || !data) return null;
     return (
         <Box
             padding={{
@@ -22,7 +33,7 @@ export function RecipePage() {
                 lg: '56px 24px 0',
             }}
         >
-            <Hero recipe={recipe} />
+            <Hero recipe={data} />
             <Box
                 mx='auto'
                 maxW={{
@@ -31,7 +42,7 @@ export function RecipePage() {
                     lg: '668px',
                 }}
             >
-                <NutritionValue nutritionValue={recipe.nutritionValue} />
+                <NutritionValue nutritionValue={data.nutritionValue} />
             </Box>
             <Flex
                 direction='column'
@@ -47,8 +58,8 @@ export function RecipePage() {
                 }}
                 mx='auto'
             >
-                <IngredientsTable portions={recipe.portions} ingredients={recipe.ingredients} />
-                <Steps steps={recipe.steps} />
+                <IngredientsTable portions={data.portions} ingredients={data.ingredients} />
+                <Steps steps={data.steps} />
                 <AuthorInfo />
             </Flex>
             <Slider />
