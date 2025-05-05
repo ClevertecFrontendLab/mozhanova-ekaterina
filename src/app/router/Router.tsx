@@ -5,6 +5,7 @@ import { PageTabs } from '~/components/PageTabs';
 import { DishesByType } from '~/pages/DishesByType';
 import { HomeMain } from '~/pages/HomeMain';
 import { Home } from '~/pages/HomePage';
+import { NotFoundPage } from '~/pages/NotFoundPage';
 import { RecipePage } from '~/pages/ResipePage';
 import SearchPage from '~/pages/SearchPage';
 import { TheJuiciestPage } from '~/pages/TheJuiciestPage';
@@ -26,6 +27,8 @@ export const Router = () => (
             <Route path='/the-juiciest' element={<TheJuiciestPage />} />
 
             <Route path='/search' element={<SearchPage />} />
+
+            <Route path='not-found' element={<NotFoundPage />} />
         </Route>
     </Routes>
 );
