@@ -9,9 +9,12 @@ import {
     Text,
     useMediaQuery,
 } from '@chakra-ui/react';
+import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router';
 
 import { UiCardInfo } from '~/components/ui/UiCardInfo';
+import { ApplicationState } from '~/store/configure-store';
+import { selectRecipeCategories } from '~/store/selectors';
 import { TRecipe } from '~/types';
 
 type Props = {
@@ -19,14 +22,18 @@ type Props = {
 };
 
 export function SliderCard({
-    data: { title, description, image, category, likes, bookmarks, subcategory, id },
+    data: { title, description, image, categoriesIds, likes, bookmarks, _id },
 }: Props) {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
     const params = useParams();
 
+    const rootCategories = useSelector((state: ApplicationState) =>
+        selectRecipeCategories(state, categoriesIds),
+    );
+
     return (
         <Link
-            to={`/${params.category || category[0]}/${params.subCategory || subcategory[0]}/${id}`}
+            to={`/${params.category || rootCategories.map((c) => c?.category)[0]}/${params.subCategory || rootCategories.map((c) => c?.subCategories[0]?.category)[0]}/${_id}`}
         >
             <Card
                 position='relative'
@@ -38,7 +45,13 @@ export function SliderCard({
                 }}
                 h='100%'
             >
-                <Image objectFit='cover' maxW='100%' maxH='100%' src={image} alt='card image' />
+                <Image
+                    objectFit='cover'
+                    maxW='100%'
+                    maxH='100%'
+                    src={`https://training-api.clevertec.ru${image}`}
+                    alt='card image'
+                />
 
                 <Stack spacing={0} flexGrow={1}>
                     <CardBody
@@ -85,7 +98,7 @@ export function SliderCard({
                     >
                         <UiCardInfo
                             categoryBgColor='primary.100'
-                            category={category}
+                            categories={rootCategories.map((category) => category?._id)}
                             likes={likes}
                             bookmarks={bookmarks}
                         />
