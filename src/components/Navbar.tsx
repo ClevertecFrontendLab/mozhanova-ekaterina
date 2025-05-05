@@ -1,6 +1,6 @@
 import { Box, Flex, useMediaQuery } from '@chakra-ui/react';
 
-import { useBodyScrollLock } from '~/store/hooks';
+import { useBodyScrollLock } from '~/hooks/use-scroll';
 
 import { Footer } from './footer/Footer';
 import { Navigation } from './nav/Navigation';

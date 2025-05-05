@@ -1,15 +1,17 @@
-import { Box, ChevronDownIcon, ChevronUpIcon, Flex, Image } from '@chakra-ui/icons';
+import { Box, ChevronDownIcon, ChevronUpIcon, Flex, Image, useMediaQuery } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 
-import { TCategory } from '~/types';
+import { ICategory } from '~/query/category-api';
 
 type Props = {
-    category: TCategory;
+    category: ICategory;
     setMenuOpen: (value: boolean) => void;
+    'data-id': string;
 };
 
-export function NavigationItem({ category }: Props) {
+export function NavigationItem({ category, setMenuOpen, ...props }: Props) {
+    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
     const [isOpen, setIsOpen] = useState(false);
     const params = useParams();
 
@@ -17,17 +19,14 @@ export function NavigationItem({ category }: Props) {
     const currentSubCategory = params.subCategory;
 
     useEffect(() => {
-        currentCategory === category.id ? setIsOpen(true) : setIsOpen(false);
-    }, [currentCategory, category.id]);
+        currentCategory === category.category ? setIsOpen(true) : setIsOpen(false);
+    }, [currentCategory, category.category]);
 
     return (
         <Box
-            data-test-id={category.id === 'vegan' ? 'vegan-cuisine' : `${category.id}`}
+            // data-test-id={category._id === 'vegan' ? 'vegan-cuisine' : `${category._id}`}
             as='li'
-            w={{
-                base: 'unset',
-                md: '230px',
-            }}
+            {...props}
         >
             <Flex
                 gap='12px'
@@ -36,12 +35,17 @@ export function NavigationItem({ category }: Props) {
                 justifyContent='space-between'
                 fontWeight='500'
                 cursor='pointer'
-                bgColor={currentCategory === category.id ? 'primary.50' : 'transparent'}
+                bgColor={currentCategory === category.category ? 'primary.50' : 'transparent'}
             >
                 <Flex gap='12px' whiteSpace='nowrap' _hover={{ fontWeight: '700' }}>
-                    <Image width='24px' height='24px' src={category.iconSrc} alt='menu_item_icon' />
-                    <Link to={`/${category.id}/${category.subCategories[0].id}`}>
-                        {category.label}
+                    <Image
+                        width='24px'
+                        height='24px'
+                        src={`https://training-api.clevertec.ru${category.icon}`}
+                        alt='menu_item_icon'
+                    />
+                    <Link to={`/${category.category}/${category.subCategories[0].category}`}>
+                        {category.title}
                     </Link>
                 </Flex>
                 {isOpen ? (
@@ -60,9 +64,10 @@ export function NavigationItem({ category }: Props) {
             </Flex>
 
             <Box role='group' as='ul' paddingLeft='33px' display={isOpen ? 'block' : 'none'}>
-                {category.subCategories.map((item) => (
+                {category.subCategories.map((sub) => (
                     <Flex
-                        key={`${category.id}-${item.id}`}
+                        data-id={sub._id}
+                        key={`${category._id}-${sub._id}`}
                         as='li'
                         padding='6px 0'
                         cursor='pointer'
@@ -71,12 +76,14 @@ export function NavigationItem({ category }: Props) {
                             fontWeight: '700',
                             '& .divider': { width: '8px', transform: 'translateX(-100%)' },
                         }}
-                        aria-current={item.id === currentSubCategory ? 'page' : undefined}
+                        aria-current={sub.category === currentSubCategory ? 'page' : undefined}
                         _activeLink={{
                             fontWeight: '700',
                             '& .divider': { width: '8px', transform: 'translateX(-100%)' },
                         }}
-                        data-test-id={item.id === currentSubCategory && `${item.id}-active`}
+                        data-test-id={
+                            sub.category === currentSubCategory && `${sub.category}-active`
+                        }
                     >
                         <Box
                             className='divider'
@@ -86,7 +93,12 @@ export function NavigationItem({ category }: Props) {
                             bg='primary.200'
                             transition='all 0.3s ease-in-out'
                         ></Box>
-                        <Link to={`/${category.id}/${item.id}`}>{item.label}</Link>
+                        <Link
+                            onClick={() => !isLargerThanMD && setMenuOpen(false)}
+                            to={`/${category.category}/${sub.category}`}
+                        >
+                            {sub.title}
+                        </Link>
                     </Flex>
                 ))}
             </Box>
