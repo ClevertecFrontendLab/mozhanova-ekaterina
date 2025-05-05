@@ -1,14 +1,48 @@
-import { Box } from '@chakra-ui/react';
-import { memo } from 'react';
-import { useSelector } from 'react-redux';
+import { Box, Flex } from '@chakra-ui/react';
+import { memo, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { UiButton } from '~/components/ui/UiButton';
 import UiCardGrid from '~/components/ui/UiCardGrid';
-import { selectFilteredRecipes } from '~/store/selectors';
+import { TRecipe } from '~/query/recipe-api';
+import { ApplicationState } from '~/store/configure-store';
+import { useRecipesSearch } from '~/store/hooks';
+import { setCurrentPage } from '~/store/recipe-slice';
+import { selectFilters } from '~/store/selectors';
 
 function SearchPage() {
-    const filteredRecipes = useSelector(selectFilteredRecipes);
+    const [allRecipes, setAllRecipes] = useState<TRecipe[]>([]);
+    const pagination = useSelector((state: ApplicationState) => state.recipe.pagination);
+    const filters = useSelector(selectFilters);
+    const dispatch = useDispatch();
 
-    console.log(filteredRecipes);
+    const { data, isLoading, isError } = useRecipesSearch();
+
+    const hasMore = pagination.totalPages ? pagination.currentPage < pagination.totalPages : false;
+
+    useEffect(() => {
+        if (data?.data) {
+            if (pagination.currentPage === 1) {
+                // Первая страница - полная замена данных
+                setAllRecipes(data.data);
+            } else {
+                // Последующие страницы - добавление данных
+                setAllRecipes((prev) => [...prev, ...data.data]);
+            }
+        }
+    }, [data?.data, pagination.currentPage]);
+
+    useEffect(() => {
+        dispatch(setCurrentPage(1));
+    }, [filters, dispatch]);
+
+    const loadMore = () => {
+        if (hasMore) {
+            dispatch(setCurrentPage(pagination.currentPage + 1));
+        }
+    };
+
+    if (isLoading || isError) return null;
 
     return (
         <>
@@ -20,10 +54,16 @@ function SearchPage() {
                 }}
             >
                 <Box mb={10}>
-                    {filteredRecipes.length > 0 ? (
-                        <UiCardGrid data={filteredRecipes} />
-                    ) : (
-                        <Box p={4}>Ничего не нашлось</Box>
+                    <UiCardGrid data={allRecipes} />
+                    {hasMore && (
+                        <Flex justifyContent='center' mt={4} mb={10}>
+                            <UiButton
+                                onClick={loadMore}
+                                size='md'
+                                text='Загрузить еще'
+                                variant='primary'
+                            />
+                        </Flex>
                     )}
                 </Box>
             </Box>

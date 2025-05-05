@@ -15,8 +15,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
 import { SortIcon } from '~/components/ui/icons/SortIcon';
-import { RecipesState, setSearchQuery } from '~/store/recipe-slice';
-import { selectFilteredRecipes } from '~/store/selectors';
+import { useRecipesSearch } from '~/store/hooks';
+import { setSearchString } from '~/store/recipe-slice';
+import { selectFilters } from '~/store/selectors';
 
 export function SearchForm({
     setSearchOnFocus,
@@ -25,57 +26,43 @@ export function SearchForm({
     setSearchOnFocus: (value: boolean) => void;
     onOpen: () => void;
 }) {
-    const filters = useSelector((state: { recipe: RecipesState }) => state.recipe.filters);
-    const filteredRecipes = useSelector(selectFilteredRecipes);
+    const filters = useSelector(selectFilters);
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [value, setValue] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const [isError, setIsError] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
-    const handleSearch = () => {
-        if (value.trim().length >= 3) {
+    const { data, isError } = useRecipesSearch();
+
+    const isEmptyResult = Boolean(data?.data && data.data.length === 0);
+    const isValidInput = value.trim().length >= 3;
+    const showErrorBorder =
+        ((!isValidInput && isSubmitted) || isEmptyResult) && location.pathname != '/';
+    const showSuccessBorder = isValidInput && !isEmptyResult && !isError;
+
+    const onSearch = () => {
+        setIsSubmitted(true);
+
+        if (isValidInput) {
             setErrorMessage('');
-            dispatch(setSearchQuery(value));
+            dispatch(setSearchString(value.trim()));
             navigate('/search');
         } else {
-            setIsError(true);
-            setErrorMessage('Введите не менее 3-ёх символов');
+            setErrorMessage('Введите не менее 3-х символов');
         }
     };
 
     const handleClear = () => {
-        dispatch(setSearchQuery(''));
-        setIsError(false);
-        setIsSuccess(false);
-        setErrorMessage('');
+        setValue('');
+        dispatch(setSearchString(''));
+        setIsSubmitted(false);
     };
 
     useEffect(() => {
-        if (value.trim().length >= 3) {
-            setIsError(false);
-            setErrorMessage('');
-        }
-    }, [value]);
-
-    useEffect(() => {
-        setValue(filters.searchQuery);
-    }, [filters.searchQuery]);
-
-    useEffect(() => {
-        if (filteredRecipes.length === 0 && value.trim().length >= 3) {
-            setIsError(true);
-            setIsSuccess(false);
-        } else if (filteredRecipes.length > 0 && value.trim().length >= 3) {
-            setIsError(false);
-            setIsSuccess(true);
-        } else {
-            setIsError(false);
-            setIsSuccess(false);
-        }
-    }, [filteredRecipes, value]);
+        setValue(filters.searchString);
+    }, [filters.searchString]);
 
     return (
         <Flex
@@ -106,7 +93,7 @@ export function SearchForm({
                     <Input
                         pr={0}
                         data-test-id='search-input'
-                        onKeyDown={(e) => !errorMessage && e.key === 'Enter' && handleSearch()}
+                        onKeyDown={(e) => !errorMessage && e.key === 'Enter' && onSearch()}
                         onFocus={() => setSearchOnFocus(true)}
                         onBlur={() => setSearchOnFocus(false)}
                         value={value}
@@ -118,18 +105,21 @@ export function SearchForm({
                         }}
                         placeholder='Название или ингредиент...'
                         borderColor={
-                            isError ? 'error.400' : isSuccess ? 'primary.400' : 'border.dark'
+                            showErrorBorder
+                                ? 'error.400'
+                                : showSuccessBorder
+                                  ? 'primary.400'
+                                  : 'border.dark'
                         }
                     />
                     <Flex alignItems='center' position='absolute' right='0' top='0' bottom='0'>
                         <Button
                             bg='transparent'
                             onClick={handleClear}
-                            _hover={{ bg: 'transparent', color: 'text.primary' }}
+                            _hover={{ color: 'text.primary' }}
                             p={0}
                         >
                             <CloseIcon
-                                color='text.primary'
                                 w={{
                                     base: '10px',
                                     md: '14px',
@@ -141,12 +131,12 @@ export function SearchForm({
                             />
                         </Button>
                         <Button
-                            onClick={handleSearch}
+                            onClick={onSearch}
                             bg='transparent'
                             p={0}
                             data-test-id='search-button'
                             pointerEvents={value.length < 3 ? 'none' : 'auto'}
-                            _hover={{ bg: 'transparent' }}
+                            _hover={{ color: 'text.primary' }}
                         >
                             <SearchIcon
                                 w={{

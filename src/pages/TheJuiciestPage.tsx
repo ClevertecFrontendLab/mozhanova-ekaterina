@@ -2,8 +2,8 @@ import { Box, Flex } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { PageToolbar } from '~/components/shared/PageToolbar/PageToolbar';
 import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
+import { SearchBar } from '~/components/shared/search-bar/SearchBar';
 import { UiButton } from '~/components/ui/UiButton';
 import UiCardGrid from '~/components/ui/UiCardGrid';
 import { TRecipe, useGetPopularRecipesQuery } from '~/query/recipe-api';
@@ -49,11 +49,9 @@ export function TheJuiciestPage() {
 
     if (isError || isLoading) return null;
 
-    console.log(allRecipes);
-
     return (
         <>
-            <PageToolbar title='Самое сочное' />
+            <SearchBar title='Самое сочное' />
             <Box
                 padding={{
                     base: '0 16px',

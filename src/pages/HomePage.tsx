@@ -1,12 +1,24 @@
 import { Box, Flex } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useLocation } from 'react-router';
 import { Outlet } from 'react-router';
 
-import { PageToolbar } from '~/components/shared/PageToolbar/PageToolbar';
+import { SearchBar } from '~/components/shared/search-bar/SearchBar';
+import { setSearchString } from '~/store/recipe-slice';
 
 export function Home() {
+    const dispatch = useDispatch();
+    const location = useLocation();
+    useEffect(() => {
+        if (location.pathname === '/') {
+            dispatch(setSearchString(''));
+        }
+    }, [dispatch, location.pathname]);
+
     return (
         <Box>
-            <PageToolbar title='Приятного аппетита!' />
+            <SearchBar title='Приятного аппетита!' />
 
             <Flex
                 direction='column'
