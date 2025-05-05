@@ -1,16 +1,56 @@
 import { Box, Flex, Grid, Heading, Text } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 
-import { data } from '~/mocks/recipes';
+import { ICategory, ISubCategory } from '~/query/category-api';
+import { useGetRecipesByCategoryQuery } from '~/query/recipe-api';
+import { ApplicationState } from '~/store/configure-store';
+import { useAppSelector } from '~/store/hooks';
+import { selectCategoryById, selectSubcategories } from '~/store/selectors';
 
 import { UiCardMini } from '../ui/UiCardMini';
 import { UiCardSimple } from '../ui/UiCardSimple';
 
-type Props = {
-    heading: string;
-    description: string;
-};
+export function RelevantKitchenBlock() {
+    const { category } = useParams();
+    const allSubCategories = useAppSelector(selectSubcategories) as ISubCategory[];
+    const [randomSubCategory, setRandomSubCategory] = useState<ISubCategory | null>(null);
 
-export function RelevantKitchenBlock({ heading, description }: Props) {
+    const currentRootCategory = useAppSelector((state: ApplicationState) =>
+        selectCategoryById(state, randomSubCategory?.rootCategoryId || ''),
+    ) as ICategory;
+
+    useEffect(() => {
+        if (allSubCategories.length > 0) {
+            const randomIndex = Math.floor(Math.random() * allSubCategories.length);
+            setRandomSubCategory(allSubCategories[randomIndex]);
+        }
+    }, [allSubCategories, category]);
+
+    const {
+        data,
+        isLoading: recipesLoading,
+        isError: recipesError,
+        refetch,
+    } = useGetRecipesByCategoryQuery(
+        {
+            categoryId: randomSubCategory?._id || '',
+            limit: 5,
+        },
+        {
+            skip: !randomSubCategory,
+            refetchOnMountOrArgChange: true,
+        },
+    );
+
+    useEffect(() => {
+        if (randomSubCategory?._id) {
+            refetch();
+        }
+    }, [category, refetch, randomSubCategory?._id]);
+
+    if (recipesError || recipesLoading) return null;
+
     return (
         <Box pb={4}>
             <Grid
@@ -44,7 +84,7 @@ export function RelevantKitchenBlock({ heading, description }: Props) {
                     }}
                     fontWeight='500'
                 >
-                    {heading}
+                    {currentRootCategory && currentRootCategory.title}
                 </Heading>
 
                 <Text
@@ -59,7 +99,7 @@ export function RelevantKitchenBlock({ heading, description }: Props) {
                         md: 'md',
                     }}
                 >
-                    {description}
+                    {currentRootCategory && currentRootCategory.description}
                 </Text>
             </Grid>
 
@@ -90,17 +130,9 @@ export function RelevantKitchenBlock({ heading, description }: Props) {
                         xl: '1/2',
                     }}
                 >
-                    {data.slice(0, 2).map((recipe) => (
-                        <UiCardSimple
-                            key={recipe.id}
-                            categoryBgColor='secondary.100'
-                            title={recipe.title}
-                            description={recipe.description}
-                            category={recipe.category}
-                            likes={recipe.likes}
-                            bookmarks={recipe.bookmarks}
-                        />
-                    ))}
+                    {data?.data
+                        .slice(0, 2)
+                        .map((recipe) => <UiCardSimple key={recipe._id} data={recipe} />)}
                 </Grid>
 
                 <Flex
@@ -112,13 +144,9 @@ export function RelevantKitchenBlock({ heading, description }: Props) {
                     }}
                     minW={0}
                 >
-                    {data.slice(-3).map((recipe) => (
-                        <UiCardMini
-                            key={recipe.id}
-                            category={recipe.category}
-                            title={recipe.title}
-                        />
-                    ))}
+                    {data?.data
+                        .slice(2, 5)
+                        .map((recipe) => <UiCardMini key={recipe._id} data={recipe} />)}
                 </Flex>
             </Grid>
         </Box>

@@ -1,15 +1,19 @@
 import { Box, Flex, Heading, Image } from '@chakra-ui/react';
+import { useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router';
 
-import { defineCategoryImage } from '~/helper';
+import { ApplicationState } from '~/store/configure-store';
+import { selectRecipeCategories } from '~/store/selectors';
+import { TRecipe } from '~/types';
 
 import { UiButton } from './UiButton';
 
-type Props = {
-    title: string;
-    category: string[];
-};
+export function UiCardMini({ data: { title, categoriesIds, _id } }: { data: TRecipe }) {
+    const { category, subCategory } = useParams();
 
-export function UiCardMini({ title, category }: Props) {
+    const rootCategories = useSelector((state: ApplicationState) =>
+        selectRecipeCategories(state, categoriesIds),
+    );
     return (
         <Flex
             transition='box-shadow 0.3s ease-in-out'
@@ -29,7 +33,10 @@ export function UiCardMini({ title, category }: Props) {
                 md: 3,
             }}
         >
-            <Image src={defineCategoryImage(category[0])} alt='category icon' />
+            <Image
+                src={`https://training-api.clevertec.ru${rootCategories[0]?.icon}`}
+                alt='category icon'
+            />
 
             <Heading
                 fontSize={{
@@ -45,7 +52,11 @@ export function UiCardMini({ title, category }: Props) {
                 {title}
             </Heading>
             <Box flexBasis='70px'>
-                <UiButton fontSize='12px' text='Готовить' variant='accentOutline' />
+                <Link
+                    to={`/${category || rootCategories.map((c) => c?.category)[0]}/${subCategory || rootCategories.map((c) => c?.subCategories[0]?.category)[0]}/${_id}`}
+                >
+                    <UiButton fontSize='12px' text='Готовить' variant='accentOutline' />
+                </Link>
             </Box>
         </Flex>
     );
