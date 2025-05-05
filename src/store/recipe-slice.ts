@@ -1,33 +1,37 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { data } from '~/mocks/recipes';
-import { TRecipe } from '~/types';
-
 export interface RecipesState {
-    data: TRecipe[];
+    // data: {};
     filters: {
-        category: string[];
-        subcategory: string[];
-        ingredients: string[];
+        categoryName: string[];
+        subcategoryIds: string[];
         allergens: string[];
         meat: string[];
         garnish: string[];
         authors: string[];
-        searchQuery: string;
+        searchString: string;
+    };
+    pagination: {
+        currentPage: number;
+        limit: number;
+        totalPages?: number;
     };
 }
 
 const initialState: RecipesState = {
-    data: data,
+    // data: {},
     filters: {
-        category: [],
-        subcategory: [],
-        ingredients: [],
+        categoryName: [],
+        subcategoryIds: [],
         allergens: [],
         meat: [],
         garnish: [],
         authors: [],
-        searchQuery: '',
+        searchString: '',
+    },
+    pagination: {
+        currentPage: 1,
+        limit: 8,
     },
 };
 
@@ -35,17 +39,14 @@ export const recipesSlice = createSlice({
     name: 'recipe',
     initialState,
     reducers: {
-        setCategoryFilter: (state, action: PayloadAction<string[]>) => {
-            state.filters.category = action.payload;
-        },
-        setSearchQuery: (state, action: PayloadAction<string>) => {
-            state.filters.searchQuery = action.payload;
+        setSearchString: (state, action: PayloadAction<string>) => {
+            state.filters.searchString = action.payload;
         },
         setSubCategoryFilter: (state, action: PayloadAction<string[]>) => {
-            state.filters.subcategory = action.payload;
+            state.filters.subcategoryIds = action.payload;
         },
-        setIngredientsFilter: (state, action: PayloadAction<string[]>) => {
-            state.filters.ingredients = action.payload;
+        setCategoryFilter: (state, action: PayloadAction<string[]>) => {
+            state.filters.categoryName = action.payload;
         },
         setAllergensFilter: (state, action: PayloadAction<string[]>) => {
             state.filters.allergens = action.payload;
@@ -62,18 +63,25 @@ export const recipesSlice = createSlice({
         cleanFilters: (state) => {
             state.filters = initialState.filters;
         },
+        setCurrentPage: (state, action: PayloadAction<number>) => {
+            state.pagination.currentPage = action.payload;
+        },
+        setPaginationMeta: (state, action: PayloadAction<{ totalPages: number }>) => {
+            state.pagination.totalPages = action.payload.totalPages;
+        },
     },
 });
 
 export const {
     setCategoryFilter,
     setSubCategoryFilter,
-    setIngredientsFilter,
-    setSearchQuery,
+    setSearchString,
     setAllergensFilter,
     setMeatFilter,
     setGarnishFilter,
     setAuthorsFilter,
     cleanFilters,
+    setCurrentPage,
+    setPaginationMeta,
 } = recipesSlice.actions;
 export default recipesSlice.reducer;

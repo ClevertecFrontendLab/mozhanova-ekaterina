@@ -20,7 +20,7 @@ export type TRecipe = {
     side?: string;
 };
 
-interface Meta {
+export interface Meta {
     total: number;
     totalPages: number;
     page: number;
@@ -41,8 +41,8 @@ export const recipeApi = createApi({
                 params: {
                     page: params.page,
                     limit: params.limit,
-                    sortBy: params.sortBy,
-                    sortOrder: params.sortOrder,
+                    sortBy: 'createdAt',
+                    sortOrder: 'asc',
                 },
             }),
             providesTags: ['Recipes'],
@@ -110,7 +110,7 @@ export const recipeApi = createApi({
             }
         >({
             query: (params) => ({
-                url: '/recipe/search',
+                url: '/recipe',
                 params: {
                     ...params,
                     allergens: params.allergens?.join(','),
