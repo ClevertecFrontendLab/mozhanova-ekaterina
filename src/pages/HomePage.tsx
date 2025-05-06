@@ -1,24 +1,39 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useLocation } from 'react-router';
-import { Outlet } from 'react-router';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
+import { BlogsSection } from '~/components/shared/blogs/BlogsSection';
+import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
-import { setSearchString } from '~/store/recipe-slice';
+import { Slider } from '~/components/shared/slider/Slider';
+import { TheJuiciestSection } from '~/components/shared/TheJuiciestSection';
+import { useRecipesSearch } from '~/store/hooks';
 
 export function Home() {
-    const dispatch = useDispatch();
-    const location = useLocation();
+    const navigate = useNavigate();
+
+    const { isError, isFetching, data } = useRecipesSearch();
+    const [isSearchInitiated, setIsSearchInitiated] = useState(false);
+
     useEffect(() => {
-        if (location.pathname === '/') {
-            dispatch(setSearchString(''));
+        if (isSearchInitiated) {
+            if (isFetching) return;
+            if (data && data.length > 0) {
+                navigate('/search');
+                setIsSearchInitiated(false);
+            } else if (!data && isError) setIsSearchInitiated(false);
         }
-    }, [dispatch, location.pathname]);
+    }, [isSearchInitiated, navigate, data, isError, isFetching]);
 
     return (
         <Box>
-            <SearchBar title='Приятного аппетита!' />
+            <SearchBar
+                isFetching={isFetching}
+                isError={isError}
+                data={data}
+                title='Приятного аппетита!'
+                onSearch={setIsSearchInitiated}
+            />
 
             <Flex
                 direction='column'
@@ -32,7 +47,10 @@ export function Home() {
                     lg: '0 24px',
                 }}
             >
-                <Outlet />
+                <Slider />
+                <TheJuiciestSection />
+                <BlogsSection />
+                <RelevantKitchenBlock />
             </Flex>
         </Box>
     );

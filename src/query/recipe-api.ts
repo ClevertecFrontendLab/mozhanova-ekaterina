@@ -56,6 +56,7 @@ export const recipeApi = createApi({
                 sortBy?: string;
                 sortOrder?: string;
                 allergens?: string[];
+                searchString?: string;
             }
         >({
             query: (params) => ({
@@ -129,6 +130,7 @@ export const {
     useGetPopularRecipesQuery,
     useGetRecipeByIdQuery,
     useGetRecipesByCategoryQuery,
+    useLazySearchRecipesQuery,
     useSearchRecipesQuery,
 } = recipeApi;
 

@@ -1,8 +1,7 @@
 import { Box, Flex, Heading, Spinner, Text, useDisclosure, useMediaQuery } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { useToast } from '~/hooks/use-toast';
-import { useRecipesSearch } from '~/store/hooks';
+import { TRecipe } from '~/query/recipe-api';
 
 import { FiltersDrawer } from './FiltersDrawer';
 import { SearchForm } from './SearchForm';
@@ -11,18 +10,16 @@ import { SelectAllergens } from './SelectAllergens';
 type Props = {
     title: string;
     description?: string;
+    isFetching: boolean;
+    isError: boolean;
+    data: TRecipe[] | undefined;
+    onSearch?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export function SearchBar({ title, description }: Props) {
+export function SearchBar({ title, description, isFetching, isError, data, onSearch }: Props) {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
     const [searchOnFocus, setSearchOnFocus] = useState(false);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { data, isFetching, isError } = useRecipesSearch();
-    const { showError } = useToast();
-
-    useEffect(() => {
-        isError && showError('Ошибка сервера', 'Попробуйте поискать снова попозже');
-    }, [isError, showError]);
 
     return (
         <Flex
@@ -50,7 +47,7 @@ export function SearchBar({ title, description }: Props) {
                 md: '32px 0',
             }}
         >
-            {data?.data.length === 0 && location.pathname != '/' ? (
+            {data && data.length === 0 ? (
                 <Text textAlign='center' fontWeight={600}>
                     По вашему запросу ничего не найдено. <br />
                     Попробуйте другой запрос
@@ -88,9 +85,15 @@ export function SearchBar({ title, description }: Props) {
                     </Text>
                 )}
 
-                <SearchForm onOpen={onOpen} setSearchOnFocus={setSearchOnFocus} />
+                <SearchForm
+                    isError={isError}
+                    data={data}
+                    onOpen={onOpen}
+                    onSearch={onSearch}
+                    setSearchOnFocus={setSearchOnFocus}
+                />
 
-                {isLargerThanMD && <SelectAllergens />}
+                {isLargerThanMD && <SelectAllergens onSearch={onSearch} />}
                 <FiltersDrawer isOpen={isOpen} onClose={onClose} />
             </Box>
         </Flex>

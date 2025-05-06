@@ -14,10 +14,13 @@ export const useRecipesSearch = () => {
     const dispatch = useAppDispatch();
     const filters = useAppSelector(selectFilters);
     const pagination = useAppSelector((state) => state.recipe.pagination);
+
     const stableArgs = useMemo(
         () => ({
             limit: 8,
             page: pagination.currentPage,
+            sortBy: 'createdAt',
+            sortOrder: 'asc',
             ...(filters.searchString && { searchString: filters.searchString }),
             ...(filters.allergens.length > 0 && { allergens: filters.allergens }),
             ...(filters.garnish.length > 0 && { garnish: filters.garnish }),
@@ -27,20 +30,36 @@ export const useRecipesSearch = () => {
         [filters, pagination.currentPage],
     );
 
-    const queryResult = useSearchRecipesQuery(stableArgs, {
-        refetchOnMountOrArgChange: true,
-        skip: !filters.searchString && filters.allergens.length === 0,
+    // const [trigger] = useLazySearchRecipesQuery();
+    const { data, isError, isFetching, isLoading, isSuccess, currentData } = useSearchRecipesQuery({
+        ...stableArgs,
     });
 
+    // const refetch = useCallback(() => {
+    //     trigger(stableArgs);
+    // }, [stableArgs, trigger]);
+
     useEffect(() => {
-        if (queryResult.data?.meta) {
+        if (data?.meta) {
             dispatch(
                 setPaginationMeta({
-                    totalPages: queryResult.data.meta.totalPages,
+                    totalPages: data.meta.totalPages,
                 }),
             );
         }
-    }, [queryResult.data, dispatch]);
+        // if (data?.data) {
+        //     dispatch(setData(data.data));
+        // }
+    }, [data, dispatch]);
 
-    return queryResult;
+    return {
+        data: data?.data,
+        meta: data?.meta,
+        currentData,
+        isLoading,
+        isFetching,
+        isError,
+        isSuccess,
+        // refetch,
+    };
 };

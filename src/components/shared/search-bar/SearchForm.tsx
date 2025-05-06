@@ -12,43 +12,44 @@ import {
 } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
 
 import { SortIcon } from '~/components/ui/icons/SortIcon';
-import { useRecipesSearch } from '~/store/hooks';
+import { TRecipe } from '~/query/recipe-api';
 import { setSearchString } from '~/store/recipe-slice';
 import { selectFilters } from '~/store/selectors';
 
 export function SearchForm({
     setSearchOnFocus,
     onOpen,
+    data,
+    isError,
+    onSearch,
 }: {
     setSearchOnFocus: (value: boolean) => void;
     onOpen: () => void;
+    data: TRecipe[] | undefined;
+    isError: boolean;
+    onSearch?: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
     const filters = useSelector(selectFilters);
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [value, setValue] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [isSubmitted, setIsSubmitted] = useState(false);
 
-    const { data, isError } = useRecipesSearch();
-
-    const isEmptyResult = Boolean(data?.data && data.data.length === 0);
-    const isValidInput = value.trim().length >= 3;
+    const isEmptyResult = Boolean(data && data.length === 0);
+    const isValidInput = value.trim().length > 2;
     const showErrorBorder =
         ((!isValidInput && isSubmitted) || isEmptyResult) && location.pathname != '/';
     const showSuccessBorder = isValidInput && !isEmptyResult && !isError;
 
-    const onSearch = () => {
+    const handleSearch = () => {
         setIsSubmitted(true);
-
         if (isValidInput) {
             setErrorMessage('');
             dispatch(setSearchString(value.trim()));
-            navigate('/search');
+            onSearch && onSearch(true);
         } else {
             setErrorMessage('Введите не менее 3-х символов');
         }
@@ -58,6 +59,9 @@ export function SearchForm({
         setValue('');
         dispatch(setSearchString(''));
         setIsSubmitted(false);
+        if (location.pathname !== '/') {
+            onSearch && onSearch(true);
+        }
     };
 
     useEffect(() => {
@@ -71,6 +75,7 @@ export function SearchForm({
                 base: 4,
                 md: 8,
             }}
+            justifyContent='center'
         >
             <IconButton
                 aria-label='Сортировка'
@@ -81,7 +86,7 @@ export function SearchForm({
                 onClick={onOpen}
                 data-test-id='filter-button'
             />
-            <FormControl isInvalid={!!errorMessage}>
+            <FormControl w='fit-content' isInvalid={!!errorMessage}>
                 <Box
                     position='relative'
                     w={{
@@ -93,7 +98,7 @@ export function SearchForm({
                     <Input
                         pr={0}
                         data-test-id='search-input'
-                        onKeyDown={(e) => !errorMessage && e.key === 'Enter' && onSearch()}
+                        onKeyDown={(e) => isValidInput && e.key === 'Enter' && handleSearch()}
                         onFocus={() => setSearchOnFocus(true)}
                         onBlur={() => setSearchOnFocus(false)}
                         value={value}
@@ -131,7 +136,7 @@ export function SearchForm({
                             />
                         </Button>
                         <Button
-                            onClick={onSearch}
+                            onClick={handleSearch}
                             bg='transparent'
                             p={0}
                             data-test-id='search-button'

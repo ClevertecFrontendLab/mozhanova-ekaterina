@@ -1,9 +1,12 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 
+import { SearchBar } from '~/components/shared/search-bar/SearchBar';
 import { UiButton } from '~/components/ui/UiButton';
 import UiCardGrid from '~/components/ui/UiCardGrid';
+import { useToast } from '~/hooks/use-toast';
 import { TRecipe } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
 import { useRecipesSearch } from '~/store/hooks';
@@ -15,22 +18,33 @@ function SearchPage() {
     const pagination = useSelector((state: ApplicationState) => state.recipe.pagination);
     const filters = useSelector(selectFilters);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const { data, isLoading, isError } = useRecipesSearch();
+    const { showError } = useToast();
+
+    const { isLoading, isError, isFetching, data } = useRecipesSearch();
 
     const hasMore = pagination.totalPages ? pagination.currentPage < pagination.totalPages : false;
 
     useEffect(() => {
-        if (data?.data) {
+        isError && showError('Ошибка сервера', 'Попробуйте поискать снова попозже');
+    }, [isError, showError]);
+
+    useEffect(() => {
+        if (data) {
             if (pagination.currentPage === 1) {
                 // Первая страница - полная замена данных
-                setAllRecipes(data.data);
+                setAllRecipes(data);
             } else {
                 // Последующие страницы - добавление данных
-                setAllRecipes((prev) => [...prev, ...data.data]);
+                setAllRecipes((prev) => [...prev, ...data]);
             }
         }
-    }, [data?.data, pagination.currentPage]);
+    }, [data, pagination.currentPage]);
+
+    useEffect(() => {
+        if (data && data.length === 0) navigate('/');
+    }, [navigate, data]);
 
     useEffect(() => {
         dispatch(setCurrentPage(1));
@@ -46,6 +60,13 @@ function SearchPage() {
 
     return (
         <>
+            <SearchBar
+                data={data}
+                isError={isError}
+                isFetching={isFetching}
+                title='Приятного аппетита!'
+            />
+
             <Box
                 padding={{
                     base: '0 16px',

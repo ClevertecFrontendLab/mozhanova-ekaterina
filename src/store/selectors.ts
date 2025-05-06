@@ -1,94 +1,62 @@
 import { createSelector } from 'reselect';
 
-import { allergens } from '~/mocks/allergens';
-import { garnish } from '~/mocks/garnish';
-
 import { ApplicationState } from './configure-store';
 
-const selectRecipeData = (state: ApplicationState) => state.recipe.data;
-const selectFilters = (state: ApplicationState) => state.recipe.filters;
+export const selectAllCategories = (state: ApplicationState) => state.category.categories;
+export const selectCategories = createSelector([selectAllCategories], (categories) =>
+    categories.filter((category) => !category.rootCategoryId),
+);
+export const selectSubcategories = createSelector([selectAllCategories], (categories) =>
+    categories.filter((category) => category.rootCategoryId),
+);
+export const selectFilters = createSelector(
+    (state: ApplicationState) => state.recipe.filters,
+    (filters) => ({
+        searchString: filters.searchString,
+        allergens: [...filters.allergens],
+        garnish: [...filters.garnish],
+        meat: [...filters.meat],
+        subcategoryIds: [...filters.subcategoryIds],
+        categoryName: [...filters.categoryName],
+        authors: [...filters.authors],
+    }),
+);
 
-export const selectFilteredRecipes = createSelector(
-    [selectRecipeData, selectFilters],
-    (data, filters) => {
-        {
-            return data.filter((recipe) => {
-                const matchesCategories =
-                    filters.category.length > 0
-                        ? recipe.category.some((category) => filters.category.includes(category))
-                        : true;
-                const matchesSubCategories =
-                    filters.subcategory.length > 0
-                        ? recipe.subcategory.some((subcategory) =>
-                              filters.subcategory.includes(subcategory),
-                          )
-                        : true;
-                const matchesIngredients =
-                    filters.ingredients.length > 0
-                        ? recipe.ingredients.some((ingredient) =>
-                              filters.ingredients!.includes(ingredient.title.toLowerCase()),
-                          )
-                        : true;
-                const matchesAllergens =
-                    filters.allergens.length > 0
-                        ? recipe.ingredients.some((ingredient) => {
-                              const allPossibleAllergens = allergens
-                                  .filter((a) => filters.allergens.includes(Object.keys(a)[0]))
-                                  .flatMap((a) => a[Object.keys(a)[0]].map((i) => i.toLowerCase()));
-
-                              const combinedAllergens = [
-                                  ...allPossibleAllergens,
-                                  ...filters.allergens.map((a) => a.toLowerCase()),
-                              ];
-
-                              return combinedAllergens.some((allergen) =>
-                                  ingredient.title.toLowerCase().includes(allergen),
-                              );
-                          })
-                        : false;
-
-                const matchesAuthors = true;
-
-                const matchesMeat =
-                    filters.meat.length > 0
-                        ? recipe.ingredients.some((ingredient) =>
-                              filters.meat
-                                  .map((item) => item.toLowerCase())
-                                  .includes(ingredient.title.toLowerCase()),
-                          )
-                        : true;
-
-                const matchesGarnish = () => {
-                    if (filters.garnish.length > 0) {
-                        if (recipe.side) {
-                            return garnish.some((item) => filters.garnish.includes(item.label));
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return true;
-                    }
-                };
-
-                const matchesSearchQuery =
-                    filters.searchQuery.length > 0
-                        ? recipe.title.toLowerCase().includes(filters.searchQuery.toLowerCase())
-                        : true;
-
-                return (
-                    matchesCategories &&
-                    matchesSubCategories &&
-                    matchesIngredients &&
-                    !matchesAllergens &&
-                    matchesAuthors &&
-                    matchesMeat &&
-                    matchesGarnish() &&
-                    matchesGarnish() &&
-                    matchesSearchQuery
-                );
-            });
-        }
+export const selectSubCategoriesByTitles = createSelector(
+    [selectCategories, (_: ApplicationState, titles: string[]) => titles],
+    (categories, titles) => {
+        const selectedCategories = categories.filter((item) => titles.includes(item.title));
+        return selectedCategories
+            .map((item) => item.subCategories.map((subCategory) => subCategory._id))
+            .flatMap((ids) => ids);
     },
+);
+
+export const selectRecipeCategories = createSelector(
+    [
+        selectAllCategories,
+        selectSubcategories,
+        (_: ApplicationState, subcategoryIds: string[]) => subcategoryIds,
+    ],
+    (categories, subcategories, subcategoryIds) => {
+        const rootCategoryIds = Array.from(
+            new Set(
+                subcategoryIds
+                    .map((id) => subcategories.find((sub) => sub._id === id)?.rootCategoryId)
+                    .filter((id): id is string => !!id),
+            ),
+        );
+        return rootCategoryIds.map((id) => categories.find((c) => c._id === id)).filter(Boolean);
+    },
+);
+
+export const selectCategoryById = createSelector(
+    [selectAllCategories, (_: ApplicationState, id: string) => id],
+    (categories, id) => categories.find((category) => category._id === id),
+);
+export const selectCurrentRootCategory = createSelector(
+    [selectCategories, (_: ApplicationState, name: string) => name],
+    (categories, name) => categories.find((category) => category.category === name),
 );
 
 export const selectGlobalLoading = createSelector(
@@ -96,8 +64,8 @@ export const selectGlobalLoading = createSelector(
     (state) => {
         // Получаем состояния из всех API
         const apiStates = [
-            state.recipeApi?.queries || {},
-            state.recipeApi?.mutations || {},
+            // state.recipeApi?.queries || {},
+            // state.recipeApi?.mutations || {},
             state.categoryApi?.queries || {},
             state.categoryApi?.mutations || {},
         ];
