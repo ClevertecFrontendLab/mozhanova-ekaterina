@@ -1,14 +1,17 @@
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, useMediaQuery } from '@chakra-ui/react';
+import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router';
 
-import { categories } from '~/mocks/categories';
-import { data } from '~/mocks/recipes';
+import { ApplicationState } from '~/store/configure-store';
+import { selectCategories, selectSubcategories } from '~/store/selectors';
 
 export function Breadcrumbs({ setMenuOpen }: { setMenuOpen: (value: boolean) => void }) {
     const location = useLocation();
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
-
+    const categories = useSelector(selectCategories);
+    const subCategories = useSelector(selectSubcategories);
+    const currentRecipe = useSelector((state: ApplicationState) => state.recipe.current);
     const pathnames = location.pathname.split('/').filter((x) => x);
 
     return (
@@ -38,20 +41,27 @@ export function Breadcrumbs({ setMenuOpen }: { setMenuOpen: (value: boolean) => 
             {pathnames.length > 0 &&
                 pathnames.map((path, i) => {
                     const routeTo = pathnames.slice(0, i + 1).join('/');
-                    const label =
-                        categories.find((category) => category.id === path)?.label ||
-                        categories
-                            .find((category) =>
-                                category.subCategories?.find(
-                                    (subCategory) => subCategory.id === path,
-                                ),
-                            )
-                            ?.subCategories?.find((subCategory) => subCategory.id === path)
-                            ?.label ||
-                        (path === 'the-juiciest' && 'Самое сочное') ||
-                        (path === 'search' && 'Поиск по рецептам') ||
-                        data.find((recipe) => recipe.id === path)?.title ||
-                        '';
+                    const label = (path: string) => {
+                        switch (path) {
+                            case 'the-juiciest':
+                                return 'Самое сочное';
+
+                            case 'search':
+                                return 'Поиск по рецептам';
+
+                            case categories.find((c) => c.category === path)?.category:
+                                return categories.find((c) => c.category === path)?.title;
+
+                            case subCategories.find((c) => c.category === path)?.category:
+                                return subCategories.find((c) => c.category === path)?.title;
+
+                            case currentRecipe?._id:
+                                return currentRecipe?.title;
+
+                            default:
+                                break;
+                        }
+                    };
                     return (
                         <BreadcrumbItem key={path} isCurrentPage={i === pathnames.length - 1}>
                             <BreadcrumbLink
@@ -60,7 +70,7 @@ export function Breadcrumbs({ setMenuOpen }: { setMenuOpen: (value: boolean) => 
                                 whiteSpace='nowrap'
                                 onClick={() => !isLargerThanMD && setMenuOpen(false)}
                             >
-                                {label}
+                                {label(path)}
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                     );
