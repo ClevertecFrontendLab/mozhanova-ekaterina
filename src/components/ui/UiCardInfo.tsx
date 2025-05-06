@@ -4,15 +4,15 @@ import { UiCardBadge } from './UiCardBadge';
 import { UiCardStats } from './UiCardStats';
 
 type Props = {
-    category: string[];
     likes: number;
     bookmarks: number;
     categoryBgColor: 'secondary.100' | 'primary.100';
+    categories?: (string | undefined)[];
     alignItems?: string;
 };
 
 export function UiCardInfo({
-    category,
+    categories = [],
     likes,
     bookmarks,
     categoryBgColor,
@@ -32,13 +32,21 @@ export function UiCardInfo({
                 top='8px'
                 left='8px'
             >
-                {isLargerThanMD ? (
-                    category.map((item) => (
-                        <UiCardBadge color={categoryBgColor} key={item} category={item} />
-                    ))
-                ) : (
-                    <UiCardBadge color={categoryBgColor} category={category[0]} />
-                )}
+                {categories &&
+                    (isLargerThanMD
+                        ? categories.map(
+                              (id) =>
+                                  id && (
+                                      <UiCardBadge
+                                          color={categoryBgColor}
+                                          key={id}
+                                          categoryId={id}
+                                      />
+                                  ),
+                          )
+                        : categories[0] && (
+                              <UiCardBadge color={categoryBgColor} categoryId={categories[0]} />
+                          ))}
             </Flex>
             {bookmarks || likes ? <UiCardStats bookmarks={bookmarks} likes={likes} /> : null}
         </Flex>

@@ -22,7 +22,7 @@ export function Header({
             position='fixed'
             top='0'
             left='0'
-            zIndex='100'
+            zIndex='101'
             w='100%'
             h={{
                 base: '64px',
@@ -60,7 +60,7 @@ export function Header({
             </Box>
             {isLargerThanMD && (
                 <>
-                    <Breadcrumbs />
+                    <Breadcrumbs setMenuOpen={setMenuOpen} />
                     <ProfileInfo />
                 </>
             )}

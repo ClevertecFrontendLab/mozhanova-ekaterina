@@ -36,7 +36,7 @@ export function Navigation({ setMenuOpen }: { setMenuOpen: (value: boolean) => v
             gap={3}
         >
             {!isLargerThanMD && <Breadcrumbs setMenuOpen={setMenuOpen} />}
-            <Box as='nav' pl='10px' pt='10px' pr={4}>
+            <Box as='nav' pl='10px' pt='10px'>
                 <ul>
                     {categories?.map((category) => (
                         <NavigationItem

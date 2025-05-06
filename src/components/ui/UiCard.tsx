@@ -14,8 +14,10 @@ import { JSX } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router';
 
+import { TRecipe } from '~/query/recipe-api';
+import { ApplicationState } from '~/store/configure-store';
 import { RecipesState } from '~/store/recipe-slice';
-import { TRecipe } from '~/types';
+import { selectRecipeCategories } from '~/store/selectors';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { UiButton } from './UiButton';
@@ -31,17 +33,22 @@ type Props = {
 };
 
 export function UiCard({
-    data: { title, description, image, category, likes, bookmarks, subcategory, id },
+    data: { title, description, image, categoriesIds, likes, bookmarks, _id },
     recommendation,
     size = 'lg',
     index,
     ...props
 }: Props) {
-    const searchQuery = useSelector(
-        (state: { recipe: RecipesState }) => state.recipe.filters.searchQuery,
+    const searchString = useSelector(
+        (state: { recipe: RecipesState }) => state.recipe.filters.searchString,
     );
+
+    const rootCategories = useSelector((state: ApplicationState) =>
+        selectRecipeCategories(state, categoriesIds),
+    );
+
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
-    const params = useParams();
+    const { category, subCategory } = useParams();
 
     return (
         <Card
@@ -64,7 +71,7 @@ export function UiCard({
                     md: '346px',
                 }}
                 maxH='100%'
-                src={image}
+                src={`https://training-api.clevertec.ru${image}`}
                 alt='card image'
             />
 
@@ -99,7 +106,7 @@ export function UiCard({
                     >
                         <UiCardInfo
                             categoryBgColor='secondary.100'
-                            category={category}
+                            categories={rootCategories.map((category) => category?._id)}
                             likes={likes}
                             bookmarks={bookmarks}
                             alignItems='flex-start'
@@ -126,7 +133,7 @@ export function UiCard({
                                 md: 1,
                             }}
                         >
-                            {searchQuery ? highlightMatches(title, searchQuery) : title}
+                            {searchString ? highlightMatches(title, searchString) : title}
                         </Heading>
                         <Text fontSize='sm' noOfLines={3}>
                             {isLargerThanMD ? description : null}
@@ -144,7 +151,7 @@ export function UiCard({
                             iconButton={!isLargerThanMD}
                         />
                         <Link
-                            to={`/${params.category || category[0]}/${params.subCategory || subcategory[0]}/${id}`}
+                            to={`/${category || rootCategories.map((c) => c?.category)[0]}/${subCategory || rootCategories.map((c) => c?.subCategories[0]?.category)[0]}/${_id}`}
                         >
                             <UiButton
                                 data-test-id={`card-link-${index}`}
