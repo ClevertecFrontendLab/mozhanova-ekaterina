@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { TRecipe } from '~/query/recipe-api';
+
 export interface RecipesState {
-    // data: {};
+    current: TRecipe | null;
     filters: {
         categoryName: string[];
         subcategoryIds: string[];
@@ -19,7 +21,7 @@ export interface RecipesState {
 }
 
 const initialState: RecipesState = {
-    // data: {},
+    current: null,
     filters: {
         categoryName: [],
         subcategoryIds: [],
@@ -69,6 +71,9 @@ export const recipesSlice = createSlice({
         setPaginationMeta: (state, action: PayloadAction<{ totalPages: number }>) => {
             state.pagination.totalPages = action.payload.totalPages;
         },
+        setCurrent: (state, action: PayloadAction<TRecipe>) => {
+            state.current = action.payload;
+        },
     },
 });
 
@@ -83,5 +88,6 @@ export const {
     cleanFilters,
     setCurrentPage,
     setPaginationMeta,
+    setCurrent,
 } = recipesSlice.actions;
 export default recipesSlice.reducer;
