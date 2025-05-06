@@ -283,15 +283,6 @@ const theme = extendTheme({
                         border: 'none',
                         borderRadius: 'md',
                         boxShadow: 'md',
-                        width: { base: '280px', md: '391px' },
-                    },
-                    item: {
-                        _hover: {
-                            bg: 'neutral.50',
-                        },
-                        _focus: {
-                            bg: 'neutral.100',
-                        },
                     },
                 },
             },

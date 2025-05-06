@@ -11,7 +11,6 @@ import {
     Tag,
     TagCloseButton,
     TagLabel,
-    useDisclosure,
 } from '@chakra-ui/react';
 
 type Props = {
@@ -24,6 +23,9 @@ type Props = {
     dataList?: string;
     testSubject?: string;
     tagsCloseBtn?: boolean;
+    isOpen?: boolean;
+    onClose?: () => void;
+    onToggle?: () => void;
     setSelected: (value: string[]) => void;
 };
 
@@ -38,11 +40,25 @@ export function SelectOptions({
     dataList,
     testSubject,
     tagsCloseBtn = true,
+    isOpen,
+    onClose,
+    onToggle,
 }: Props) {
-    const { isOpen, onToggle, onClose } = useDisclosure();
-
     return (
-        <Menu variant='select' isOpen={isOpen} onClose={onClose}>
+        <Menu
+            variant='select'
+            isOpen={isOpen}
+            onClose={onClose}
+            modifiers={[
+                {
+                    name: 'matchWidth',
+                    enabled: true,
+                    options: {
+                        matchWidth: true,
+                    },
+                },
+            ]}
+        >
             <MenuButton
                 isDisabled={isDisabled}
                 data-test-id={dataButton}

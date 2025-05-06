@@ -57,3 +57,7 @@ h6 {
 .swiper {
     padding: 6px 0 !important;
 }
+
+[data-popper-placement] {
+    min-width: unset !important;
+}
