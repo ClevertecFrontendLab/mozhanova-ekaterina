@@ -1,6 +1,9 @@
 import { Card, CardBody, Flex, Heading, Image, Text, useMediaQuery } from '@chakra-ui/react';
+import { useSelector } from 'react-redux';
 
-import { TRecipe } from '~/types';
+import { TRecipe } from '~/query/recipe-api';
+import { ApplicationState } from '~/store/configure-store';
+import { selectRecipeCategories } from '~/store/selectors';
 
 import { BookmarkHeartIcon } from '../ui/icons/BookmarkHeartIcon';
 import { ClockIcon } from '../ui/icons/ClockIcon';
@@ -11,6 +14,10 @@ import { UiCardStats } from '../ui/UiCardStats';
 
 export function Hero({ recipe }: { recipe: TRecipe }) {
     const [isLargerThanLG] = useMediaQuery('(min-width: 1441px)');
+
+    const rootCategoryIds = useSelector((state: ApplicationState) =>
+        selectRecipeCategories(state, recipe.categoriesIds),
+    ).map((category) => category?._id ?? '');
 
     return (
         <Card
@@ -31,12 +38,12 @@ export function Hero({ recipe }: { recipe: TRecipe }) {
             <Image
                 objectFit='cover'
                 borderRadius='8px'
-                src={recipe?.image}
+                src={`https://training-api.clevertec.ru${recipe.image}`}
                 alt='recipe'
                 w={{
                     base: '',
                     sm: '232px',
-                    md: '410px',
+                    md: '353px',
                     lg: '553px',
                 }}
             />
@@ -49,8 +56,8 @@ export function Hero({ recipe }: { recipe: TRecipe }) {
                             md: 4,
                         }}
                     >
-                        {recipe?.category.map((item) => (
-                            <UiCardBadge color='secondary.100' key={item} category={item} />
+                        {rootCategoryIds.map((item) => (
+                            <UiCardBadge color='secondary.100' key={item} categoryId={item} />
                         ))}
                     </Flex>
                     <UiCardStats
@@ -99,7 +106,7 @@ export function Hero({ recipe }: { recipe: TRecipe }) {
                     >
                         <ClockIcon />
                         <Text whiteSpace='nowrap' fontSize='sm'>
-                            {recipe?.time}
+                            {recipe.time} минут
                         </Text>
                     </Flex>
                     <Controls />

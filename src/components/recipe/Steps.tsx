@@ -35,10 +35,10 @@ function StepCard({ step }: { step: { stepNumber: number; description: string; i
         >
             {step.image && (
                 <Image
-                    src={step.image}
+                    src={`https://training-api.clevertec.ru${step.image}`}
                     maxW={{
                         base: '158px',
-                        md: '100%',
+                        md: '346px',
                     }}
                 />
             )}

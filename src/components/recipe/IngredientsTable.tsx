@@ -27,6 +27,7 @@ export function IngredientsTable({
     portions: number;
 }) {
     const [portionsQuantity, setPortionsQuantity] = useState(portions);
+
     return (
         <TableContainer>
             <Table variant='custom'>

@@ -1,9 +1,9 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 
 export function NutritionValue({
-    nutritionValue: { calories, proteins, fats, carbohydrates },
+    nutritionValue: { calories, protein, fats, carbohydrates },
 }: {
-    nutritionValue: { calories: number; proteins: number; fats: number; carbohydrates: number };
+    nutritionValue: { calories: number; protein: number; fats: number; carbohydrates: number };
 }) {
     return (
         <Box mb={5}>
@@ -118,7 +118,7 @@ export function NutritionValue({
                             sm: '4xl',
                         }}
                     >
-                        {proteins}
+                        {protein}
                     </Text>
                     <Text
                         textTransform='uppercase'

@@ -1,5 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
 import { AuthorInfo } from '~/components/recipe/AuthorInfo';
@@ -10,13 +11,18 @@ import { Steps } from '~/components/recipe/Steps';
 import { Slider } from '~/components/shared/slider/Slider';
 import { useToast } from '~/hooks/use-toast';
 import { useGetRecipeByIdQuery } from '~/query/recipe-api';
+import { setCurrent } from '~/store/recipe-slice';
 
 export function RecipePage() {
     const { id } = useParams();
     const { showError } = useToast();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { data, isLoading, isError } = useGetRecipeByIdQuery(id || '', { skip: !id });
 
+    useEffect(() => {
+        if (data) dispatch(setCurrent(data));
+    });
     useEffect(() => {
         if (isError) {
             showError('Ошибка сервера', 'Попробуйте попозже');
