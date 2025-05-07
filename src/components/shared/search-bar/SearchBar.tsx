@@ -103,6 +103,7 @@ export function SearchBar({ title, description, isFetching, isError, data, onSea
 function Loader() {
     return (
         <Flex
+            data-test-id='loader-search-block'
             minW='134px'
             h='134px'
             bgImage='/src/assets/ui/loader_bg.png'

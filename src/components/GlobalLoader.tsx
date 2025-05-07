@@ -8,6 +8,7 @@ export function GlobalLoader() {
 
     return isLoading ? (
         <Box
+            data-test-id='app-loader'
             position='fixed'
             top='0'
             left='0'

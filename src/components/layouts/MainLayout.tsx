@@ -13,6 +13,14 @@ export function MainLayout() {
     const [menuOpen, setMenuOpen] = useState<boolean>(true);
 
     useEffect(() => setMenuOpen(isLargerThanMD), [isLargerThanMD]);
+    // const hasError = useAppSelector(selectGlobalError);
+    // const { showError } = useToast();
+
+    // useEffect(() => {
+    //     if (hasError) {
+    //         showError('Ошибка', 'Произошла ошибка при загрузке данных');
+    //     }
+    // }, [hasError, showError]);
 
     return (
         <>

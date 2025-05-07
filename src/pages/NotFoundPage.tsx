@@ -26,7 +26,9 @@ export function NotFoundPage() {
             <Text color='text.secondary'>
                 Можете поискать другой рецепт{' '}
                 <Text textDecoration='underline'>
-                    <Link to='/'>здесь.</Link>
+                    <Link data-test-id='error-page-go-home' to='/'>
+                        здесь.
+                    </Link>
                 </Text>
             </Text>
         </Box>
