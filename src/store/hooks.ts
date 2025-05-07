@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
-import { useSearchRecipesQuery } from '~/query/recipe-api';
+import { useLazySearchRecipesQuery, useSearchRecipesQuery } from '~/query/recipe-api';
 
 import { ApplicationState, store } from './configure-store';
 import { setPaginationMeta } from './recipe-slice';
@@ -30,7 +30,8 @@ export const useRecipesSearch = () => {
         [filters, pagination.currentPage],
     );
 
-    // const [trigger] = useLazySearchRecipesQuery();
+    // const [trigger, { data: lazyData, isFetching: lazyIsFetching, isError: lazyIsError }] =
+    // useLazySearchRecipesQuery();
     const { data, isError, isFetching, isLoading, isSuccess, currentData } = useSearchRecipesQuery({
         ...stableArgs,
     });
@@ -47,19 +48,67 @@ export const useRecipesSearch = () => {
                 }),
             );
         }
-        // if (data?.data) {
-        //     dispatch(setData(data.data));
-        // }
     }, [data, dispatch]);
 
     return {
         data: data?.data,
         meta: data?.meta,
+        // data: lazyData?.data,
         currentData,
         isLoading,
         isFetching,
         isError,
         isSuccess,
         // refetch,
+        // lazyIsFetching,
+        // lazyIsError
+    };
+};
+export const useLazyRecipesSearch = () => {
+    const dispatch = useAppDispatch();
+    const filters = useAppSelector(selectFilters);
+    const pagination = useAppSelector((state) => state.recipe.pagination);
+
+    const stableArgs = useMemo(
+        () => ({
+            limit: 8,
+            page: pagination.currentPage,
+            sortBy: 'createdAt',
+            sortOrder: 'asc',
+            ...(filters.searchString && { searchString: filters.searchString }),
+            ...(filters.allergens.length > 0 && { allergens: filters.allergens }),
+            ...(filters.garnish.length > 0 && { garnish: filters.garnish }),
+            ...(filters.meat.length > 0 && { meat: filters.meat }),
+            ...(filters.subcategoryIds.length > 0 && { subcategoriesIds: filters.subcategoryIds }),
+        }),
+        [filters, pagination.currentPage],
+    );
+
+    const [trigger, { data, isFetching, isError }] = useLazySearchRecipesQuery();
+
+    const refetch = useCallback(() => {
+        trigger(stableArgs);
+    }, [stableArgs, trigger]);
+
+    useEffect(() => {
+        if (data?.meta) {
+            dispatch(
+                setPaginationMeta({
+                    totalPages: data.meta.totalPages,
+                }),
+            );
+        }
+    }, [data, dispatch]);
+
+    return {
+        // data: data?.data,
+        meta: data?.meta,
+        data: data?.data,
+        // currentData,
+        // isLoading,
+        isError,
+        isFetching,
+        // isSuccess,
+        refetch,
     };
 };

@@ -27,28 +27,29 @@ function SearchPage() {
     const hasMore = pagination.totalPages ? pagination.currentPage < pagination.totalPages : false;
 
     useEffect(() => {
-        isError && showError('Ошибка сервера', 'Попробуйте поискать снова попозже');
-    }, [isError, showError]);
-
-    useEffect(() => {
         if (data) {
             if (pagination.currentPage === 1) {
-                // Первая страница - полная замена данных
                 setAllRecipes(data);
             } else {
-                // Последующие страницы - добавление данных
                 setAllRecipes((prev) => [...prev, ...data]);
             }
         }
     }, [data, pagination.currentPage]);
 
     useEffect(() => {
-        if (data && data.length === 0) navigate('/');
+        // if (data && data.length === 0) navigate('/');
     }, [navigate, data]);
 
     useEffect(() => {
         dispatch(setCurrentPage(1));
     }, [filters, dispatch]);
+
+    useEffect(() => {
+        if (isError) {
+            navigate(-1);
+            showError('Ошибка сервера', 'Попробуйте поискать снова попозже');
+        }
+    }, [isError, showError, navigate]);
 
     const loadMore = () => {
         if (hasMore) {

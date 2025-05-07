@@ -7,23 +7,30 @@ import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
 import { Slider } from '~/components/shared/slider/Slider';
 import { TheJuiciestSection } from '~/components/shared/TheJuiciestSection';
-import { useRecipesSearch } from '~/store/hooks';
+import { useToast } from '~/hooks/use-toast';
+import { useLazyRecipesSearch } from '~/store/hooks';
 
 export function Home() {
     const navigate = useNavigate();
+    const { showError } = useToast();
 
-    const { isError, isFetching, data } = useRecipesSearch();
+    const { data, isError, isFetching, refetch } = useLazyRecipesSearch();
     const [isSearchInitiated, setIsSearchInitiated] = useState(false);
 
     useEffect(() => {
         if (isSearchInitiated) {
-            if (isFetching) return;
-            if (data && data.length > 0) {
-                navigate('/search');
-                setIsSearchInitiated(false);
-            } else if (!data && isError) setIsSearchInitiated(false);
+            refetch();
+            setIsSearchInitiated(false);
         }
-    }, [isSearchInitiated, navigate, data, isError, isFetching]);
+    }, [refetch, isSearchInitiated]);
+
+    useEffect(() => {
+        if (!isFetching && data && data.length > 0) {
+            navigate('/search');
+        } else if (!data && isError) {
+            isError && showError('Ошибка сервера', 'Попробуйте поискать снова попозже');
+        }
+    }, [navigate, data, isError, isFetching, showError]);
 
     return (
         <Box>
