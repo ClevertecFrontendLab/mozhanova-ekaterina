@@ -33,7 +33,7 @@ export const SliderCard = ({
         selectRecipeSubCategories(state, categoriesIds),
     );
     const rootCategoriesIds = useMemo(
-        () => subCategories.map((c) => c.rootCategoryId!),
+        () => subCategories.map((category) => category.rootCategoryId!),
         [subCategories],
     );
 

@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { ICategory } from '~/query/category-api';
+import { TCategory } from '~/types';
 
 export interface CategoryState {
-    categories: ICategory[];
+    categories: TCategory[];
     currentCategory: string | null;
 }
 

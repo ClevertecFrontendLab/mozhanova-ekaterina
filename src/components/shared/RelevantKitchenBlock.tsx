@@ -107,7 +107,7 @@ export const RelevantKitchenBlock = () => {
                         md: 'md',
                     }}
                 >
-                    {currentRootCategory.description || ''}
+                    {currentRootCategory?.description || ''}
                 </Text>
             </Grid>
 

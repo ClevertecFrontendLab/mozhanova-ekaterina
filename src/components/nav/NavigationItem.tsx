@@ -2,10 +2,11 @@ import { Box, ChevronDownIcon, ChevronUpIcon, Flex, Image, useMediaQuery } from 
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 
-import { ICategory } from '~/query/category-api';
+import { API_IMAGE_URL } from '~/config';
+import { TCategory } from '~/types';
 
 type Props = {
-    category: ICategory;
+    category: TCategory;
     setMenuOpen: (value: boolean) => void;
     'data-id'?: string;
 };
@@ -42,7 +43,7 @@ export const NavigationItem = ({ category, setMenuOpen, ...props }: Props) => {
                     <Image
                         width='24px'
                         height='24px'
-                        src={`https://training-api.clevertec.ru${category.icon}`}
+                        src={`${API_IMAGE_URL}${category.icon}`}
                         alt='menu_item_icon'
                     />
                     <Link to={`/${category.category}/${category.subCategories[0].category}`}>

@@ -5,10 +5,11 @@ import { Outlet, useNavigate, useParams } from 'react-router';
 
 import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
-import { ICategory, useGetCategoriesQuery } from '~/query/category-api';
+import { useGetCategoriesQuery } from '~/query/category-api';
 import { ApplicationState } from '~/store/configure-store';
 import { setCategoryFilter, setSubCategoryFilter } from '~/store/recipe-slice';
 import { selectCurrentRootCategory } from '~/store/selectors';
+import { TCategory } from '~/types';
 
 export const CategoryPage = () => {
     const params = useParams();
@@ -21,7 +22,7 @@ export const CategoryPage = () => {
 
     const currentCategory = useSelector((state: ApplicationState) =>
         selectCurrentRootCategory(state, category as string),
-    ) as ICategory;
+    ) as TCategory;
 
     const currentSubCategory =
         currentCategory?.subCategories?.find((category) => category.category === subCategory) ??

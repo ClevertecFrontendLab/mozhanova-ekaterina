@@ -30,7 +30,6 @@ import { allergens } from '~/mocks/allergens';
 import { authors } from '~/mocks/authors';
 import { garnish } from '~/mocks/garnish';
 import { meat } from '~/mocks/meat';
-import { ICategory } from '~/query/category-api';
 import { ApplicationState } from '~/store/configure-store';
 import {
     cleanFilters,
@@ -42,6 +41,7 @@ import {
     setSubCategoryFilter,
 } from '~/store/recipe-slice';
 import { selectFilters, selectSubCategoriesByTitles } from '~/store/selectors';
+import { TCategory } from '~/types';
 
 import { SelectOptions } from '../SelectOptions';
 
@@ -49,7 +49,7 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
     const dispatch = useDispatch();
     const filters = useSelector(selectFilters);
     const categories = useSelector(
-        (state: { category: { categories: ICategory[] } }) => state.category.categories,
+        (state: { category: { categories: TCategory[] } }) => state.category.categories,
     ).filter((category) => !category.rootCategoryId);
 
     const [selectedCategory, setSelectedCategory] = useState<string[]>([]);

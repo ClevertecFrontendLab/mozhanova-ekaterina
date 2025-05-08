@@ -19,7 +19,6 @@ export const SearchPage = memo(() => {
     const filters = useSelector(selectFilters);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
     const { showError } = useToast();
 
     const { isError, data } = useRecipesSearch();
@@ -47,14 +46,13 @@ export const SearchPage = memo(() => {
             navigate(-1);
             showError('Ошибка сервера', 'Попробуйте поискать снова попозже');
         }
-    }, [isError, showError, navigate]);
+    }, [isError, showError, navigate, dispatch]);
 
     const loadMore = () => {
         if (hasMore) {
             dispatch(setCurrentPage(pagination.currentPage + 1));
         }
     };
-
     return (
         <>
             <SearchBar title='Приятного аппетита!' />

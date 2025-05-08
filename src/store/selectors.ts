@@ -57,6 +57,8 @@ export const selectGlobalLoading = createSelector(
         const apiStates = [
             state.recipeApi?.queries || {},
             state.recipeApi?.mutations || {},
+            state.recipeApi?.queries || {},
+            state.recipeApi?.mutations || {},
             state.categoryApi?.queries || {},
             state.categoryApi?.mutations || {},
         ];

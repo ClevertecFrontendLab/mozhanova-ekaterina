@@ -49,7 +49,7 @@ export const UiCard = ({
     );
 
     const rootCategoriesIds = useMemo(
-        () => subCategories.map((c) => c.rootCategoryId!),
+        () => subCategories.map((category) => category.rootCategoryId!),
         [subCategories],
     );
 
@@ -59,8 +59,6 @@ export const UiCard = ({
 
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
     const { category, subCategory } = useParams();
-
-    if (!subCategories || !rootCategories) return null;
 
     return (
         <Card
@@ -164,7 +162,7 @@ export const UiCard = ({
                         />
                         {((category && subCategories) || (rootCategories && subCategories)) && (
                             <Link
-                                to={`/${category || (rootCategories[0]?.category ?? '')}/${subCategory || (subCategories[0].category ?? '')}/${_id}`}
+                                to={`/${category || (rootCategories[0]?.category ?? '')}/${subCategory || (subCategories[0]?.category ?? '')}/${_id}`}
                             >
                                 <UiButton
                                     data-test-id={`card-link-${index}`}

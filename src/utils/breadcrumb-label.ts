@@ -1,9 +1,9 @@
-import { TCategory, TRecipe, TSubCategory } from '~/types';
+import { TCategory, TRecipe } from '~/types';
 
 export const defineBreadcrumbLabel = (
     path: string,
     categories: TCategory[],
-    subCategories: TSubCategory[],
+    subCategories: TCategory[],
     currentRecipe: TRecipe | null,
 ) => {
     switch (path) {
