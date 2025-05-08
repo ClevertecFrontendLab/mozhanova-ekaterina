@@ -8,7 +8,7 @@ import { SearchBar } from '~/components/shared/search-bar/SearchBar';
 import { ICategory, useGetCategoriesQuery } from '~/query/category-api';
 import { useGetRecipesByCategoryQuery } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
-import { setCategoryFilter } from '~/store/recipe-slice';
+import { setCategoryFilter, setSubCategoryFilter } from '~/store/recipe-slice';
 import { selectCurrentRootCategory, selectFilters } from '~/store/selectors';
 
 export function CategoryPage() {
@@ -47,6 +47,7 @@ export function CategoryPage() {
     useEffect(() => {
         if (!currentCategory || !currentSubCategory) return;
         dispatch(setCategoryFilter([currentCategory.title]));
+        dispatch(setSubCategoryFilter(currentCategory.subCategories.map((c) => c._id)));
     }, [currentCategory, currentSubCategory, dispatch]);
 
     useEffect(() => {

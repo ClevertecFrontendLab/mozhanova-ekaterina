@@ -109,9 +109,9 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
         }
     }, [filters.allergens]);
 
-    useEffect(() => {
-        setSelectedCategory(filters.categoryName);
-    }, [filters.categoryName]);
+    // useEffect(() => {
+    //     setSelectedCategory(filters.categoryName);
+    // }, [filters.categoryName]);
 
     useEffect(() => {
         setSelectedAuthors(filters.authors);

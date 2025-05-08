@@ -86,7 +86,7 @@ export const useLazyRecipesSearch = () => {
 
     const [trigger, { data, isFetching, isError }] = useLazySearchRecipesQuery();
 
-    const refetch = useCallback(() => {
+    const runSearch = useCallback(() => {
         trigger(stableArgs);
     }, [stableArgs, trigger]);
 
@@ -109,6 +109,6 @@ export const useLazyRecipesSearch = () => {
         isError,
         isFetching,
         // isSuccess,
-        refetch,
+        runSearch,
     };
 };

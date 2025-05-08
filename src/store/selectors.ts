@@ -32,22 +32,14 @@ export const selectSubCategoriesByTitles = createSelector(
     },
 );
 
+export const selectRecipeSubCategories = createSelector(
+    [selectSubcategories, (_: ApplicationState, subcategoryIds: string[]) => subcategoryIds],
+    (categories, ids) => categories.filter((c) => ids.includes(c._id)),
+);
+
 export const selectRecipeCategories = createSelector(
-    [
-        selectAllCategories,
-        selectSubcategories,
-        (_: ApplicationState, subcategoryIds: string[]) => subcategoryIds,
-    ],
-    (categories, subcategories, subcategoryIds) => {
-        const rootCategoryIds = Array.from(
-            new Set(
-                subcategoryIds
-                    .map((id) => subcategories.find((sub) => sub._id === id)?.rootCategoryId)
-                    .filter((id): id is string => !!id),
-            ),
-        );
-        return rootCategoryIds.map((id) => categories.find((c) => c._id === id)).filter(Boolean);
-    },
+    [selectCategories, (_: ApplicationState, categoryIds: string[]) => categoryIds],
+    (categories, ids) => categories.filter((c) => ids.includes(c._id)),
 );
 
 export const selectCategoryById = createSelector(
@@ -64,8 +56,8 @@ export const selectGlobalLoading = createSelector(
     (state) => {
         // Получаем состояния из всех API
         const apiStates = [
-            // state.recipeApi?.queries || {},
-            // state.recipeApi?.mutations || {},
+            state.recipeApi?.queries || {},
+            state.recipeApi?.mutations || {},
             state.categoryApi?.queries || {},
             state.categoryApi?.mutations || {},
         ];

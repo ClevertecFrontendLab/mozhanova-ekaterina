@@ -19,6 +19,7 @@ export function Navbar({
         <>
             {!isLargerThanMD && (
                 <Box
+                    pb='185px'
                     display={isMenuOpen ? 'block' : 'none'}
                     zIndex={99}
                     position='fixed'

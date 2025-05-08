@@ -1,5 +1,5 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
@@ -21,8 +21,10 @@ export function RecipesTabs() {
     const currentCategory = useSelector((state: ApplicationState) =>
         selectCurrentRootCategory(state, category as string),
     );
-    const currentSubCategory =
-        currentCategory?.subCategories?.find((c) => c.category === subCategory) ?? null;
+    const currentSubCategory = useMemo(() => {
+        if (currentCategory)
+            return currentCategory.subCategories?.find((c) => c.category === subCategory) ?? null;
+    }, [currentCategory, subCategory]);
 
     const handleTabChange = (index: number) => {
         const selectedCategory = currentCategory?.subCategories[index];
@@ -30,7 +32,7 @@ export function RecipesTabs() {
         navigate(`/${category}/${selectedCategory.category}`);
     };
 
-    const { currentData, isLoading, isError } = useGetRecipesByCategoryQuery(
+    const { currentData, isError } = useGetRecipesByCategoryQuery(
         {
             categoryId: currentSubCategory?._id || '',
             limit: 8,
@@ -57,8 +59,6 @@ export function RecipesTabs() {
         }
     }, [isError, showError, navigate]);
 
-    if (isError || isLoading || !currentCategory) return null;
-
     return (
         <Tabs
             variant='line'
@@ -82,24 +82,26 @@ export function RecipesTabs() {
                     lg: 'wrap',
                 }}
             >
-                {currentCategory.subCategories.map((category, i) => (
-                    <Tab
-                        data-test-id={`tab-${category._id}-${i}`}
-                        whiteSpace='nowrap'
-                        key={category._id}
-                    >
-                        {category.title}
-                    </Tab>
-                ))}
+                {currentCategory &&
+                    currentCategory.subCategories.map((category, i) => (
+                        <Tab
+                            data-test-id={`tab-${category.category}-${i}`}
+                            whiteSpace='nowrap'
+                            key={category._id}
+                        >
+                            {category.title}
+                        </Tab>
+                    ))}
             </TabList>
             <TabPanels>
-                {currentCategory.subCategories.map((category) => (
-                    <TabPanel key={category._id}>
-                        {category.category === subCategory && (
-                            <UiCardGrid data={currentData?.data} />
-                        )}
-                    </TabPanel>
-                ))}
+                {currentCategory &&
+                    currentCategory.subCategories.map((category) => (
+                        <TabPanel key={category._id}>
+                            {category.category === subCategory && (
+                                <UiCardGrid data={currentData?.data} />
+                            )}
+                        </TabPanel>
+                    ))}
             </TabPanels>
         </Tabs>
     );

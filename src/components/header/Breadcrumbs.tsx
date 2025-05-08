@@ -1,5 +1,5 @@
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, useMediaQuery } from '@chakra-ui/react';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Text, useMediaQuery } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router';
 
@@ -62,15 +62,23 @@ export function Breadcrumbs({ setMenuOpen }: { setMenuOpen: (value: boolean) => 
                                 break;
                         }
                     };
+
                     return (
-                        <BreadcrumbItem key={path} isCurrentPage={i === pathnames.length - 1}>
+                        <BreadcrumbItem
+                            minW={0}
+                            key={path}
+                            isCurrentPage={i === pathnames.length - 1}
+                        >
                             <BreadcrumbLink
+                                whiteSpace='nowrap'
+                                overflowX='hidden'
                                 as={Link}
                                 to={routeTo}
-                                whiteSpace='nowrap'
                                 onClick={() => !isLargerThanMD && setMenuOpen(false)}
                             >
-                                {label(path)}
+                                <Text textOverflow='ellipsis' overflowX='hidden'>
+                                    {label(path)}
+                                </Text>
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                     );

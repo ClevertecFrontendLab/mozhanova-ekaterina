@@ -10,14 +10,14 @@ import {
     Text,
     useMediaQuery,
 } from '@chakra-ui/react';
-import { JSX } from 'react';
+import { JSX, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router';
 
 import { TRecipe } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
 import { RecipesState } from '~/store/recipe-slice';
-import { selectRecipeCategories } from '~/store/selectors';
+import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { UiButton } from './UiButton';
@@ -43,12 +43,23 @@ export function UiCard({
         (state: { recipe: RecipesState }) => state.recipe.filters.searchString,
     );
 
+    const subCategories = useSelector((state: ApplicationState) =>
+        selectRecipeSubCategories(state, categoriesIds),
+    );
+
+    const rootCategoriesIds = useMemo(
+        () => subCategories.map((c) => c.rootCategoryId!),
+        [subCategories],
+    );
+
     const rootCategories = useSelector((state: ApplicationState) =>
-        selectRecipeCategories(state, categoriesIds),
+        selectRecipeCategories(state, rootCategoriesIds),
     );
 
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
     const { category, subCategory } = useParams();
+
+    if (!subCategories || !rootCategories) return null;
 
     return (
         <Card
@@ -151,7 +162,7 @@ export function UiCard({
                             iconButton={!isLargerThanMD}
                         />
                         <Link
-                            to={`/${category || rootCategories.map((c) => c?.category)[0]}/${subCategory || rootCategories.map((c) => c?.subCategories[0]?.category)[0]}/${_id}`}
+                            to={`/${category || rootCategories[0]?.category}/${subCategory || subCategories[0].category}/${_id}`}
                         >
                             <UiButton
                                 data-test-id={`card-link-${index}`}
@@ -168,13 +179,11 @@ export function UiCard({
 }
 
 function highlightMatches(str: string, substr: string) {
+    const result: JSX.Element[] = [];
     const lowerStr = str.toLowerCase();
     const lowerSub = substr.toLowerCase();
-    const result: JSX.Element[] = [];
-
     let lastIndex = 0;
     let index = lowerStr.indexOf(lowerSub);
-
     while (index !== -1) {
         if (index > lastIndex) {
             result.push(

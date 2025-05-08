@@ -7,7 +7,7 @@ import { ICategory } from '~/query/category-api';
 type Props = {
     category: ICategory;
     setMenuOpen: (value: boolean) => void;
-    'data-id': string;
+    'data-id'?: string;
 };
 
 export function NavigationItem({ category, setMenuOpen, ...props }: Props) {
@@ -24,7 +24,8 @@ export function NavigationItem({ category, setMenuOpen, ...props }: Props) {
 
     return (
         <Box
-            // data-test-id={category._id === 'vegan' ? 'vegan-cuisine' : `${category._id}`}
+            bgColor='background.base'
+            data-test-id={category.category === 'vegan' ? 'vegan-cuisine' : `${category.category}`}
             as='li'
             {...props}
         >

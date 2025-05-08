@@ -22,7 +22,7 @@ function SearchPage() {
 
     const { showError } = useToast();
 
-    const { isLoading, isError, isFetching, data } = useRecipesSearch();
+    const { isLoading, isError, data } = useRecipesSearch();
 
     const hasMore = pagination.totalPages ? pagination.currentPage < pagination.totalPages : false;
 
@@ -62,9 +62,9 @@ function SearchPage() {
     return (
         <>
             <SearchBar
-                data={data}
-                isError={isError}
-                isFetching={isFetching}
+                // data={data}
+                // isError={isError}
+                // isFetching={isFetching}
                 title='Приятного аппетита!'
             />
 

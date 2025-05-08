@@ -20,7 +20,7 @@ export function NotFoundPage() {
                     h={{ base: '108px', md: '206px' }}
                 />
             </Flex>
-            <Text mb={4} fontWeight={700} fontSize='lg'>
+            <Text as='h1' mb={4} fontWeight={700} fontSize='lg'>
                 Упс! Такой страницы нет
             </Text>
             <Text color='text.secondary'>

@@ -9,13 +9,14 @@ import {
     Text,
     useMediaQuery,
 } from '@chakra-ui/react';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router';
 
 import { UiCardInfo } from '~/components/ui/UiCardInfo';
+import { TRecipe } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
-import { selectRecipeCategories } from '~/store/selectors';
-import { TRecipe } from '~/types';
+import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
 
 type Props = {
     data: TRecipe;
@@ -27,8 +28,16 @@ export function SliderCard({
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
     const params = useParams();
 
+    const subCategories = useSelector((state: ApplicationState) =>
+        selectRecipeSubCategories(state, categoriesIds),
+    );
+    const rootCategoriesIds = useMemo(
+        () => subCategories.map((c) => c.rootCategoryId!),
+        [subCategories],
+    );
+
     const rootCategories = useSelector((state: ApplicationState) =>
-        selectRecipeCategories(state, categoriesIds),
+        selectRecipeCategories(state, rootCategoriesIds),
     );
 
     return (

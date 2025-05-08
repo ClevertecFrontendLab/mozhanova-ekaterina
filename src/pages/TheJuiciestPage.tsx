@@ -72,9 +72,10 @@ export function TheJuiciestPage() {
                 {hasMore && (
                     <Flex justifyContent='center' mt={4} mb={10}>
                         <UiButton
+                            data-test-id='load-more-button'
                             onClick={loadMore}
                             size='md'
-                            text='Загрузить еще'
+                            text='Загрузка'
                             variant='primary'
                         />
                     </Flex>

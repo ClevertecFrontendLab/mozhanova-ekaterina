@@ -2,6 +2,7 @@ import { Box, Flex, Grid, Heading, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
+import { useToast } from '~/hooks/use-toast';
 import { ICategory, ISubCategory } from '~/query/category-api';
 import { useGetRecipesByCategoryQuery } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
@@ -15,6 +16,7 @@ export function RelevantKitchenBlock() {
     const { category } = useParams();
     const allSubCategories = useAppSelector(selectSubcategories) as ISubCategory[];
     const [randomSubCategory, setRandomSubCategory] = useState<ISubCategory | null>(null);
+    const { showError } = useToast();
 
     const currentRootCategory = useAppSelector((state: ApplicationState) =>
         selectCategoryById(state, randomSubCategory?.rootCategoryId || ''),
@@ -29,6 +31,7 @@ export function RelevantKitchenBlock() {
 
     const {
         data,
+        isError,
         isLoading: recipesLoading,
         isError: recipesError,
         refetch,
@@ -48,6 +51,12 @@ export function RelevantKitchenBlock() {
             refetch();
         }
     }, [category, refetch, randomSubCategory?._id]);
+
+    useEffect(() => {
+        if (isError) {
+            showError('Ошибка сервера', 'Попробуйте поискать снова попозже');
+        }
+    }, [isError, showError]);
 
     if (recipesError || recipesLoading) return null;
 

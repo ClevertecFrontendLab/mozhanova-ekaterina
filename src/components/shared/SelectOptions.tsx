@@ -124,7 +124,7 @@ export function SelectOptions({
                                 {option}
                             </Checkbox>
                         ))}
-                        {isOpen && children}
+                        {children}
                     </Box>
                 </CheckboxGroup>
             </MenuList>

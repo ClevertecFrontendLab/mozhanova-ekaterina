@@ -34,7 +34,7 @@ export const useToast = () => {
             title: title,
             description: description,
             status: type,
-            duration: 30000,
+            duration: 3000,
             isClosable: true,
             variant: 'solid',
             ...styles[type],
