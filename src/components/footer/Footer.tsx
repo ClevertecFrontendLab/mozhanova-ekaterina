@@ -2,11 +2,20 @@ import { Flex, Text, useMediaQuery } from '@chakra-ui/react';
 
 import { UiLogoutButton } from '../ui/UiLogoutButton';
 
-export function Footer() {
+export const Footer = () => {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
 
     return (
-        <Flex data-test-id='footer' gap='16px' direction='column' padding='16px 24px 32px'>
+        <Flex
+            zIndex={-10}
+            position='absolute'
+            bottom={0}
+            left={0}
+            data-test-id='footer'
+            gap='16px'
+            direction='column'
+            padding='16px 24px 32px'
+        >
             <Text fontWeight='500' color='neutral.100' fontSize='sm'>
                 Версия программы 03.25
             </Text>
@@ -16,4 +25,4 @@ export function Footer() {
             {isLargerThanMD && <UiLogoutButton />}
         </Flex>
     );
-}
+};

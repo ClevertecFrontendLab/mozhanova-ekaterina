@@ -6,7 +6,7 @@ import { CategoryPage } from '~/pages/CategoryPage';
 import { Home } from '~/pages/HomePage';
 import { NotFoundPage } from '~/pages/NotFoundPage';
 import { RecipePage } from '~/pages/RecipePage';
-import SearchPage from '~/pages/SearchPage';
+import { SearchPage } from '~/pages/SearchPage';
 import { TheJuiciestPage } from '~/pages/TheJuiciestPage';
 
 export const Router = () => (

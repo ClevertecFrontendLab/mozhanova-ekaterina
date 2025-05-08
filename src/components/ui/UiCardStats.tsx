@@ -20,27 +20,25 @@ const sizes = {
     },
 };
 
-export function UiCardStats({ bookmarks, likes, size = 'sm' }: Props) {
-    return (
-        <Flex
-            h='fit-content'
-            fontSize={sizes[size].fontSize}
-            gap='8px'
-            color='primary.400'
-            fontWeight='600'
-        >
-            {bookmarks ? (
-                <Flex p='4px' gap='6px' align='center'>
-                    <BookmarkHeartIcon size={sizes[size].iconSize} />
-                    {bookmarks}
-                </Flex>
-            ) : null}
-            {likes ? (
-                <Flex p='4px' gap='6px' align='center'>
-                    <EmojiHeartEyesIcon size={sizes[size].iconSize} />
-                    {likes}
-                </Flex>
-            ) : null}
-        </Flex>
-    );
-}
+export const UiCardStats = ({ bookmarks, likes, size = 'sm' }: Props) => (
+    <Flex
+        h='fit-content'
+        fontSize={sizes[size].fontSize}
+        gap='8px'
+        color='primary.400'
+        fontWeight='600'
+    >
+        {bookmarks ? (
+            <Flex p='4px' gap='6px' align='center'>
+                <BookmarkHeartIcon size={sizes[size].iconSize} />
+                {bookmarks}
+            </Flex>
+        ) : null}
+        {likes ? (
+            <Flex p='4px' gap='6px' align='center'>
+                <EmojiHeartEyesIcon size={sizes[size].iconSize} />
+                {likes}
+            </Flex>
+        ) : null}
+    </Flex>
+);

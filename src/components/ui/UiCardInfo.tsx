@@ -11,13 +11,13 @@ type Props = {
     alignItems?: string;
 };
 
-export function UiCardInfo({
+export const UiCardInfo = ({
     categories = [],
     likes,
     bookmarks,
     categoryBgColor,
     alignItems = 'flex-end',
-}: Props) {
+}: Props) => {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
 
     return (
@@ -51,4 +51,4 @@ export function UiCardInfo({
             {bookmarks || likes ? <UiCardStats bookmarks={bookmarks} likes={likes} /> : null}
         </Flex>
     );
-}
+};

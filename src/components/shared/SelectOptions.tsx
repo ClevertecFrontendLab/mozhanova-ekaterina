@@ -29,7 +29,7 @@ type Props = {
     setSelected: (value: string[]) => void;
 };
 
-export function SelectOptions({
+export const SelectOptions = ({
     selected,
     setSelected,
     options,
@@ -43,94 +43,92 @@ export function SelectOptions({
     isOpen,
     onClose,
     onToggle,
-}: Props) {
-    return (
-        <Menu
-            variant='select'
-            isOpen={isOpen}
-            onClose={onClose}
-            modifiers={[
-                {
-                    name: 'matchWidth',
-                    enabled: true,
-                    options: {
-                        matchWidth: true,
-                    },
+}: Props) => (
+    <Menu
+        variant='select'
+        isOpen={isOpen}
+        onClose={onClose}
+        modifiers={[
+            {
+                name: 'matchWidth',
+                enabled: true,
+                options: {
+                    matchWidth: true,
                 },
-            ]}
+            },
+        ]}
+    >
+        <MenuButton
+            isDisabled={isDisabled}
+            data-test-id={dataButton}
+            as={Button}
+            rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
+            onClick={onToggle}
+            textAlign='left'
+            minH='40px'
+            h='fit-content'
+            p='8px 16px'
+            width='100%'
+            fontWeight={400}
+            borderWidth='1px'
+            borderColor='border.light'
+            bg='neutral.0'
+            color='neutral.300'
+            _hover={{ bg: 'neutral.0' }}
+            _active={{ bg: 'neutral.0', borderColor: 'primary.300' }}
+            _focus={{ borderColor: 'primary.300', bg: 'neutral.0' }}
         >
-            <MenuButton
-                isDisabled={isDisabled}
-                data-test-id={dataButton}
-                as={Button}
-                rightIcon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
-                onClick={onToggle}
-                textAlign='left'
-                minH='40px'
-                h='fit-content'
-                p='8px 16px'
-                width='100%'
-                fontWeight={400}
-                borderWidth='1px'
-                borderColor='border.light'
-                bg='neutral.0'
-                color='neutral.300'
-                _hover={{ bg: 'neutral.0' }}
-                _active={{ bg: 'neutral.0', borderColor: 'primary.300' }}
-                _focus={{ borderColor: 'primary.300', bg: 'neutral.0' }}
-            >
-                {selected.length > 0 ? (
-                    <Flex gap={2} flexWrap='wrap'>
-                        {selected.map((value) => (
-                            <Tag
-                                css={{
+            {selected.length > 0 ? (
+                <Flex gap={2} flexWrap='wrap'>
+                    {selected.map((value) => (
+                        <Tag
+                            css={{
+                                pointerEvents: 'auto',
+                                '& > *': {
                                     pointerEvents: 'auto',
-                                    '& > *': {
-                                        pointerEvents: 'auto',
-                                    },
-                                }}
-                                key={value}
-                                variant='outline'
-                            >
-                                <TagLabel>{value}</TagLabel>
-                                {tagsCloseBtn && (
-                                    <TagCloseButton
-                                        as='div'
-                                        onClick={() =>
-                                            setSelected(selected.filter((item) => item !== value))
-                                        }
-                                    />
-                                )}
-                            </Tag>
-                        ))}
-                    </Flex>
-                ) : (
-                    placeholder
-                )}
-            </MenuButton>
+                                },
+                            }}
+                            key={value}
+                            variant='outline'
+                        >
+                            <TagLabel>{value}</TagLabel>
+                            {tagsCloseBtn && (
+                                <TagCloseButton
+                                    as='div'
+                                    onClick={() =>
+                                        setSelected(selected.filter((item) => item !== value))
+                                    }
+                                />
+                            )}
+                        </Tag>
+                    ))}
+                </Flex>
+            ) : (
+                placeholder
+            )}
+        </MenuButton>
 
-            <MenuList zIndex={2} overflow='hidden' data-test-id={dataList}>
-                <CheckboxGroup value={selected} onChange={(value: string[]) => setSelected(value)}>
-                    <Box overflowY='auto'>
-                        {options.map((option, i) => (
-                            <Checkbox
-                                data-test-id={defineDataTestId(option, i, testSubject as string)}
-                                p='6px 16px'
-                                _odd={{ bg: 'neutral.20' }}
-                                variant='select'
-                                key={option}
-                                value={option}
-                            >
-                                {option}
-                            </Checkbox>
-                        ))}
-                        {isOpen && children}
-                    </Box>
-                </CheckboxGroup>
-            </MenuList>
-        </Menu>
-    );
-}
+        <MenuList zIndex={2} overflow='hidden' data-test-id={dataList}>
+            <CheckboxGroup value={selected} onChange={(value: string[]) => setSelected(value)}>
+                <Box overflowY='auto'>
+                    {options.map((option, i) => (
+                        <Checkbox
+                            data-test-id={defineDataTestId(option, i, testSubject as string)}
+                            p='6px 16px'
+                            _odd={{ bg: 'neutral.20' }}
+                            variant='select'
+                            key={option}
+                            value={option}
+                        >
+                            {option}
+                        </Checkbox>
+                    ))}
+                    {children}
+                </Box>
+            </CheckboxGroup>
+        </MenuList>
+    </Menu>
+);
 
 function defineDataTestId(option: string, i: number, testSubject: string) {
     switch (option) {

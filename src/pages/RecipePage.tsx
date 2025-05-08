@@ -13,7 +13,7 @@ import { useToast } from '~/hooks/use-toast';
 import { useGetRecipeByIdQuery } from '~/query/recipe-api';
 import { setCurrent } from '~/store/recipe-slice';
 
-export function RecipePage() {
+export const RecipePage = () => {
     const { id } = useParams();
     const { showError } = useToast();
     const navigate = useNavigate();
@@ -71,4 +71,4 @@ export function RecipePage() {
             <Slider />
         </Box>
     );
-}
+};

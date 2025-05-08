@@ -45,7 +45,7 @@ import { selectFilters, selectSubCategoriesByTitles } from '~/store/selectors';
 
 import { SelectOptions } from '../SelectOptions';
 
-export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
     const dispatch = useDispatch();
     const filters = useSelector(selectFilters);
     const categories = useSelector(
@@ -108,10 +108,6 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
             setSwitchAllergens(false);
         }
     }, [filters.allergens]);
-
-    useEffect(() => {
-        setSelectedCategory(filters.categoryName);
-    }, [filters.categoryName]);
 
     useEffect(() => {
         setSelectedAuthors(filters.authors);
@@ -397,4 +393,4 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
             </DrawerContent>
         </Drawer>
     );
-}
+};

@@ -5,13 +5,13 @@ import { useBodyScrollLock } from '~/hooks/use-scroll';
 import { Footer } from './footer/Footer';
 import { Navigation } from './nav/Navigation';
 
-export function Navbar({
+export const Navbar = ({
     isMenuOpen,
     setMenuOpen,
 }: {
     isMenuOpen: boolean;
     setMenuOpen: (value: boolean) => void;
-}) {
+}) => {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
     useBodyScrollLock(isMenuOpen && !isLargerThanMD);
 
@@ -19,6 +19,7 @@ export function Navbar({
         <>
             {!isLargerThanMD && (
                 <Box
+                    pb='185px'
                     display={isMenuOpen ? 'block' : 'none'}
                     zIndex={99}
                     position='fixed'
@@ -86,4 +87,4 @@ export function Navbar({
             )}
         </>
     );
-}
+};

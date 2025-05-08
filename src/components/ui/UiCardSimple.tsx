@@ -10,11 +10,11 @@ import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { EmojiHeartEyesIcon } from './icons/EmojiHeartEyesIcon';
 import { UiCardBadge } from './UiCardBadge';
 
-export function UiCardSimple({
+export const UiCardSimple = ({
     data: { title, description, bookmarks, likes, categoriesIds, _id },
 }: {
     data: TRecipe;
-}) {
+}) => {
     const { category, subCategory } = useParams();
 
     const rootCategories = useSelector((state: ApplicationState) =>
@@ -111,4 +111,4 @@ export function UiCardSimple({
             </Card>
         </Link>
     );
-}
+};

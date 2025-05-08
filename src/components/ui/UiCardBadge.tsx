@@ -8,7 +8,7 @@ type Props = {
     color: 'secondary.100' | 'primary.100';
     categoryId?: string;
 };
-export function UiCardBadge({ categoryId, color: categoryBgColor }: Props) {
+export const UiCardBadge = ({ categoryId, color: categoryBgColor }: Props) => {
     const category = useSelector((state: ApplicationState) =>
         selectCategoryById(state, categoryId || ''),
     );
@@ -35,4 +35,4 @@ export function UiCardBadge({ categoryId, color: categoryBgColor }: Props) {
             <TagLabel>{category.title}</TagLabel>
         </Tag>
     );
-}
+};

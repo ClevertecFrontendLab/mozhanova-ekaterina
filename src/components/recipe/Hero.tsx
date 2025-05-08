@@ -1,9 +1,10 @@
 import { Card, CardBody, Flex, Heading, Image, Text, useMediaQuery } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 
-import { TRecipe } from '~/query/recipe-api';
+import { API_IMAGE_URL } from '~/config';
 import { ApplicationState } from '~/store/configure-store';
 import { selectRecipeCategories } from '~/store/selectors';
+import { TRecipe } from '~/types';
 
 import { BookmarkHeartIcon } from '../ui/icons/BookmarkHeartIcon';
 import { ClockIcon } from '../ui/icons/ClockIcon';
@@ -12,7 +13,7 @@ import { UiButton } from '../ui/UiButton';
 import { UiCardBadge } from '../ui/UiCardBadge';
 import { UiCardStats } from '../ui/UiCardStats';
 
-export function Hero({ recipe }: { recipe: TRecipe }) {
+export const Hero = ({ recipe }: { recipe: TRecipe }) => {
     const [isLargerThanLG] = useMediaQuery('(min-width: 1441px)');
 
     const rootCategoryIds = useSelector((state: ApplicationState) =>
@@ -38,7 +39,7 @@ export function Hero({ recipe }: { recipe: TRecipe }) {
             <Image
                 objectFit='cover'
                 borderRadius='8px'
-                src={`https://training-api.clevertec.ru${recipe.image}`}
+                src={`${API_IMAGE_URL}/${recipe.image}`}
                 alt='recipe'
                 w={{
                     base: '',
@@ -114,7 +115,7 @@ export function Hero({ recipe }: { recipe: TRecipe }) {
             </CardBody>
         </Card>
     );
-}
+};
 
 function Controls() {
     return (

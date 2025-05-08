@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { TRecipe } from '~/query/recipe-api';
+import { TRecipe } from '~/types';
 
 export interface RecipesState {
     current: TRecipe | null;

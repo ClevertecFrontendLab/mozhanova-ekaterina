@@ -1,5 +1,5 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
@@ -8,9 +8,9 @@ import { useGetRecipesByCategoryQuery } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
 import { selectCurrentRootCategory, selectFilters } from '~/store/selectors';
 
-import UiCardGrid from './ui/UiCardGrid';
+import { UiCardGrid } from './ui/UiCardGrid';
 
-export function RecipesTabs() {
+export const RecipesTabs = () => {
     const [isLargerThanLG] = useMediaQuery('(min-width: 1441px)');
     const [tabIndex, setTabIndex] = useState(0);
     const navigate = useNavigate();
@@ -21,8 +21,14 @@ export function RecipesTabs() {
     const currentCategory = useSelector((state: ApplicationState) =>
         selectCurrentRootCategory(state, category as string),
     );
-    const currentSubCategory =
-        currentCategory?.subCategories?.find((c) => c.category === subCategory) ?? null;
+    const currentSubCategory = useMemo(() => {
+        if (currentCategory)
+            return (
+                currentCategory.subCategories?.find(
+                    (category) => category.category === subCategory,
+                ) ?? null
+            );
+    }, [currentCategory, subCategory]);
 
     const handleTabChange = (index: number) => {
         const selectedCategory = currentCategory?.subCategories[index];
@@ -30,7 +36,7 @@ export function RecipesTabs() {
         navigate(`/${category}/${selectedCategory.category}`);
     };
 
-    const { currentData, isLoading, isError } = useGetRecipesByCategoryQuery(
+    const { currentData, isError } = useGetRecipesByCategoryQuery(
         {
             categoryId: currentSubCategory?._id || '',
             limit: 8,
@@ -57,8 +63,6 @@ export function RecipesTabs() {
         }
     }, [isError, showError, navigate]);
 
-    if (isError || isLoading || !currentCategory) return null;
-
     return (
         <Tabs
             variant='line'
@@ -82,25 +86,27 @@ export function RecipesTabs() {
                     lg: 'wrap',
                 }}
             >
-                {currentCategory.subCategories.map((category, i) => (
-                    <Tab
-                        data-test-id={`tab-${category._id}-${i}`}
-                        whiteSpace='nowrap'
-                        key={category._id}
-                    >
-                        {category.title}
-                    </Tab>
-                ))}
+                {currentCategory &&
+                    currentCategory.subCategories.map((category, i) => (
+                        <Tab
+                            data-test-id={`tab-${category.category}-${i}`}
+                            whiteSpace='nowrap'
+                            key={category._id}
+                        >
+                            {category.title}
+                        </Tab>
+                    ))}
             </TabList>
             <TabPanels>
-                {currentCategory.subCategories.map((category) => (
-                    <TabPanel key={category._id}>
-                        {category.category === subCategory && (
-                            <UiCardGrid data={currentData?.data} />
-                        )}
-                    </TabPanel>
-                ))}
+                {currentCategory &&
+                    currentCategory.subCategories.map((category) => (
+                        <TabPanel key={category._id}>
+                            {category.category === subCategory && (
+                                <UiCardGrid data={currentData?.data} />
+                            )}
+                        </TabPanel>
+                    ))}
             </TabPanels>
         </Tabs>
     );
-}
+};

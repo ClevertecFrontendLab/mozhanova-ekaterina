@@ -1,25 +1,34 @@
-import { Box, Flex, Heading, Spinner, Text, useDisclosure, useMediaQuery } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Box, Flex, Heading, Spinner, Text, useDisclosure } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
-import { TRecipe } from '~/query/recipe-api';
+import { useLazyRecipesSearch } from '~/store/hooks';
 
 import { FiltersDrawer } from './FiltersDrawer';
 import { SearchForm } from './SearchForm';
-import { SelectAllergens } from './SelectAllergens';
 
 type Props = {
     title: string;
     description?: string;
-    isFetching: boolean;
-    isError: boolean;
-    data: TRecipe[] | undefined;
-    onSearch?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export function SearchBar({ title, description, isFetching, isError, data, onSearch }: Props) {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+export const SearchBar = ({ title, description }: Props) => {
     const [searchOnFocus, setSearchOnFocus] = useState(false);
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const navigate = useNavigate();
+
+    const { data, isError, isFetching, runSearch } = useLazyRecipesSearch();
+    const [isSearchInitiated, setIsSearchInitiated] = useState(false);
+
+    useEffect(() => {
+        if (isSearchInitiated) {
+            runSearch();
+            if (data) {
+                navigate('/search');
+                setIsSearchInitiated(false);
+            }
+        }
+    }, [runSearch, isSearchInitiated, data, navigate]);
 
     return (
         <Flex
@@ -89,16 +98,15 @@ export function SearchBar({ title, description, isFetching, isError, data, onSea
                     isError={isError}
                     data={data}
                     onOpen={onOpen}
-                    onSearch={onSearch}
+                    initiateSearch={setIsSearchInitiated}
                     setSearchOnFocus={setSearchOnFocus}
                 />
 
-                {isLargerThanMD && <SelectAllergens onSearch={onSearch} />}
                 <FiltersDrawer isOpen={isOpen} onClose={onClose} />
             </Box>
         </Flex>
     );
-}
+};
 
 function Loader() {
     return (

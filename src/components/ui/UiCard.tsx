@@ -10,14 +10,15 @@ import {
     Text,
     useMediaQuery,
 } from '@chakra-ui/react';
-import { JSX } from 'react';
+import { JSX, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router';
 
-import { TRecipe } from '~/query/recipe-api';
+import { API_IMAGE_URL } from '~/config';
 import { ApplicationState } from '~/store/configure-store';
 import { RecipesState } from '~/store/recipe-slice';
-import { selectRecipeCategories } from '~/store/selectors';
+import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
+import { TRecipe } from '~/types';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { UiButton } from './UiButton';
@@ -32,23 +33,34 @@ type Props = {
     'data-test-id'?: string;
 };
 
-export function UiCard({
+export const UiCard = ({
     data: { title, description, image, categoriesIds, likes, bookmarks, _id },
     recommendation,
     size = 'lg',
     index,
     ...props
-}: Props) {
+}: Props) => {
     const searchString = useSelector(
         (state: { recipe: RecipesState }) => state.recipe.filters.searchString,
     );
 
+    const subCategories = useSelector((state: ApplicationState) =>
+        selectRecipeSubCategories(state, categoriesIds),
+    );
+
+    const rootCategoriesIds = useMemo(
+        () => subCategories.map((c) => c.rootCategoryId!),
+        [subCategories],
+    );
+
     const rootCategories = useSelector((state: ApplicationState) =>
-        selectRecipeCategories(state, categoriesIds),
+        selectRecipeCategories(state, rootCategoriesIds),
     );
 
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
     const { category, subCategory } = useParams();
+
+    if (!subCategories || !rootCategories) return null;
 
     return (
         <Card
@@ -71,7 +83,7 @@ export function UiCard({
                     md: '346px',
                 }}
                 maxH='100%'
-                src={`https://training-api.clevertec.ru${image}`}
+                src={`${API_IMAGE_URL}${image}`}
                 alt='card image'
             />
 
@@ -150,31 +162,31 @@ export function UiCard({
                             icon={<BookmarkHeartIcon size={!isLargerThanMD ? '12px' : '16px'} />}
                             iconButton={!isLargerThanMD}
                         />
-                        <Link
-                            to={`/${category || rootCategories.map((c) => c?.category)[0]}/${subCategory || rootCategories.map((c) => c?.subCategories[0]?.category)[0]}/${_id}`}
-                        >
-                            <UiButton
-                                data-test-id={`card-link-${index}`}
-                                size={isLargerThanMD ? 'sm' : 'xs'}
-                                text='Готовить'
-                                variant='solid'
-                            />
-                        </Link>
+                        {((category && subCategories) || (rootCategories && subCategories)) && (
+                            <Link
+                                to={`/${category || (rootCategories[0]?.category ?? '')}/${subCategory || (subCategories[0].category ?? '')}/${_id}`}
+                            >
+                                <UiButton
+                                    data-test-id={`card-link-${index}`}
+                                    size={isLargerThanMD ? 'sm' : 'xs'}
+                                    text='Готовить'
+                                    variant='solid'
+                                />
+                            </Link>
+                        )}
                     </Flex>
                 </CardFooter>
             </Stack>
         </Card>
     );
-}
+};
 
 function highlightMatches(str: string, substr: string) {
+    const result: JSX.Element[] = [];
     const lowerStr = str.toLowerCase();
     const lowerSub = substr.toLowerCase();
-    const result: JSX.Element[] = [];
-
     let lastIndex = 0;
     let index = lowerStr.indexOf(lowerSub);
-
     while (index !== -1) {
         if (index > lastIndex) {
             result.push(

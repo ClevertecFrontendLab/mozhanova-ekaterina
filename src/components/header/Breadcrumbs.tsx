@@ -1,12 +1,13 @@
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, useMediaQuery } from '@chakra-ui/react';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Text, useMediaQuery } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router';
 
 import { ApplicationState } from '~/store/configure-store';
 import { selectCategories, selectSubcategories } from '~/store/selectors';
+import { defineBreadcrumbLabel } from '~/utils/breadcrumb-label';
 
-export function Breadcrumbs({ setMenuOpen }: { setMenuOpen: (value: boolean) => void }) {
+export const Breadcrumbs = ({ setMenuOpen }: { setMenuOpen: (value: boolean) => void }) => {
     const location = useLocation();
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
     const categories = useSelector(selectCategories);
@@ -41,40 +42,33 @@ export function Breadcrumbs({ setMenuOpen }: { setMenuOpen: (value: boolean) => 
             {pathnames.length > 0 &&
                 pathnames.map((path, i) => {
                     const routeTo = pathnames.slice(0, i + 1).join('/');
-                    const label = (path: string) => {
-                        switch (path) {
-                            case 'the-juiciest':
-                                return 'Самое сочное';
+                    const label = defineBreadcrumbLabel(
+                        path,
+                        categories,
+                        subCategories,
+                        currentRecipe,
+                    );
 
-                            case 'search':
-                                return 'Поиск по рецептам';
-
-                            case categories.find((c) => c.category === path)?.category:
-                                return categories.find((c) => c.category === path)?.title;
-
-                            case subCategories.find((c) => c.category === path)?.category:
-                                return subCategories.find((c) => c.category === path)?.title;
-
-                            case currentRecipe?._id:
-                                return currentRecipe?.title;
-
-                            default:
-                                break;
-                        }
-                    };
                     return (
-                        <BreadcrumbItem key={path} isCurrentPage={i === pathnames.length - 1}>
+                        <BreadcrumbItem
+                            minW={0}
+                            key={path}
+                            isCurrentPage={i === pathnames.length - 1}
+                        >
                             <BreadcrumbLink
+                                whiteSpace='nowrap'
+                                overflowX='hidden'
                                 as={Link}
                                 to={routeTo}
-                                whiteSpace='nowrap'
                                 onClick={() => !isLargerThanMD && setMenuOpen(false)}
                             >
-                                {label(path)}
+                                <Text textOverflow='ellipsis' overflowX='hidden'>
+                                    {label}
+                                </Text>
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                     );
                 })}
         </Breadcrumb>
     );
-}
+};

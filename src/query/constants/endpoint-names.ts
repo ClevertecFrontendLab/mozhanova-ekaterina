@@ -1,3 +1,9 @@
 export enum EndpointNames {
-    GET_POSTS = 'getPosts',
+    GET_LATEST_RECIPES = 'getLatestRecipes',
+    GET_POPULAR_RECIPES = 'getPopularRecipes',
+    GET_RECIPE_BY_ID = 'getRecipeById',
+    GET_RECIPES_BY_CATEGORY = 'getRecipesByCategory',
+    GET_CATEGORIES = 'getCategories',
+    GET_CATEGORY_BY_ID = 'getCategoryById',
+    SEARCH_RECIPES = 'searchRecipes',
 }

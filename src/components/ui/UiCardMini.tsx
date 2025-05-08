@@ -8,7 +8,7 @@ import { TRecipe } from '~/types';
 
 import { UiButton } from './UiButton';
 
-export function UiCardMini({ data: { title, categoriesIds, _id } }: { data: TRecipe }) {
+export const UiCardMini = ({ data: { title, categoriesIds, _id } }: { data: TRecipe }) => {
     const { category, subCategory } = useParams();
 
     const rootCategories = useSelector((state: ApplicationState) =>
@@ -60,4 +60,4 @@ export function UiCardMini({ data: { title, categoriesIds, _id } }: { data: TRec
             </Box>
         </Flex>
     );
-}
+};

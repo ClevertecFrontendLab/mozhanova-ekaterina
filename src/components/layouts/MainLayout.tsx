@@ -8,19 +8,11 @@ import { Header } from '../header/Header';
 import { Navbar } from '../Navbar';
 import { Sidebar } from '../Sidebar';
 
-export function MainLayout() {
+export const MainLayout = () => {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
     const [menuOpen, setMenuOpen] = useState<boolean>(true);
 
     useEffect(() => setMenuOpen(isLargerThanMD), [isLargerThanMD]);
-    // const hasError = useAppSelector(selectGlobalError);
-    // const { showError } = useToast();
-
-    // useEffect(() => {
-    //     if (hasError) {
-    //         showError('Ошибка', 'Произошла ошибка при загрузке данных');
-    //     }
-    // }, [hasError, showError]);
 
     return (
         <>
@@ -68,4 +60,4 @@ export function MainLayout() {
             </Box>
         </>
     );
-}
+};

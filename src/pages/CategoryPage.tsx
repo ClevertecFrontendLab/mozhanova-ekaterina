@@ -6,15 +6,13 @@ import { Outlet, useNavigate, useParams } from 'react-router';
 import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
 import { ICategory, useGetCategoriesQuery } from '~/query/category-api';
-import { useGetRecipesByCategoryQuery } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
-import { setCategoryFilter } from '~/store/recipe-slice';
-import { selectCurrentRootCategory, selectFilters } from '~/store/selectors';
+import { setCategoryFilter, setSubCategoryFilter } from '~/store/recipe-slice';
+import { selectCurrentRootCategory } from '~/store/selectors';
 
-export function CategoryPage() {
+export const CategoryPage = () => {
     const params = useParams();
     const navigate = useNavigate();
-    const filters = useSelector(selectFilters);
     const dispatch = useDispatch();
 
     const { category, subCategory } = params;
@@ -26,27 +24,15 @@ export function CategoryPage() {
     ) as ICategory;
 
     const currentSubCategory =
-        currentCategory?.subCategories?.find((c) => c.category === subCategory) ?? null;
-
-    const {
-        currentData: recipesData,
-        isError: recipesIsError,
-        isFetching: recipesIsFetching,
-    } = useGetRecipesByCategoryQuery(
-        {
-            categoryId: currentSubCategory?._id || '',
-            limit: 8,
-            ...(filters.searchString && { searchString: filters.searchString }),
-            ...(filters.allergens.length > 0 && { allergens: filters.allergens }),
-        },
-        {
-            skip: !currentSubCategory,
-        },
-    );
+        currentCategory?.subCategories?.find((category) => category.category === subCategory) ??
+        null;
 
     useEffect(() => {
         if (!currentCategory || !currentSubCategory) return;
         dispatch(setCategoryFilter([currentCategory.title]));
+        dispatch(
+            setSubCategoryFilter(currentCategory.subCategories.map((category) => category._id)),
+        );
     }, [currentCategory, currentSubCategory, dispatch]);
 
     useEffect(() => {
@@ -74,17 +60,14 @@ export function CategoryPage() {
         subCategory,
     ]);
 
-    if (isLoading || isError || !currentCategory) return null;
-
     return (
         <>
-            <SearchBar
-                data={recipesData?.data}
-                title={currentCategory.title}
-                description={currentCategory.description}
-                isError={recipesIsError}
-                isFetching={recipesIsFetching}
-            />
+            {currentCategory && (
+                <SearchBar
+                    title={currentCategory.title}
+                    description={currentCategory.description}
+                />
+            )}
 
             <Box
                 padding={{
@@ -98,4 +81,4 @@ export function CategoryPage() {
             </Box>
         </>
     );
-}
+};

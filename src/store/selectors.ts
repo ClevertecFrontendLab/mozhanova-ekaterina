@@ -25,29 +25,21 @@ export const selectFilters = createSelector(
 export const selectSubCategoriesByTitles = createSelector(
     [selectCategories, (_: ApplicationState, titles: string[]) => titles],
     (categories, titles) => {
-        const selectedCategories = categories.filter((item) => titles.includes(item.title));
+        const selectedCategories = categories.filter((category) => titles.includes(category.title));
         return selectedCategories
-            .map((item) => item.subCategories.map((subCategory) => subCategory._id))
+            .map((category) => category.subCategories.map((subCategory) => subCategory._id))
             .flatMap((ids) => ids);
     },
 );
 
+export const selectRecipeSubCategories = createSelector(
+    [selectSubcategories, (_: ApplicationState, subcategoryIds: string[]) => subcategoryIds],
+    (categories, ids) => categories.filter((category) => ids.includes(category._id)),
+);
+
 export const selectRecipeCategories = createSelector(
-    [
-        selectAllCategories,
-        selectSubcategories,
-        (_: ApplicationState, subcategoryIds: string[]) => subcategoryIds,
-    ],
-    (categories, subcategories, subcategoryIds) => {
-        const rootCategoryIds = Array.from(
-            new Set(
-                subcategoryIds
-                    .map((id) => subcategories.find((sub) => sub._id === id)?.rootCategoryId)
-                    .filter((id): id is string => !!id),
-            ),
-        );
-        return rootCategoryIds.map((id) => categories.find((c) => c._id === id)).filter(Boolean);
-    },
+    [selectCategories, (_: ApplicationState, categoryIds: string[]) => categoryIds],
+    (categories, ids) => categories.filter((category) => ids.includes(category._id)),
 );
 
 export const selectCategoryById = createSelector(
@@ -62,37 +54,15 @@ export const selectCurrentRootCategory = createSelector(
 export const selectGlobalLoading = createSelector(
     (state: ApplicationState) => state,
     (state) => {
-        // Получаем состояния из всех API
         const apiStates = [
-            // state.recipeApi?.queries || {},
-            // state.recipeApi?.mutations || {},
+            state.recipeApi?.queries || {},
+            state.recipeApi?.mutations || {},
             state.categoryApi?.queries || {},
             state.categoryApi?.mutations || {},
         ];
 
-        // Проверяем все типы запросов
         return apiStates.some((apiState) =>
             Object.values(apiState).some((item) => item?.status === 'pending'),
         );
     },
 );
-
-// export const selectGlobalError = createSelector(
-//     (state: ApplicationState) => state,
-//     (state) => {
-//         // Получаем состояния из всех API
-//         const apiStates = [
-//             state.recipeApi?.queries || {},
-//             state.recipeApi?.mutations || {},
-//             state.categoryApi?.queries || {},
-//             state.categoryApi?.mutations || {},
-//         ];
-
-//         // Проверяем все типы запросов
-//         return apiStates.some((apiState) =>
-//             Object.values(apiState).some(
-//                 (item) => item?.status === 'rejected' || item?.error !== undefined,
-//             ),
-//         );
-//     },
-// );

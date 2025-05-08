@@ -4,7 +4,7 @@ import { Flex, Heading, SimpleGrid, useMediaQuery } from '@chakra-ui/react';
 import { UiButton } from '../../ui/UiButton';
 import { BlogCard } from './BlogCard';
 
-export function BlogsSection() {
+export const BlogsSection = () => {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
 
     return (
@@ -80,4 +80,4 @@ export function BlogsSection() {
             )}
         </Flex>
     );
-}
+};

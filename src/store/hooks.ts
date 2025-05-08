@@ -30,15 +30,9 @@ export const useRecipesSearch = () => {
         [filters, pagination.currentPage],
     );
 
-    // const [trigger, { data: lazyData, isFetching: lazyIsFetching, isError: lazyIsError }] =
-    // useLazySearchRecipesQuery();
     const { data, isError, isFetching, isLoading, isSuccess, currentData } = useSearchRecipesQuery({
         ...stableArgs,
     });
-
-    // const refetch = useCallback(() => {
-    //     trigger(stableArgs);
-    // }, [stableArgs, trigger]);
 
     useEffect(() => {
         if (data?.meta) {
@@ -53,15 +47,11 @@ export const useRecipesSearch = () => {
     return {
         data: data?.data,
         meta: data?.meta,
-        // data: lazyData?.data,
         currentData,
         isLoading,
         isFetching,
         isError,
         isSuccess,
-        // refetch,
-        // lazyIsFetching,
-        // lazyIsError
     };
 };
 export const useLazyRecipesSearch = () => {
@@ -86,7 +76,7 @@ export const useLazyRecipesSearch = () => {
 
     const [trigger, { data, isFetching, isError }] = useLazySearchRecipesQuery();
 
-    const refetch = useCallback(() => {
+    const runSearch = useCallback(() => {
         trigger(stableArgs);
     }, [stableArgs, trigger]);
 
@@ -101,14 +91,10 @@ export const useLazyRecipesSearch = () => {
     }, [data, dispatch]);
 
     return {
-        // data: data?.data,
         meta: data?.meta,
         data: data?.data,
-        // currentData,
-        // isLoading,
         isError,
         isFetching,
-        // isSuccess,
-        refetch,
+        runSearch,
     };
 };

@@ -53,7 +53,7 @@ type Props = {
     onClick?: () => void;
 };
 
-export function UiButton({
+export const UiButton = ({
     text,
     rightIcon,
     leftIcon,
@@ -63,8 +63,8 @@ export function UiButton({
     icon,
     fontSize,
     ...props
-}: Props) {
-    return iconButton ? (
+}: Props) =>
+    iconButton ? (
         <IconButton
             size={size}
             bg={variants[variant].bg}
@@ -98,4 +98,3 @@ export function UiButton({
             {text}
         </Button>
     );
-}

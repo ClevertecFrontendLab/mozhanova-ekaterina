@@ -21,28 +21,26 @@ type Props = {
     variant?: keyof typeof variants;
 };
 
-export function UiIconButton({ icon, text, variant = 'default' }: Props) {
-    return (
-        <Flex as='button' cursor='pointer' direction='column' alignItems='center' m='0 auto'>
-            <Flex
-                justifyContent='center'
-                alignItems='center'
-                borderRadius='50%'
-                width='48px'
-                height='48px'
-                bg={variants[variant].bg}
-                boxShadow={variants[variant].shadow}
-                color={variants[variant].iconColor}
-                mb={{
-                    base: 0,
-                    lg: 3,
-                }}
-            >
-                {icon}
-            </Flex>
-            <Text fontSize='xs' whiteSpace='nowrap' color={[variants[variant].color]}>
-                {text}
-            </Text>
+export const UiIconButton = ({ icon, text, variant = 'default' }: Props) => (
+    <Flex as='button' cursor='pointer' direction='column' alignItems='center' m='0 auto'>
+        <Flex
+            justifyContent='center'
+            alignItems='center'
+            borderRadius='50%'
+            width='48px'
+            height='48px'
+            bg={variants[variant].bg}
+            boxShadow={variants[variant].shadow}
+            color={variants[variant].iconColor}
+            mb={{
+                base: 0,
+                lg: 3,
+            }}
+        >
+            {icon}
         </Flex>
-    );
-}
+        <Text fontSize='xs' whiteSpace='nowrap' color={[variants[variant].color]}>
+            {text}
+        </Text>
+    </Flex>
+);

@@ -1,66 +1,38 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export type TRecipe = {
-    _id: string;
-    title: string;
-    description: string;
-    categoriesIds: string[];
-    image: string;
-    bookmarks: number;
-    likes: number;
-    views: number;
-    createdAt: string;
-    time: string;
-    portions: number;
-    authorId: string;
-    nutritionValue: { calories: number; protein: number; fats: number; carbohydrates: number };
-    ingredients: Array<{ title: string; count: string; measureUnit: string }>;
-    steps: Array<{ stepNumber: number; description: string; image: string }>;
-    meat?: string;
-    side?: string;
-};
+import { API_BASE_URL } from '~/config';
+import { TMeta, TParams, TRecipe } from '~/types';
 
-export interface Meta {
-    total: number;
-    totalPages: number;
-    page: number;
-    limit: number;
-}
+import { ApiEndpoints } from './constants/api';
+import { EndpointNames } from './constants/endpoint-names';
+import { Tags } from './constants/tags';
 
 export const recipeApi = createApi({
     reducerPath: 'recipeApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://marathon-api.clevertec.ru' }),
-    tagTypes: ['Recipes', 'Recipe'],
+    baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
+    tagTypes: [Tags.RECIPE, Tags.RECIPES],
     endpoints: (builder) => ({
-        getLatestRecipes: builder.query<
-            { data: TRecipe[]; meta: Meta },
-            { page?: number; limit?: number; sortBy?: string; sortOrder?: string }
+        [EndpointNames.GET_LATEST_RECIPES]: builder.query<
+            { data: TRecipe[]; meta: TMeta },
+            TParams
         >({
             query: (params) => ({
-                url: '/recipe',
+                url: ApiEndpoints.RECIPES,
                 params: {
-                    page: params.page,
-                    limit: params.limit,
+                    ...params,
                     sortBy: 'createdAt',
                     sortOrder: 'asc',
                 },
             }),
-            providesTags: ['Recipes'],
+            providesTags: [Tags.RECIPES],
         }),
 
-        getPopularRecipes: builder.query<
-            { data: TRecipe[]; meta: Meta },
-            {
-                page?: number;
-                limit?: number;
-                sortBy?: string;
-                sortOrder?: string;
-                allergens?: string[];
-                searchString?: string;
-            }
+        [EndpointNames.GET_POPULAR_RECIPES]: builder.query<
+            { data: TRecipe[]; meta: TMeta },
+            TParams
         >({
             query: (params) => ({
-                url: '/recipe',
+                url: ApiEndpoints.RECIPES,
                 params: {
                     ...params,
                     sortBy: 'likes',
@@ -68,50 +40,31 @@ export const recipeApi = createApi({
                     allergens: params.allergens?.join(','),
                 },
             }),
-            providesTags: ['Recipes'],
+            providesTags: [Tags.RECIPES],
         }),
 
-        getRecipeById: builder.query<TRecipe, string>({
-            query: (id) => `/recipe/${id}`,
-            providesTags: (result) => (result ? [{ type: 'Recipe', id: result._id }] : ['Recipe']),
+        [EndpointNames.GET_RECIPE_BY_ID]: builder.query<TRecipe, string>({
+            query: (id) => `${ApiEndpoints.RECIPE_BY_ID}${id}`,
+            providesTags: (result) =>
+                result ? [{ type: Tags.RECIPE, id: result._id }] : [Tags.RECIPE],
         }),
 
-        getRecipesByCategory: builder.query<
-            { data: TRecipe[]; meta: Meta },
-            {
-                categoryId: string;
-                page?: number;
-                limit?: number;
-                allergens?: string[];
-                searchString?: string;
-            }
+        [EndpointNames.GET_RECIPES_BY_CATEGORY]: builder.query<
+            { data: TRecipe[]; meta: TMeta },
+            TParams
         >({
             query: ({ categoryId, ...params }) => ({
-                url: `/recipe/category/${categoryId}`,
+                url: `${ApiEndpoints.RECIPE_CATEGORY}${categoryId}`,
                 params: {
                     ...params,
-                    allergens: params.allergens?.join(','),
                 },
             }),
-            providesTags: ['Recipes'],
+            providesTags: [Tags.RECIPES],
         }),
 
-        searchRecipes: builder.query<
-            { data: TRecipe[]; meta: Meta },
-            {
-                page?: number;
-                limit?: number;
-                sortBy?: string;
-                sortOrder?: string;
-                allergens?: string[];
-                searchString?: string;
-                meat?: string[];
-                garnish?: string[];
-                subcategoriesIds?: string[];
-            }
-        >({
+        [EndpointNames.SEARCH_RECIPES]: builder.query<{ data: TRecipe[]; meta: TMeta }, TParams>({
             query: (params) => ({
-                url: '/recipe',
+                url: ApiEndpoints.RECIPES,
                 params: {
                     ...params,
                     allergens: params.allergens?.join(','),
@@ -120,7 +73,7 @@ export const recipeApi = createApi({
                     subcategoriesIds: params.subcategoriesIds?.join(','),
                 },
             }),
-            providesTags: ['Recipes'],
+            providesTags: [Tags.RECIPES],
         }),
     }),
 });

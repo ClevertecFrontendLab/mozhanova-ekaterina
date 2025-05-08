@@ -3,10 +3,12 @@ import { Box, Flex, Spinner } from '@chakra-ui/react';
 import { useAppSelector } from '~/store/hooks';
 import { selectGlobalLoading } from '~/store/selectors';
 
-export function GlobalLoader() {
+export const GlobalLoader = () => {
     const isLoading = useAppSelector(selectGlobalLoading);
 
-    return isLoading ? (
+    if (!isLoading) return null;
+
+    return (
         <Box
             data-test-id='app-loader'
             position='fixed'
@@ -47,5 +49,5 @@ export function GlobalLoader() {
                 />
             </Flex>
         </Box>
-    ) : null;
-}
+    );
+};

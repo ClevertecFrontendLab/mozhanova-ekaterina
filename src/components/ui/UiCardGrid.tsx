@@ -1,11 +1,11 @@
 import { SimpleGrid, useMediaQuery } from '@chakra-ui/react';
 import { memo } from 'react';
 
-import { TRecipe } from '~/query/recipe-api';
+import { TRecipe } from '~/types';
 
 import { UiCard } from '../ui/UiCard';
 
-function UiCardGrid({ data }: { data: TRecipe[] | undefined }) {
+export const UiCardGrid = memo(({ data }: { data: TRecipe[] | undefined }) => {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
 
     if (!data) return null;
@@ -34,6 +34,4 @@ function UiCardGrid({ data }: { data: TRecipe[] | undefined }) {
             ))}
         </SimpleGrid>
     );
-}
-
-export default memo(UiCardGrid);
+});

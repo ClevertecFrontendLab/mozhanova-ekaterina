@@ -1,32 +1,21 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+import { API_BASE_URL } from '~/config';
 import { setCategories } from '~/store/category-slice';
+import { TCategory } from '~/types';
 
-export interface ICategory {
-    _id: string;
-    title: string;
-    category: string;
-    icon: string;
-    description: string;
-    subCategories: ISubCategory[];
-    rootCategoryId?: string;
-}
-
-export interface ISubCategory {
-    _id: string;
-    title: string;
-    category: string;
-    rootCategoryId: string;
-}
+import { ApiEndpoints } from './constants/api';
+import { EndpointNames } from './constants/endpoint-names';
+import { Tags } from './constants/tags';
 
 export const categoryApi = createApi({
     reducerPath: 'categoryApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://marathon-api.clevertec.ru' }),
-    tagTypes: ['Categories', 'Category'],
+    baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
+    tagTypes: [Tags.CATEGORIES, Tags.CATEGORY],
     endpoints: (builder) => ({
-        getCategories: builder.query<ICategory[], void>({
-            query: () => '/category',
-            providesTags: ['Categories'],
+        [EndpointNames.GET_CATEGORIES]: builder.query<TCategory[], void>({
+            query: () => ApiEndpoints.CATEGORIES,
+            providesTags: [Tags.CATEGORIES],
             onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
                 try {
                     const { data } = await queryFulfilled;
@@ -35,11 +24,11 @@ export const categoryApi = createApi({
                 } catch (_) {
                     const cachedData = localStorage.getItem('navCache');
                     if (cachedData) {
-                        const categories: ICategory[] = JSON.parse(cachedData);
+                        const categories: TCategory[] = JSON.parse(cachedData);
                         dispatch(setCategories(categories));
                         dispatch(
                             categoryApi.util.upsertQueryData(
-                                'getCategories',
+                                EndpointNames.GET_CATEGORIES,
                                 undefined,
                                 categories,
                             ),
@@ -48,21 +37,24 @@ export const categoryApi = createApi({
                 }
             },
         }),
-        getCategoryById: builder.query<ICategory, string>({
-            query: (id) => `/category/${id}`,
-            providesTags: (_result, _error, id) => [{ type: 'Category', id }],
-            // Используем кэш при ошибке
+        [EndpointNames.GET_CATEGORY_BY_ID]: builder.query<TCategory, string>({
+            query: (id) => `${ApiEndpoints.CATEGORY_BY_ID}${id}`,
+            providesTags: (_result, _error, id) => [{ type: Tags.CATEGORY, id }],
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
                     await queryFulfilled;
                 } catch (_) {
                     const cachedData = localStorage.getItem('navCache');
                     if (cachedData) {
-                        const categories: ICategory[] = JSON.parse(cachedData);
+                        const categories: TCategory[] = JSON.parse(cachedData);
                         const category = categories.find((c) => c._id === id);
                         if (category) {
                             dispatch(
-                                categoryApi.util.upsertQueryData('getCategoryById', id, category),
+                                categoryApi.util.upsertQueryData(
+                                    EndpointNames.GET_CATEGORY_BY_ID,
+                                    id,
+                                    category,
+                                ),
                             );
                         }
                     }

@@ -1,21 +1,32 @@
 import 'swiper/swiper-bundle.css';
 
 import { Box, Flex, Heading, useMediaQuery } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { useGetLatestRecipesQuery } from '~/query/recipe-api';
+import { TRecipe } from '~/types';
 
 import { NavigationButtons } from './NavigationButtons';
 import { SliderCard } from './SliderCard';
 
-export function Slider() {
+export const Slider = () => {
     const [isLargerThanLG] = useMediaQuery('(min-width: 1441px)');
-    const { data, isLoading, isError } = useGetLatestRecipesQuery({
+    const { data } = useGetLatestRecipesQuery({
         limit: 10,
         sortBy: 'createdAt',
     });
-    if (isError || isLoading) return null;
+    const [sortedRecipes, setSortedRecipes] = useState<TRecipe[]>([]);
+
+    useEffect(() => {
+        data &&
+            setSortedRecipes(
+                [...data.data].sort(
+                    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+                ),
+            );
+    }, [data]);
 
     return (
         <Flex
@@ -58,7 +69,7 @@ export function Slider() {
                     loop
                     freeMode
                 >
-                    {data?.data.map((recipe, i) => (
+                    {sortedRecipes.map((recipe, i) => (
                         <SwiperSlide data-test-id={`carousel-card-${i}`} key={recipe._id}>
                             <SliderCard key={recipe._id} data={recipe} />
                         </SwiperSlide>
@@ -67,4 +78,4 @@ export function Slider() {
             </Box>
         </Flex>
     );
-}
+};

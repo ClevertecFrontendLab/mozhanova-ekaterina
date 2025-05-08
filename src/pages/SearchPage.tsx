@@ -5,15 +5,15 @@ import { useNavigate } from 'react-router';
 
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
 import { UiButton } from '~/components/ui/UiButton';
-import UiCardGrid from '~/components/ui/UiCardGrid';
+import { UiCardGrid } from '~/components/ui/UiCardGrid';
 import { useToast } from '~/hooks/use-toast';
-import { TRecipe } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
 import { useRecipesSearch } from '~/store/hooks';
 import { setCurrentPage } from '~/store/recipe-slice';
 import { selectFilters } from '~/store/selectors';
+import { TRecipe } from '~/types';
 
-function SearchPage() {
+export const SearchPage = memo(() => {
     const [allRecipes, setAllRecipes] = useState<TRecipe[]>([]);
     const pagination = useSelector((state: ApplicationState) => state.recipe.pagination);
     const filters = useSelector(selectFilters);
@@ -22,7 +22,7 @@ function SearchPage() {
 
     const { showError } = useToast();
 
-    const { isLoading, isError, isFetching, data } = useRecipesSearch();
+    const { isError, data } = useRecipesSearch();
 
     const hasMore = pagination.totalPages ? pagination.currentPage < pagination.totalPages : false;
 
@@ -36,9 +36,7 @@ function SearchPage() {
         }
     }, [data, pagination.currentPage]);
 
-    useEffect(() => {
-        // if (data && data.length === 0) navigate('/');
-    }, [navigate, data]);
+    useEffect(() => {}, [navigate, data]);
 
     useEffect(() => {
         dispatch(setCurrentPage(1));
@@ -57,16 +55,9 @@ function SearchPage() {
         }
     };
 
-    if (isLoading || isError) return null;
-
     return (
         <>
-            <SearchBar
-                data={data}
-                isError={isError}
-                isFetching={isFetching}
-                title='Приятного аппетита!'
-            />
+            <SearchBar title='Приятного аппетита!' />
 
             <Box
                 padding={{
@@ -91,6 +82,4 @@ function SearchPage() {
             </Box>
         </>
     );
-}
-
-export default memo(SearchPage);
+});

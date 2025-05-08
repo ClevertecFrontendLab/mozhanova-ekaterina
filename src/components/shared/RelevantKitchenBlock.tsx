@@ -2,23 +2,25 @@ import { Box, Flex, Grid, Heading, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
-import { ICategory, ISubCategory } from '~/query/category-api';
+import { useToast } from '~/hooks/use-toast';
 import { useGetRecipesByCategoryQuery } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
 import { useAppSelector } from '~/store/hooks';
 import { selectCategoryById, selectSubcategories } from '~/store/selectors';
+import { TCategory, TSubCategory } from '~/types';
 
 import { UiCardMini } from '../ui/UiCardMini';
 import { UiCardSimple } from '../ui/UiCardSimple';
 
-export function RelevantKitchenBlock() {
+export const RelevantKitchenBlock = () => {
     const { category } = useParams();
-    const allSubCategories = useAppSelector(selectSubcategories) as ISubCategory[];
-    const [randomSubCategory, setRandomSubCategory] = useState<ISubCategory | null>(null);
+    const allSubCategories = useAppSelector(selectSubcategories) as TSubCategory[];
+    const [randomSubCategory, setRandomSubCategory] = useState<TSubCategory | null>(null);
+    const { showError } = useToast();
 
     const currentRootCategory = useAppSelector((state: ApplicationState) =>
         selectCategoryById(state, randomSubCategory?.rootCategoryId || ''),
-    ) as ICategory;
+    ) as TCategory;
 
     useEffect(() => {
         if (allSubCategories.length > 0) {
@@ -27,12 +29,7 @@ export function RelevantKitchenBlock() {
         }
     }, [allSubCategories, category]);
 
-    const {
-        data,
-        isLoading: recipesLoading,
-        isError: recipesError,
-        refetch,
-    } = useGetRecipesByCategoryQuery(
+    const { data, isError, refetch } = useGetRecipesByCategoryQuery(
         {
             categoryId: randomSubCategory?._id || '',
             limit: 5,
@@ -49,7 +46,18 @@ export function RelevantKitchenBlock() {
         }
     }, [category, refetch, randomSubCategory?._id]);
 
-    if (recipesError || recipesLoading) return null;
+    useEffect(() => {
+        if (isError) {
+            showError('Ошибка сервера', 'Попробуйте поискать снова попозже');
+        }
+    }, [isError, showError]);
+
+    const relevantLeft =
+        data?.data.slice(0, 2).map((recipe) => <UiCardSimple key={recipe._id} data={recipe} />) ||
+        null;
+    const relevantRight =
+        data?.data.slice(2, 5).map((recipe) => <UiCardMini key={recipe._id} data={recipe} />) ||
+        null;
 
     return (
         <Box pb={4}>
@@ -84,7 +92,7 @@ export function RelevantKitchenBlock() {
                     }}
                     fontWeight='500'
                 >
-                    {currentRootCategory && currentRootCategory.title}
+                    {currentRootCategory?.title || ''}
                 </Heading>
 
                 <Text
@@ -99,7 +107,7 @@ export function RelevantKitchenBlock() {
                         md: 'md',
                     }}
                 >
-                    {currentRootCategory && currentRootCategory.description}
+                    {currentRootCategory.description || ''}
                 </Text>
             </Grid>
 
@@ -130,9 +138,7 @@ export function RelevantKitchenBlock() {
                         xl: '1/2',
                     }}
                 >
-                    {data?.data
-                        .slice(0, 2)
-                        .map((recipe) => <UiCardSimple key={recipe._id} data={recipe} />)}
+                    {relevantLeft}
                 </Grid>
 
                 <Flex
@@ -144,11 +150,9 @@ export function RelevantKitchenBlock() {
                     }}
                     minW={0}
                 >
-                    {data?.data
-                        .slice(2, 5)
-                        .map((recipe) => <UiCardMini key={recipe._id} data={recipe} />)}
+                    {relevantRight}
                 </Flex>
             </Grid>
         </Box>
     );
-}
+};
