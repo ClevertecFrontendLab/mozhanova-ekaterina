@@ -6,13 +6,13 @@ import { ProfileInfo } from '../shared/ProfileInfo';
 import { ProfileNotification } from '../shared/ProfileNotification';
 import { Breadcrumbs } from './Breadcrumbs';
 
-export function Header({
+export const Header = ({
     setMenuOpen,
     isMenuOpen,
 }: {
     setMenuOpen: (value: boolean) => void;
     isMenuOpen: boolean;
-}) {
+}) => {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
     const [isLargerThanSM] = useMediaQuery('(min-width: 361px)');
 
@@ -22,7 +22,7 @@ export function Header({
             position='fixed'
             top='0'
             left='0'
-            zIndex='100'
+            zIndex='101'
             w='100%'
             h={{
                 base: '64px',
@@ -60,7 +60,7 @@ export function Header({
             </Box>
             {isLargerThanMD && (
                 <>
-                    <Breadcrumbs />
+                    <Breadcrumbs setMenuOpen={setMenuOpen} />
                     <ProfileInfo />
                 </>
             )}
@@ -97,4 +97,4 @@ export function Header({
             </Flex>
         </Flex>
     );
-}
+};

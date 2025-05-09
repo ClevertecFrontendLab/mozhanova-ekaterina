@@ -26,27 +26,31 @@ import { useNavigate } from 'react-router';
 
 import { PlusIcon } from '~/components/ui/icons/PlusIcon';
 import { UiButton } from '~/components/ui/UiButton';
-import { defineCategoryId } from '~/helper';
 import { allergens } from '~/mocks/allergens';
 import { authors } from '~/mocks/authors';
-import { categories } from '~/mocks/categories';
 import { garnish } from '~/mocks/garnish';
 import { meat } from '~/mocks/meat';
+import { ApplicationState } from '~/store/configure-store';
 import {
     cleanFilters,
-    RecipesState,
     setAllergensFilter,
     setAuthorsFilter,
     setCategoryFilter,
     setGarnishFilter,
     setMeatFilter,
+    setSubCategoryFilter,
 } from '~/store/recipe-slice';
+import { selectFilters, selectSubCategoriesByTitles } from '~/store/selectors';
+import { TCategory } from '~/types';
 
-import { SelectOptions } from './SelectOptions';
+import { SelectOptions } from '../SelectOptions';
 
-export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
     const dispatch = useDispatch();
-    const filters = useSelector((state: { recipe: RecipesState }) => state.recipe.filters);
+    const filters = useSelector(selectFilters);
+    const categories = useSelector(
+        (state: { category: { categories: TCategory[] } }) => state.category.categories,
+    ).filter((category) => !category.rootCategoryId);
 
     const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
     const [selectedAllergens, setSelectedAllergens] = useState<string[]>([]);
@@ -57,6 +61,9 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
     const [allergenInput, setAllergenInput] = useState('');
     const [switchAllergens, setSwitchAllergens] = useState(
         filters.allergens.length > 0 ? true : false,
+    );
+    const selectedCategoriesIds = useSelector((state: ApplicationState) =>
+        selectSubCategoriesByTitles(state, selectedCategory),
     );
     const navigate = useNavigate();
 
@@ -72,7 +79,8 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
     const handleApply = () => {
         dispatch(cleanFilters());
         dispatch(setAllergensFilter(selectedAllergens));
-        dispatch(setCategoryFilter(selectedCategory.map((item) => defineCategoryId(item))));
+        dispatch(setSubCategoryFilter(selectedCategoriesIds));
+        dispatch(setCategoryFilter(selectedCategory));
         dispatch(setAuthorsFilter(selectedAuthors));
         dispatch(setMeatFilter(selectedMeat));
         dispatch(setGarnishFilter(selectedGarnish));
@@ -101,21 +109,17 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
         }
     }, [filters.allergens]);
 
-    // useEffect(() => {
-    //     setSelectedCategory(filters.category.map((item) => defineCategoryLabel(item)));
-    // }, [filters.category]);
+    useEffect(() => {
+        setSelectedAuthors(filters.authors);
+    }, [filters.authors]);
 
-    // useEffect(() => {
-    //     setSelectedAuthors(filters.authors);
-    // }, [filters.authors]);
+    useEffect(() => {
+        setSelectedMeat(filters.meat);
+    }, [filters.meat]);
 
-    // useEffect(() => {
-    //     setSelectedMeat(filters.meat);
-    // }, [filters.meat]);
-
-    // useEffect(() => {
-    //     setSelectedGarnish(filters.garnish);
-    // }, [filters.garnish]);
+    useEffect(() => {
+        setSelectedGarnish(filters.garnish);
+    }, [filters.garnish]);
 
     return (
         <Drawer
@@ -139,7 +143,7 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
                             selected={selectedCategory}
                             setSelected={setSelectedCategory}
                             placeholder='Категория'
-                            options={categories.map((item) => item.label)}
+                            options={categories.map((item) => item.title)}
                             tagsCloseBtn={false}
                         />
                         <SelectOptions
@@ -389,4 +393,4 @@ export function FiltersDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: (
             </DrawerContent>
         </Drawer>
     );
-}
+};

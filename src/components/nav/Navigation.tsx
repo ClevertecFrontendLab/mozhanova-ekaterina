@@ -1,13 +1,15 @@
 import { Box, Flex, useMediaQuery } from '@chakra-ui/react';
 
-import { categories } from '~/mocks/categories';
+import { useGetCategoriesQuery } from '~/query/category-api';
 
 import { Footer } from '../footer/Footer';
 import { Breadcrumbs } from '../header/Breadcrumbs';
 import { NavigationItem } from './NavigationItem';
 
-export function Navigation({ setMenuOpen }: { setMenuOpen: (value: boolean) => void }) {
+export const Navigation = ({ setMenuOpen }: { setMenuOpen: (value: boolean) => void }) => {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
+    const { data } = useGetCategoriesQuery();
+    const categories = data?.filter((category) => category.subCategories) || [];
 
     return (
         <Flex
@@ -35,16 +37,17 @@ export function Navigation({ setMenuOpen }: { setMenuOpen: (value: boolean) => v
             {!isLargerThanMD && <Breadcrumbs setMenuOpen={setMenuOpen} />}
             <Box as='nav' pl='10px' pt='10px'>
                 <ul>
-                    {categories.map((category) => (
-                        <NavigationItem
-                            setMenuOpen={setMenuOpen}
-                            key={category.id}
-                            category={category}
-                        />
-                    ))}
+                    {categories &&
+                        categories.map((category) => (
+                            <NavigationItem
+                                setMenuOpen={setMenuOpen}
+                                key={category._id}
+                                category={category}
+                            />
+                        ))}
                 </ul>
             </Box>
             {!isLargerThanMD && <Footer />}
         </Flex>
     );
-}
+};

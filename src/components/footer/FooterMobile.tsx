@@ -7,7 +7,7 @@ import { UiIconButton } from '~/components/ui/UiIconButton';
 
 import { SearchIcon } from '../ui/icons/SearchIcon';
 
-export function FooterMobile() {
+export const FooterMobile = () => {
     const location = useLocation();
 
     return (
@@ -49,4 +49,4 @@ export function FooterMobile() {
             </Link>
         </Grid>
     );
-}
+};

@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
-export function IngredientsTable({
+export const IngredientsTable = ({
     ingredients,
     portions,
 }: {
@@ -25,8 +25,9 @@ export function IngredientsTable({
         measureUnit: string;
     }[];
     portions: number;
-}) {
+}) => {
     const [portionsQuantity, setPortionsQuantity] = useState(portions);
+
     return (
         <TableContainer>
             <Table variant='custom'>
@@ -81,4 +82,4 @@ export function IngredientsTable({
             </Table>
         </TableContainer>
     );
-}
+};

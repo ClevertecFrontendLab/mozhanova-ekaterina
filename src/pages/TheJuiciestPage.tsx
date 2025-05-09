@@ -1,27 +1,62 @@
-import { Box } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { Box, Flex } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { PageToolbar } from '~/components/shared/PageToolbar/PageToolbar';
 import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
-import UiCardGrid from '~/components/ui/UiCardGrid';
-import { setCategoryFilter, setSubCategoryFilter } from '~/store/recipe-slice';
-import { selectFilteredRecipes } from '~/store/selectors';
+import { SearchBar } from '~/components/shared/search-bar/SearchBar';
+import { UiButton } from '~/components/ui/UiButton';
+import { UiCardGrid } from '~/components/ui/UiCardGrid';
+import { useGetPopularRecipesQuery } from '~/query/recipe-api';
+import { ApplicationState } from '~/store/configure-store';
+import { setCurrentPage } from '~/store/recipe-slice';
 import { TRecipe } from '~/types';
 
-export function TheJuiciestPage() {
-    const filteredRecipes = useSelector(selectFilteredRecipes);
+export const TheJuiciestPage = () => {
+    const [allRecipes, setAllRecipes] = useState<TRecipe[]>([]);
+    const pagination = useSelector((state: ApplicationState) => state.recipe.pagination);
+    const filters = useSelector((state: ApplicationState) => state.recipe.filters);
     const dispatch = useDispatch();
-    const sortedData: TRecipe[] = [...filteredRecipes].sort((a, b) => b.likes - a.likes);
+
+    const { data, isLoading, isError, currentData } = useGetPopularRecipesQuery(
+        {
+            limit: 8,
+            page: pagination.currentPage,
+            ...(filters.allergens.length > 0 && { allergens: filters.allergens }),
+            ...(filters.searchString && { searchString: filters.searchString }),
+        },
+        {
+            refetchOnMountOrArgChange: true,
+        },
+    );
+    const hasMore = data?.meta ? pagination.currentPage < data.meta.totalPages : false;
 
     useEffect(() => {
-        dispatch(setCategoryFilter([]));
-        dispatch(setSubCategoryFilter([]));
-    }, [dispatch]);
+        if (currentData?.data) {
+            if (pagination.currentPage === 1) {
+                // Первая страница - полная замена данных
+                setAllRecipes(currentData.data);
+            } else {
+                // Последующие страницы - добавление данных
+                setAllRecipes((prev) => [...prev, ...currentData.data]);
+            }
+        }
+    }, [currentData?.data, pagination.currentPage]);
+
+    useEffect(() => {
+        dispatch(setCurrentPage(1));
+    }, [filters, dispatch]);
+
+    const loadMore = () => {
+        if (hasMore) {
+            dispatch(setCurrentPage(pagination.currentPage + 1));
+        }
+    };
+
+    if (isError || isLoading) return null;
 
     return (
         <>
-            <PageToolbar title='Самое сочное' />
+            <SearchBar title='Самое сочное' />
             <Box
                 padding={{
                     base: '0 16px',
@@ -29,12 +64,20 @@ export function TheJuiciestPage() {
                     lg: '0 24px',
                 }}
             >
-                <UiCardGrid data={sortedData} />
-                <RelevantKitchenBlock
-                    heading='Веганская кухня'
-                    description='Интересны не только убеждённым вегетарианцам, но и тем, кто хочет  попробовать вегетарианскую диету и готовить вкусные  вегетарианские блюда.'
-                />
+                <UiCardGrid data={allRecipes} />
+                {hasMore && (
+                    <Flex justifyContent='center' mt={4} mb={10}>
+                        <UiButton
+                            data-test-id='load-more-button'
+                            onClick={loadMore}
+                            size='md'
+                            text='Загрузка'
+                            variant='primary'
+                        />
+                    </Flex>
+                )}
+                <RelevantKitchenBlock />
             </Box>
         </>
     );
-}
+};

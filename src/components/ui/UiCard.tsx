@@ -10,11 +10,14 @@ import {
     Text,
     useMediaQuery,
 } from '@chakra-ui/react';
-import { JSX } from 'react';
+import { JSX, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router';
 
+import { API_IMAGE_URL } from '~/config';
+import { ApplicationState } from '~/store/configure-store';
 import { RecipesState } from '~/store/recipe-slice';
+import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
 import { TRecipe } from '~/types';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
@@ -30,18 +33,32 @@ type Props = {
     'data-test-id'?: string;
 };
 
-export function UiCard({
-    data: { title, description, image, category, likes, bookmarks, subcategory, id },
+export const UiCard = ({
+    data: { title, description, image, categoriesIds, likes, bookmarks, _id },
     recommendation,
     size = 'lg',
     index,
     ...props
-}: Props) {
-    const searchQuery = useSelector(
-        (state: { recipe: RecipesState }) => state.recipe.filters.searchQuery,
+}: Props) => {
+    const searchString = useSelector(
+        (state: { recipe: RecipesState }) => state.recipe.filters.searchString,
     );
+
+    const subCategories = useSelector((state: ApplicationState) =>
+        selectRecipeSubCategories(state, categoriesIds),
+    );
+
+    const rootCategoriesIds = useMemo(
+        () => subCategories.map((category) => category.rootCategoryId!),
+        [subCategories],
+    );
+
+    const rootCategories = useSelector((state: ApplicationState) =>
+        selectRecipeCategories(state, rootCategoriesIds),
+    );
+
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
-    const params = useParams();
+    const { category, subCategory } = useParams();
 
     return (
         <Card
@@ -64,7 +81,7 @@ export function UiCard({
                     md: '346px',
                 }}
                 maxH='100%'
-                src={image}
+                src={`${API_IMAGE_URL}${image}`}
                 alt='card image'
             />
 
@@ -99,7 +116,7 @@ export function UiCard({
                     >
                         <UiCardInfo
                             categoryBgColor='secondary.100'
-                            category={category}
+                            categories={rootCategories.map((category) => category?._id)}
                             likes={likes}
                             bookmarks={bookmarks}
                             alignItems='flex-start'
@@ -126,7 +143,7 @@ export function UiCard({
                                 md: 1,
                             }}
                         >
-                            {searchQuery ? highlightMatches(title, searchQuery) : title}
+                            {searchString ? highlightMatches(title, searchString) : title}
                         </Heading>
                         <Text fontSize='sm' noOfLines={3}>
                             {isLargerThanMD ? description : null}
@@ -143,31 +160,31 @@ export function UiCard({
                             icon={<BookmarkHeartIcon size={!isLargerThanMD ? '12px' : '16px'} />}
                             iconButton={!isLargerThanMD}
                         />
-                        <Link
-                            to={`/${params.category || category[0]}/${params.subCategory || subcategory[0]}/${id}`}
-                        >
-                            <UiButton
-                                data-test-id={`card-link-${index}`}
-                                size={isLargerThanMD ? 'sm' : 'xs'}
-                                text='Готовить'
-                                variant='solid'
-                            />
-                        </Link>
+                        {((category && subCategories) || (rootCategories && subCategories)) && (
+                            <Link
+                                to={`/${category || (rootCategories[0]?.category ?? '')}/${subCategory || (subCategories[0]?.category ?? '')}/${_id}`}
+                            >
+                                <UiButton
+                                    data-test-id={`card-link-${index}`}
+                                    size={isLargerThanMD ? 'sm' : 'xs'}
+                                    text='Готовить'
+                                    variant='solid'
+                                />
+                            </Link>
+                        )}
                     </Flex>
                 </CardFooter>
             </Stack>
         </Card>
     );
-}
+};
 
 function highlightMatches(str: string, substr: string) {
+    const result: JSX.Element[] = [];
     const lowerStr = str.toLowerCase();
     const lowerSub = substr.toLowerCase();
-    const result: JSX.Element[] = [];
-
     let lastIndex = 0;
     let index = lowerStr.indexOf(lowerSub);
-
     while (index !== -1) {
         if (index > lastIndex) {
             result.push(

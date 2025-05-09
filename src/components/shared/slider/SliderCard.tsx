@@ -9,24 +9,41 @@ import {
     Text,
     useMediaQuery,
 } from '@chakra-ui/react';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router';
 
 import { UiCardInfo } from '~/components/ui/UiCardInfo';
+import { API_IMAGE_URL } from '~/config';
+import { ApplicationState } from '~/store/configure-store';
+import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
 import { TRecipe } from '~/types';
 
 type Props = {
     data: TRecipe;
 };
 
-export function SliderCard({
-    data: { title, description, image, category, likes, bookmarks, subcategory, id },
-}: Props) {
+export const SliderCard = ({
+    data: { title, description, image, categoriesIds, likes, bookmarks, _id },
+}: Props) => {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
     const params = useParams();
 
+    const subCategories = useSelector((state: ApplicationState) =>
+        selectRecipeSubCategories(state, categoriesIds),
+    );
+    const rootCategoriesIds = useMemo(
+        () => subCategories.map((category) => category.rootCategoryId!),
+        [subCategories],
+    );
+
+    const rootCategories = useSelector((state: ApplicationState) =>
+        selectRecipeCategories(state, rootCategoriesIds),
+    );
+
     return (
         <Link
-            to={`/${params.category || category[0]}/${params.subCategory || subcategory[0]}/${id}`}
+            to={`/${params.category || rootCategories.map((c) => c?.category)[0]}/${params.subCategory || rootCategories.map((c) => c?.subCategories[0]?.category)[0]}/${_id}`}
         >
             <Card
                 position='relative'
@@ -38,7 +55,13 @@ export function SliderCard({
                 }}
                 h='100%'
             >
-                <Image objectFit='cover' maxW='100%' maxH='100%' src={image} alt='card image' />
+                <Image
+                    objectFit='cover'
+                    maxW='100%'
+                    maxH='100%'
+                    src={`${API_IMAGE_URL}${image}`}
+                    alt='card image'
+                />
 
                 <Stack spacing={0} flexGrow={1}>
                     <CardBody
@@ -85,7 +108,7 @@ export function SliderCard({
                     >
                         <UiCardInfo
                             categoryBgColor='primary.100'
-                            category={category}
+                            categories={rootCategories.map((category) => category?._id)}
                             likes={likes}
                             bookmarks={bookmarks}
                         />
@@ -94,4 +117,4 @@ export function SliderCard({
             </Card>
         </Link>
     );
-}
+};
