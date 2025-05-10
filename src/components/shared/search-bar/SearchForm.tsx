@@ -112,7 +112,7 @@ export const SearchForm = ({
                             onBlur={() => setSearchOnFocus(false)}
                             value={value}
                             onChange={(e) => setValue(e.target.value)}
-                            variant='custom'
+                            variant='search'
                             size={{
                                 base: 'sm',
                                 md: 'lg',

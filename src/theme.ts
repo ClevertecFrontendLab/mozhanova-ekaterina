@@ -319,7 +319,7 @@ const theme = extendTheme({
                 },
             },
             variants: {
-                custom: {
+                search: {
                     field: {
                         borderWidth: '1px',
                         borderColor: 'border.dark',
@@ -339,7 +339,21 @@ const theme = extendTheme({
                         borderColor: 'border.light',
                         color: 'neutral.300',
                         _placeholder: {
-                            color: 'neutral.300',
+                            color: 'primary.700',
+                            fontWeight: '400',
+                        },
+                        _focus: {
+                            boxShadow: 'none',
+                        },
+                    },
+                },
+                login: {
+                    field: {
+                        borderWidth: '1px',
+                        borderColor: 'primary.100',
+                        color: 'primary.700',
+                        _placeholder: {
+                            color: 'primary.700',
                             fontWeight: '400',
                         },
                         _focus: {

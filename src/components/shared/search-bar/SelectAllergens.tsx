@@ -68,7 +68,7 @@ export const SelectAllergens = ({
                         <Flex p='8px 14px 8px 24px' gap='14px' alignItems='center'>
                             <Input
                                 data-test-id='add-other-allergen'
-                                variant='custom'
+                                variant='select'
                                 value={inputValue}
                                 onChange={(e) => setInputValue(e.target.value)}
                                 onKeyDown={(e) => {
