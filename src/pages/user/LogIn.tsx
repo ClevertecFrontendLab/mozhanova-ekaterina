@@ -1,8 +1,11 @@
+import { ViewOffIcon } from '@chakra-ui/icons';
 import {
     FormControl,
     FormErrorMessage,
     FormLabel,
     Input,
+    InputGroup,
+    InputRightElement,
     SimpleGrid,
     Text,
     VStack,
@@ -23,13 +26,18 @@ export const LogIn = () => {
                 <VStack spacing={6}>
                     <FormControl>
                         <FormLabel>Логин для входа на сайт</FormLabel>
-                        <Input variant='login' type='email' placeholder='Введите логин' />
+                        <Input size='lg' variant='login' type='email' placeholder='Введите логин' />
                         <FormErrorMessage></FormErrorMessage>
                     </FormControl>
 
                     <FormControl>
                         <FormLabel>Пароль</FormLabel>
-                        <Input variant='login' type='password' placeholder='Пароль для сайта' />
+                        <InputGroup size='lg'>
+                            <Input variant='login' type='password' placeholder='Пароль для сайта' />
+                            <InputRightElement bgSize='lg'>
+                                <ViewOffIcon />
+                            </InputRightElement>
+                        </InputGroup>
                         <FormErrorMessage></FormErrorMessage>
                     </FormControl>
                 </VStack>

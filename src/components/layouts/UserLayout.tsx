@@ -9,6 +9,7 @@ import {
     TabPanels,
     Tabs,
     Text,
+    useMediaQuery,
     VStack,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router';
@@ -18,6 +19,7 @@ import { SignIn } from '../../pages/user/SignIn';
 
 export const UserLayout = () => {
     const navigate = useNavigate();
+    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
 
     const handleTabChange = (index: number) => {
         navigate(index === 0 ? '/login' : '/signin');
@@ -44,6 +46,7 @@ export const UserLayout = () => {
                     src='/src/assets/logo/logo.png'
                 />
                 <Tabs
+                    align={isLargerThanMD ? 'start' : 'center'}
                     w={{
                         base: '328px',
                         sm: '355',
