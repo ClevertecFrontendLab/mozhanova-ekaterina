@@ -49,6 +49,7 @@ type Props = {
     iconButton?: boolean;
     fontSize?: string;
     isDisabled?: boolean;
+    type?: 'button' | 'submit' | 'reset';
     'data-test-id'?: string;
     onClick?: () => void;
 };
