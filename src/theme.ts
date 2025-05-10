@@ -389,6 +389,19 @@ const theme = extendTheme({
                 },
             },
         },
+        Progress: {
+            baseStyle: {
+                track: {
+                    bg: 'neutral.20',
+                    width: 'full',
+                    boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.1)',
+                },
+                filledTrack: {
+                    transition: 'all 0.3s ease',
+                    bg: 'url(/src/assets/user/progress_inner.svg)',
+                },
+            },
+        },
     },
     breakpoints: {
         base: '0px',
