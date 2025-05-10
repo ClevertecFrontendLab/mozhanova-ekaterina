@@ -11,13 +11,14 @@ import {
 } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router';
+import { Link } from 'react-router';
 
 import { UiCardInfo } from '~/components/ui/UiCardInfo';
 import { API_IMAGE_URL } from '~/config';
 import { ApplicationState } from '~/store/configure-store';
 import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
 import { TRecipe } from '~/types';
+import { routeHelpers } from '~/utils/get-routes';
 
 type Props = {
     data: TRecipe;
@@ -27,7 +28,6 @@ export const SliderCard = ({
     data: { title, description, image, categoriesIds, likes, bookmarks, _id },
 }: Props) => {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
-    const params = useParams();
 
     const subCategories = useSelector((state: ApplicationState) =>
         selectRecipeSubCategories(state, categoriesIds),
@@ -41,10 +41,11 @@ export const SliderCard = ({
         selectRecipeCategories(state, rootCategoriesIds),
     );
 
+    const categoryRoute = rootCategories[0]?.category ?? '';
+    const subCategoryRoute = subCategories[0]?.category ?? '';
+
     return (
-        <Link
-            to={`/${params.category || rootCategories.map((c) => c?.category)[0]}/${params.subCategory || rootCategories.map((c) => c?.subCategories[0]?.category)[0]}/${_id}`}
-        >
+        <Link to={routeHelpers.getRecipePath(categoryRoute, subCategoryRoute, _id)}>
             <Card
                 position='relative'
                 overflow='hidden'

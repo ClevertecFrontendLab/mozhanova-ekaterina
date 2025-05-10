@@ -19,6 +19,7 @@ import { ApplicationState } from '~/store/configure-store';
 import { RecipesState } from '~/store/recipe-slice';
 import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
 import { TRecipe } from '~/types';
+import { routeHelpers } from '~/utils/get-routes';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { UiButton } from './UiButton';
@@ -40,6 +41,8 @@ export const UiCard = ({
     index,
     ...props
 }: Props) => {
+    const { category, subCategory } = useParams();
+
     const searchString = useSelector(
         (state: { recipe: RecipesState }) => state.recipe.filters.searchString,
     );
@@ -58,7 +61,9 @@ export const UiCard = ({
     );
 
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
-    const { category, subCategory } = useParams();
+
+    const categoryRoute = category || (rootCategories[0]?.category ?? '');
+    const subCategoryRoute = subCategory || (subCategories[0]?.category ?? '');
 
     return (
         <Card
@@ -162,7 +167,11 @@ export const UiCard = ({
                         />
                         {((category && subCategories) || (rootCategories && subCategories)) && (
                             <Link
-                                to={`/${category || (rootCategories[0]?.category ?? '')}/${subCategory || (subCategories[0]?.category ?? '')}/${_id}`}
+                                to={routeHelpers.getRecipePath(
+                                    categoryRoute,
+                                    subCategoryRoute,
+                                    _id,
+                                )}
                             >
                                 <UiButton
                                     data-test-id={`card-link-${index}`}

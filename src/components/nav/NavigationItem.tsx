@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router';
 
 import { API_IMAGE_URL } from '~/config';
 import { TCategory } from '~/types';
+import { routeHelpers } from '~/utils/get-routes';
 
 type Props = {
     category: TCategory;
@@ -14,10 +15,7 @@ type Props = {
 export const NavigationItem = ({ category, setMenuOpen, ...props }: Props) => {
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
     const [isOpen, setIsOpen] = useState(false);
-    const params = useParams();
-
-    const currentCategory = params.category;
-    const currentSubCategory = params.subCategory;
+    const { category: currentCategory, subCategory: currentSubCategory } = useParams();
 
     useEffect(() => {
         currentCategory === category.category ? setIsOpen(true) : setIsOpen(false);
@@ -46,7 +44,12 @@ export const NavigationItem = ({ category, setMenuOpen, ...props }: Props) => {
                         src={`${API_IMAGE_URL}${category.icon}`}
                         alt='menu_item_icon'
                     />
-                    <Link to={`/${category.category}/${category.subCategories[0].category}`}>
+                    <Link
+                        to={routeHelpers.getSubCategoryPath(
+                            category.category,
+                            category.subCategories[0].category,
+                        )}
+                    >
                         {category.title}
                     </Link>
                 </Flex>
@@ -66,10 +69,10 @@ export const NavigationItem = ({ category, setMenuOpen, ...props }: Props) => {
             </Flex>
 
             <Box role='group' as='ul' paddingLeft='33px' display={isOpen ? 'block' : 'none'}>
-                {category.subCategories.map((sub) => (
+                {category.subCategories.map((subCategory) => (
                     <Flex
-                        data-id={sub._id}
-                        key={`${category._id}-${sub._id}`}
+                        data-id={subCategory._id}
+                        key={`${category._id}-${subCategory._id}`}
                         as='li'
                         padding='6px 0'
                         cursor='pointer'
@@ -78,13 +81,16 @@ export const NavigationItem = ({ category, setMenuOpen, ...props }: Props) => {
                             fontWeight: '700',
                             '& .divider': { width: '8px', transform: 'translateX(-100%)' },
                         }}
-                        aria-current={sub.category === currentSubCategory ? 'page' : undefined}
+                        aria-current={
+                            subCategory.category === currentSubCategory ? 'page' : undefined
+                        }
                         _activeLink={{
                             fontWeight: '700',
                             '& .divider': { width: '8px', transform: 'translateX(-100%)' },
                         }}
                         data-test-id={
-                            sub.category === currentSubCategory && `${sub.category}-active`
+                            subCategory.category === currentSubCategory &&
+                            `${subCategory.category}-active`
                         }
                     >
                         <Box
@@ -97,9 +103,12 @@ export const NavigationItem = ({ category, setMenuOpen, ...props }: Props) => {
                         ></Box>
                         <Link
                             onClick={() => !isLargerThanMD && setMenuOpen(false)}
-                            to={`/${category.category}/${sub.category}`}
+                            to={routeHelpers.getSubCategoryPath(
+                                category.category,
+                                subCategory.category,
+                            )}
                         >
-                            {sub.title}
+                            {subCategory.title}
                         </Link>
                     </Flex>
                 ))}

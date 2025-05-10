@@ -1,19 +1,32 @@
 import { Box, Flex, Heading, Image } from '@chakra-ui/react';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router';
+import { Link } from 'react-router';
 
+import { API_IMAGE_URL } from '~/config';
 import { ApplicationState } from '~/store/configure-store';
-import { selectRecipeCategories } from '~/store/selectors';
+import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
 import { TRecipe } from '~/types';
+import { routeHelpers } from '~/utils/get-routes';
 
 import { UiButton } from './UiButton';
 
 export const UiCardMini = ({ data: { title, categoriesIds, _id } }: { data: TRecipe }) => {
-    const { category, subCategory } = useParams();
+    const subCategories = useSelector((state: ApplicationState) =>
+        selectRecipeSubCategories(state, categoriesIds),
+    );
+    const rootCategoriesIds = useMemo(
+        () => subCategories.map((category) => category.rootCategoryId!),
+        [subCategories],
+    );
 
     const rootCategories = useSelector((state: ApplicationState) =>
-        selectRecipeCategories(state, categoriesIds),
+        selectRecipeCategories(state, rootCategoriesIds),
     );
+
+    const categoryRoute = rootCategories[0]?.category ?? '';
+    const subCategoryRoute = subCategories[0]?.category ?? '';
+
     return (
         <Flex
             transition='box-shadow 0.3s ease-in-out'
@@ -33,10 +46,7 @@ export const UiCardMini = ({ data: { title, categoriesIds, _id } }: { data: TRec
                 md: 3,
             }}
         >
-            <Image
-                src={`https://training-api.clevertec.ru${rootCategories[0]?.icon}`}
-                alt='category icon'
-            />
+            <Image src={`${API_IMAGE_URL}${rootCategories[0]?.icon}`} alt='category icon' />
 
             <Heading
                 fontSize={{
@@ -52,9 +62,7 @@ export const UiCardMini = ({ data: { title, categoriesIds, _id } }: { data: TRec
                 {title}
             </Heading>
             <Box flexBasis='70px'>
-                <Link
-                    to={`/${category || rootCategories.map((c) => c?.category)[0]}/${subCategory || rootCategories.map((c) => c?.subCategories[0]?.category)[0]}/${_id}`}
-                >
+                <Link to={routeHelpers.getRecipePath(categoryRoute, subCategoryRoute, _id)}>
                     <UiButton fontSize='12px' text='Готовить' variant='accentOutline' />
                 </Link>
             </Box>
