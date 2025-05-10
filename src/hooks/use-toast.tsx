@@ -5,6 +5,7 @@ import {
     AlertTitle,
     Box,
     CloseButton,
+    ToastPosition,
     useToast as useChakraToast,
 } from '@chakra-ui/react';
 
@@ -13,9 +14,16 @@ type ToastType = 'success' | 'error' | 'warning' | 'info';
 export const useToast = () => {
     const toast = useChakraToast();
 
-    const showToast = (type: ToastType, title?: string, description?: string, duration = 3000) =>
+    const showToast = (
+        type: ToastType,
+        title?: string,
+        description?: string,
+        duration: number = 3000,
+        position: ToastPosition = 'bottom',
+    ) =>
         toast({
             duration: duration,
+            position: position,
             render: ({ onClose }) => (
                 <Alert
                     w={{ base: '328px', md: '400px' }}
@@ -37,9 +45,17 @@ export const useToast = () => {
             ),
         });
     return {
-        showError: (title?: string, description?: string, duration?: number) =>
-            showToast('error', title, description, duration),
-        showSuccess: (title?: string, description?: string, duration?: number) =>
-            showToast('success', title, description, duration),
+        showError: (
+            title?: string,
+            description?: string,
+            duration?: number,
+            position?: ToastPosition,
+        ) => showToast('error', title, description, duration, position),
+        showSuccess: (
+            title?: string,
+            description?: string,
+            duration?: number,
+            position?: ToastPosition,
+        ) => showToast('success', title, description, duration, position),
     };
 };
