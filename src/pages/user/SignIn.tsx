@@ -17,27 +17,45 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { UiButton } from '~/components/ui/UiButton';
-import { useToast } from '~/hooks/use-toast';
+// import { useToast } from '~/hooks/use-toast';
+
+type TFormInputs = {
+    name: string;
+    lastName: string;
+    login: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+};
 
 export const SignIn = () => {
-    const { showError } = useToast();
+    // const { showError } = useToast();
     const steps = [
         { description: 'Шаг 1. Личная информация' },
         { description: 'Шаг 2. Логин и пароль' },
     ];
-    const [
-        activeStep,
-        // setActiveStep
-    ] = useState(0);
+    const [activeStep, setActiveStep] = useState(0);
     const [activeIndex, setActiveIndex] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
-    const max = steps.length * 3;
-    const progressPercent = (activeStep / max) * 100;
+    const allFields: (keyof TFormInputs)[] = useMemo(
+        () => ['name', 'lastName', 'login', 'email', 'password', 'confirmPassword'],
+        [],
+    );
+
+    const fieldsToValidate: (keyof TFormInputs)[] = useMemo(
+        () =>
+            activeIndex === 0
+                ? ['name', 'lastName', 'email']
+                : ['login', 'password', 'confirmPassword'],
+        [activeIndex],
+    );
+
+    const progressPercent = (activeStep / allFields.length) * 100;
 
     const schema = yup.object({
         name: yup
@@ -56,7 +74,7 @@ export const SignIn = () => {
             .string()
             .min(5, 'Не соответствует формату')
             .max(50, 'Максимальная длина 50 символов')
-            .matches(/^[A-Za-z!@#$&_+\-.]*$/, 'Не соответствует формату')
+            .matches(/^[A-Za-z\d!@#$&_+\-.]*$/, 'Не соответствует формату')
             .required('Введите логин'),
         email: yup
             .string()
@@ -68,7 +86,7 @@ export const SignIn = () => {
             .min(8, 'Не соответствует формату')
             .max(50, 'Максимальная длина 50 символов')
             .required('Введите пароль')
-            .matches(/^[A-Za-z!@#$&_+\-.]*$/, 'Не соответствует формату'),
+            .matches(/^[A-Za-z\d!@#$&_+\-.]*$/, 'Не соответствует формату'),
         confirmPassword: yup
             .string()
             .required('Повторите пароль')
@@ -78,19 +96,25 @@ export const SignIn = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isValid, dirtyFields },
     } = useForm({
         resolver: yupResolver(schema),
+        mode: 'onChange',
     });
 
-    const onSubmit = (data: {
-        name: string;
-        lastName: string;
-        login: string;
-        email: string;
-        password: string;
-        confirmPassword: string;
-    }) => {
+    const validFields = allFields.filter((field) => !errors[field] && dirtyFields[field]);
+    const isNextDisabled = !fieldsToValidate.every((field) => validFields.includes(field));
+
+    useEffect(() => {
+        setActiveStep(validFields.length);
+        console.log('validFields', validFields);
+    }, [validFields]);
+
+    const handleNext = async () => {
+        setActiveIndex(1);
+    };
+
+    const onSubmit = (data: TFormInputs) => {
         console.log('Форма отправлена:', data);
     };
 
@@ -99,7 +123,7 @@ export const SignIn = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <VStack spacing={6}>
                     <Box w='full'>
-                        <FormLabel>{steps[0].description}</FormLabel>
+                        <FormLabel>{steps[activeIndex].description}</FormLabel>
                         <Progress hasStripe h='8px' value={progressPercent} />
                     </Box>
 
@@ -107,7 +131,7 @@ export const SignIn = () => {
                         <TabPanels>
                             <TabPanel>
                                 <VStack spacing={6}>
-                                    <FormControl>
+                                    <FormControl isInvalid={!!errors.name}>
                                         <FormLabel>Ваше имя</FormLabel>
                                         <Input
                                             {...register('name')}
@@ -123,10 +147,11 @@ export const SignIn = () => {
                                         )}
                                     </FormControl>
 
-                                    <FormControl>
+                                    <FormControl isInvalid={!!errors.lastName}>
                                         <FormLabel>Ваша фамилия</FormLabel>
                                         <InputGroup size='lg'>
                                             <Input
+                                                {...register('lastName')}
                                                 variant='login'
                                                 type='text'
                                                 placeholder='Фамилия'
@@ -139,7 +164,7 @@ export const SignIn = () => {
                                         )}
                                     </FormControl>
 
-                                    <FormControl>
+                                    <FormControl isInvalid={!!errors.email}>
                                         <FormLabel>Ваш e-mail</FormLabel>
                                         <InputGroup size='lg'>
                                             <Input
@@ -159,7 +184,7 @@ export const SignIn = () => {
                             </TabPanel>
                             <TabPanel>
                                 <VStack spacing={6}>
-                                    <FormControl>
+                                    <FormControl isInvalid={!!errors.login}>
                                         <FormLabel>Логин для входа на сайт</FormLabel>
                                         <InputGroup size='lg'>
                                             <Input
@@ -179,9 +204,9 @@ export const SignIn = () => {
                                             {(errors.login?.type === 'min' ||
                                                 errors.login?.type === 'required' ||
                                                 errors.login?.type === 'max') &&
-                                                'Логин не менее 5 символов, только латиница'}
+                                                'Логин не менее 5 символов, только латиница и цифры'}
                                             {errors.login?.type === 'matches' &&
-                                                'Логин не менее 5 символов, только латиница и !@#$&_+-'}
+                                                'Логин не менее 5 символов, только латиница, цифры и !@#$&_+-'}
                                         </FormHelperText>
                                         {errors.login && (
                                             <FormErrorMessage mt={1} fontSize='xs' fontWeight={400}>
@@ -190,7 +215,7 @@ export const SignIn = () => {
                                         )}
                                     </FormControl>
 
-                                    <FormControl>
+                                    <FormControl isInvalid={!!errors.password}>
                                         <FormLabel>Пароль</FormLabel>
                                         <InputGroup size='lg'>
                                             <Input
@@ -215,7 +240,7 @@ export const SignIn = () => {
                                             fontWeight={400}
                                         >
                                             {errors.password &&
-                                                'Пароль не менее 8 символов, только латиница и !@#$&_+-'}
+                                                'Пароль не менее 8 символов, с заглавной буквой и цифрой'}
                                         </FormHelperText>
                                         {errors.password && (
                                             <FormErrorMessage mt={1} fontSize='xs' fontWeight={400}>
@@ -224,7 +249,7 @@ export const SignIn = () => {
                                         )}
                                     </FormControl>
 
-                                    <FormControl>
+                                    <FormControl isInvalid={!!errors.confirmPassword}>
                                         <FormLabel>Повторите пароль</FormLabel>
                                         <InputGroup size='lg'>
                                             <Input
@@ -253,24 +278,19 @@ export const SignIn = () => {
                     </Tabs>
                 </VStack>
 
-                <SimpleGrid columns={1} mt='112px' spacing={4}>
+                <SimpleGrid columns={1} mt={12} spacing={4}>
                     {activeIndex === 0 ? (
                         <UiButton
-                            onClick={() => setActiveIndex(1)}
+                            isDisabled={isNextDisabled}
+                            onClick={handleNext}
                             variant='solid'
                             text='Дальше'
                             size='lg'
                         />
                     ) : (
                         <UiButton
-                            onClick={() =>
-                                showError(
-                                    'Неверный логин или пароль',
-                                    'Попробуйте снова.',
-                                    15000,
-                                    'bottom-left',
-                                )
-                            }
+                            isDisabled={!isValid}
+                            type='submit'
                             variant='solid'
                             text='Зарегистрироваться'
                             size='lg'

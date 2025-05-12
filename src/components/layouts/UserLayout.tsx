@@ -2,7 +2,6 @@ import {
     Box,
     Flex,
     Image,
-    SimpleGrid,
     Tab,
     TabList,
     TabPanel,
@@ -26,16 +25,9 @@ export const UserLayout = () => {
     };
 
     return (
-        <SimpleGrid
-            position='relative'
-            w='100vw'
-            h='100vh'
-            columns={{
-                base: 1,
-                md: 2,
-            }}
-        >
+        <Flex position='relative' w='100vw' h='100vh'>
             <VStack
+                flexBasis={{ base: '100%', md: '50%' }}
                 bg='linear-gradient(208deg, #eaffc7 0%, #29813f 100%)'
                 align='center'
                 pt={{ base: '72px', sm: '140px', md: '170px' }}
@@ -46,6 +38,7 @@ export const UserLayout = () => {
                     src='/src/assets/logo/logo.png'
                 />
                 <Tabs
+                    index={location.pathname === '/login' ? 0 : 1}
                     align={isLargerThanMD ? 'start' : 'center'}
                     w={{
                         base: '328px',
@@ -71,9 +64,10 @@ export const UserLayout = () => {
                     </TabPanels>
                 </Tabs>
             </VStack>
-            <Box display={{ base: 'none', md: 'block' }}>
-                <Image objectFit='cover' h='100%' src='/src/assets/user/page_bg.png' />
+            <Box flexBasis='50%' display={{ base: 'none', md: 'block' }}>
+                <Image w='100%' objectFit='cover' h='100%' src='/src/assets/user/page_bg.png' />
             </Box>
+
             <Flex
                 justify='space-between'
                 px={5}
@@ -90,6 +84,6 @@ export const UserLayout = () => {
                     ̶ Лучший сервис для ваших кулинарных побед{' '}
                 </Text>
             </Flex>
-        </SimpleGrid>
+        </Flex>
     );
 };

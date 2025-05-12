@@ -42,6 +42,7 @@ export const LogIn = () => {
         formState: { errors },
     } = useForm({
         resolver: yupResolver(schema),
+        mode: 'onChange',
     });
 
     const onSubmit = (data: { login: string; password: string }) => {
@@ -96,7 +97,13 @@ export const LogIn = () => {
                 </VStack>
 
                 <SimpleGrid columns={1} mt='112px' spacing={4}>
-                    <UiButton type='submit' variant='solid' text='Войти' size='lg' />
+                    <UiButton
+                        isDisabled={!!errors.login || !!errors.password}
+                        type='submit'
+                        variant='solid'
+                        text='Войти'
+                        size='lg'
+                    />
 
                     <Link to=''>
                         <Text textAlign='center' fontWeight={600}>
