@@ -1,9 +1,10 @@
 import { Link, useDisclosure } from '@chakra-ui/react';
 import { useState } from 'react';
 
+import { UiButton } from '~/components/ui/UiButton';
 import { UiModal } from '~/components/ui/UiModal';
 
-type ModalType = 'emailSent' | 'emailError' | 'recovery' | null;
+type ModalType = 'emailSent' | 'emailError' | 'recovery' | 'loginError' | null;
 
 export const useModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -23,6 +24,11 @@ export const useModal = () => {
 
     const showRecovery = () => {
         setModalType('recovery');
+        onOpen();
+    };
+
+    const showLoginError = () => {
+        setModalType('loginError');
         onOpen();
     };
 
@@ -54,7 +60,7 @@ export const useModal = () => {
             case 'emailError':
                 return (
                     <UiModal
-                        image='/src/assets/modals/2.png'
+                        image='/src/assets/modals/1.png'
                         isOpen={isOpen}
                         onClose={onClose}
                         header='Упс! Что-то пошло не так'
@@ -73,11 +79,25 @@ export const useModal = () => {
             case 'recovery':
                 return (
                     <UiModal
-                        image='/src/assets/modals/2.png'
+                        image='/src/assets/modals/3.png'
                         isOpen={isOpen}
                         onClose={onClose}
                         body='Для восстановления входа введите ваш e-mail, куда можно отправить уникальный код'
                         footer='Не пришло письмо? Проверьте папку Спам.'
+                    />
+                );
+
+            case 'loginError':
+                return (
+                    <UiModal
+                        image='/src/assets/modals/3.png'
+                        isOpen={isOpen}
+                        onClose={onClose}
+                        header='Вход не выполнен'
+                        body='Что-то пошло не так. Попробуйте еще раз'
+                        footer={
+                            <UiButton type='submit' variant='solid' text='Повторить' size='lg' />
+                        }
                     />
                 );
 
@@ -91,5 +111,6 @@ export const useModal = () => {
         showEmailSent,
         showEmailError,
         showRecovery,
+        showLoginError,
     };
 };

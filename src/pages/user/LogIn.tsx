@@ -13,15 +13,22 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import * as yup from 'yup';
 
 import { UiButton } from '~/components/ui/UiButton';
-// import { useToast } from '~/hooks/use-toast';
+import { useModalContext } from '~/contexts/modal-context';
+import { useToast } from '~/hooks/use-toast';
+import { useLoginMutation } from '~/query/user-api';
+import { TErrorResponse } from '~/types';
+
+//TODO: submit on enter, trim on blur, password visible on keeping, global loader
 
 export const LogIn = () => {
-    // const { showError } = useToast();
+    const { showError } = useToast();
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
+    const { showLoginError } = useModalContext();
 
     const schema = yup.object({
         login: yup
@@ -45,8 +52,39 @@ export const LogIn = () => {
         mode: 'onChange',
     });
 
-    const onSubmit = (data: { login: string; password: string }) => {
-        console.log('Форма отправлена:', data);
+    const [login] = useLoginMutation();
+
+    const onSubmit = async (userData: { login: string; password: string }) => {
+        try {
+            const result = await login(userData).unwrap();
+            if (result) {
+                console.log(result);
+                navigate('/');
+            }
+        } catch (error: unknown) {
+            const response = error as TErrorResponse;
+            switch (response.status) {
+                case 401:
+                    showError(
+                        'Неверный логин или пароль',
+                        'Попробуйте снова',
+                        15000,
+                        'bottom-left',
+                    );
+                    break;
+                case 403:
+                    showError(
+                        'E-mail не верифицирован',
+                        'Проверьте почту и перейдите по ссылке',
+                        15000,
+                        'bottom-left',
+                    );
+                    break;
+                default:
+                    showLoginError();
+                    break;
+            }
+        }
     };
 
     return (
@@ -59,7 +97,7 @@ export const LogIn = () => {
                             {...register('login')}
                             size='lg'
                             variant='login'
-                            type='email'
+                            type='text'
                             placeholder='Введите логин'
                             borderColor={errors.login && 'error.400'}
                         />
