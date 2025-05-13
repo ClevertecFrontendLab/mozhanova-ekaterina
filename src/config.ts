@@ -12,4 +12,5 @@ export const AppRoutes = {
     NOT_FOUND: '/not-found',
     LOG_IN: '/login',
     SIGN_IN: '/signin',
+    VERIFICATION: '/verification',
 } as const;

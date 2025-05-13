@@ -87,4 +87,4 @@ export const {
     useSearchRecipesQuery,
 } = recipeApi;
 
-export default recipeApi.reducer;
+// export default recipeApi.reducer;

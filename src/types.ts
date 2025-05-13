@@ -53,3 +53,35 @@ export type TSubCategory = {
     category: string;
     rootCategoryId: string;
 };
+
+export type TFormInputs = {
+    name: string;
+    lastName: string;
+    login: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+};
+
+export type TNewUser = Omit<TFormInputs, 'confirmPassword'>;
+
+export type TAuth = {
+    login: string;
+    password: string;
+};
+
+export type TAuthResponse = {
+    // accessToken?: string;
+    // refreshToken?: string;
+    statusText: string;
+    message: string;
+};
+
+export type TErrorResponse = {
+    status: number;
+    data?: {
+        message: string;
+        error: string;
+        statusCode: number;
+    };
+};

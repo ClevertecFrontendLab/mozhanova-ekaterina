@@ -3,4 +3,5 @@ export enum Tags {
     RECIPE = 'Recipe',
     CATEGORY = 'Category',
     CATEGORIES = 'Categories',
+    AUTH = 'Auth',
 }
