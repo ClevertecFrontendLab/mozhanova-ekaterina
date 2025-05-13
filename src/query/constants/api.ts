@@ -6,4 +6,6 @@ export enum ApiEndpoints {
     CATEGORIES = '/category',
     AUTH = '/auth/login',
     SIGN_UP = '/auth/signup',
+    REFRESH_TOKEN = '/auth/refresh',
+    CHECK_AUTH = '/auth/check-auth',
 }

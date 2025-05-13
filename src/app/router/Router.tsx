@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router';
 
+import { AuthGuard } from '~/components/AuthGuard';
 import { MainLayout } from '~/components/layouts/MainLayout';
 import { UserLayout } from '~/components/layouts/UserLayout';
 import { RecipesTabs } from '~/components/RecipesTabs';
@@ -16,7 +17,13 @@ import { VerificationPage } from '~/pages/user/VerificationPage';
 
 export const Router = () => (
     <Routes>
-        <Route element={<MainLayout />}>
+        <Route
+            element={
+                <AuthGuard>
+                    <MainLayout />
+                </AuthGuard>
+            }
+        >
             <Route path={AppRoutes.HOME} element={<Home />} />
             <Route path={AppRoutes.SEARCH} element={<SearchPage />} />
 

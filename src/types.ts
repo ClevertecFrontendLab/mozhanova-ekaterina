@@ -71,10 +71,8 @@ export type TAuth = {
 };
 
 export type TAuthResponse = {
-    // accessToken?: string;
-    // refreshToken?: string;
-    statusText: string;
     message: string;
+    statusText: string;
 };
 
 export type TErrorResponse = {

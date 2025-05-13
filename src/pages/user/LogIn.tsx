@@ -11,8 +11,9 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router';
 import * as yup from 'yup';
 
@@ -20,6 +21,7 @@ import { UiButton } from '~/components/ui/UiButton';
 import { useModalContext } from '~/contexts/modal-context';
 import { useToast } from '~/hooks/use-toast';
 import { useLoginMutation } from '~/query/user-api';
+import { ApplicationState } from '~/store/configure-store';
 import { TErrorResponse } from '~/types';
 
 //TODO: submit on enter, trim on blur, password visible on keeping, global loader
@@ -29,6 +31,7 @@ export const LogIn = () => {
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const { showLoginError } = useModalContext();
+    const isAuth = useSelector((state: ApplicationState) => state.user.isAuthenticated);
 
     const schema = yup.object({
         login: yup
@@ -58,7 +61,6 @@ export const LogIn = () => {
         try {
             const result = await login(userData).unwrap();
             if (result) {
-                console.log(result);
                 navigate('/');
             }
         } catch (error: unknown) {
@@ -86,6 +88,10 @@ export const LogIn = () => {
             }
         }
     };
+
+    useEffect(() => {
+        if (isAuth) navigate('/');
+    }, [isAuth, navigate]);
 
     return (
         <div>
