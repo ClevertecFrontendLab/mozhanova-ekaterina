@@ -405,6 +405,36 @@ const theme = extendTheme({
                 },
             },
         },
+        Modal: {
+            baseStyle: {
+                dialog: {
+                    w: { base: '316px', md: '396px' },
+                    p: 8,
+                    borderRadius: '16px',
+                    textAlign: 'center',
+                },
+                closeButton: {
+                    borderRadius: '50%',
+                    borderWidth: '2px',
+                    borderColor: 'neutral.400',
+                    _focus: {
+                        boxShadow: 'none',
+                    },
+                },
+                header: {
+                    px: 0,
+                    fontSize: '2xl',
+                },
+                body: {
+                    px: 0,
+                },
+                footer: {
+                    px: 0,
+                    color: 'neutral.200',
+                    fontSize: 'xs',
+                },
+            },
+        },
     },
     breakpoints: {
         base: '0px',

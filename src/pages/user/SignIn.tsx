@@ -22,19 +22,15 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import { UiButton } from '~/components/ui/UiButton';
-// import { useToast } from '~/hooks/use-toast';
-
-type TFormInputs = {
-    name: string;
-    lastName: string;
-    login: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-};
+import { useModal } from '~/hooks/use-modal';
+import { useToast } from '~/hooks/use-toast';
+import { useSignUpMutation } from '~/query/user-api';
+import { TErrorResponse, TFormInputs } from '~/types';
 
 export const SignIn = () => {
-    // const { showError } = useToast();
+    const { showError } = useToast();
+    const { showEmailSent, showEmailError } = useModal();
+
     const steps = [
         { description: 'Шаг 1. Личная информация' },
         { description: 'Шаг 2. Логин и пароль' },
@@ -86,7 +82,7 @@ export const SignIn = () => {
             .min(8, 'Не соответствует формату')
             .max(50, 'Максимальная длина 50 символов')
             .required('Введите пароль')
-            .matches(/^[A-Za-z\d!@#$&_+\-.]*$/, 'Не соответствует формату'),
+            .matches(/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$&_+.-]{8,}$/, 'Не соответствует формату'),
         confirmPassword: yup
             .string()
             .required('Повторите пароль')
@@ -96,6 +92,7 @@ export const SignIn = () => {
     const {
         register,
         handleSubmit,
+        getValues,
         formState: { errors, isValid, dirtyFields },
     } = useForm({
         resolver: yupResolver(schema),
@@ -107,19 +104,30 @@ export const SignIn = () => {
 
     useEffect(() => {
         setActiveStep(validFields.length);
-        console.log('validFields', validFields);
     }, [validFields]);
 
     const handleNext = async () => {
         setActiveIndex(1);
     };
+    const [signUp] = useSignUpMutation();
 
-    const onSubmit = (data: TFormInputs) => {
-        console.log('Форма отправлена:', data);
+    const onSubmit = async (userData: TFormInputs) => {
+        try {
+            const result = await signUp(userData).unwrap();
+            console.log(result);
+            if (result) {
+                showEmailSent(getValues('email'));
+            }
+        } catch (error: unknown) {
+            const response = error as TErrorResponse;
+            response.data
+                ? showError(response.data?.message, '', 15000)
+                : showError('Ошибка сервера', 'Попробуйте немного позже', 15000);
+        }
     };
 
     return (
-        <div>
+        <>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <VStack spacing={6}>
                     <Box w='full'>
@@ -296,9 +304,9 @@ export const SignIn = () => {
                             size='lg'
                         />
                     )}
-                    <Button onClick={() => setActiveIndex(0)}>назад</Button>
+                    <Button onClick={() => showEmailError()}>modal</Button>
                 </SimpleGrid>
             </form>
-        </div>
+        </>
     );
 };
