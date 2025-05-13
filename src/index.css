@@ -63,6 +63,9 @@ h6 {
     left: 25% !important;
     transform: translateX(-50%);
 }
+#chakra-toast-manager-bottom {
+    bottom: 80px !important;
+}
 @media (max-width: 768px) {
     #chakra-toast-manager-bottom-left {
         left: 50% !important;
