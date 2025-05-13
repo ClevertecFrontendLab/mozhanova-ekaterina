@@ -12,6 +12,7 @@ import { SearchPage } from '~/pages/SearchPage';
 import { TheJuiciestPage } from '~/pages/TheJuiciestPage';
 import { LogIn } from '~/pages/user/LogIn';
 import { SignIn } from '~/pages/user/SignIn';
+import { VerificationPage } from '~/pages/user/VerificationPage';
 
 export const Router = () => (
     <Routes>
@@ -32,6 +33,7 @@ export const Router = () => (
             <Route path={AppRoutes.LOG_IN} element={<LogIn />} />
             <Route path={AppRoutes.SIGN_IN} element={<SignIn />} />
         </Route>
+        <Route path={AppRoutes.VERIFICATION} element={<VerificationPage />} />
     </Routes>
 );
 
