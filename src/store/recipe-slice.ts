@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { TRecipe } from '~/types';
 
-export interface RecipesState {
+export type RecipesState = {
     current: TRecipe | null;
     filters: {
         categoryName: string[];
@@ -18,7 +18,7 @@ export interface RecipesState {
         limit: number;
         totalPages?: number;
     };
-}
+};
 
 const initialState: RecipesState = {
     current: null,
