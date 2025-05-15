@@ -84,12 +84,45 @@ export const userApi = createApi({
             invalidatesTags: [Tags.AUTH],
         }),
 
-        checkAuth: builder.query<void, void>({
+        [EndpointNames.CHECK_AUTH]: builder.query<void, void>({
             query: () => ({
                 url: ApiEndpoints.CHECK_AUTH,
                 method: 'GET',
             }),
             providesTags: [Tags.AUTH],
+        }),
+
+        [EndpointNames.FORGOT_PASSWORD]: builder.mutation<TAuthResponse, string>({
+            query: (email) => ({
+                url: ApiEndpoints.FORGOT_PASSWORD,
+                method: 'POST',
+                body: { email },
+            }),
+            invalidatesTags: [Tags.AUTH],
+        }),
+
+        [EndpointNames.VERIFY_OTP]: builder.mutation<
+            TAuthResponse,
+            { email: string; otpToken: string }
+        >({
+            query: ({ email, otpToken }) => ({
+                url: ApiEndpoints.VERIFY_OTP,
+                method: 'POST',
+                body: { email, otpToken },
+            }),
+            invalidatesTags: [Tags.AUTH],
+        }),
+
+        [EndpointNames.RESET_PASSWORD]: builder.mutation<
+            TAuthResponse,
+            { login: string; password: string; passwordConfirm: string }
+        >({
+            query: ({ login, password, passwordConfirm }) => ({
+                url: ApiEndpoints.RESET_PASSWORD,
+                method: 'POST',
+                body: { login, password, passwordConfirm },
+            }),
+            invalidatesTags: [Tags.AUTH],
         }),
 
         // refreshTokens: builder.mutation<{ accessToken: string }, void>({
@@ -112,4 +145,11 @@ export const userApi = createApi({
     }),
 });
 
-export const { useLoginMutation, useSignUpMutation, useCheckAuthQuery } = userApi;
+export const {
+    useLoginMutation,
+    useSignUpMutation,
+    useCheckAuthQuery,
+    useForgotPasswordMutation,
+    useVerifyOtpMutation,
+    useResetPasswordMutation,
+} = userApi;

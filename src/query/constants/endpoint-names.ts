@@ -8,4 +8,8 @@ export enum EndpointNames {
     SEARCH_RECIPES = 'searchRecipes',
     LOGIN = 'login',
     SIGN_UP = 'signUp',
+    CHECK_AUTH = 'checkAuth',
+    FORGOT_PASSWORD = 'forgotPassword',
+    VERIFY_OTP = 'verifyOtp',
+    RESET_PASSWORD = 'resetPassword',
 }

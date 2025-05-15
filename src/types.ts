@@ -60,7 +60,7 @@ export type TFormInputs = {
     login: string;
     email: string;
     password: string;
-    confirmPassword: string;
+    passwordConfirm: string;
 };
 
 export type TNewUser = Omit<TFormInputs, 'confirmPassword'>;
