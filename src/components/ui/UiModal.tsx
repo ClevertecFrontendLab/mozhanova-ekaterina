@@ -21,16 +21,18 @@ export const UiModal = ({ isOpen, onClose, header, body, footer, image }: Props)
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent>
-            <Image
-                w={{ base: '106px', md: '206px' }}
-                h={{ base: '106px', md: '206px' }}
-                src={image}
-                mx='auto'
-            />
-            <ModalHeader>{header}</ModalHeader>
+            {image && (
+                <Image
+                    w={{ base: '106px', md: '206px' }}
+                    h={{ base: '106px', md: '206px' }}
+                    src={image}
+                    mx='auto'
+                />
+            )}
+            {header && <ModalHeader>{header}</ModalHeader>}
             <ModalCloseButton />
-            <ModalBody>{body}</ModalBody>
-            <ModalFooter>{footer}</ModalFooter>
+            {body && <ModalBody>{body}</ModalBody>}
+            {footer && <ModalFooter>{footer}</ModalFooter>}
         </ModalContent>
     </Modal>
 );

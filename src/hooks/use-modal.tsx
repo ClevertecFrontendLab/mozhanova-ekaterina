@@ -1,19 +1,29 @@
-import { Link, useDisclosure } from '@chakra-ui/react';
+import { useDisclosure } from '@chakra-ui/react';
 import { useState } from 'react';
 
-import { UiButton } from '~/components/ui/UiButton';
-import { UiModal } from '~/components/ui/UiModal';
+import { EmailErrorModal } from '~/components/modals/EmailErrorModal';
+import { EmailSentModal } from '~/components/modals/EmailSentModal';
+import { ForgotModal } from '~/components/modals/ForgotModal';
+import { LoginErrorModal } from '~/components/modals/LoginErrorModal';
+import { OtpModal } from '~/components/modals/OtpModal';
+import { RecoveryFormModal } from '~/components/modals/RecoveryFormModal';
 
-type ModalType = 'emailSent' | 'emailError' | 'recovery' | 'loginError' | null;
+type ModalType =
+    | 'emailSent'
+    | 'emailError'
+    | 'showRecoveryForgot'
+    | 'recoveryOtp'
+    | 'recoveryForm'
+    | 'loginError';
 
 export const useModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [modalType, setModalType] = useState<ModalType>(null);
-    const [modalData, setModalData] = useState<string>('');
+    const [modalType, setModalType] = useState<ModalType | null>(null);
+    const [modalState, setModalState] = useState('');
 
     const showEmailSent = (email: string) => {
         setModalType('emailSent');
-        setModalData(email);
+        setModalState(email);
         onOpen();
     };
 
@@ -22,8 +32,18 @@ export const useModal = () => {
         onOpen();
     };
 
-    const showRecovery = () => {
-        setModalType('recovery');
+    const showRecoveryForgot = () => {
+        setModalType('showRecoveryForgot');
+        onOpen();
+    };
+    const showRecoveryOtp = (email: string) => {
+        setModalType('recoveryOtp');
+        setModalState(email);
+        onOpen();
+    };
+
+    const showRecoveryForm = () => {
+        setModalType('recoveryForm');
         onOpen();
     };
 
@@ -35,82 +55,42 @@ export const useModal = () => {
     const ModalComponent = () => {
         switch (modalType) {
             case 'emailSent':
-                return (
-                    <UiModal
-                        image='/src/assets/modals/2.png'
-                        isOpen={isOpen}
-                        onClose={onClose}
-                        header='Остался последний шаг. Нужно верифицировать ваш e-mail'
-                        body={
-                            <p>
-                                Мы отправили вам на почту <b>{modalData}</b> ссылку для верификации.
-                            </p>
-                        }
-                        footer={
-                            <p>
-                                Не пришло письмо? Проверьте папку Спам.По другим вопросам свяжитесь
-                                <Link textDecoration='underline' href='#'>
-                                    <wbr /> с поддержкой
-                                </Link>
-                            </p>
-                        }
-                    />
-                );
+                return <EmailSentModal email={modalState} onClose={onClose} isOpen={isOpen} />;
 
             case 'emailError':
+                return <EmailErrorModal isOpen={isOpen} onClose={onClose} />;
+
+            case 'showRecoveryForgot':
+                return <ForgotModal isOpen={isOpen} onClose={onClose} next={showRecoveryOtp} />;
+
+            case 'recoveryOtp':
                 return (
-                    <UiModal
-                        image='/src/assets/modals/1.png'
+                    <OtpModal
                         isOpen={isOpen}
                         onClose={onClose}
-                        header='Упс! Что-то пошло не так'
-                        body='Ваша ссылка для верификации недействительна. Попробуйте зарегистрироваться снова.'
-                        footer={
-                            <p>
-                                Остались вопросы? Свяжитесь с поддержкой
-                                <Link textDecoration='underline' href='#'>
-                                    <wbr /> с поддержкой
-                                </Link>
-                            </p>
-                        }
+                        email={modalState}
+                        next={showRecoveryForm}
                     />
                 );
 
-            case 'recovery':
-                return (
-                    <UiModal
-                        image='/src/assets/modals/3.png'
-                        isOpen={isOpen}
-                        onClose={onClose}
-                        body='Для восстановления входа введите ваш e-mail, куда можно отправить уникальный код'
-                        footer='Не пришло письмо? Проверьте папку Спам.'
-                    />
-                );
+            case 'recoveryForm':
+                return <RecoveryFormModal isOpen={isOpen} onClose={onClose} />;
 
             case 'loginError':
-                return (
-                    <UiModal
-                        image='/src/assets/modals/3.png'
-                        isOpen={isOpen}
-                        onClose={onClose}
-                        header='Вход не выполнен'
-                        body='Что-то пошло не так. Попробуйте еще раз'
-                        footer={
-                            <UiButton type='submit' variant='solid' text='Повторить' size='lg' />
-                        }
-                    />
-                );
-
-            default:
-                return null;
+                return <LoginErrorModal isOpen={isOpen} onClose={onClose} />;
         }
     };
 
     return {
         ModalComponent,
         showEmailSent,
-        showEmailError,
-        showRecovery,
         showLoginError,
+        showEmailError,
+        showRecoveryForgot,
+        showRecoveryOtp,
+        showRecoveryForm,
+        onClose,
+        isOpen,
+        modalState,
     };
 };

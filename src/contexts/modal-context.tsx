@@ -1,4 +1,3 @@
-// contexts/modal-context.tsx
 import { createContext, useContext } from 'react';
 
 import { useModal } from '../hooks/use-modal';

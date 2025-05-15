@@ -432,6 +432,7 @@ const theme = extendTheme({
                     px: 0,
                     color: 'neutral.200',
                     fontSize: 'xs',
+                    justifyContent: 'center',
                 },
             },
         },
