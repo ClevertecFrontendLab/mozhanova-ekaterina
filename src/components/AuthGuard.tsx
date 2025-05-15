@@ -11,7 +11,7 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
-    const { data, isError, isLoading } = useCheckAuthQuery();
+    const { data, isError, isFetching } = useCheckAuthQuery();
 
     useEffect(() => {
         if (data) {
@@ -19,11 +19,11 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
         }
         if (isError) {
             dispatch(setAuthenticated(false));
-            navigate('/login');
+            if (location.pathname === '/') navigate('/login');
         }
     }, [data, isError, dispatch, navigate]);
 
-    if (isLoading || !isAuthenticated) return <GlobalLoader />;
+    if (isFetching || (!isAuthenticated && location.pathname === '/')) return <GlobalLoader />;
 
     return <>{children}</>;
 };
