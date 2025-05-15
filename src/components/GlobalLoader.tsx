@@ -19,7 +19,7 @@ export const GlobalLoader = () => {
             display='flex'
             alignItems='center'
             justifyContent='center'
-            zIndex={200}
+            zIndex={2000}
             bg='rgba(0, 0, 0, 0.16)'
             css={{
                 backdropFilter: 'blur(4px)',
