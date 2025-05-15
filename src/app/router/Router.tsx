@@ -1,14 +1,15 @@
 import { Route, Routes } from 'react-router';
 
 import { AuthGuard } from '~/components/AuthGuard';
+import { AuthLayout } from '~/components/layouts/AuthLayout';
 import { MainLayout } from '~/components/layouts/MainLayout';
-import { UserLayout } from '~/components/layouts/UserLayout';
 import { RecipesTabs } from '~/components/RecipesTabs';
 import { AppRoutes } from '~/config';
 import { CategoryPage } from '~/pages/CategoryPage';
 import { Home } from '~/pages/HomePage';
 import { NotFoundPage } from '~/pages/NotFoundPage';
 import { RecipePage } from '~/pages/RecipePage';
+import { RecoveryPage } from '~/pages/RecoveryPage';
 import { SearchPage } from '~/pages/SearchPage';
 import { TheJuiciestPage } from '~/pages/TheJuiciestPage';
 import { LogIn } from '~/pages/user/LogIn';
@@ -36,14 +37,13 @@ export const Router = () => (
             <Route path={AppRoutes.NOT_FOUND} element={<NotFoundPage />} />
         </Route>
 
-        <Route element={<UserLayout />}>
-            <Route path={AppRoutes.LOG_IN} element={<LogIn />} />
+        <Route element={<AuthLayout />}>
+            <Route path={AppRoutes.LOG_IN} element={<LogIn />}>
+                <Route path={AppRoutes.RECOVERY} element={<RecoveryPage />} />
+            </Route>
             <Route path={AppRoutes.SIGN_IN} element={<SignIn />} />
         </Route>
+
         <Route path={AppRoutes.VERIFICATION} element={<VerificationPage />} />
     </Routes>
 );
-
-{
-    /* <Route path='/verification' element={} /> */
-}

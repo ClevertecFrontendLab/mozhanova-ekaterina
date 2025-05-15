@@ -13,4 +13,5 @@ export const AppRoutes = {
     LOG_IN: '/login',
     SIGN_IN: '/signin',
     VERIFICATION: '/verification',
+    RECOVERY: '/login/recovery',
 } as const;

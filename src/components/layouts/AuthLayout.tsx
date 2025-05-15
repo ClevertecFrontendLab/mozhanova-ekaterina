@@ -11,14 +11,13 @@ import {
     useMediaQuery,
     VStack,
 } from '@chakra-ui/react';
-import { useNavigate } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
 
-import { LogIn } from '../../pages/user/LogIn';
-import { SignIn } from '../../pages/user/SignIn';
-
-export const UserLayout = () => {
+export const AuthLayout = () => {
     const navigate = useNavigate();
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const currentIndex =
+        location.pathname === '/login' ? 0 : location.pathname === '/signin' ? 1 : 0;
 
     const handleTabChange = (index: number) => {
         navigate(index === 0 ? '/login' : '/signin');
@@ -38,7 +37,7 @@ export const UserLayout = () => {
                     src='/src/assets/logo/logo.png'
                 />
                 <Tabs
-                    index={location.pathname === '/login' ? 0 : 1}
+                    index={currentIndex}
                     align={isLargerThanMD ? 'start' : 'center'}
                     w={{
                         base: '328px',
@@ -56,10 +55,10 @@ export const UserLayout = () => {
 
                     <TabPanels>
                         <TabPanel>
-                            <LogIn />
+                            <Outlet />
                         </TabPanel>
                         <TabPanel>
-                            <SignIn />
+                            <Outlet />
                         </TabPanel>
                     </TabPanels>
                 </Tabs>

@@ -2,6 +2,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter } from 'react-router';
 
 import { Router } from './app/router/Router';
+import { GlobalLoader } from './components/GlobalLoader';
 import { ModalProvider } from './contexts/modal-context';
 import theme from './theme';
 
@@ -10,7 +11,10 @@ function App() {
         <BrowserRouter>
             <ChakraProvider theme={theme}>
                 <ModalProvider>
-                    <Router />
+                    <>
+                        <GlobalLoader />
+                        <Router />
+                    </>
                 </ModalProvider>
             </ChakraProvider>
         </BrowserRouter>
@@ -18,5 +22,3 @@ function App() {
 }
 
 export default App;
-
-//Сверстаны: Главная страница, страница Веганская кухня, страница Самое сочное,
