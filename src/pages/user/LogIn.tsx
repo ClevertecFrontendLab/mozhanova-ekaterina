@@ -1,57 +1,33 @@
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import {
-    FormControl,
-    FormErrorMessage,
-    FormLabel,
-    Input,
-    InputGroup,
-    InputRightElement,
-    SimpleGrid,
-    Text,
-    VStack,
-} from '@chakra-ui/react';
+import { SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router';
-import * as yup from 'yup';
+import { Outlet, useNavigate } from 'react-router';
 
 import { UiButton } from '~/components/ui/UiButton';
+import { UiInput } from '~/components/ui/UiInput';
 import { useModalContext } from '~/contexts/modal-context';
 import { useToast } from '~/hooks/use-toast';
 import { useLoginMutation } from '~/query/user-api';
 import { ApplicationState } from '~/store/configure-store';
 import { TErrorResponse } from '~/types';
+import { LoginSchema } from '~/validation';
 
-//TODO: submit on enter, trim on blur, password visible on keeping, global loader
+//TODO:  trim on blur
 
 export const LogIn = () => {
     const { showError } = useToast();
     const navigate = useNavigate();
-    const [showPassword, setShowPassword] = useState(false);
     const { showLoginError } = useModalContext();
     const isAuth = useSelector((state: ApplicationState) => state.user.isAuthenticated);
-
-    const schema = yup.object({
-        login: yup
-            .string()
-            .min(5, 'Логин не менее 5 символов')
-            .max(50, 'Максимальная длина 50 символов')
-            .required('Введите логин'),
-        password: yup
-            .string()
-            .min(8, 'Пароль не менее 8 символов')
-            .max(50, 'Максимальная длина 50 символов')
-            .required('Введите пароль'),
-    });
 
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(LoginSchema),
         mode: 'onChange',
     });
 
@@ -89,55 +65,32 @@ export const LogIn = () => {
         }
     };
 
+    const handleRecovery = () => {
+        navigate('/login/recovery');
+    };
+
     useEffect(() => {
         if (isAuth) navigate('/');
     }, [isAuth, navigate]);
 
     return (
-        <div>
+        <>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <VStack spacing={6}>
-                    <FormControl isInvalid={!!errors.login}>
-                        <FormLabel>Логин для входа на сайт</FormLabel>
-                        <Input
-                            {...register('login')}
-                            size='lg'
-                            variant='login'
-                            type='text'
-                            placeholder='Введите логин'
-                            borderColor={errors.login && 'error.400'}
-                        />
-                        {errors.login && (
-                            <FormErrorMessage mt={1} fontSize='xs' fontWeight={400}>
-                                {errors.login.message}
-                            </FormErrorMessage>
-                        )}
-                    </FormControl>
-
-                    <FormControl isInvalid={!!errors.password}>
-                        <FormLabel>Пароль</FormLabel>
-                        <InputGroup size='lg'>
-                            <Input
-                                {...register('password')}
-                                variant='login'
-                                type={showPassword ? 'text' : 'password'}
-                                placeholder='Пароль для сайта'
-                                borderColor={errors.login && 'error.400'}
-                            />
-                            <InputRightElement
-                                onClick={() => setShowPassword((prev) => !prev)}
-                                cursor='pointer'
-                                bgSize='lg'
-                            >
-                                {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                            </InputRightElement>
-                        </InputGroup>
-                        {errors.password && (
-                            <FormErrorMessage mt={1} fontSize='xs' fontWeight={400}>
-                                {errors.password.message}
-                            </FormErrorMessage>
-                        )}
-                    </FormControl>
+                    <UiInput
+                        label='Логин для входа на сайт'
+                        placeholder='Введите логин'
+                        helperText=''
+                        error={errors.login}
+                        {...register('login')}
+                    />
+                    <UiInput
+                        type='password'
+                        label='Пароль'
+                        placeholder='Пароль для сайта'
+                        error={errors.password}
+                        {...register('password')}
+                    />
                 </VStack>
 
                 <SimpleGrid columns={1} mt='112px' spacing={4}>
@@ -149,13 +102,18 @@ export const LogIn = () => {
                         size='lg'
                     />
 
-                    <Link to=''>
-                        <Text textAlign='center' fontWeight={600}>
-                            Забыли логин или пароль?
-                        </Text>
-                    </Link>
+                    <Text
+                        onClick={handleRecovery}
+                        type='button'
+                        as='button'
+                        textAlign='center'
+                        fontWeight={600}
+                    >
+                        Забыли логин или пароль?
+                    </Text>
                 </SimpleGrid>
             </form>
-        </div>
+            <Outlet />
+        </>
     );
 };
