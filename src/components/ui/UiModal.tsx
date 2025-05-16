@@ -15,10 +15,11 @@ type Props = {
     header?: React.ReactNode;
     body?: React.ReactNode;
     footer?: React.ReactNode;
+    'data-test-id'?: string;
     onClose: () => void;
 };
-export const UiModal = ({ isOpen, onClose, header, body, footer, image }: Props) => (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+export const UiModal = ({ isOpen, onClose, header, body, footer, image, ...props }: Props) => (
+    <Modal isOpen={isOpen} onClose={onClose} isCentered {...props}>
         <ModalOverlay />
         <ModalContent>
             {image && (
@@ -30,7 +31,7 @@ export const UiModal = ({ isOpen, onClose, header, body, footer, image }: Props)
                 />
             )}
             {header && <ModalHeader>{header}</ModalHeader>}
-            <ModalCloseButton />
+            <ModalCloseButton data-test-id='close-button' />
             {body && <ModalBody>{body}</ModalBody>}
             {footer && <ModalFooter>{footer}</ModalFooter>}
         </ModalContent>

@@ -22,7 +22,7 @@ import { RegistrationSchema } from '~/validation';
 
 export const SignUp = () => {
     const { showError } = useToast();
-    const { showEmailSent } = useModalContext();
+    const { showSignUpSuccess } = useModalContext();
 
     const steps = [
         { description: 'Шаг 1. Личная информация' },
@@ -71,7 +71,7 @@ export const SignUp = () => {
         try {
             const result = await signIn(userData).unwrap();
             if (result) {
-                showEmailSent(getValues('email'));
+                showSignUpSuccess(getValues('email'));
             }
         } catch (error: unknown) {
             const response = error as TErrorResponse;
@@ -82,11 +82,16 @@ export const SignUp = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form data-test-id='sign-up-form' onSubmit={handleSubmit(onSubmit)}>
             <VStack spacing={6}>
                 <Box w='full'>
                     <FormLabel>{steps[activeIndex].description}</FormLabel>
-                    <Progress hasStripe h='8px' value={progressPercent} />
+                    <Progress
+                        data-test-id='sign-up-progress'
+                        hasStripe
+                        h='8px'
+                        value={progressPercent}
+                    />
                 </Box>
 
                 <Tabs index={activeIndex} w='full'>
@@ -98,12 +103,14 @@ export const SignUp = () => {
                                     placeholder='Имя'
                                     error={errors.name}
                                     {...register('name')}
+                                    data-test-id='first-name-input'
                                 />
                                 <UiInput
                                     label='Ваша фамилия'
                                     placeholder='Фамилия'
                                     error={errors.lastName}
                                     {...register('lastName')}
+                                    data-test-id='last-name-input'
                                 />
                                 <UiInput
                                     type='email'
@@ -111,6 +118,7 @@ export const SignUp = () => {
                                     placeholder='e-mail'
                                     error={errors.email}
                                     {...register('email')}
+                                    data-test-id='email-input'
                                 />
                             </VStack>
                         </TabPanel>
@@ -122,6 +130,7 @@ export const SignUp = () => {
                                     helperText='Логин не менее 5 символов, только латиница, цифры и !@#$&_+-'
                                     error={errors.login}
                                     {...register('login')}
+                                    data-test-id='login-input'
                                 />
                                 <UiInput
                                     type='password'
@@ -130,6 +139,7 @@ export const SignUp = () => {
                                     helperText='Пароль не менее 8 символов, с заглавной буквой и цифрой'
                                     error={errors.password}
                                     {...register('password')}
+                                    data-test-id='password-input'
                                 />
                                 <UiInput
                                     type='password'
@@ -137,6 +147,7 @@ export const SignUp = () => {
                                     placeholder='Повторите пароль'
                                     error={errors.passwordConfirm}
                                     {...register('passwordConfirm')}
+                                    data-test-id='confirm-password-input'
                                 />
                             </VStack>
                         </TabPanel>
@@ -152,6 +163,7 @@ export const SignUp = () => {
                         variant='solid'
                         text='Дальше'
                         size='lg'
+                        data-test-id='submit-button'
                     />
                 ) : (
                     <UiButton
@@ -160,6 +172,7 @@ export const SignUp = () => {
                         variant='solid'
                         text='Зарегистрироваться'
                         size='lg'
+                        data-test-id='submit-button'
                     />
                 )}
             </SimpleGrid>

@@ -18,7 +18,7 @@ import { LoginSchema } from '~/validation';
 export const SignIn = () => {
     const { showError } = useToast();
     const navigate = useNavigate();
-    const { showLoginError } = useModalContext();
+    const { showSignInError } = useModalContext();
     const isAuth = useSelector((state: ApplicationState) => state.user.isAuthenticated);
 
     const {
@@ -58,7 +58,7 @@ export const SignIn = () => {
                     );
                     break;
                 default:
-                    showLoginError();
+                    showSignInError();
                     break;
             }
         }
@@ -74,7 +74,7 @@ export const SignIn = () => {
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} data-test-id='sign-in-form'>
                 <VStack spacing={6}>
                     <UiInput
                         label='Логин для входа на сайт'
@@ -82,6 +82,7 @@ export const SignIn = () => {
                         helperText=''
                         error={errors.login}
                         {...register('login')}
+                        data-test-id='login-input'
                     />
                     <UiInput
                         type='password'
@@ -89,6 +90,7 @@ export const SignIn = () => {
                         placeholder='Пароль для сайта'
                         error={errors.password}
                         {...register('password')}
+                        data-test-id='password-input'
                     />
                 </VStack>
 
@@ -99,6 +101,7 @@ export const SignIn = () => {
                         variant='solid'
                         text='Войти'
                         size='lg'
+                        data-test-id='submit-button'
                     />
 
                     <Text
@@ -107,6 +110,7 @@ export const SignIn = () => {
                         as='button'
                         textAlign='center'
                         fontWeight={600}
+                        data-test-id='forgot-password'
                     >
                         Забыли логин или пароль?
                     </Text>

@@ -12,7 +12,7 @@ import { UiButton } from '../ui/UiButton';
 import { UiInput } from '../ui/UiInput';
 import { UiModal } from '../ui/UiModal';
 
-export const RecoveryFormModal = ({
+export const ResetCredentialsModal = ({
     isOpen,
     onClose,
 }: {
@@ -69,6 +69,7 @@ export const RecoveryFormModal = ({
                             helperText='Логин не менее 5 символов, только латиница'
                             error={errors.login}
                             {...register('login')}
+                            data-test-id='login-input'
                         />
                         <UiInput
                             type='password'
@@ -77,6 +78,7 @@ export const RecoveryFormModal = ({
                             helperText='Пароль не менее 8 символов, с заглавной буквой и цифрой'
                             error={errors.password}
                             {...register('password')}
+                            data-test-id='password-input'
                         />
                         <UiInput
                             type='password'
@@ -84,6 +86,7 @@ export const RecoveryFormModal = ({
                             placeholder='Повторите пароль'
                             error={errors.passwordConfirm}
                             {...register('passwordConfirm')}
+                            data-test-id='confirm-password-input'
                         />
                     </VStack>
                     <Grid mt={8}>
@@ -93,10 +96,12 @@ export const RecoveryFormModal = ({
                             variant='solid'
                             text='Зарегистрироваться'
                             size='lg'
+                            data-test-id='submit-button'
                         />
                     </Grid>
                 </form>
             }
+            data-test-id='reset-credentials-modal'
         />
     );
 };

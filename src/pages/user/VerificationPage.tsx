@@ -10,7 +10,7 @@ export const VerificationPage = () => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
     const emailVerified = searchParams.get('emailVerified');
-    const { showEmailError } = useModalContext();
+    const { showVerificationFailed } = useModalContext();
 
     useEffect(() => {
         const verificationStatus = emailVerified === 'true';
@@ -18,9 +18,9 @@ export const VerificationPage = () => {
             showSuccess('Верификация прошла успешно', '', 15000, 'bottom-left');
             navigate(AppRoutes.SIGN_IN);
         } else {
-            showEmailError();
+            showVerificationFailed();
             navigate(AppRoutes.SIGN_UP);
         }
-    }, [navigate, showSuccess, showEmailError, emailVerified]);
+    }, [navigate, showSuccess, showVerificationFailed, emailVerified]);
     return null;
 };

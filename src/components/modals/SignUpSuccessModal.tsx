@@ -2,7 +2,7 @@ import { Link } from '@chakra-ui/react';
 
 import { UiModal } from '../ui/UiModal';
 
-export const EmailSentModal = ({
+export const SignUpSuccessModal = ({
     isOpen,
     onClose,
     email,
@@ -12,6 +12,7 @@ export const EmailSentModal = ({
     email: string;
 }) => (
     <UiModal
+        data-test-id='sign-up-success-modal'
         image='/src/assets/modals/2.png'
         isOpen={isOpen}
         onClose={onClose}

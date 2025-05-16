@@ -2,7 +2,13 @@ import { Link } from '@chakra-ui/react';
 
 import { UiModal } from '../ui/UiModal';
 
-export const EmailErrorModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
+export const VerificationFailedModal = ({
+    isOpen,
+    onClose,
+}: {
+    isOpen: boolean;
+    onClose: () => void;
+}) => (
     <UiModal
         image='/src/assets/modals/1.png'
         isOpen={isOpen}
@@ -17,5 +23,6 @@ export const EmailErrorModal = ({ isOpen, onClose }: { isOpen: boolean; onClose:
                 </Link>
             </p>
         }
+        data-test-id='email-verification-failed-modal'
     />
 );

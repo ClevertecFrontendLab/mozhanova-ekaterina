@@ -12,7 +12,7 @@ import { OtpSchema } from '~/validation';
 
 import { UiModal } from '../ui/UiModal';
 
-export const OtpModal = ({
+export const VerificationCodeModal = ({
     isOpen,
     onClose,
     email,
@@ -96,6 +96,7 @@ export const OtpModal = ({
                                                     borderColor={errors.code && 'error.400'}
                                                     _focusVisible={{ boxShadow: 'none' }}
                                                     _placeholder={{ color: 'primary.700' }}
+                                                    data-test-id={`verification-code-input-${index + 1}`}
                                                 />
                                             ))}
                                         </PinInput>
@@ -107,6 +108,7 @@ export const OtpModal = ({
                 </>
             }
             footer='Не пришло письмо? Проверьте папку Спам.'
+            data-test-id='verification-code-modal'
         />
     );
 };

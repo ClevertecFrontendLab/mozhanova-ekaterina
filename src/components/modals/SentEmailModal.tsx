@@ -14,7 +14,7 @@ import { UiButton } from '../ui/UiButton';
 import { UiInput } from '../ui/UiInput';
 import { UiModal } from '../ui/UiModal';
 
-export const ForgotModal = ({
+export const SentEmailModal = ({
     isOpen,
     onClose,
     next,
@@ -82,6 +82,7 @@ export const ForgotModal = ({
                                 placeholder='e-mail'
                                 error={errors?.email}
                                 {...register('email')}
+                                data-test-id='email-input'
                             />
                         </Box>
 
@@ -92,12 +93,14 @@ export const ForgotModal = ({
                                 variant='solid'
                                 text='Получить код'
                                 size='lg'
+                                data-test-id='submit-button'
                             />
                         </Grid>
                     </form>
                 </>
             }
             footer='Не пришло письмо? Проверьте папку Спам.'
+            data-test-id='sent-email-modal'
         />
     );
 };

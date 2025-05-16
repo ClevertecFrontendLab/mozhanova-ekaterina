@@ -17,6 +17,7 @@ type Props = {
     error: FieldError | undefined;
     type?: React.HTMLInputTypeAttribute;
     helperText?: string;
+    'data-test-id?'?: string;
 };
 
 export const UiInput = ({
@@ -47,6 +48,7 @@ export const UiInput = ({
                         onMouseUp={() => setShowPassword(false)}
                         cursor='pointer'
                         bgSize='lg'
+                        data-test-id='password-visibility-button'
                     >
                         {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                     </InputRightElement>

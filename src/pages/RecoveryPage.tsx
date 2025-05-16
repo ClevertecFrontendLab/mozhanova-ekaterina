@@ -3,10 +3,10 @@ import { useEffect } from 'react';
 import { useModalContext } from '~/contexts/modal-context';
 
 export const RecoveryPage = () => {
-    const { showRecoveryForgot } = useModalContext();
+    const { showSentEmail } = useModalContext();
 
     useEffect(() => {
-        showRecoveryForgot();
+        showSentEmail();
     }, []);
 
     return null;

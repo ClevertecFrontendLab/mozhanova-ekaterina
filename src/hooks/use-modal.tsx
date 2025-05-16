@@ -1,94 +1,96 @@
 import { useDisclosure } from '@chakra-ui/react';
 import { useState } from 'react';
 
-import { EmailErrorModal } from '~/components/modals/EmailErrorModal';
-import { EmailSentModal } from '~/components/modals/EmailSentModal';
-import { ForgotModal } from '~/components/modals/ForgotModal';
-import { LoginErrorModal } from '~/components/modals/LoginErrorModal';
-import { OtpModal } from '~/components/modals/OtpModal';
-import { RecoveryFormModal } from '~/components/modals/RecoveryFormModal';
+import { ResetCredentialsModal } from '~/components/modals/ResetCredentialsModal';
+import { SentEmailModal } from '~/components/modals/SentEmailModal';
+import { SignInErrorModal } from '~/components/modals/SignInErrorModal';
+import { SignUpSuccessModal } from '~/components/modals/SignUpSuccessModal';
+import { VerificationCodeModal } from '~/components/modals/VerificationCodeModal';
+import { VerificationFailedModal } from '~/components/modals/VerificationFailedModal';
 
 type ModalType =
-    | 'emailSent'
-    | 'emailError'
-    | 'showRecoveryForgot'
-    | 'recoveryOtp'
-    | 'recoveryForm'
-    | 'loginError';
+    | 'signUpSuccess'
+    | 'verificationFailed'
+    | 'sentEmail'
+    | 'verificationCode'
+    | 'resetCredentials'
+    | 'signInError';
 
 export const useModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [modalType, setModalType] = useState<ModalType | null>(null);
     const [modalState, setModalState] = useState('');
 
-    const showEmailSent = (email: string) => {
-        setModalType('emailSent');
+    const showSignUpSuccess = (email: string) => {
+        setModalType('signUpSuccess');
         setModalState(email);
         onOpen();
     };
 
-    const showEmailError = () => {
-        setModalType('emailError');
+    const showVerificationFailed = () => {
+        setModalType('verificationFailed');
         onOpen();
     };
 
-    const showRecoveryForgot = () => {
-        setModalType('showRecoveryForgot');
+    const showSentEmail = () => {
+        setModalType('sentEmail');
         onOpen();
     };
-    const showRecoveryOtp = (email: string) => {
-        setModalType('recoveryOtp');
+    const showVerificationCode = (email: string) => {
+        setModalType('verificationCode');
         setModalState(email);
         onOpen();
     };
 
-    const showRecoveryForm = () => {
-        setModalType('recoveryForm');
+    const showResetCredentials = () => {
+        setModalType('resetCredentials');
         onOpen();
     };
 
-    const showLoginError = () => {
-        setModalType('loginError');
+    const showSignInError = () => {
+        setModalType('signInError');
         onOpen();
     };
 
     const ModalComponent = () => {
         switch (modalType) {
-            case 'emailSent':
-                return <EmailSentModal email={modalState} onClose={onClose} isOpen={isOpen} />;
+            case 'signUpSuccess':
+                return <SignUpSuccessModal email={modalState} onClose={onClose} isOpen={isOpen} />;
 
-            case 'emailError':
-                return <EmailErrorModal isOpen={isOpen} onClose={onClose} />;
+            case 'verificationFailed':
+                return <VerificationFailedModal isOpen={isOpen} onClose={onClose} />;
 
-            case 'showRecoveryForgot':
-                return <ForgotModal isOpen={isOpen} onClose={onClose} next={showRecoveryOtp} />;
-
-            case 'recoveryOtp':
+            case 'sentEmail':
                 return (
-                    <OtpModal
+                    <SentEmailModal isOpen={isOpen} onClose={onClose} next={showVerificationCode} />
+                );
+
+            case 'verificationCode':
+                return (
+                    <VerificationCodeModal
                         isOpen={isOpen}
                         onClose={onClose}
                         email={modalState}
-                        next={showRecoveryForm}
+                        next={showResetCredentials}
                     />
                 );
 
-            case 'recoveryForm':
-                return <RecoveryFormModal isOpen={isOpen} onClose={onClose} />;
+            case 'resetCredentials':
+                return <ResetCredentialsModal isOpen={isOpen} onClose={onClose} />;
 
-            case 'loginError':
-                return <LoginErrorModal isOpen={isOpen} onClose={onClose} />;
+            case 'signInError':
+                return <SignInErrorModal isOpen={isOpen} onClose={onClose} />;
         }
     };
 
     return {
         ModalComponent,
-        showEmailSent,
-        showLoginError,
-        showEmailError,
-        showRecoveryForgot,
-        showRecoveryOtp,
-        showRecoveryForm,
+        showSignUpSuccess,
+        showSignInError,
+        showVerificationFailed,
+        showSentEmail,
+        showVerificationCode,
+        showResetCredentials,
         onClose,
         isOpen,
         modalState,
