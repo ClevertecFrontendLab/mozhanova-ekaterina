@@ -40,7 +40,11 @@ export const RecoveryFormModal = ({
     const onSubmit = async (data: { login: string; password: string; passwordConfirm: string }) => {
         try {
             const result = await reset(data).unwrap();
-            if (result) showSuccess('Восстановление данных успешно', '', 15000, 'bottom-left');
+            if (result) {
+                showSuccess('Восстановление данных успешно', '', 15000, 'bottom-left');
+                navigate('/login');
+                onClose();
+            }
         } catch (_error) {
             showError('Ошибка сервера', 'Попробуйте немного позже', 15000);
         }
