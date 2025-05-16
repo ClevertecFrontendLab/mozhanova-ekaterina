@@ -3,6 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
+import { AppRoutes } from '~/config';
 import { useToast } from '~/hooks/use-toast';
 import { useResetPasswordMutation } from '~/query/user-api';
 import { RecoverySchema } from '~/validation';
@@ -34,7 +35,7 @@ export const RecoveryFormModal = ({
 
     const handleClose = () => {
         onClose();
-        navigate('/login');
+        navigate(AppRoutes.SIGN_IN);
     };
 
     const onSubmit = async (data: { login: string; password: string; passwordConfirm: string }) => {
@@ -42,7 +43,7 @@ export const RecoveryFormModal = ({
             const result = await reset(data).unwrap();
             if (result) {
                 showSuccess('Восстановление данных успешно', '', 15000, 'bottom-left');
-                navigate('/login');
+                navigate(AppRoutes.SIGN_IN);
                 onClose();
             }
         } catch (_error) {

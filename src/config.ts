@@ -10,8 +10,8 @@ export const AppRoutes = {
     RECIPE: '/:category/:subCategory/:id',
     THE_JUICIEST: '/the-juiciest',
     NOT_FOUND: '/not-found',
-    LOG_IN: '/login',
     SIGN_IN: '/signin',
+    SIGN_UP: '/signup',
     VERIFICATION: '/verification',
-    RECOVERY: '/login/recovery',
+    RECOVERY: '/signin/recovery',
 } as const;

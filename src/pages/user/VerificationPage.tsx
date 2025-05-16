@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
+import { AppRoutes } from '~/config';
 import { useModalContext } from '~/contexts/modal-context';
 import { useToast } from '~/hooks/use-toast';
 
@@ -15,10 +16,10 @@ export const VerificationPage = () => {
         const verificationStatus = emailVerified === 'true';
         if (verificationStatus) {
             showSuccess('Верификация прошла успешно', '', 15000, 'bottom-left');
-            navigate('/login');
+            navigate(AppRoutes.SIGN_IN);
         } else {
             showEmailError();
-            navigate('/signin');
+            navigate(AppRoutes.SIGN_UP);
         }
     }, [navigate, showSuccess, showEmailError, emailVerified]);
     return null;

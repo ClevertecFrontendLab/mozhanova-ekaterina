@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
+import { AppRoutes } from '~/config';
 import { useCheckAuthQuery } from '~/query/user-api';
 import { useAppDispatch, useAppSelector } from '~/store/hooks';
 import { setAuthenticated } from '~/store/user-slice';
@@ -19,11 +20,12 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
         }
         if (isError) {
             dispatch(setAuthenticated(false));
-            if (location.pathname === '/') navigate('/login');
+            if (location.pathname === AppRoutes.HOME) navigate(AppRoutes.SIGN_IN);
         }
     }, [data, isError, dispatch, navigate]);
 
-    if (isFetching || (!isAuthenticated && location.pathname === '/')) return <GlobalLoader />;
+    if (isFetching || (!isAuthenticated && location.pathname === AppRoutes.HOME))
+        return <GlobalLoader />;
 
     return <>{children}</>;
 };

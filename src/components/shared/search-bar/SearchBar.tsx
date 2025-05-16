@@ -2,6 +2,7 @@ import { Box, Flex, Heading, Spinner, Text, useDisclosure } from '@chakra-ui/rea
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import { AppRoutes } from '~/config';
 import { useLazyRecipesSearch } from '~/store/hooks';
 
 import { FiltersDrawer } from './FiltersDrawer';
@@ -24,7 +25,7 @@ export const SearchBar = ({ title, description }: Props) => {
         if (isSearchInitiated) {
             runSearch();
             if (data) {
-                navigate('/search');
+                navigate(AppRoutes.SEARCH);
                 setIsSearchInitiated(false);
             }
         }

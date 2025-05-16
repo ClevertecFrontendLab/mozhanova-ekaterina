@@ -1,168 +1,118 @@
-import {
-    Box,
-    FormLabel,
-    Progress,
-    SimpleGrid,
-    TabPanel,
-    TabPanels,
-    Tabs,
-    VStack,
-} from '@chakra-ui/react';
+import { SimpleGrid, Text, VStack } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import { Outlet, useNavigate } from 'react-router';
 
 import { UiButton } from '~/components/ui/UiButton';
 import { UiInput } from '~/components/ui/UiInput';
+import { AppRoutes } from '~/config';
 import { useModalContext } from '~/contexts/modal-context';
 import { useToast } from '~/hooks/use-toast';
-import { useSignUpMutation } from '~/query/user-api';
-import { TErrorResponse, TFormInputs } from '~/types';
-import { RegistrationSchema } from '~/validation';
+import { useSignInMutation } from '~/query/user-api';
+import { ApplicationState } from '~/store/configure-store';
+import { TErrorResponse } from '~/types';
+import { LoginSchema } from '~/validation';
 
 export const SignIn = () => {
     const { showError } = useToast();
-    const { showEmailSent } = useModalContext();
-
-    const steps = [
-        { description: 'Шаг 1. Личная информация' },
-        { description: 'Шаг 2. Логин и пароль' },
-    ];
-    const [activeStep, setActiveStep] = useState(0);
-    const [activeIndex, setActiveIndex] = useState(0);
-    const allFields: (keyof TFormInputs)[] = useMemo(
-        () => ['name', 'lastName', 'login', 'email', 'password', 'passwordConfirm'],
-        [],
-    );
-    const fieldsToValidate: (keyof TFormInputs)[] = useMemo(
-        () =>
-            activeIndex === 0
-                ? ['name', 'lastName', 'email']
-                : ['login', 'password', 'passwordConfirm'],
-        [activeIndex],
-    );
-
-    const progressPercent = (activeStep / allFields.length) * 100;
+    const navigate = useNavigate();
+    const { showLoginError } = useModalContext();
+    const isAuth = useSelector((state: ApplicationState) => state.user.isAuthenticated);
 
     const {
         register,
         handleSubmit,
-        getValues,
-        formState: { errors, isValid, dirtyFields },
+        formState: { errors },
     } = useForm({
-        resolver: yupResolver(RegistrationSchema),
+        resolver: yupResolver(LoginSchema),
         mode: 'onChange',
     });
 
-    const validFields = allFields.filter((field) => !errors[field] && dirtyFields[field]);
-    const isNextDisabled = !fieldsToValidate.every((field) => validFields.includes(field));
+    const [signIn] = useSignInMutation();
 
-    useEffect(() => {
-        setActiveStep(validFields.length);
-    }, [validFields]);
-
-    const handleNext = async () => {
-        setActiveIndex(1);
-    };
-
-    const [signUp] = useSignUpMutation();
-
-    const onSubmit = async (userData: TFormInputs) => {
+    const onSubmit = async (userData: { login: string; password: string }) => {
         try {
-            const result = await signUp(userData).unwrap();
+            const result = await signIn(userData).unwrap();
             if (result) {
-                showEmailSent(getValues('email'));
+                navigate(AppRoutes.HOME);
             }
         } catch (error: unknown) {
             const response = error as TErrorResponse;
-            response.data
-                ? showError(response.data?.message, '', 15000)
-                : showError('Ошибка сервера', 'Попробуйте немного позже', 15000);
+            switch (response.status) {
+                case 401:
+                    showError(
+                        'Неверный логин или пароль',
+                        'Попробуйте снова',
+                        15000,
+                        'bottom-left',
+                    );
+                    break;
+                case 403:
+                    showError(
+                        'E-mail не верифицирован',
+                        'Проверьте почту и перейдите по ссылке',
+                        15000,
+                        'bottom-left',
+                    );
+                    break;
+                default:
+                    showLoginError();
+                    break;
+            }
         }
     };
 
+    const handleRecovery = () => {
+        navigate(AppRoutes.RECOVERY);
+    };
+
+    useEffect(() => {
+        if (isAuth) navigate(AppRoutes.HOME);
+    }, [isAuth, navigate]);
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <VStack spacing={6}>
-                <Box w='full'>
-                    <FormLabel>{steps[activeIndex].description}</FormLabel>
-                    <Progress hasStripe h='8px' value={progressPercent} />
-                </Box>
-
-                <Tabs index={activeIndex} w='full'>
-                    <TabPanels>
-                        <TabPanel>
-                            <VStack spacing={6}>
-                                <UiInput
-                                    label='Ваше имя'
-                                    placeholder='Имя'
-                                    error={errors.name}
-                                    {...register('name')}
-                                />
-                                <UiInput
-                                    label='Ваша фамилия'
-                                    placeholder='Фамилия'
-                                    error={errors.lastName}
-                                    {...register('lastName')}
-                                />
-                                <UiInput
-                                    type='email'
-                                    label='Ваш e-mail'
-                                    placeholder='e-mail'
-                                    error={errors.email}
-                                    {...register('email')}
-                                />
-                            </VStack>
-                        </TabPanel>
-                        <TabPanel>
-                            <VStack spacing={6}>
-                                <UiInput
-                                    label='Логин для входа на сайт'
-                                    placeholder='Введите логин'
-                                    helperText='Логин не менее 5 символов, только латиница, цифры и !@#$&_+-'
-                                    error={errors.login}
-                                    {...register('login')}
-                                />
-                                <UiInput
-                                    type='password'
-                                    label='Пароль'
-                                    placeholder='Пароль для сайта'
-                                    helperText='Пароль не менее 8 символов, с заглавной буквой и цифрой'
-                                    error={errors.password}
-                                    {...register('password')}
-                                />
-                                <UiInput
-                                    type='password'
-                                    label='Повторите пароль'
-                                    placeholder='Повторите пароль'
-                                    error={errors.passwordConfirm}
-                                    {...register('passwordConfirm')}
-                                />
-                            </VStack>
-                        </TabPanel>
-                    </TabPanels>
-                </Tabs>
-            </VStack>
-
-            <SimpleGrid columns={1} mt={12} spacing={4}>
-                {activeIndex === 0 ? (
-                    <UiButton
-                        isDisabled={isNextDisabled}
-                        onClick={handleNext}
-                        variant='solid'
-                        text='Дальше'
-                        size='lg'
+        <>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <VStack spacing={6}>
+                    <UiInput
+                        label='Логин для входа на сайт'
+                        placeholder='Введите логин'
+                        helperText=''
+                        error={errors.login}
+                        {...register('login')}
                     />
-                ) : (
+                    <UiInput
+                        type='password'
+                        label='Пароль'
+                        placeholder='Пароль для сайта'
+                        error={errors.password}
+                        {...register('password')}
+                    />
+                </VStack>
+
+                <SimpleGrid columns={1} mt='112px' spacing={4}>
                     <UiButton
-                        isDisabled={!isValid}
+                        isDisabled={!!errors.login || !!errors.password}
                         type='submit'
                         variant='solid'
-                        text='Зарегистрироваться'
+                        text='Войти'
                         size='lg'
                     />
-                )}
-            </SimpleGrid>
-        </form>
+
+                    <Text
+                        onClick={handleRecovery}
+                        type='button'
+                        as='button'
+                        textAlign='center'
+                        fontWeight={600}
+                    >
+                        Забыли логин или пароль?
+                    </Text>
+                </SimpleGrid>
+            </form>
+            <Outlet />
+        </>
     );
 };

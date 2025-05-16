@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
+import { AppRoutes } from '~/config';
 import { useToast } from '~/hooks/use-toast';
 import { useVerifyOtpMutation } from '~/query/user-api';
 import { TErrorResponse } from '~/types';
@@ -27,7 +28,7 @@ export const OtpModal = ({
 
     const handleClose = () => {
         onClose();
-        navigate('/login');
+        navigate(AppRoutes.SIGN_IN);
     };
 
     const [verifyOtp] = useVerifyOtpMutation();

@@ -5,6 +5,7 @@ import { Outlet, useNavigate, useParams } from 'react-router';
 
 import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
+import { AppRoutes } from '~/config';
 import { useGetCategoriesQuery } from '~/query/category-api';
 import { ApplicationState } from '~/store/configure-store';
 import { setCategoryFilter, setSubCategoryFilter } from '~/store/recipe-slice';
@@ -46,7 +47,7 @@ export const CategoryPage = () => {
             (currentCategory.subCategories.length > 0 && subCategory && !currentSubCategory);
 
         if (shouldRedirect) {
-            navigate('/not-found', { replace: true });
+            navigate(AppRoutes.NOT_FOUND, { replace: true });
         }
 
         if (currentCategory && !subCategory)

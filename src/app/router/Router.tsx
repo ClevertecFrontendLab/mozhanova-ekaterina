@@ -12,8 +12,8 @@ import { RecipePage } from '~/pages/RecipePage';
 import { RecoveryPage } from '~/pages/RecoveryPage';
 import { SearchPage } from '~/pages/SearchPage';
 import { TheJuiciestPage } from '~/pages/TheJuiciestPage';
-import { LogIn } from '~/pages/user/LogIn';
 import { SignIn } from '~/pages/user/SignIn';
+import { SignUp } from '~/pages/user/SignUp';
 import { VerificationPage } from '~/pages/user/VerificationPage';
 
 export const Router = () => (
@@ -38,10 +38,10 @@ export const Router = () => (
         </Route>
 
         <Route element={<AuthLayout />}>
-            <Route path={AppRoutes.LOG_IN} element={<LogIn />}>
+            <Route path={AppRoutes.SIGN_IN} element={<SignIn />}>
                 <Route path={AppRoutes.RECOVERY} element={<RecoveryPage />} />
             </Route>
-            <Route path={AppRoutes.SIGN_IN} element={<SignIn />} />
+            <Route path={AppRoutes.SIGN_UP} element={<SignUp />} />
         </Route>
 
         <Route path={AppRoutes.VERIFICATION} element={<VerificationPage />} />

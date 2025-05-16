@@ -26,6 +26,7 @@ import { useNavigate } from 'react-router';
 
 import { PlusIcon } from '~/components/ui/icons/PlusIcon';
 import { UiButton } from '~/components/ui/UiButton';
+import { AppRoutes } from '~/config';
 import { allergens } from '~/mocks/allergens';
 import { authors } from '~/mocks/authors';
 import { garnish } from '~/mocks/garnish';
@@ -85,7 +86,7 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
         dispatch(setMeatFilter(selectedMeat));
         dispatch(setGarnishFilter(selectedGarnish));
         onClose();
-        navigate('/search');
+        navigate(AppRoutes.SEARCH);
         setSelectedCategory([]);
         setSelectedAllergens([]);
         setSelectedAuthors([]);

@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import * as yup from 'yup';
 
+import { AppRoutes } from '~/config';
 import { useToast } from '~/hooks/use-toast';
 import { useForgotPasswordMutation } from '~/query/user-api';
 import { TErrorResponse } from '~/types';
@@ -26,7 +27,7 @@ export const ForgotModal = ({
     const navigate = useNavigate();
     const handleClose = () => {
         onClose();
-        navigate('/login');
+        navigate(AppRoutes.SIGN_IN);
     };
 
     const [forgot] = useForgotPasswordMutation();

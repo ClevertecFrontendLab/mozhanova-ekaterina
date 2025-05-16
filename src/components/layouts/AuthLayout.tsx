@@ -13,14 +13,20 @@ import {
 } from '@chakra-ui/react';
 import { Outlet, useNavigate } from 'react-router';
 
+import { AppRoutes } from '~/config';
+
 export const AuthLayout = () => {
     const navigate = useNavigate();
     const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
     const currentIndex =
-        location.pathname === '/login' ? 0 : location.pathname === '/signin' ? 1 : 0;
+        location.pathname === AppRoutes.SIGN_IN
+            ? 0
+            : location.pathname === AppRoutes.SIGN_UP
+              ? 1
+              : 0;
 
     const handleTabChange = (index: number) => {
-        navigate(index === 0 ? '/login' : '/signin');
+        navigate(index === 0 ? AppRoutes.SIGN_IN : AppRoutes.SIGN_UP);
     };
 
     return (
