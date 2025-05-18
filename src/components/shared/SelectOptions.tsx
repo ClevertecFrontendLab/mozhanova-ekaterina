@@ -108,7 +108,7 @@ export const SelectOptions = ({
             )}
         </MenuButton>
 
-        <MenuList zIndex={2} overflow='hidden' data-test-id={dataList}>
+        <MenuList zIndex={10} overflow='hidden' data-test-id={dataList}>
             <CheckboxGroup value={selected} onChange={(value: string[]) => setSelected(value)}>
                 <Box overflowY='auto'>
                     {options.map((option, i) => (

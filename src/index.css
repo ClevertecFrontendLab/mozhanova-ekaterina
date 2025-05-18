@@ -58,6 +58,10 @@ h6 {
     padding: 6px 0 !important;
 }
 
+[data-popper-placement] {
+    min-width: unset !important;
+}
+
 #chakra-toast-manager-bottom-left {
     bottom: 80px !important;
     left: 25% !important;

@@ -371,6 +371,12 @@ const theme = extendTheme({
             },
             variants: {
                 filter: {
+                    overlay: {
+                        zIndex: 2002,
+                    },
+                    dialogContainer: {
+                        zIndex: 2002,
+                    },
                     header: {
                         fontSize: '2xl',
                         p: { base: '16px 20px 16px 16px', md: 8 },
