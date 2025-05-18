@@ -24,6 +24,8 @@ export const SignIn = () => {
     const {
         register,
         handleSubmit,
+        setValue,
+        watch,
         formState: { errors },
     } = useForm({
         resolver: yupResolver(LoginSchema),
@@ -58,7 +60,7 @@ export const SignIn = () => {
                     );
                     break;
                 default:
-                    showSignInError();
+                    showSignInError(userData);
                     break;
             }
         }
@@ -82,6 +84,8 @@ export const SignIn = () => {
                         helperText=''
                         error={errors.login}
                         {...register('login')}
+                        setValue={(value: string) => setValue('login', value)}
+                        value={watch('login')}
                         data-test-id='login-input'
                     />
                     <UiInput
@@ -96,7 +100,6 @@ export const SignIn = () => {
 
                 <SimpleGrid columns={1} mt='112px' spacing={4}>
                     <UiButton
-                        isDisabled={!!errors.login || !!errors.password}
                         type='submit'
                         variant='solid'
                         text='Войти'
@@ -105,6 +108,7 @@ export const SignIn = () => {
                     />
 
                     <Text
+                        zIndex={10}
                         onClick={handleRecovery}
                         type='button'
                         as='button'

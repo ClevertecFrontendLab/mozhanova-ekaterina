@@ -17,6 +17,8 @@ type Props = {
     error: FieldError | undefined;
     type?: React.HTMLInputTypeAttribute;
     helperText?: string;
+    value?: string;
+    setValue?: (value: string) => void;
     'data-test-id?'?: string;
 };
 
@@ -26,12 +28,14 @@ export const UiInput = ({
     placeholder,
     helperText,
     type = 'text',
+    setValue,
+    value,
     ...props
 }: Props) => {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
-        <FormControl isInvalid={!!error}>
+        <FormControl isInvalid={!!error} onBlur={() => setValue && value && setValue(value.trim())}>
             <FormLabel>{label}</FormLabel>
             <InputGroup size='lg'>
                 <Input
@@ -55,7 +59,7 @@ export const UiInput = ({
                 )}
             </InputGroup>
 
-            {helperText && (
+            {helperText && error && (
                 <FormHelperText
                     mt={1}
                     textAlign='left'

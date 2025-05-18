@@ -22,7 +22,7 @@ export const Header = ({
             position='fixed'
             top='0'
             left='0'
-            zIndex='101'
+            zIndex={2002}
             w='100%'
             h={{
                 base: '64px',

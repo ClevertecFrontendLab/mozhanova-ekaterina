@@ -1,4 +1,4 @@
-import { FormControl, HStack, PinInput, PinInputField } from '@chakra-ui/react';
+import { FormControl, FormErrorMessage, HStack, PinInput, PinInputField } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -21,7 +21,7 @@ export const VerificationCodeModal = ({
     isOpen: boolean;
     email: string;
     onClose: () => void;
-    next: () => void;
+    next: (email: string) => void;
 }) => {
     const navigate = useNavigate();
     const { showError } = useToast();
@@ -46,12 +46,12 @@ export const VerificationCodeModal = ({
     const onSubmit = async (data: { code: string }) => {
         try {
             const result = await verifyOtp({ email, otpToken: data.code }).unwrap();
-            if (result) next();
+            if (result) next(email);
         } catch (error) {
             const response = error as TErrorResponse;
+            resetField('code');
             switch (response.status) {
                 case 403:
-                    resetField('code');
                     setError('code', { message: 'Неверный код' });
                     break;
 
@@ -66,7 +66,7 @@ export const VerificationCodeModal = ({
         if (isValid) {
             handleSubmit(onSubmit)();
         }
-    }, [isValid, handleSubmit]);
+    }, [isValid]);
 
     return (
         <UiModal
@@ -81,7 +81,7 @@ export const VerificationCodeModal = ({
                         шестизначный код. Введите его ниже.
                     </p>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <FormControl>
+                        <FormControl isInvalid={!!errors.code}>
                             <Controller
                                 name='code'
                                 control={control}
@@ -103,6 +103,7 @@ export const VerificationCodeModal = ({
                                     </HStack>
                                 )}
                             />
+                            <FormErrorMessage>{errors.code?.message}</FormErrorMessage>
                         </FormControl>
                     </form>
                 </>

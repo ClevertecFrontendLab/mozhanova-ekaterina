@@ -51,6 +51,7 @@ export const IngredientsTable = ({
                                     color='neutral.400'
                                     focusBorderColor='primary.300'
                                     onChange={(value) => setPortionsQuantity(Number(value))}
+                                    min={1}
                                 >
                                     <NumberInputField w='90px' />
                                     <NumberInputStepper>

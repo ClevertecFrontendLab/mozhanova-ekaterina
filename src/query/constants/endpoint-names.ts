@@ -12,4 +12,5 @@ export enum EndpointNames {
     FORGOT_PASSWORD = 'forgotPassword',
     VERIFY_OTP = 'verifyOtp',
     RESET_PASSWORD = 'resetPassword',
+    REFRESH_TOKEN = 'refreshToken',
 }

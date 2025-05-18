@@ -1,8 +1,9 @@
-import { BaseQueryFn, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'; // Измените импорт
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'; // Измените импорт
 
 import { API_BASE_URL } from '~/config';
-import { setAuthenticated } from '~/store/user-slice';
-import { TAuth, TAuthResponse, TNewUser } from '~/types';
+import { ApplicationState } from '~/store/configure-store';
+import { setAuthenticated, setCredentials } from '~/store/user-slice';
+import { TAuth, TAuthResponse, TNewUser, TRecoverUser, TVerifyUser } from '~/types';
 
 import { ApiEndpoints } from './constants/api';
 import { EndpointNames } from './constants/endpoint-names';
@@ -11,8 +12,8 @@ import { Tags } from './constants/tags';
 const baseQuery = fetchBaseQuery({
     baseUrl: API_BASE_URL,
     credentials: 'include',
-    prepareHeaders: (headers) => {
-        const token = localStorage.getItem('accessToken');
+    prepareHeaders: (headers, { getState }) => {
+        const token = (getState() as ApplicationState).user.accessToken;
         if (token) {
             headers.set('Authorization', `Bearer ${token}`);
         }
@@ -20,44 +21,18 @@ const baseQuery = fetchBaseQuery({
     },
 });
 
-const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
-    let result = await baseQuery(args, api, extraOptions);
-
-    if (result?.error?.status === 401) {
-        const refreshResult = await baseQuery(
-            {
-                url: ApiEndpoints.REFRESH_TOKEN,
-                method: 'POST',
-            },
-            api,
-            extraOptions,
-        );
-
-        if (refreshResult.data) {
-            const { accessToken } = refreshResult.data as { accessToken: string };
-            localStorage.setItem('accessToken', accessToken);
-            result = await baseQuery(args, api, extraOptions);
-        } else {
-            localStorage.removeItem('accessToken');
-            api.dispatch(setAuthenticated(false));
-        }
-    }
-
-    return result;
-};
-
 export const userApi = createApi({
     reducerPath: 'userApi',
-    baseQuery: baseQueryWithReauth,
+    baseQuery: baseQuery,
     tagTypes: [Tags.AUTH],
     endpoints: (builder) => ({
-        [EndpointNames.LOGIN]: builder.mutation<TAuthResponse, TAuth>({
+        [EndpointNames.SIGN_IN]: builder.mutation<TAuthResponse, TAuth>({
             query: (credentials) => ({
                 url: ApiEndpoints.AUTH,
                 method: 'POST',
                 body: credentials,
             }),
-            async onQueryStarted(_args, { queryFulfilled }) {
+            async onQueryStarted(_args, { queryFulfilled, dispatch }) {
                 try {
                     const { meta } = await queryFulfilled;
 
@@ -66,10 +41,10 @@ export const userApi = createApi({
                     )?.response?.headers.get('Authentication-Access');
 
                     if (accessToken) {
-                        localStorage.setItem('accessToken', accessToken);
+                        dispatch(setCredentials(accessToken));
                     }
                 } catch (_error) {
-                    localStorage.removeItem('accessToken');
+                    dispatch(setCredentials(null));
                 }
             },
             invalidatesTags: [Tags.AUTH],
@@ -84,12 +59,23 @@ export const userApi = createApi({
             invalidatesTags: [Tags.AUTH],
         }),
 
-        [EndpointNames.CHECK_AUTH]: builder.query<void, void>({
+        [EndpointNames.CHECK_AUTH]: builder.query<TAuthResponse, void>({
             query: () => ({
                 url: ApiEndpoints.CHECK_AUTH,
                 method: 'GET',
             }),
             providesTags: [Tags.AUTH],
+            async onQueryStarted(_args, { queryFulfilled, dispatch }) {
+                try {
+                    const { data } = await queryFulfilled;
+
+                    if (data) {
+                        dispatch(setAuthenticated(true));
+                    }
+                } catch (_error) {
+                    dispatch(setAuthenticated(false));
+                }
+            },
         }),
 
         [EndpointNames.FORGOT_PASSWORD]: builder.mutation<TAuthResponse, string>({
@@ -101,10 +87,7 @@ export const userApi = createApi({
             invalidatesTags: [Tags.AUTH],
         }),
 
-        [EndpointNames.VERIFY_OTP]: builder.mutation<
-            TAuthResponse,
-            { email: string; otpToken: string }
-        >({
+        [EndpointNames.VERIFY_OTP]: builder.mutation<TAuthResponse, TVerifyUser>({
             query: ({ email, otpToken }) => ({
                 url: ApiEndpoints.VERIFY_OTP,
                 method: 'POST',
@@ -113,43 +96,46 @@ export const userApi = createApi({
             invalidatesTags: [Tags.AUTH],
         }),
 
-        [EndpointNames.RESET_PASSWORD]: builder.mutation<
-            TAuthResponse,
-            { login: string; password: string; passwordConfirm: string }
-        >({
-            query: ({ login, password, passwordConfirm }) => ({
+        [EndpointNames.RESET_PASSWORD]: builder.mutation<TAuthResponse, TRecoverUser>({
+            query: ({ email, login, password, passwordConfirm }) => ({
                 url: ApiEndpoints.RESET_PASSWORD,
                 method: 'POST',
-                body: { login, password, passwordConfirm },
+                body: { email, login, password, passwordConfirm },
             }),
             invalidatesTags: [Tags.AUTH],
         }),
 
-        // refreshTokens: builder.mutation<{ accessToken: string }, void>({
-        //     query: () => ({
-        //         url: ApiEndpoints.REFRESH_TOKEN,
-        //         method: 'POST',
-        //     }),
-        // }),
+        [EndpointNames.REFRESH_TOKEN]: builder.query<TAuthResponse, void>({
+            query: () => ({
+                url: ApiEndpoints.REFRESH_TOKEN,
+                method: 'GET',
+            }),
+            async onQueryStarted(_args, { queryFulfilled, dispatch }) {
+                try {
+                    const { meta } = await queryFulfilled;
 
-        // logout: builder.mutation<void, void>({
-        //     query: () => ({
-        //         url: '/auth/logout',
-        //         method: 'POST',
-        //     }),
-        //     async onQueryStarted(_rgs, { queryFulfilled }) {
-        //         await queryFulfilled;
-        //         localStorage.removeItem('accessToken');
-        //     },
-        // }),
+                    const accessToken = (
+                        meta as { response: { headers: Headers } }
+                    )?.response?.headers.get('Authentication-Access');
+
+                    if (accessToken) {
+                        dispatch(setCredentials(accessToken));
+                    }
+                } catch (_error) {
+                    dispatch(setCredentials(null));
+                }
+            },
+        }),
     }),
 });
 
 export const {
-    useLoginMutation,
+    useSignInMutation,
     useSignUpMutation,
     useCheckAuthQuery,
     useForgotPasswordMutation,
     useVerifyOtpMutation,
     useResetPasswordMutation,
+    useLazyCheckAuthQuery,
+    useLazyRefreshTokenQuery,
 } = userApi;

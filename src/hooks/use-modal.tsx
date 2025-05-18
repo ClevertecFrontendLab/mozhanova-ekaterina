@@ -2,7 +2,7 @@ import { useDisclosure } from '@chakra-ui/react';
 import { useState } from 'react';
 
 import { ResetCredentialsModal } from '~/components/modals/ResetCredentialsModal';
-import { SentEmailModal } from '~/components/modals/SentEmailModal';
+import { SendEmailModal } from '~/components/modals/SendEmailModal';
 import { SignInErrorModal } from '~/components/modals/SignInErrorModal';
 import { SignUpSuccessModal } from '~/components/modals/SignUpSuccessModal';
 import { VerificationCodeModal } from '~/components/modals/VerificationCodeModal';
@@ -11,7 +11,7 @@ import { VerificationFailedModal } from '~/components/modals/VerificationFailedM
 type ModalType =
     | 'signUpSuccess'
     | 'verificationFailed'
-    | 'sentEmail'
+    | 'sendEmail'
     | 'verificationCode'
     | 'resetCredentials'
     | 'signInError';
@@ -32,8 +32,8 @@ export const useModal = () => {
         onOpen();
     };
 
-    const showSentEmail = () => {
-        setModalType('sentEmail');
+    const showSendEmail = () => {
+        setModalType('sendEmail');
         onOpen();
     };
     const showVerificationCode = (email: string) => {
@@ -42,13 +42,15 @@ export const useModal = () => {
         onOpen();
     };
 
-    const showResetCredentials = () => {
+    const showResetCredentials = (email: string) => {
         setModalType('resetCredentials');
+        setModalState(email);
         onOpen();
     };
 
-    const showSignInError = () => {
+    const showSignInError = (userData: { login: string; password: string }) => {
         setModalType('signInError');
+        setModalState(JSON.stringify(userData));
         onOpen();
     };
 
@@ -60,9 +62,9 @@ export const useModal = () => {
             case 'verificationFailed':
                 return <VerificationFailedModal isOpen={isOpen} onClose={onClose} />;
 
-            case 'sentEmail':
+            case 'sendEmail':
                 return (
-                    <SentEmailModal isOpen={isOpen} onClose={onClose} next={showVerificationCode} />
+                    <SendEmailModal isOpen={isOpen} onClose={onClose} next={showVerificationCode} />
                 );
 
             case 'verificationCode':
@@ -76,10 +78,19 @@ export const useModal = () => {
                 );
 
             case 'resetCredentials':
-                return <ResetCredentialsModal isOpen={isOpen} onClose={onClose} />;
+                return (
+                    <ResetCredentialsModal isOpen={isOpen} onClose={onClose} email={modalState} />
+                );
 
             case 'signInError':
-                return <SignInErrorModal isOpen={isOpen} onClose={onClose} />;
+                return (
+                    <SignInErrorModal
+                        userData={JSON.parse(modalState)}
+                        isOpen={isOpen}
+                        onClose={onClose}
+                        next={showSignInError}
+                    />
+                );
         }
     };
 
@@ -88,7 +99,7 @@ export const useModal = () => {
         showSignUpSuccess,
         showSignInError,
         showVerificationFailed,
-        showSentEmail,
+        showSendEmail,
         showVerificationCode,
         showResetCredentials,
         onClose,

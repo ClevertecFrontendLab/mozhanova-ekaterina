@@ -13,9 +13,11 @@ import { UiInput } from '../ui/UiInput';
 import { UiModal } from '../ui/UiModal';
 
 export const ResetCredentialsModal = ({
+    email,
     isOpen,
     onClose,
 }: {
+    email: string;
     isOpen: boolean;
     onClose: () => void;
 }) => {
@@ -39,8 +41,9 @@ export const ResetCredentialsModal = ({
     };
 
     const onSubmit = async (data: { login: string; password: string; passwordConfirm: string }) => {
+        if (!isValid) return;
         try {
-            const result = await reset(data).unwrap();
+            const result = await reset({ ...data, email }).unwrap();
             if (result) {
                 showSuccess('Восстановление данных успешно', '', 15000, 'bottom-left');
                 navigate(AppRoutes.SIGN_IN);
@@ -91,7 +94,6 @@ export const ResetCredentialsModal = ({
                     </VStack>
                     <Grid mt={8}>
                         <UiButton
-                            isDisabled={!isValid}
                             type='submit'
                             variant='solid'
                             text='Зарегистрироваться'

@@ -19,9 +19,9 @@ type Props = {
     onClose: () => void;
 };
 export const UiModal = ({ isOpen, onClose, header, body, footer, image, ...props }: Props) => (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered {...props}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent {...props}>
             {image && (
                 <Image
                     w={{ base: '106px', md: '206px' }}

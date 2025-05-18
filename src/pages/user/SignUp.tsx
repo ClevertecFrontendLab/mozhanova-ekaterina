@@ -11,9 +11,11 @@ import {
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
 
 import { UiButton } from '~/components/ui/UiButton';
 import { UiInput } from '~/components/ui/UiInput';
+import { AppRoutes } from '~/config';
 import { useModalContext } from '~/contexts/modal-context';
 import { useToast } from '~/hooks/use-toast';
 import { useSignUpMutation } from '~/query/user-api';
@@ -23,6 +25,7 @@ import { RegistrationSchema } from '~/validation';
 export const SignUp = () => {
     const { showError } = useToast();
     const { showSignUpSuccess } = useModalContext();
+    const navigate = useNavigate();
 
     const steps = [
         { description: 'Шаг 1. Личная информация' },
@@ -48,6 +51,9 @@ export const SignUp = () => {
         register,
         handleSubmit,
         getValues,
+        watch,
+        setValue,
+        trigger,
         formState: { errors, isValid, dirtyFields },
     } = useForm({
         resolver: yupResolver(RegistrationSchema),
@@ -55,29 +61,40 @@ export const SignUp = () => {
     });
 
     const validFields = allFields.filter((field) => !errors[field] && dirtyFields[field]);
-    const isNextDisabled = !fieldsToValidate.every((field) => validFields.includes(field));
 
     useEffect(() => {
         setActiveStep(validFields.length);
     }, [validFields]);
 
     const handleNext = async () => {
-        setActiveIndex(1);
+        if (fieldsToValidate.every((field) => validFields.includes(field))) {
+            setActiveIndex(1);
+        } else {
+            await trigger(fieldsToValidate);
+        }
     };
 
     const [signIn] = useSignUpMutation();
 
     const onSubmit = async (userData: TFormInputs) => {
+        if (!isValid) return;
         try {
             const result = await signIn(userData).unwrap();
             if (result) {
                 showSignUpSuccess(getValues('email'));
+                navigate(AppRoutes.SIGN_IN);
             }
         } catch (error: unknown) {
             const response = error as TErrorResponse;
-            response.data
-                ? showError(response.data?.message, '', 15000)
-                : showError('Ошибка сервера', 'Попробуйте немного позже', 15000);
+            switch (response.status) {
+                case 400:
+                    showError(response.data?.message, '', 15000, 'bottom-left');
+                    break;
+
+                default:
+                    showError('Ошибка сервера', 'Попробуйте немного позже', 15000, 'bottom-left');
+                    break;
+            }
         }
     };
 
@@ -104,6 +121,8 @@ export const SignUp = () => {
                                     error={errors.name}
                                     {...register('name')}
                                     data-test-id='first-name-input'
+                                    setValue={(value: string) => setValue('name', value)}
+                                    value={watch('name')}
                                 />
                                 <UiInput
                                     label='Ваша фамилия'
@@ -111,6 +130,8 @@ export const SignUp = () => {
                                     error={errors.lastName}
                                     {...register('lastName')}
                                     data-test-id='last-name-input'
+                                    setValue={(value: string) => setValue('lastName', value)}
+                                    value={watch('lastName')}
                                 />
                                 <UiInput
                                     type='email'
@@ -119,6 +140,8 @@ export const SignUp = () => {
                                     error={errors.email}
                                     {...register('email')}
                                     data-test-id='email-input'
+                                    setValue={(value: string) => setValue('email', value)}
+                                    value={watch('email')}
                                 />
                             </VStack>
                         </TabPanel>
@@ -131,6 +154,8 @@ export const SignUp = () => {
                                     error={errors.login}
                                     {...register('login')}
                                     data-test-id='login-input'
+                                    setValue={(value: string) => setValue('login', value)}
+                                    value={watch('login')}
                                 />
                                 <UiInput
                                     type='password'
@@ -158,7 +183,6 @@ export const SignUp = () => {
             <SimpleGrid columns={1} mt={12} spacing={4}>
                 {activeIndex === 0 ? (
                     <UiButton
-                        isDisabled={isNextDisabled}
                         onClick={handleNext}
                         variant='solid'
                         text='Дальше'
@@ -167,7 +191,6 @@ export const SignUp = () => {
                     />
                 ) : (
                     <UiButton
-                        isDisabled={!isValid}
                         type='submit'
                         variant='solid'
                         text='Зарегистрироваться'

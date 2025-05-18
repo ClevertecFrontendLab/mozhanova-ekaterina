@@ -64,6 +64,8 @@ export type TFormInputs = {
 };
 
 export type TNewUser = Omit<TFormInputs, 'confirmPassword'>;
+export type TRecoverUser = Pick<TFormInputs, 'email' | 'login' | 'password' | 'passwordConfirm'>;
+export type TVerifyUser = { email: string; otpToken: string };
 
 export type TAuth = {
     login: string;

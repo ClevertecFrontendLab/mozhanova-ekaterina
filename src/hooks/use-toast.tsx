@@ -20,10 +20,15 @@ export const useToast = () => {
         description?: string,
         duration: number = 3000,
         position: ToastPosition = 'bottom',
-    ) =>
+    ) => {
+        const toastId = `${type}-notification`;
+        if (toast.isActive(toastId)) {
+            return;
+        }
         toast({
             duration: duration,
             position: position,
+            id: toastId,
             render: ({ onClose }) => (
                 <Alert
                     w={{ base: '328px', md: '400px' }}
@@ -44,6 +49,7 @@ export const useToast = () => {
                 </Alert>
             ),
         });
+    };
     return {
         showError: (
             title?: string,

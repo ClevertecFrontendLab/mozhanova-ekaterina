@@ -1,6 +1,7 @@
 import {
     Box,
     Flex,
+    Grid,
     Image,
     Tab,
     TabList,
@@ -9,7 +10,6 @@ import {
     Tabs,
     Text,
     useMediaQuery,
-    VStack,
 } from '@chakra-ui/react';
 import { Outlet, useNavigate } from 'react-router';
 
@@ -31,14 +31,14 @@ export const AuthLayout = () => {
 
     return (
         <Flex position='relative' w='100vw' h='100vh'>
-            <VStack
+            <Grid
                 flexBasis={{ base: '100%', md: '50%' }}
                 bg='linear-gradient(208deg, #eaffc7 0%, #29813f 100%)'
-                align='center'
-                pt={{ base: '72px', sm: '140px', md: '170px' }}
+                justifyContent='center'
             >
                 <Image
-                    mb={{ base: 10, sm: 14, md: 20 }}
+                    alignSelf='center'
+                    mx='auto'
                     w={{ base: '158px', md: '271px' }}
                     src='/src/assets/logo/logo.png'
                 />
@@ -61,14 +61,13 @@ export const AuthLayout = () => {
 
                     <TabPanels>
                         <TabPanel>
-                            <Outlet />
+                            {location.pathname === AppRoutes.SIGN_IN && <Outlet />}
+                            {location.pathname === AppRoutes.RECOVERY && <Outlet />}
                         </TabPanel>
-                        <TabPanel>
-                            <Outlet />
-                        </TabPanel>
+                        <TabPanel>{location.pathname === AppRoutes.SIGN_UP && <Outlet />}</TabPanel>
                     </TabPanels>
                 </Tabs>
-            </VStack>
+            </Grid>
             <Box flexBasis='50%' display={{ base: 'none', md: 'block' }}>
                 <Image w='100%' objectFit='cover' h='100%' src='/src/assets/user/page_bg.png' />
             </Box>

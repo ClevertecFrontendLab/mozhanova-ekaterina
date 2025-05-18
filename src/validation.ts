@@ -2,6 +2,7 @@ import * as yup from 'yup';
 
 export const passwordSchema = yup
     .string()
+    .required('Введите пароль')
     .min(8, 'Не соответствует формату')
     .max(50, 'Максимальная длина 50 символов')
     .matches(/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$&_+.-]{8,}$/, 'Не соответствует формату');
@@ -9,6 +10,7 @@ export const passwordSchema = yup
 export const loginSchema = yup
     .string()
     .trim()
+    .required('Введите логин')
     .min(5, 'Не соответствует формату')
     .max(50, 'Максимальная длина 50 символов')
     .matches(/^[A-Za-z\d!@#$&_+\-.]*$/, 'Не соответствует формату');
@@ -16,8 +18,10 @@ export const loginSchema = yup
 export const emailSchema = yup
     .string()
     .trim()
+    .required('Введите e-mail')
+    .max(50, 'Максимальная длина 50 символов')
     .email('Введите корректный e-mail')
-    .max(50, 'Максимальная длина 50 символов');
+    .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Введите корректный e-mail');
 
 export const RegistrationSchema = yup.object({
     name: yup
@@ -35,8 +39,8 @@ export const RegistrationSchema = yup.object({
         .matches(/^[А-ЯЁ][А-ЯЁа-яё-]*$/, 'Только кириллица А-Я, и "-"')
         .max(50, 'Максимальная длина 50 символов'),
     login: loginSchema.required('Введите логин'),
-    email: emailSchema.required('Введите e-mail'),
-    password: passwordSchema.required('Введите пароль'),
+    email: emailSchema,
+    password: passwordSchema,
     passwordConfirm: yup
         .string()
         .required('Повторите пароль')
@@ -44,8 +48,8 @@ export const RegistrationSchema = yup.object({
 });
 
 export const LoginSchema = yup.object({
-    login: loginSchema.required('Введите логин'),
-    password: passwordSchema.required('Введите пароль'),
+    login: loginSchema,
+    password: passwordSchema,
 });
 
 export const RecoverySchema = yup.object({

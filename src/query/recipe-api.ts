@@ -86,5 +86,3 @@ export const {
     useLazySearchRecipesQuery,
     useSearchRecipesQuery,
 } = recipeApi;
-
-// export default recipeApi.reducer;

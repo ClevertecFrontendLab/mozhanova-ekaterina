@@ -14,7 +14,7 @@ import { UiButton } from '../ui/UiButton';
 import { UiInput } from '../ui/UiInput';
 import { UiModal } from '../ui/UiModal';
 
-export const SentEmailModal = ({
+export const SendEmailModal = ({
     isOpen,
     onClose,
     next,
@@ -35,12 +35,14 @@ export const SentEmailModal = ({
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors, isValid },
     } = useForm({
         resolver: yupResolver(yup.object({ email: emailSchema.required('Введите e-mail') })),
     });
 
     const onSubmit = async (data: { email: string }) => {
+        if (!isValid) return;
         try {
             const result = await forgot(data.email).unwrap();
             if (result) next(data.email);
@@ -59,6 +61,7 @@ export const SentEmailModal = ({
                     showError('Ошибка сервера', 'Попробуйте немного позже', 15000);
                     break;
             }
+            reset();
         }
     };
 
@@ -88,7 +91,6 @@ export const SentEmailModal = ({
 
                         <Grid>
                             <UiButton
-                                isDisabled={!isValid}
                                 type='submit'
                                 variant='solid'
                                 text='Получить код'
@@ -100,7 +102,7 @@ export const SentEmailModal = ({
                 </>
             }
             footer='Не пришло письмо? Проверьте папку Спам.'
-            data-test-id='sent-email-modal'
+            data-test-id='send-email-modal'
         />
     );
 };

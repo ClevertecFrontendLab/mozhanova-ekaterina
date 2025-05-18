@@ -78,6 +78,7 @@ export const UiButton = ({
         />
     ) : (
         <Button
+            zIndex={2}
             size={size}
             bg={variants[variant].bg}
             borderColor={variants[variant].borderColor}
