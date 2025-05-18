@@ -38,6 +38,7 @@ export const Navbar = ({
 
             {isMenuOpen && (
                 <Flex
+                    pb='185px'
                     data-test-id='nav'
                     display={isMenuOpen ? 'flex' : 'none'}
                     position={{
