@@ -16,6 +16,7 @@ export const Slider = () => {
         sortBy: 'createdAt',
     });
     if (!data?.data) return null;
+    if (!data?.data) return null;
 
     return (
         <Flex
