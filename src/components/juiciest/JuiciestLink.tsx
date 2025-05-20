@@ -17,7 +17,7 @@ const variants = {
 };
 
 export const JuiciestLink = memo(({ variant = 'default' }: { variant?: keyof typeof variants }) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
 
     const isVisible =
         (isLargerThanMD && variant === 'default') || (!isLargerThanMD && variant === 'mobile')

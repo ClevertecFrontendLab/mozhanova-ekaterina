@@ -1,7 +1,6 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import { categoryApi } from '~/query/category-api';
-// import { apiSlice } from '~/query/create-api';
 import { recipeApi } from '~/query/recipe-api';
 import { userApi } from '~/query/user-api';
 
@@ -15,7 +14,6 @@ const rootReducer = combineReducers({
     [appSlice.name]: appReducer,
     [recipesSlice.name]: recipesSlice.reducer,
     [categorySlice.name]: categorySlice.reducer,
-    // [apiSlice.reducerPath]: apiSlice.reducer,
     [recipeApi.reducerPath]: recipeApi.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,
     [userSlice.name]: userSlice.reducer,
@@ -30,7 +28,6 @@ export const store = configureStore({
             recipeApi.middleware,
             categoryApi.middleware,
             userApi.middleware,
-            // apiSlice.middleware,
         ),
 
     devTools: !isProduction,

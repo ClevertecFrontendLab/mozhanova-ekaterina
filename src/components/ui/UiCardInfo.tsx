@@ -18,7 +18,7 @@ export const UiCardInfo = ({
     categoryBgColor,
     alignItems = 'flex-end',
 }: Props) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
 
     return (
         <Flex w='100%' justifyContent='space-between' alignItems={alignItems}>
@@ -33,6 +33,7 @@ export const UiCardInfo = ({
                 left='8px'
             >
                 {categories &&
+                    Array.isArray(categories) &&
                     (isLargerThanMD
                         ? categories.map(
                               (id) =>

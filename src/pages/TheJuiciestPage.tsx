@@ -33,10 +33,8 @@ export const TheJuiciestPage = () => {
     useEffect(() => {
         if (currentData?.data) {
             if (pagination.currentPage === 1) {
-                // Первая страница - полная замена данных
                 setAllRecipes(currentData.data);
             } else {
-                // Последующие страницы - добавление данных
                 setAllRecipes((prev) => [...prev, ...currentData.data]);
             }
         }

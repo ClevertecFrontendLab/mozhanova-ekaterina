@@ -41,17 +41,14 @@ import {
     setMeatFilter,
     setSubCategoryFilter,
 } from '~/store/recipe-slice';
-import { selectFilters, selectSubCategoriesByTitles } from '~/store/selectors';
-import { TCategory } from '~/types';
+import { selectCategories, selectFilters, selectSubCategoriesByTitles } from '~/store/selectors';
 
 import { SelectOptions } from '../SelectOptions';
 
 export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
     const dispatch = useDispatch();
     const filters = useSelector(selectFilters);
-    const categories = useSelector(
-        (state: { category: { categories: TCategory[] } }) => state.category.categories,
-    ).filter((category) => !category.rootCategoryId);
+    const categories = useSelector(selectCategories);
 
     const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
     const [selectedAllergens, setSelectedAllergens] = useState<string[]>([]);

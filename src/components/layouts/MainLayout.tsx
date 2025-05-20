@@ -8,8 +8,8 @@ import { Navbar } from '../Navbar';
 import { Sidebar } from '../Sidebar';
 
 export const MainLayout = () => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
-    const [menuOpen, setMenuOpen] = useState<boolean>(true);
+    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)', { ssr: false });
+    const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
     useEffect(() => setMenuOpen(isLargerThanMD), [isLargerThanMD]);
 

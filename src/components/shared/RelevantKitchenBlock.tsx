@@ -50,7 +50,9 @@ export const RelevantKitchenBlock = () => {
         if (isError) {
             showError('Ошибка сервера', 'Попробуйте поискать снова попозже');
         }
-    }, [isError, showError]);
+    }, [isError]);
+
+    if (!data?.data) return null;
 
     const relevantLeft =
         data?.data.slice(0, 2).map((recipe) => <UiCardSimple key={recipe._id} data={recipe} />) ||
