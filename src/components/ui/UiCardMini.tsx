@@ -16,7 +16,10 @@ export const UiCardMini = ({ data: { title, categoriesIds, _id } }: { data: TRec
         selectRecipeSubCategories(state, categoriesIds),
     );
     const rootCategoriesIds = useMemo(
-        () => subCategories.map((category) => category.rootCategoryId!),
+        () =>
+            (Array.isArray(subCategories) &&
+                subCategories?.map((category) => category.rootCategoryId!)) ||
+            [],
         [subCategories],
     );
 

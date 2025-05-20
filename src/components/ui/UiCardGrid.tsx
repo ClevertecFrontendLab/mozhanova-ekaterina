@@ -6,7 +6,7 @@ import { TRecipe } from '~/types';
 import { UiCard } from '../ui/UiCard';
 
 export const UiCardGrid = memo(({ data }: { data: TRecipe[] | undefined }) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
 
     if (!data) return null;
 
@@ -22,7 +22,7 @@ export const UiCardGrid = memo(({ data }: { data: TRecipe[] | undefined }) => {
                 lg: 2,
             }}
         >
-            {data.map((recipe, i) => (
+            {data?.map((recipe, i) => (
                 <UiCard
                     data-test-id={`food-card-${i}`}
                     key={recipe._id}

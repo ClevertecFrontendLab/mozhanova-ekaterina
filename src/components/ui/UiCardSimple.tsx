@@ -21,7 +21,10 @@ export const UiCardSimple = ({
         selectRecipeSubCategories(state, categoriesIds),
     );
     const rootCategoriesIds = useMemo(
-        () => subCategories.map((category) => category.rootCategoryId!),
+        () =>
+            (Array.isArray(subCategories) &&
+                subCategories.map((category) => category.rootCategoryId!)) ||
+            [],
         [subCategories],
     );
 
@@ -75,7 +78,7 @@ export const UiCardSimple = ({
                         </Text>
                     </Box>
                     <Flex wrap='wrap' gap={2}>
-                        {rootCategories.map((category) => (
+                        {rootCategories?.map((category) => (
                             <UiCardBadge
                                 key={`badge-${category?._id}`}
                                 color='secondary.100'

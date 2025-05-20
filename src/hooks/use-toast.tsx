@@ -29,6 +29,8 @@ export const useToast = () => {
             duration: duration,
             position: position,
             id: toastId,
+            containerStyle: { transition: 'none' },
+
             render: ({ onClose }) => (
                 <Alert
                     w={{ base: '328px', md: '400px' }}

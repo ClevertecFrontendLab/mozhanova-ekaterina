@@ -7,13 +7,22 @@ import { ApplicationState } from '~/store/configure-store';
 import { selectCategories, selectSubcategories } from '~/store/selectors';
 import { defineBreadcrumbLabel } from '~/utils/breadcrumb-label';
 
-export const Breadcrumbs = ({ setMenuOpen }: { setMenuOpen: (value: boolean) => void }) => {
+export const Breadcrumbs = ({
+    setMenuOpen,
+    variant = 'default',
+}: {
+    setMenuOpen: (value: boolean) => void;
+    variant?: 'mobile' | 'default';
+}) => {
     const location = useLocation();
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
-    const categories = useSelector(selectCategories);
-    const subCategories = useSelector(selectSubcategories);
+    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)', { ssr: false });
+    const categories = useSelector(selectCategories) || [];
+    const subCategories = useSelector(selectSubcategories) || [];
     const currentRecipe = useSelector((state: ApplicationState) => state.recipe.current);
     const pathnames = location.pathname.split('/').filter((x) => x);
+    const isVisible = isLargerThanMD || variant === 'mobile';
+
+    if (!isVisible) return null;
 
     return (
         <Breadcrumb

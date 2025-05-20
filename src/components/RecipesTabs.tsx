@@ -26,7 +26,7 @@ export const RecipesTabs = () => {
             return (
                 currentCategory.subCategories?.find(
                     (category) => category.category === subCategory,
-                ) ?? null
+                ) || null
             );
     }, [currentCategory, subCategory]);
 
@@ -87,6 +87,7 @@ export const RecipesTabs = () => {
                 }}
             >
                 {currentCategory &&
+                    Array.isArray(currentCategory.subCategories) &&
                     currentCategory.subCategories.map((category, i) => (
                         <Tab
                             data-test-id={`tab-${category.category}-${i}`}
@@ -99,6 +100,7 @@ export const RecipesTabs = () => {
             </TabList>
             <TabPanels>
                 {currentCategory &&
+                    Array.isArray(currentCategory.subCategories) &&
                     currentCategory.subCategories.map((category) => (
                         <TabPanel key={category._id}>
                             {category.category === subCategory && (

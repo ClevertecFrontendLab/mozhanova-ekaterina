@@ -1,6 +1,7 @@
 import { Box, Flex, useMediaQuery } from '@chakra-ui/react';
 
 import { useBodyScrollLock } from '~/hooks/use-scroll';
+import { useGetCategoriesQuery } from '~/query/category-api';
 
 import { Footer } from './footer/Footer';
 import { Navigation } from './nav/Navigation';
@@ -12,8 +13,10 @@ export const Navbar = ({
     isMenuOpen: boolean;
     setMenuOpen: (value: boolean) => void;
 }) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
+    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)', { ssr: false });
     useBodyScrollLock(isMenuOpen && !isLargerThanMD);
+    const { data } = useGetCategoriesQuery();
+    const categories = Array.isArray(data) && data.filter((category) => category.subCategories);
 
     return (
         <>
@@ -82,7 +85,7 @@ export const Navbar = ({
                         md: 0,
                     }}
                 >
-                    <Navigation setMenuOpen={setMenuOpen} />
+                    <Navigation categories={categories || []} setMenuOpen={setMenuOpen} />
                     {isLargerThanMD && <Footer />}
                 </Flex>
             )}

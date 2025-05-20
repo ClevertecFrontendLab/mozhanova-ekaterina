@@ -1,15 +1,19 @@
 import { Box, Flex, useMediaQuery } from '@chakra-ui/react';
 
-import { useGetCategoriesQuery } from '~/query/category-api';
+import { TCategory } from '~/types';
 
 import { Footer } from '../footer/Footer';
 import { Breadcrumbs } from '../header/Breadcrumbs';
 import { NavigationItem } from './NavigationItem';
 
-export const Navigation = ({ setMenuOpen }: { setMenuOpen: (value: boolean) => void }) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
-    const { data } = useGetCategoriesQuery();
-    const categories = data?.filter((category) => category.subCategories) || [];
+export const Navigation = ({
+    setMenuOpen,
+    categories,
+}: {
+    setMenuOpen: (value: boolean) => void;
+    categories: TCategory[];
+}) => {
+    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)', { ssr: false });
 
     return (
         <Flex
@@ -34,10 +38,11 @@ export const Navigation = ({ setMenuOpen }: { setMenuOpen: (value: boolean) => v
             }}
             gap={3}
         >
-            {!isLargerThanMD && <Breadcrumbs setMenuOpen={setMenuOpen} />}
+            {!isLargerThanMD && <Breadcrumbs variant='mobile' setMenuOpen={setMenuOpen} />}
             <Box as='nav' pl='10px' pt='10px'>
                 <ul>
                     {categories &&
+                        Array.isArray(categories) &&
                         categories.map((category) => (
                             <NavigationItem
                                 setMenuOpen={setMenuOpen}

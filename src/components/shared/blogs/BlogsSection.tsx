@@ -5,7 +5,7 @@ import { UiButton } from '../../ui/UiButton';
 import { BlogCard } from './BlogCard';
 
 export const BlogsSection = () => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
 
     return (
         <Flex

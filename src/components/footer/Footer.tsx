@@ -1,9 +1,9 @@
 import { Flex, Text, useMediaQuery } from '@chakra-ui/react';
 
-import { UiLogoutButton } from '../ui/UiLogoutButton';
+import { LogoutButton } from './LogoutButton';
 
 export const Footer = () => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
+    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)', { ssr: false });
 
     return (
         <Flex
@@ -22,7 +22,7 @@ export const Footer = () => {
             <Text fontSize='sm' noOfLines={3} color='text.secondary'>
                 Все права защищены, ученический файл, ©Клевер Технолоджи, 2025
             </Text>
-            {isLargerThanMD && <UiLogoutButton />}
+            {isLargerThanMD && <LogoutButton />}
         </Flex>
     );
 };

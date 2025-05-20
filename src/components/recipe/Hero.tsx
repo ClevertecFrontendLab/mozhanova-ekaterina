@@ -16,9 +16,13 @@ import { UiCardStats } from '../ui/UiCardStats';
 export const Hero = ({ recipe }: { recipe: TRecipe }) => {
     const [isLargerThanLG] = useMediaQuery('(min-width: 1441px)');
 
-    const rootCategoryIds = useSelector((state: ApplicationState) =>
+    const rootCategories = useSelector((state: ApplicationState) =>
         selectRecipeCategories(state, recipe.categoriesIds),
-    ).map((category) => category?._id ?? '');
+    );
+
+    const rootCategoryIds =
+        (Array.isArray(rootCategories) && rootCategories.map((category) => category?._id ?? '')) ||
+        [];
 
     return (
         <Card
@@ -57,9 +61,11 @@ export const Hero = ({ recipe }: { recipe: TRecipe }) => {
                             md: 4,
                         }}
                     >
-                        {rootCategoryIds.map((item) => (
-                            <UiCardBadge color='secondary.100' key={item} categoryId={item} />
-                        ))}
+                        {rootCategoryIds &&
+                            Array.isArray(rootCategoryIds) &&
+                            rootCategoryIds.map((item) => (
+                                <UiCardBadge color='secondary.100' key={item} categoryId={item} />
+                            ))}
                     </Flex>
                     <UiCardStats
                         size={isLargerThanLG ? 'md' : 'sm'}

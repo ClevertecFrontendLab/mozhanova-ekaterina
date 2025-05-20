@@ -17,7 +17,7 @@ import { AppRoutes } from '~/config';
 
 export const AuthLayout = () => {
     const navigate = useNavigate();
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
     const currentIndex =
         location.pathname === AppRoutes.SIGN_IN
             ? 0

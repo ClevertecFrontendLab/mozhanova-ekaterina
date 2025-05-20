@@ -446,7 +446,7 @@ const theme = extendTheme({
     breakpoints: {
         base: '0px',
         sm: '361px',
-        md: '769px',
+        md: '1001px',
         lg: '1441px',
         xl: '1920px',
     },

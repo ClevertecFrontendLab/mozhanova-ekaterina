@@ -35,7 +35,7 @@ export const SearchForm = ({
     initiateSearch?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
     const filters = useSelector(selectFilters);
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
     const dispatch = useDispatch();
     const [value, setValue] = useState('');
     const [errorMessage, setErrorMessage] = useState('');

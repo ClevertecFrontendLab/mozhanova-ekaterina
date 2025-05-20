@@ -27,13 +27,16 @@ type Props = {
 export const SliderCard = ({
     data: { title, description, image, categoriesIds, likes, bookmarks, _id },
 }: Props) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
 
     const subCategories = useSelector((state: ApplicationState) =>
         selectRecipeSubCategories(state, categoriesIds),
     );
     const rootCategoriesIds = useMemo(
-        () => subCategories.map((category) => category.rootCategoryId!),
+        () =>
+            (Array.isArray(subCategories) &&
+                subCategories?.map((category) => category.rootCategoryId!)) ||
+            [],
         [subCategories],
     );
 
@@ -109,7 +112,7 @@ export const SliderCard = ({
                     >
                         <UiCardInfo
                             categoryBgColor='primary.100'
-                            categories={rootCategories.map((category) => category?._id)}
+                            categories={rootCategories?.map((category) => category?._id) || []}
                             likes={likes}
                             bookmarks={bookmarks}
                         />

@@ -52,7 +52,10 @@ export const UiCard = ({
     );
 
     const rootCategoriesIds = useMemo(
-        () => subCategories.map((category) => category.rootCategoryId!),
+        () =>
+            (Array.isArray(subCategories) &&
+                subCategories?.map((category) => category.rootCategoryId!)) ||
+            [],
         [subCategories],
     );
 
@@ -60,7 +63,7 @@ export const UiCard = ({
         selectRecipeCategories(state, rootCategoriesIds),
     );
 
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
+    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
 
     const categoryRoute = category || (rootCategories[0]?.category ?? '');
     const subCategoryRoute = subCategory || (subCategories[0]?.category ?? '');
@@ -121,7 +124,7 @@ export const UiCard = ({
                     >
                         <UiCardInfo
                             categoryBgColor='secondary.100'
-                            categories={rootCategories.map((category) => category?._id)}
+                            categories={rootCategories?.map((category) => category?._id)}
                             likes={likes}
                             bookmarks={bookmarks}
                             alignItems='flex-start'

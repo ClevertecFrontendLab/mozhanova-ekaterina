@@ -15,6 +15,7 @@ export const Slider = () => {
         limit: 10,
         sortBy: 'createdAt',
     });
+    if (!data?.data) return null;
 
     return (
         <Flex
@@ -40,6 +41,7 @@ export const Slider = () => {
                 <NavigationButtons />
 
                 <Swiper
+                    speed={50}
                     data-test-id='carousel'
                     modules={[Navigation]}
                     navigation={{
@@ -50,7 +52,7 @@ export const Slider = () => {
                     slidesPerView={4}
                     breakpoints={{
                         0: { slidesPerView: 2.1 },
-                        768: { slidesPerView: 4.5 },
+                        361: { slidesPerView: 4.5 },
                         1440: { slidesPerView: 3.1 },
                         1920: { slidesPerView: 4 },
                     }}

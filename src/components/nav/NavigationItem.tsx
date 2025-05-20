@@ -13,13 +13,15 @@ type Props = {
 };
 
 export const NavigationItem = ({ category, setMenuOpen, ...props }: Props) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
+    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)', { ssr: false });
     const [isOpen, setIsOpen] = useState(false);
     const { category: currentCategory, subCategory: currentSubCategory } = useParams();
 
     useEffect(() => {
         currentCategory === category.category ? setIsOpen(true) : setIsOpen(false);
     }, [currentCategory, category.category]);
+
+    if (!category) return null;
 
     return (
         <Box
@@ -69,49 +71,51 @@ export const NavigationItem = ({ category, setMenuOpen, ...props }: Props) => {
             </Flex>
 
             <Box role='group' as='ul' paddingLeft='33px' display={isOpen ? 'block' : 'none'}>
-                {category.subCategories.map((subCategory) => (
-                    <Flex
-                        data-id={subCategory._id}
-                        key={`${category._id}-${subCategory._id}`}
-                        as='li'
-                        padding='6px 0'
-                        cursor='pointer'
-                        whiteSpace='nowrap'
-                        _hover={{
-                            fontWeight: '700',
-                            '& .divider': { width: '8px', transform: 'translateX(-100%)' },
-                        }}
-                        aria-current={
-                            subCategory.category === currentSubCategory ? 'page' : undefined
-                        }
-                        _activeLink={{
-                            fontWeight: '700',
-                            '& .divider': { width: '8px', transform: 'translateX(-100%)' },
-                        }}
-                        data-test-id={
-                            subCategory.category === currentSubCategory &&
-                            `${subCategory.category}-active`
-                        }
-                    >
-                        <Box
-                            className='divider'
-                            marginRight='12px'
-                            width='1px'
-                            height='24px'
-                            bg='primary.200'
-                            transition='all 0.3s ease-in-out'
-                        ></Box>
-                        <Link
-                            onClick={() => !isLargerThanMD && setMenuOpen(false)}
-                            to={routeHelpers.getSubCategoryPath(
-                                category.category,
-                                subCategory.category,
-                            )}
+                {category.subCategories &&
+                    Array.isArray(category.subCategories) &&
+                    category.subCategories.map((subCategory) => (
+                        <Flex
+                            data-id={subCategory._id}
+                            key={`${category._id}-${subCategory._id}`}
+                            as='li'
+                            padding='6px 0'
+                            cursor='pointer'
+                            whiteSpace='nowrap'
+                            _hover={{
+                                fontWeight: '700',
+                                '& .divider': { width: '8px', transform: 'translateX(-100%)' },
+                            }}
+                            aria-current={
+                                subCategory.category === currentSubCategory ? 'page' : undefined
+                            }
+                            _activeLink={{
+                                fontWeight: '700',
+                                '& .divider': { width: '8px', transform: 'translateX(-100%)' },
+                            }}
+                            data-test-id={
+                                subCategory.category === currentSubCategory &&
+                                `${subCategory.category}-active`
+                            }
                         >
-                            {subCategory.title}
-                        </Link>
-                    </Flex>
-                ))}
+                            <Box
+                                className='divider'
+                                marginRight='12px'
+                                width='1px'
+                                height='24px'
+                                bg='primary.200'
+                                transition='all 0.3s ease-in-out'
+                            ></Box>
+                            <Link
+                                onClick={() => !isLargerThanMD && setMenuOpen(false)}
+                                to={routeHelpers.getSubCategoryPath(
+                                    category.category,
+                                    subCategory.category,
+                                )}
+                            >
+                                {subCategory.title}
+                            </Link>
+                        </Flex>
+                    ))}
             </Box>
         </Box>
     );

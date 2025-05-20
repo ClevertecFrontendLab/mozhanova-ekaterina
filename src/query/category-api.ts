@@ -20,7 +20,7 @@ export const categoryApi = createApi({
                 try {
                     const { data } = await queryFulfilled;
                     dispatch(setCategories(data));
-                    localStorage.setItem('navCache', JSON.stringify(data));
+                    // localStorage.setItem('navCache', JSON.stringify(data));
                 } catch (_) {
                     const cachedData = localStorage.getItem('navCache');
                     if (cachedData) {
