@@ -11,19 +11,17 @@ import {
     Text,
     useMediaQuery,
 } from '@chakra-ui/react';
-import { Outlet, useNavigate } from 'react-router';
+import { Outlet, useLocation, useNavigate } from 'react-router';
 
+import logo from '~/assets/logo/logo.png';
+import bg from '~/assets/user/page_bg.png';
 import { AppRoutes } from '~/config';
 
 export const AuthLayout = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
-    const currentIndex =
-        location.pathname === AppRoutes.SIGN_IN
-            ? 0
-            : location.pathname === AppRoutes.SIGN_UP
-              ? 1
-              : 0;
+    const currentIndex = location.pathname.endsWith(AppRoutes.SIGN_IN) ? 0 : 1;
 
     const handleTabChange = (index: number) => {
         navigate(index === 0 ? AppRoutes.SIGN_IN : AppRoutes.SIGN_UP);
@@ -36,12 +34,7 @@ export const AuthLayout = () => {
                 bg='linear-gradient(208deg, #eaffc7 0%, #29813f 100%)'
                 justifyContent='center'
             >
-                <Image
-                    alignSelf='center'
-                    mx='auto'
-                    w={{ base: '158px', md: '271px' }}
-                    src='/src/assets/logo/logo.png'
-                />
+                <Image alignSelf='center' mx='auto' w={{ base: '158px', md: '271px' }} src={logo} />
                 <Tabs
                     index={currentIndex}
                     align={isLargerThanMD ? 'start' : 'center'}
@@ -69,7 +62,7 @@ export const AuthLayout = () => {
                 </Tabs>
             </Grid>
             <Box flexBasis='50%' display={{ base: 'none', md: 'block' }}>
-                <Image w='100%' objectFit='cover' h='100%' src='/src/assets/user/page_bg.png' />
+                <Image w='100%' objectFit='cover' h='100%' src={bg} />
             </Box>
 
             <Flex

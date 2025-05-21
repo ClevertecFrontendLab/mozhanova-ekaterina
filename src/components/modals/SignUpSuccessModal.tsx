@@ -1,5 +1,7 @@
 import { Link } from '@chakra-ui/react';
 
+import image from '~/assets/modals/2.png';
+
 import { UiModal } from '../ui/UiModal';
 
 export const SignUpSuccessModal = ({
@@ -13,7 +15,7 @@ export const SignUpSuccessModal = ({
 }) => (
     <UiModal
         data-test-id='sign-up-success-modal'
-        image='/src/assets/modals/2.png'
+        image={image}
         isOpen={isOpen}
         onClose={onClose}
         header='Остался последний шаг. Нужно верифицировать ваш e-mail'

@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
+import image from '~/assets/modals/4.png';
 import { AppRoutes } from '~/config';
 import { useToast } from '~/hooks/use-toast';
 import { useVerifyOtpMutation } from '~/query/user-api';
@@ -70,7 +71,7 @@ export const VerificationCodeModal = ({
 
     return (
         <UiModal
-            image='/src/assets/modals/4.png'
+            image={image}
             isOpen={isOpen}
             onClose={handleClose}
             header='Код отправлен'

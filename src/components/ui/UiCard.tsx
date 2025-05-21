@@ -14,6 +14,7 @@ import { JSX, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router';
 
+import avatar from '~/assets/blog_avatar_1.png';
 import { API_IMAGE_URL } from '~/config';
 import { ApplicationState } from '~/store/configure-store';
 import { RecipesState } from '~/store/recipe-slice';
@@ -104,12 +105,7 @@ export const UiCard = ({
                     fontSize='14px'
                     borderRadius='4px'
                 >
-                    <img
-                        width='16px'
-                        height='16px'
-                        src='/src/assets/blog_avatar_1.png'
-                        alt='avatar'
-                    />
+                    <img width='16px' height='16px' src={avatar} alt='avatar' />
                     {recommendation} рекомендует
                 </Flex>
             )}

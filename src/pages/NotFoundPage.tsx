@@ -1,6 +1,8 @@
 import { Box, Flex, Image, Text } from '@chakra-ui/react';
 import { Link } from 'react-router';
 
+import image from '~/assets/ui/404.png';
+
 export const NotFoundPage = () => (
     <Box textAlign='center'>
         <Flex
@@ -13,7 +15,7 @@ export const NotFoundPage = () => (
             }}
         >
             <Image
-                src='/src/assets/ui/404.png'
+                src={image}
                 w={{ base: '108px', md: '206px' }}
                 h={{ base: '108px', md: '206px' }}
             />

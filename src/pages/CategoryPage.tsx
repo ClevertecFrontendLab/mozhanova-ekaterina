@@ -10,6 +10,7 @@ import { useGetCategoriesQuery } from '~/query/category-api';
 import { ApplicationState } from '~/store/configure-store';
 import { setCategoryFilter, setSubCategoryFilter } from '~/store/recipe-slice';
 import { selectCurrentRootCategory } from '~/store/selectors';
+import { routeHelpers } from '~/utils/get-routes';
 
 export const CategoryPage = () => {
     const params = useParams();
@@ -17,6 +18,7 @@ export const CategoryPage = () => {
     const dispatch = useDispatch();
 
     const { category, subCategory } = params;
+    console.log(category, subCategory);
 
     const { currentData: categoryData, isLoading, isError } = useGetCategoriesQuery();
 
@@ -50,7 +52,12 @@ export const CategoryPage = () => {
         }
 
         if (currentCategory && !subCategory)
-            navigate(`/${currentCategory.category}/${currentCategory.subCategories[0].category}`);
+            navigate(
+                routeHelpers.getSubCategoryPath(
+                    currentCategory.category,
+                    currentCategory.subCategories[0].category,
+                ),
+            );
     }, [
         navigate,
         categoryData,

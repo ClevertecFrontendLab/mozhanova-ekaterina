@@ -1,5 +1,7 @@
 import { Flex, Heading, Image, Text } from '@chakra-ui/react';
 
+import avatar from '~/assets/ava_1.png';
+
 import { PeopleOutlineIcon } from '../ui/icons/PeopleOutlineIcon';
 import { PeoplePlusIcon } from '../ui/icons/PeoplePlusIcon';
 import { UiButton } from '../ui/UiButton';
@@ -13,7 +15,7 @@ export const AuthorInfo = () => (
         position='relative'
         mb={{ base: 10, md: 8 }}
     >
-        <Image w='96px' h='96px' borderRadius='50%' src='/src/assets/ava_1.png' alt='avatar' />
+        <Image w='96px' h='96px' borderRadius='50%' src={avatar} alt='avatar' />
         <Flex direction='column' grow={1}>
             <Heading mt={2} fontSize='lg' fontWeight={600}>
                 Сергей Разумов

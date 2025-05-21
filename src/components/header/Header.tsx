@@ -50,7 +50,7 @@ export const Header = ({
 
             <Breadcrumbs setMenuOpen={setMenuOpen} />
             <ProfileInfo />
-
+            <LogInButton />
             <Flex
                 display={!isLargerThanMD ? 'flex' : 'none'}
                 justify='flex-end'
@@ -59,7 +59,6 @@ export const Header = ({
             >
                 <ProfileNotification variant='mobile' isMenuOpen={isMenuOpen} />
                 <Flex gap={6} alignItems='center' justifyContent='center'>
-                    <LogInButton />
                     <CloseMenuButton isMenuOpen={isMenuOpen} onClick={toggleMenu} />
                     <HamburgerButton isMenuOpen={isMenuOpen} onClick={toggleMenu} />
                 </Flex>

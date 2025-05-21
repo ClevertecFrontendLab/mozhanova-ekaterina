@@ -2,6 +2,7 @@ import { Box, Flex, Heading, Spinner, Text, useDisclosure } from '@chakra-ui/rea
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import loader from '~/assets/ui/loader_bg.png';
 import { AppRoutes } from '~/config';
 import { useLazyRecipesSearch } from '~/store/hooks';
 
@@ -115,7 +116,7 @@ function Loader() {
             data-test-id='loader-search-block'
             minW='134px'
             h='134px'
-            bgImage='/src/assets/ui/loader_bg.png'
+            bgImage={loader}
             bgSize='cover'
             alignItems='center'
             justifyContent='center'

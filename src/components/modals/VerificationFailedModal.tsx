@@ -1,5 +1,7 @@
 import { Link } from '@chakra-ui/react';
 
+import image from '~/assets/modals/1.png';
+
 import { UiModal } from '../ui/UiModal';
 
 export const VerificationFailedModal = ({
@@ -10,7 +12,7 @@ export const VerificationFailedModal = ({
     onClose: () => void;
 }) => (
     <UiModal
-        image='/src/assets/modals/1.png'
+        image={image}
         isOpen={isOpen}
         onClose={onClose}
         header='Упс! Что-то пошло не так'

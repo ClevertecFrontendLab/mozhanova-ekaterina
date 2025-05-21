@@ -1,6 +1,7 @@
 import { Grid } from '@chakra-ui/react';
 import { useNavigate } from 'react-router';
 
+import image from '~/assets/modals/3.png';
 import { AppRoutes } from '~/config';
 import { useToast } from '~/hooks/use-toast';
 import { useSignInMutation } from '~/query/user-api';
@@ -58,7 +59,7 @@ export const SignInErrorModal = ({
     };
     return (
         <UiModal
-            image='/src/assets/modals/3.png'
+            image={image}
             isOpen={isOpen}
             onClose={onClose}
             header='Вход не выполнен'

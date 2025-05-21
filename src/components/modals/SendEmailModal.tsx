@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import * as yup from 'yup';
 
+import image from '~/assets/modals/3.png';
 import { AppRoutes } from '~/config';
 import { useToast } from '~/hooks/use-toast';
 import { useForgotPasswordMutation } from '~/query/user-api';
@@ -67,7 +68,7 @@ export const SendEmailModal = ({
 
     return (
         <UiModal
-            image='/src/assets/modals/3.png'
+            image={image}
             isOpen={isOpen}
             onClose={handleClose}
             header='Восстановление входа'

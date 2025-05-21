@@ -1,5 +1,6 @@
 import { Box, Flex, Spinner } from '@chakra-ui/react';
 
+import bg from '~/assets/ui/loader_bg.png';
 import { useAppSelector } from '~/store/hooks';
 import { selectGlobalLoading } from '~/store/selectors';
 
@@ -34,7 +35,7 @@ export const GlobalLoader = () => {
                     base: '134px',
                     sm: '206px',
                 }}
-                bgImage='/src/assets/ui/loader_bg.png'
+                bgImage={bg}
                 bgSize='cover'
                 alignItems='center'
                 justifyContent='center'

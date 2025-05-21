@@ -2,6 +2,7 @@ import { EditIcon } from '@chakra-ui/icons';
 import { Grid, Image } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router';
 
+import icon from '~/assets/ava.png';
 import { HomeIcon } from '~/components/ui/icons/HomeIcon';
 import { UiIconButton } from '~/components/ui/UiIconButton';
 
@@ -43,7 +44,7 @@ export const FooterMobile = () => {
             </Link>
             <Link to='/'>
                 <UiIconButton
-                    icon={<Image src='/src/assets/ava.png' w='40px' h='40px' borderRadius='50%' />}
+                    icon={<Image src={icon} w='40px' h='40px' borderRadius='50%' />}
                     text='Мой профиль'
                 />
             </Link>

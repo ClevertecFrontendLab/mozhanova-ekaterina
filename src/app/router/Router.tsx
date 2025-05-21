@@ -27,13 +27,13 @@ export const Router = () => (
         >
             <Route path={AppRoutes.HOME} element={<Home />} />
             <Route path={AppRoutes.SEARCH} element={<SearchPage />} />
+            <Route path={AppRoutes.RECIPE} element={<RecipePage />} />
+            <Route path={AppRoutes.THE_JUICIEST} element={<TheJuiciestPage />} />
 
             <Route path={AppRoutes.CATEGORY_WILDCARD} element={<CategoryPage />}>
                 <Route path={AppRoutes.SUB_CATEGORY} element={<RecipesTabs />} />
             </Route>
 
-            <Route path={AppRoutes.RECIPE} element={<RecipePage />} />
-            <Route path={AppRoutes.THE_JUICIEST} element={<TheJuiciestPage />} />
             <Route path={AppRoutes.NOT_FOUND} element={<NotFoundPage />} />
         </Route>
 

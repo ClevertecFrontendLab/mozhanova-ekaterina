@@ -1,6 +1,9 @@
 import { Box, Image, useMediaQuery } from '@chakra-ui/react';
 import { Link } from 'react-router';
 
+import logo from '~/assets/logo/logo.png';
+import logo_mobile from '~/assets/logo/mobile_logo.png';
+
 export const Logo = () => {
     const [isLargerThanSM] = useMediaQuery('(min-width: 361px)');
 
@@ -13,11 +16,7 @@ export const Logo = () => {
                         sm: '135px',
                     }}
                     h='32px'
-                    src={
-                        isLargerThanSM
-                            ? '/src/assets/logo/logo.png'
-                            : '/src/assets/logo/mobile_logo.png'
-                    }
+                    src={isLargerThanSM ? logo : logo_mobile}
                     alt='logo'
                 />
             </Link>

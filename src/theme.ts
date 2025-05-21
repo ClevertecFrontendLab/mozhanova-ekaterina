@@ -407,7 +407,7 @@ const theme = extendTheme({
                     position: 'absolute',
                     left: 0,
                     transition: 'all 0.3s ease',
-                    bg: 'url(/src/assets/user/progress_inner.svg)',
+                    bg: `url(./images/progress_inner.svg)`,
                 },
             },
         },

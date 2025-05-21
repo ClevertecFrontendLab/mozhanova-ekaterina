@@ -8,7 +8,7 @@ import theme from './theme';
 
 function App() {
     return (
-        <BrowserRouter>
+        <BrowserRouter basename='/mozhanova-ekaterina'>
             <ChakraProvider theme={theme}>
                 <ModalProvider>
                     <>
