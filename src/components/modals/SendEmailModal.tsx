@@ -37,6 +37,7 @@ export const SendEmailModal = ({
         register,
         handleSubmit,
         reset,
+        setError,
         formState: { errors, isValid },
     } = useForm({
         resolver: yupResolver(yup.object({ email: emailSchema.required('Введите e-mail') })),
@@ -63,6 +64,7 @@ export const SendEmailModal = ({
                     break;
             }
             reset();
+            setError('email', { message: '' });
         }
     };
 
@@ -71,13 +73,11 @@ export const SendEmailModal = ({
             image={image}
             isOpen={isOpen}
             onClose={handleClose}
-            header='Восстановление входа'
             body={
                 <>
-                    <p>
-                        Для восстановления входа введите ваш e-mail, куда можно отправить уникальный
-                        код
-                    </p>
+                    <p>Для восстановления входа введите</p>
+                    <p> ваш e-mail, куда можно отправить </p>
+                    <p>уникальный код</p>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Box mt={4} mb={6}>
                             <UiInput

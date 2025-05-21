@@ -1,6 +1,13 @@
-import { FormControl, FormErrorMessage, HStack, PinInput, PinInputField } from '@chakra-ui/react';
+import {
+    FormControl,
+    FormErrorMessage,
+    HStack,
+    PinInput,
+    PinInputField,
+    Text,
+} from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
@@ -26,6 +33,7 @@ export const VerificationCodeModal = ({
 }) => {
     const navigate = useNavigate();
     const { showError } = useToast();
+    const [headerText, setHeaderText] = useState('');
 
     const handleClose = () => {
         onClose();
@@ -53,7 +61,8 @@ export const VerificationCodeModal = ({
             resetField('code');
             switch (response.status) {
                 case 403:
-                    setError('code', { message: 'Неверный код' });
+                    setError('code', { message: '' });
+                    setHeaderText('Неверный код');
                     break;
 
                 default:
@@ -74,11 +83,11 @@ export const VerificationCodeModal = ({
             image={image}
             isOpen={isOpen}
             onClose={handleClose}
-            header='Код отправлен'
+            header={headerText && <Text pb={4}>{headerText}</Text>}
             body={
                 <>
                     <p>
-                        Мы отправили вам на e-mail <b>{email} </b>
+                        Мы отправили вам на e-mail <br /> <b>{email} </b> <br />
                         шестизначный код. Введите его ниже.
                     </p>
                     <form onSubmit={handleSubmit(onSubmit)}>

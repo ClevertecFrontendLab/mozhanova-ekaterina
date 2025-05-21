@@ -1,4 +1,4 @@
-import { Grid, VStack } from '@chakra-ui/react';
+import { Grid, Text, VStack } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
@@ -50,7 +50,7 @@ export const ResetCredentialsModal = ({
                 onClose();
             }
         } catch (_error) {
-            showError('Ошибка сервера', 'Попробуйте немного позже', 15000);
+            showError('Ошибка сервера', 'Попробуйте немного позже', 15000, 'bottom-left');
         }
     };
 
@@ -59,16 +59,17 @@ export const ResetCredentialsModal = ({
             isOpen={isOpen}
             onClose={handleClose}
             header={
-                <span>
-                    Восстановление <br /> аккаунта
-                </span>
+                <Text mb={2}>
+                    <p>Восстановление</p>
+                    <p>аккаунта</p>
+                </Text>
             }
             body={
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <VStack spacing={6}>
                         <UiInput
                             label='Логин для входа на сайт'
-                            placeholder='Введите логин'
+                            placeholder='Логин'
                             helperText='Логин не менее 5 символов, только латиница'
                             error={errors.login}
                             {...register('login')}
@@ -77,7 +78,7 @@ export const ResetCredentialsModal = ({
                         <UiInput
                             type='password'
                             label='Пароль'
-                            placeholder='Пароль для сайта'
+                            placeholder='Пароль'
                             helperText='Пароль не менее 8 символов, с заглавной буквой и цифрой'
                             error={errors.password}
                             {...register('password')}
@@ -86,7 +87,7 @@ export const ResetCredentialsModal = ({
                         <UiInput
                             type='password'
                             label='Повторите пароль'
-                            placeholder='Повторите пароль'
+                            placeholder='Пароль'
                             error={errors.passwordConfirm}
                             {...register('passwordConfirm')}
                             data-test-id='confirm-password-input'

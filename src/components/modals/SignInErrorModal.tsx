@@ -1,4 +1,4 @@
-import { Grid } from '@chakra-ui/react';
+import { Grid, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router';
 
 import image from '~/assets/modals/3.png';
@@ -63,7 +63,12 @@ export const SignInErrorModal = ({
             isOpen={isOpen}
             onClose={onClose}
             header='Вход не выполнен'
-            body='Что-то пошло не так. Попробуйте еще раз'
+            body={
+                <Text color='text.secondary'>
+                    <p>Что-то пошло не так. </p>
+                    <p>Попробуйте еще раз</p>
+                </Text>
+            }
             footer={
                 <Grid w='100%'>
                     <UiButton

@@ -1,4 +1,4 @@
-import { Link } from '@chakra-ui/react';
+import { Link, Text } from '@chakra-ui/react';
 
 import image from '~/assets/modals/1.png';
 
@@ -16,10 +16,16 @@ export const VerificationFailedModal = ({
         isOpen={isOpen}
         onClose={onClose}
         header='Упс! Что-то пошло не так'
-        body='Ваша ссылка для верификации недействительна. Попробуйте зарегистрироваться снова.'
+        body={
+            <Text color='text.secondary'>
+                <p>Ваша ссылка для верификации </p>
+                <p>недействительна. Попробуйте </p>
+                <p>зарегистрироваться снова.</p>
+            </Text>
+        }
         footer={
             <p>
-                Остались вопросы? Свяжитесь с поддержкой
+                Остались вопросы? Свяжитесь
                 <Link textDecoration='underline' href='#'>
                     <wbr /> с поддержкой
                 </Link>

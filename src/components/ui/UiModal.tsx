@@ -1,4 +1,5 @@
 import {
+    Box,
     Image,
     Modal,
     ModalBody,
@@ -23,17 +24,28 @@ export const UiModal = ({ isOpen, onClose, header, body, footer, image, ...props
         <ModalOverlay />
         <ModalContent {...props}>
             {image && (
-                <Image
-                    w={{ base: '106px', md: '206px' }}
-                    h={{ base: '106px', md: '206px' }}
-                    src={image}
-                    mx='auto'
-                />
+                <Box pb={8}>
+                    <Image
+                        w={{ base: '106px', md: '206px' }}
+                        h={{ base: '106px', md: '206px' }}
+                        src={image}
+                        mx='auto'
+                    />
+                </Box>
             )}
-            {header && <ModalHeader>{header}</ModalHeader>}
-            <ModalCloseButton data-test-id='close-button' />
-            {body && <ModalBody>{body}</ModalBody>}
-            {footer && <ModalFooter>{footer}</ModalFooter>}
+
+            {header && (
+                <ModalHeader pt={0} pb={4}>
+                    {header}
+                </ModalHeader>
+            )}
+            <ModalCloseButton size='sm' top={6} right={6} data-test-id='close-button' />
+            {body && <ModalBody p={0}>{body}</ModalBody>}
+            {footer && (
+                <ModalFooter flexDirection='column' pt={6} pb={0}>
+                    {footer}
+                </ModalFooter>
+            )}
         </ModalContent>
     </Modal>
 );
