@@ -50,7 +50,7 @@ export const ResetCredentialsModal = ({
                 onClose();
             }
         } catch (_error) {
-            showError('Ошибка сервера', 'Попробуйте немного позже', 15000, 'bottom-left');
+            showError('Ошибка сервера', 'Попробуйте немного позже', 15000);
         }
     };
 

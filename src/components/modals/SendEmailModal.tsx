@@ -40,7 +40,8 @@ export const SendEmailModal = ({
         setError,
         formState: { errors, isValid },
     } = useForm({
-        resolver: yupResolver(yup.object({ email: emailSchema.required('Введите e-mail') })),
+        resolver: yupResolver(yup.object({ email: emailSchema })),
+        mode: 'onChange',
     });
 
     const onSubmit = async (data: { email: string }) => {

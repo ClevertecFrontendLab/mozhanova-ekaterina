@@ -16,7 +16,7 @@ import { AppRoutes } from '~/config';
 import { useToast } from '~/hooks/use-toast';
 import { useVerifyOtpMutation } from '~/query/user-api';
 import { TErrorResponse } from '~/types';
-import { OtpSchema } from '~/validation';
+import { verificationCodeSchema } from '~/validation';
 
 import { UiModal } from '../ui/UiModal';
 
@@ -49,7 +49,7 @@ export const VerificationCodeModal = ({
         setError,
         formState: { errors, isValid },
     } = useForm({
-        resolver: yupResolver(OtpSchema),
+        resolver: yupResolver(verificationCodeSchema),
     });
 
     const onSubmit = async (data: { code: string }) => {
