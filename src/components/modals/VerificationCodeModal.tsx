@@ -15,7 +15,7 @@ import image from '~/assets/modals/4.png';
 import { AppRoutes } from '~/config';
 import { useToast } from '~/hooks/use-toast';
 import { useVerifyOtpMutation } from '~/query/user-api';
-import { TErrorResponse } from '~/types';
+import { ErrorResponse } from '~/types';
 import { verificationCodeSchema } from '~/validation';
 
 import { UiModal } from '../ui/UiModal';
@@ -57,7 +57,7 @@ export const VerificationCodeModal = ({
             const result = await verifyOtp({ email, otpToken: data.code }).unwrap();
             if (result) next(email);
         } catch (error) {
-            const response = error as TErrorResponse;
+            const response = error as ErrorResponse;
             resetField('code');
             switch (response.status) {
                 case 403:

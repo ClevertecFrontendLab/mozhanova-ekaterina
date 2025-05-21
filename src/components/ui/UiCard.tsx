@@ -19,7 +19,7 @@ import { API_IMAGE_URL } from '~/config';
 import { ApplicationState } from '~/store/configure-store';
 import { RecipesState } from '~/store/recipe-slice';
 import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
-import { TRecipe } from '~/types';
+import { Recipe } from '~/types';
 import { routeHelpers } from '~/utils/get-routes';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
@@ -27,7 +27,7 @@ import { UiButton } from './UiButton';
 import { UiCardInfo } from './UiCardInfo';
 
 type Props = {
-    data: TRecipe;
+    data: Recipe;
     size?: 'sm' | 'md' | 'lg';
     recommendation?: string;
     categoryBgColor?: 'secondary.100' | 'primary.100';

@@ -1,10 +1,10 @@
-import { TCategory, TRecipe } from '~/types';
+import { Category, Recipe } from '~/types';
 
 export const defineBreadcrumbLabel = (
     path: string,
-    categories: TCategory[] = [],
-    subCategories: TCategory[] = [],
-    currentRecipe: TRecipe | null,
+    categories: Category[] = [],
+    subCategories: Category[] = [],
+    currentRecipe: Recipe | null,
 ) => {
     switch (path) {
         case 'the-juiciest':

@@ -1,11 +1,11 @@
 import { SimpleGrid, useMediaQuery } from '@chakra-ui/react';
 import { memo } from 'react';
 
-import { TRecipe } from '~/types';
+import { Recipe } from '~/types';
 
 import { UiCard } from '../ui/UiCard';
 
-export const UiCardGrid = memo(({ data }: { data: TRecipe[] | undefined }) => {
+export const UiCardGrid = memo(({ data }: { data: Recipe[] | undefined }) => {
     const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
 
     if (!data) return null;

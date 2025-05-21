@@ -5,7 +5,7 @@ import image from '~/assets/modals/3.png';
 import { AppRoutes } from '~/config';
 import { useToast } from '~/hooks/use-toast';
 import { useSignInMutation } from '~/query/user-api';
-import { TErrorResponse } from '~/types';
+import { ErrorResponse } from '~/types';
 
 import { UiButton } from '../ui/UiButton';
 import { UiModal } from '../ui/UiModal';
@@ -33,7 +33,7 @@ export const SignInErrorModal = ({
                 navigate(AppRoutes.HOME);
             }
         } catch (error: unknown) {
-            const response = error as TErrorResponse;
+            const response = error as ErrorResponse;
             switch (response.status) {
                 case 401:
                     showError(

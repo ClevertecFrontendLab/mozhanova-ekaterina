@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { TNewUser } from '~/types';
+import { NewUser } from '~/types';
 
 export type UserState = {
-    user: TNewUser | null;
+    user: NewUser | null;
     isAuthenticated: boolean;
     accessToken: string | null;
 };

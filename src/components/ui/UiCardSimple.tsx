@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 
 import { ApplicationState } from '~/store/configure-store';
 import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
-import { TRecipe } from '~/types';
+import { Recipe } from '~/types';
 import { routeHelpers } from '~/utils/get-routes';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
@@ -15,7 +15,7 @@ import { UiCardBadge } from './UiCardBadge';
 export const UiCardSimple = ({
     data: { title, description, bookmarks, likes, categoriesIds, _id },
 }: {
-    data: TRecipe;
+    data: Recipe;
 }) => {
     const subCategories = useSelector((state: ApplicationState) =>
         selectRecipeSubCategories(state, categoriesIds),

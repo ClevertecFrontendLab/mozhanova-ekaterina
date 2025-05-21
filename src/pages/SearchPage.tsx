@@ -11,10 +11,10 @@ import { ApplicationState } from '~/store/configure-store';
 import { useRecipesSearch } from '~/store/hooks';
 import { setCurrentPage } from '~/store/recipe-slice';
 import { selectFilters } from '~/store/selectors';
-import { TRecipe } from '~/types';
+import { Recipe } from '~/types';
 
 export const SearchPage = memo(() => {
-    const [allRecipes, setAllRecipes] = useState<TRecipe[]>([]);
+    const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
     const pagination = useSelector((state: ApplicationState) => state.recipe.pagination);
     const filters = useSelector(selectFilters);
     const dispatch = useDispatch();

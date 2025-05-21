@@ -9,10 +9,10 @@ import { UiCardGrid } from '~/components/ui/UiCardGrid';
 import { useGetPopularRecipesQuery } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
 import { setCurrentPage } from '~/store/recipe-slice';
-import { TRecipe } from '~/types';
+import { Recipe } from '~/types';
 
 export const TheJuiciestPage = () => {
-    const [allRecipes, setAllRecipes] = useState<TRecipe[]>([]);
+    const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
     const pagination = useSelector((state: ApplicationState) => state.recipe.pagination);
     const filters = useSelector((state: ApplicationState) => state.recipe.filters);
     const dispatch = useDispatch();

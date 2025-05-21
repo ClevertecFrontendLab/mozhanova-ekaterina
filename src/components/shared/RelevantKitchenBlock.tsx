@@ -7,20 +7,20 @@ import { useGetRecipesByCategoryQuery } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
 import { useAppSelector } from '~/store/hooks';
 import { selectCategoryById, selectSubcategories } from '~/store/selectors';
-import { TCategory, TSubCategory } from '~/types';
+import { Category, SubCategory } from '~/types';
 
 import { UiCardMini } from '../ui/UiCardMini';
 import { UiCardSimple } from '../ui/UiCardSimple';
 
 export const RelevantKitchenBlock = () => {
     const { category } = useParams();
-    const allSubCategories = useAppSelector(selectSubcategories) as TSubCategory[];
-    const [randomSubCategory, setRandomSubCategory] = useState<TSubCategory | null>(null);
+    const allSubCategories = useAppSelector(selectSubcategories) as SubCategory[];
+    const [randomSubCategory, setRandomSubCategory] = useState<SubCategory | null>(null);
     const { showError } = useToast();
 
     const currentRootCategory = useAppSelector((state: ApplicationState) =>
         selectCategoryById(state, randomSubCategory?.rootCategoryId || ''),
-    ) as TCategory;
+    ) as Category;
 
     useEffect(() => {
         if (allSubCategories.length > 0) {

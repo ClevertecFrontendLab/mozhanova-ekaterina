@@ -1,6 +1,6 @@
 import { Box, Flex, useMediaQuery } from '@chakra-ui/react';
 
-import { TCategory } from '~/types';
+import { Category } from '~/types';
 
 import { Footer } from '../footer/Footer';
 import { Breadcrumbs } from '../header/Breadcrumbs';
@@ -11,7 +11,7 @@ export const Navigation = ({
     categories,
 }: {
     setMenuOpen: (value: boolean) => void;
-    categories: TCategory[];
+    categories: Category[];
 }) => {
     const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)', { ssr: false });
 

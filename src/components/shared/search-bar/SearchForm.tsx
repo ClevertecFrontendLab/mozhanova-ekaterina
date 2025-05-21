@@ -17,7 +17,7 @@ import { SortIcon } from '~/components/ui/icons/SortIcon';
 import { useToast } from '~/hooks/use-toast';
 import { setAllergensFilter, setSearchString } from '~/store/recipe-slice';
 import { selectFilters } from '~/store/selectors';
-import { TRecipe } from '~/types';
+import { Recipe } from '~/types';
 
 import { SelectAllergens } from './SelectAllergens';
 
@@ -30,7 +30,7 @@ export const SearchForm = ({
 }: {
     setSearchOnFocus: (value: boolean) => void;
     onOpen: () => void;
-    data: TRecipe[] | undefined;
+    data: Recipe[] | undefined;
     isError: boolean;
     initiateSearch?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {

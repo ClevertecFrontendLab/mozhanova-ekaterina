@@ -19,7 +19,7 @@ import { AppRoutes } from '~/config';
 import { useModalContext } from '~/contexts/modal-context';
 import { useToast } from '~/hooks/use-toast';
 import { useSignUpMutation } from '~/query/user-api';
-import { TErrorResponse, TFormInputs } from '~/types';
+import { ErrorResponse, FormInputs } from '~/types';
 import { RegistrationSchema } from '~/validation';
 
 export const SignUp = () => {
@@ -33,11 +33,11 @@ export const SignUp = () => {
     ];
     const [activeStep, setActiveStep] = useState(0);
     const [activeIndex, setActiveIndex] = useState(0);
-    const allFields: (keyof TFormInputs)[] = useMemo(
+    const allFields: (keyof FormInputs)[] = useMemo(
         () => ['name', 'lastName', 'login', 'email', 'password', 'passwordConfirm'],
         [],
     );
-    const fieldsToValidate: (keyof TFormInputs)[] = useMemo(
+    const fieldsToValidate: (keyof FormInputs)[] = useMemo(
         () =>
             activeIndex === 0
                 ? ['name', 'lastName', 'email']
@@ -76,7 +76,7 @@ export const SignUp = () => {
 
     const [signIn] = useSignUpMutation();
 
-    const onSubmit = async (userData: TFormInputs) => {
+    const onSubmit = async (userData: FormInputs) => {
         if (!isValid) return;
         try {
             const result = await signIn(userData).unwrap();
@@ -85,7 +85,7 @@ export const SignUp = () => {
                 navigate(AppRoutes.SIGN_IN);
             }
         } catch (error: unknown) {
-            const response = error as TErrorResponse;
+            const response = error as ErrorResponse;
             switch (response.status) {
                 case 400:
                     showError(response.data?.message, '', 15000, 'bottom-left');

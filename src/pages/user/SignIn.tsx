@@ -12,7 +12,7 @@ import { useModalContext } from '~/contexts/modal-context';
 import { useToast } from '~/hooks/use-toast';
 import { useSignInMutation } from '~/query/user-api';
 import { ApplicationState } from '~/store/configure-store';
-import { TErrorResponse } from '~/types';
+import { ErrorResponse } from '~/types';
 import { LoginSchema } from '~/validation';
 
 export const SignIn = () => {
@@ -42,7 +42,7 @@ export const SignIn = () => {
                 navigate(AppRoutes.HOME);
             }
         } catch (error: unknown) {
-            const response = error as TErrorResponse;
+            const response = error as ErrorResponse;
             switch (response.status) {
                 case 401:
                     setError('login', { message: '' });

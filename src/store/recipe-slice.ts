@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { TRecipe } from '~/types';
+import { Recipe } from '~/types';
 
 export type RecipesState = {
-    current: TRecipe | null;
+    current: Recipe | null;
     filters: {
         categoryName: string[];
         subcategoryIds: string[];
@@ -71,7 +71,7 @@ export const recipesSlice = createSlice({
         setPaginationMeta: (state, action: PayloadAction<{ totalPages: number }>) => {
             state.pagination.totalPages = action.payload.totalPages;
         },
-        setCurrent: (state, action: PayloadAction<TRecipe>) => {
+        setCurrent: (state, action: PayloadAction<Recipe>) => {
             state.current = action.payload;
         },
     },

@@ -1,4 +1,4 @@
-export type TRecipe = {
+export type Recipe = {
     _id: string;
     title: string;
     description: string;
@@ -18,14 +18,14 @@ export type TRecipe = {
     side?: string;
 };
 
-export type TMeta = {
+export type Meta = {
     total: number;
     totalPages: number;
     page: number;
     limit: number;
 };
 
-export type TParams = {
+export type Params = {
     page?: number;
     limit?: number;
     sortBy?: string;
@@ -37,24 +37,24 @@ export type TParams = {
     garnish?: string[];
     subcategoriesIds?: string[];
 };
-export type TCategory = {
+export type Category = {
     _id: string;
     title: string;
     category: string;
     icon: string;
     description: string;
-    subCategories: TSubCategory[];
+    subCategories: SubCategory[];
     rootCategoryId?: string;
 };
 
-export type TSubCategory = {
+export type SubCategory = {
     _id: string;
     title: string;
     category: string;
     rootCategoryId: string;
 };
 
-export type TFormInputs = {
+export type FormInputs = {
     name: string;
     lastName: string;
     login: string;
@@ -63,21 +63,20 @@ export type TFormInputs = {
     passwordConfirm: string;
 };
 
-export type TNewUser = Omit<TFormInputs, 'confirmPassword'>;
-export type TRecoverUser = Pick<TFormInputs, 'email' | 'login' | 'password' | 'passwordConfirm'>;
-export type TVerifyUser = { email: string; otpToken: string };
-
-export type TAuth = {
+export type NewUser = Omit<FormInputs, 'confirmPassword'>;
+export type ResetUser = Pick<FormInputs, 'email' | 'login' | 'password' | 'passwordConfirm'>;
+export type VerifyUser = { email: string; otpToken: string };
+export type AuthUser = {
     login: string;
     password: string;
 };
 
-export type TAuthResponse = {
+export type AuthResponse = {
     message: string;
     statusText: string;
 };
 
-export type TErrorResponse = {
+export type ErrorResponse = {
     status: number;
     data?: {
         message: string;

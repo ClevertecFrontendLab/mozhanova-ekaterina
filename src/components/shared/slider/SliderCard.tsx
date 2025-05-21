@@ -17,11 +17,11 @@ import { UiCardInfo } from '~/components/ui/UiCardInfo';
 import { API_IMAGE_URL } from '~/config';
 import { ApplicationState } from '~/store/configure-store';
 import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
-import { TRecipe } from '~/types';
+import { Recipe } from '~/types';
 import { routeHelpers } from '~/utils/get-routes';
 
 type Props = {
-    data: TRecipe;
+    data: Recipe;
 };
 
 export const SliderCard = ({

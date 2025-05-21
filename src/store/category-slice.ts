@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { TCategory } from '~/types';
+import { Category } from '~/types';
 
 export type CategoryState = {
-    categories: TCategory[];
+    categories: Category[];
     currentCategory: string | null;
 };
 

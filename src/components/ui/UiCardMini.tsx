@@ -6,12 +6,12 @@ import { Link } from 'react-router';
 import { API_IMAGE_URL } from '~/config';
 import { ApplicationState } from '~/store/configure-store';
 import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
-import { TRecipe } from '~/types';
+import { Recipe } from '~/types';
 import { routeHelpers } from '~/utils/get-routes';
 
 import { UiButton } from './UiButton';
 
-export const UiCardMini = ({ data: { title, categoriesIds, _id } }: { data: TRecipe }) => {
+export const UiCardMini = ({ data: { title, categoriesIds, _id } }: { data: Recipe }) => {
     const subCategories = useSelector((state: ApplicationState) =>
         selectRecipeSubCategories(state, categoriesIds),
     );

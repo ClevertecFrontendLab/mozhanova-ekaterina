@@ -8,7 +8,7 @@ import image from '~/assets/modals/3.png';
 import { AppRoutes } from '~/config';
 import { useToast } from '~/hooks/use-toast';
 import { useForgotPasswordMutation } from '~/query/user-api';
-import { TErrorResponse } from '~/types';
+import { ErrorResponse } from '~/types';
 import { emailSchema } from '~/validation';
 
 import { UiButton } from '../ui/UiButton';
@@ -50,7 +50,7 @@ export const SendEmailModal = ({
             const result = await forgot(data.email).unwrap();
             if (result) next(data.email);
         } catch (error) {
-            const response = error as TErrorResponse;
+            const response = error as ErrorResponse;
             switch (response.status) {
                 case 403:
                     showError(

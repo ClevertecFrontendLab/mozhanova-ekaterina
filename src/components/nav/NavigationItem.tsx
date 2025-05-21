@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 
 import { API_IMAGE_URL } from '~/config';
-import { TCategory } from '~/types';
+import { Category } from '~/types';
 import { routeHelpers } from '~/utils/get-routes';
 
 type Props = {
-    category: TCategory;
+    category: Category;
     setMenuOpen: (value: boolean) => void;
     'data-id'?: string;
 };

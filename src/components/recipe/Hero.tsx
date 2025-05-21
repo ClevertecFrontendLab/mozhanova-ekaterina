@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { API_IMAGE_URL } from '~/config';
 import { ApplicationState } from '~/store/configure-store';
 import { selectRecipeCategories } from '~/store/selectors';
-import { TRecipe } from '~/types';
+import { Recipe } from '~/types';
 
 import { BookmarkHeartIcon } from '../ui/icons/BookmarkHeartIcon';
 import { ClockIcon } from '../ui/icons/ClockIcon';
@@ -13,7 +13,7 @@ import { UiButton } from '../ui/UiButton';
 import { UiCardBadge } from '../ui/UiCardBadge';
 import { UiCardStats } from '../ui/UiCardStats';
 
-export const Hero = ({ recipe }: { recipe: TRecipe }) => {
+export const Hero = ({ recipe }: { recipe: Recipe }) => {
     const [isLargerThanLG] = useMediaQuery('(min-width: 1441px)');
 
     const rootCategories = useSelector((state: ApplicationState) =>

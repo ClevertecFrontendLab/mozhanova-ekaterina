@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'; // Ð˜Ð
 import { API_BASE_URL } from '~/config';
 import { ApplicationState } from '~/store/configure-store';
 import { setAuthenticated, setCredentials } from '~/store/user-slice';
-import { TAuth, TAuthResponse, TNewUser, TRecoverUser, TVerifyUser } from '~/types';
+import { AuthResponse, AuthUser, NewUser, ResetUser, VerifyUser } from '~/types';
 
 import { ApiEndpoints } from './constants/api';
 import { EndpointNames } from './constants/endpoint-names';
@@ -26,7 +26,7 @@ export const userApi = createApi({
     baseQuery: baseQuery,
     tagTypes: [Tags.AUTH],
     endpoints: (builder) => ({
-        [EndpointNames.SIGN_IN]: builder.mutation<TAuthResponse, TAuth>({
+        [EndpointNames.SIGN_IN]: builder.mutation<AuthResponse, AuthUser>({
             query: (credentials) => ({
                 url: ApiEndpoints.AUTH,
                 method: 'POST',
@@ -50,7 +50,7 @@ export const userApi = createApi({
             invalidatesTags: [Tags.AUTH],
         }),
 
-        [EndpointNames.SIGN_UP]: builder.mutation<TAuthResponse, TNewUser>({
+        [EndpointNames.SIGN_UP]: builder.mutation<AuthResponse, NewUser>({
             query: (newUser) => ({
                 url: ApiEndpoints.SIGN_UP,
                 method: 'POST',
@@ -59,7 +59,7 @@ export const userApi = createApi({
             invalidatesTags: [Tags.AUTH],
         }),
 
-        [EndpointNames.CHECK_AUTH]: builder.query<TAuthResponse, void>({
+        [EndpointNames.CHECK_AUTH]: builder.query<AuthResponse, void>({
             query: () => ({
                 url: ApiEndpoints.CHECK_AUTH,
                 method: 'GET',
@@ -78,7 +78,7 @@ export const userApi = createApi({
             },
         }),
 
-        [EndpointNames.FORGOT_PASSWORD]: builder.mutation<TAuthResponse, string>({
+        [EndpointNames.FORGOT_PASSWORD]: builder.mutation<AuthResponse, string>({
             query: (email) => ({
                 url: ApiEndpoints.FORGOT_PASSWORD,
                 method: 'POST',
@@ -87,7 +87,7 @@ export const userApi = createApi({
             invalidatesTags: [Tags.AUTH],
         }),
 
-        [EndpointNames.VERIFY_OTP]: builder.mutation<TAuthResponse, TVerifyUser>({
+        [EndpointNames.VERIFY_OTP]: builder.mutation<AuthResponse, VerifyUser>({
             query: ({ email, otpToken }) => ({
                 url: ApiEndpoints.VERIFY_OTP,
                 method: 'POST',
@@ -96,7 +96,7 @@ export const userApi = createApi({
             invalidatesTags: [Tags.AUTH],
         }),
 
-        [EndpointNames.RESET_PASSWORD]: builder.mutation<TAuthResponse, TRecoverUser>({
+        [EndpointNames.RESET_PASSWORD]: builder.mutation<AuthResponse, ResetUser>({
             query: ({ email, login, password, passwordConfirm }) => ({
                 url: ApiEndpoints.RESET_PASSWORD,
                 method: 'POST',
@@ -105,7 +105,7 @@ export const userApi = createApi({
             invalidatesTags: [Tags.AUTH],
         }),
 
-        [EndpointNames.REFRESH_TOKEN]: builder.query<TAuthResponse, void>({
+        [EndpointNames.REFRESH_TOKEN]: builder.query<AuthResponse, void>({
             query: () => ({
                 url: ApiEndpoints.REFRESH_TOKEN,
                 method: 'GET',
