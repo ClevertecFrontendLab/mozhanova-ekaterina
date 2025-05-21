@@ -25,6 +25,7 @@ export const SignIn = () => {
         register,
         handleSubmit,
         setValue,
+        setError,
         watch,
         formState: { errors },
     } = useForm({
@@ -44,6 +45,8 @@ export const SignIn = () => {
             const response = error as TErrorResponse;
             switch (response.status) {
                 case 401:
+                    setError('login', { message: '' });
+                    setError('password', { message: '' });
                     showError(
                         'Неверный логин или пароль',
                         'Попробуйте снова',
@@ -52,6 +55,8 @@ export const SignIn = () => {
                     );
                     break;
                 case 403:
+                    setError('login', { message: '' });
+                    setError('password', { message: '' });
                     showError(
                         'E-mail не верифицирован',
                         'Проверьте почту и перейдите по ссылке',

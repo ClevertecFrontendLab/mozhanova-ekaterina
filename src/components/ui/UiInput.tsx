@@ -36,7 +36,7 @@ export const UiInput = ({
 
     return (
         <FormControl isInvalid={!!error} onBlur={() => setValue && value && setValue(value.trim())}>
-            <FormLabel>{label}</FormLabel>
+            <FormLabel fontWeight={400}>{label}</FormLabel>
             <InputGroup size='lg'>
                 <Input
                     size='lg'

@@ -21,7 +21,7 @@ export const AuthLayout = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
-    const currentIndex = location.pathname.endsWith(AppRoutes.SIGN_IN) ? 0 : 1;
+    const currentIndex = location.pathname.endsWith(AppRoutes.SIGN_UP) ? 1 : 0;
 
     const handleTabChange = (index: number) => {
         navigate(index === 0 ? AppRoutes.SIGN_IN : AppRoutes.SIGN_UP);
