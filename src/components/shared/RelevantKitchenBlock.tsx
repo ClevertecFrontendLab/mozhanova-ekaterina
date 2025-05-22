@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { useToast } from '~/hooks/use-toast';
+import { Limit } from '~/query/constants/limits';
 import { useGetRecipesByCategoryQuery } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
 import { useAppSelector } from '~/store/hooks';
@@ -33,7 +34,7 @@ export const RelevantKitchenBlock = () => {
     const { data, isError, refetch } = useGetRecipesByCategoryQuery(
         {
             categoryId: randomSubCategory?._id || '',
-            limit: 5,
+            limit: Limit.RELEVANT_KITCHEN,
         },
         {
             skip: !randomSubCategory,

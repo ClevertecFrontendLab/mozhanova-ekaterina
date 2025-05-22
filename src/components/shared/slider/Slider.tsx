@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
+import { Limit } from '~/query/constants/limits';
 import { useGetLatestRecipesQuery } from '~/query/recipe-api';
 
 import { NavigationButtons } from './NavigationButtons';
@@ -14,7 +15,7 @@ import { SliderCard } from './SliderCard';
 export const Slider = () => {
     const [isLargerThanLG] = useBreakpoint('md');
     const { data } = useGetLatestRecipesQuery({
-        limit: 10,
+        limit: Limit.CAROUSEL,
         sortBy: 'createdAt',
     });
     if (!data) return null;

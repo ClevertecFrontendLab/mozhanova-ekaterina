@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router';
 
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useToast } from '~/hooks/use-toast';
+import { Limit } from '~/query/constants/limits';
 import { useGetRecipesByCategoryQuery } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
 import { selectCurrentRootCategory, selectFilters } from '~/store/selectors';
@@ -40,7 +41,7 @@ export const RecipesTabs = () => {
     const { currentData, isError } = useGetRecipesByCategoryQuery(
         {
             categoryId: currentSubCategory?._id || '',
-            limit: 8,
+            limit: Limit.DEFAULT,
             ...(filters.searchString && { searchString: filters.searchString }),
             ...(filters.allergens.length > 0 && { allergens: filters.allergens }),
         },

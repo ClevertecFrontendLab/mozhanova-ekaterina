@@ -7,6 +7,7 @@ import { SearchBar } from '~/components/shared/search-bar/SearchBar';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { Limit } from '~/query/constants/limits';
 import { useGetPopularRecipesQuery } from '~/query/recipe-api';
 import { setCurrentPage } from '~/store/recipe-slice';
 import { paginationSelector, selectFilters } from '~/store/selectors';
@@ -20,7 +21,7 @@ export const TheJuiciestPage = () => {
 
     const { data, isLoading, isError, currentData } = useGetPopularRecipesQuery(
         {
-            limit: 8,
+            limit: Limit.DEFAULT,
             page: pagination.currentPage,
             ...(filters.allergens.length > 0 && { allergens: filters.allergens }),
             ...(filters.searchString && { searchString: filters.searchString }),

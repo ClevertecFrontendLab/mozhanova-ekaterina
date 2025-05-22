@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { Limit } from '~/query/constants/limits';
 import { Recipe } from '~/types';
 
 export type RecipesState = {
@@ -33,7 +34,7 @@ const initialState: RecipesState = {
     },
     pagination: {
         currentPage: 1,
-        limit: 8,
+        limit: Limit.DEFAULT,
     },
 };
 
