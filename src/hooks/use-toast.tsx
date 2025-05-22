@@ -5,47 +5,41 @@ import {
     AlertTitle,
     Box,
     CloseButton,
-    ToastPosition,
     useToast as useChakraToast,
 } from '@chakra-ui/react';
 
-type ToastType = 'success' | 'error' | 'warning' | 'info';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { ToastParams } from '~/types';
 
 export const useToast = () => {
     const toast = useChakraToast();
 
-    const showToast = (
-        type: ToastType,
-        title?: string,
-        description?: string,
-        duration: number = 3000,
-        position: ToastPosition = 'bottom',
-    ) => {
-        const toastId = `${type}-notification`;
+    const showToast = ({ ...params }: ToastParams) => {
+        const toastId = `${params.type}-notification`;
         if (toast.isActive(toastId)) {
             return;
         }
         toast({
-            duration: duration,
-            position: position,
+            duration: params.duration || 3000,
+            position: params.position || 'bottom',
             id: toastId,
             containerStyle: { transition: 'none' },
 
             render: ({ onClose }) => (
                 <Alert
                     w={{ base: '328px', md: '400px' }}
-                    data-test-id='error-notification'
+                    data-test-id={DATA_TEST_IDS.ERROR_NOTIFICATION}
                     variant='solid'
-                    status={type}
+                    status={params.type}
                 >
                     <AlertIcon />
                     <Box flexGrow={1}>
-                        <AlertTitle>{title}</AlertTitle>
-                        <AlertDescription>{description}</AlertDescription>
+                        <AlertTitle>{params.title}</AlertTitle>
+                        <AlertDescription>{params.description || ''}</AlertDescription>
                     </Box>
                     <CloseButton
                         alignSelf='flex-start'
-                        data-test-id='close-alert-button'
+                        data-test-id={DATA_TEST_IDS.CLOSE_ALERT_BUTTON}
                         onClick={onClose}
                     />
                 </Alert>
@@ -53,17 +47,8 @@ export const useToast = () => {
         });
     };
     return {
-        showError: (
-            title?: string,
-            description?: string,
-            duration?: number,
-            position?: ToastPosition,
-        ) => showToast('error', title, description, duration, position),
-        showSuccess: (
-            title?: string,
-            description?: string,
-            duration?: number,
-            position?: ToastPosition,
-        ) => showToast('success', title, description, duration, position),
+        showError: (params: Omit<ToastParams, 'type'>) => showToast({ ...params, type: 'error' }),
+        showSuccess: (params: Omit<ToastParams, 'type'>) =>
+            showToast({ ...params, type: 'success' }),
     };
 };

@@ -9,18 +9,18 @@ import {
     TabPanels,
     Tabs,
     Text,
-    useMediaQuery,
 } from '@chakra-ui/react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 
 import logo from '~/assets/logo/logo.png';
 import bg from '~/assets/user/page_bg.png';
-import { AppRoutes } from '~/config';
+import { AppRoutes } from '~/constants/routes-config';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 
 export const AuthLayout = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
+    const [isLargerThanMD] = useBreakpoint('md');
     const currentIndex = location.pathname.endsWith(AppRoutes.SIGN_UP) ? 1 : 0;
 
     const handleTabChange = (index: number) => {

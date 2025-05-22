@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import loader from '~/assets/ui/loader_bg.png';
-import { AppRoutes } from '~/config';
+import { AppRoutes } from '~/constants/routes-config';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useLazyRecipesSearch } from '~/store/hooks';
 
 import { FiltersDrawer } from './FiltersDrawer';
@@ -113,7 +114,7 @@ export const SearchBar = ({ title, description }: Props) => {
 function Loader() {
     return (
         <Flex
-            data-test-id='loader-search-block'
+            data-test-id={DATA_TEST_IDS.LOADER_SEARCH_BLOCK}
             minW='134px'
             h='134px'
             bgImage={loader}

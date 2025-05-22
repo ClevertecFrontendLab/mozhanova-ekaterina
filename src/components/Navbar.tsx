@@ -1,5 +1,7 @@
-import { Box, Flex, useMediaQuery } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useBodyScrollLock } from '~/hooks/use-scroll';
 import { useGetCategoriesQuery } from '~/query/category-api';
 
@@ -13,7 +15,7 @@ export const Navbar = ({
     isMenuOpen: boolean;
     setMenuOpen: (value: boolean) => void;
 }) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)', { ssr: false });
+    const [isLargerThanMD] = useBreakpoint('md');
     useBodyScrollLock(isMenuOpen && !isLargerThanMD);
     const { data } = useGetCategoriesQuery();
     const categories = Array.isArray(data) && data.filter((category) => category.subCategories);
@@ -24,7 +26,7 @@ export const Navbar = ({
                 <Box
                     pb='185px'
                     display={isMenuOpen ? 'block' : 'none'}
-                    zIndex={2001}
+                    zIndex={50}
                     position='fixed'
                     top={0}
                     bottom={0}
@@ -42,7 +44,7 @@ export const Navbar = ({
             {isMenuOpen && (
                 <Flex
                     pb='185px'
-                    data-test-id='nav'
+                    data-test-id={DATA_TEST_IDS.NAV}
                     display={isMenuOpen ? 'flex' : 'none'}
                     position={{
                         base: 'absolute',
@@ -79,7 +81,7 @@ export const Navbar = ({
                         md: 6,
                     }}
                     bg='background.base'
-                    zIndex={2001}
+                    zIndex={50}
                     borderRadius={{
                         base: '0 0 12px 12px',
                         md: 0,

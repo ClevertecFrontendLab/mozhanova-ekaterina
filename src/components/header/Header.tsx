@@ -1,4 +1,7 @@
-import { Flex, useMediaQuery } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
+
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 
 import { ProfileInfo } from '../shared/ProfileInfo';
 import { ProfileNotification } from '../shared/ProfileNotification';
@@ -15,11 +18,9 @@ export const Header = ({
     setMenuOpen: (value: boolean) => void;
     isMenuOpen: boolean;
 }) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
+    const [isLargerThanMD] = useBreakpoint('md');
 
-    const toggleMenu = () => {
-        setMenuOpen(!isMenuOpen);
-    };
+    const toggleMenu = () => setMenuOpen(!isMenuOpen);
 
     return (
         <Flex
@@ -27,7 +28,7 @@ export const Header = ({
             position='fixed'
             top='0'
             left='0'
-            zIndex={2002}
+            zIndex={60}
             w='100%'
             h={{
                 base: '64px',
@@ -44,13 +45,13 @@ export const Header = ({
                 md: 4,
             }}
             bg={isMenuOpen && !isLargerThanMD ? 'background.base' : 'background.header'}
-            data-test-id='header'
+            data-test-id={DATA_TEST_IDS.HEADER}
         >
             <Logo />
 
             <Breadcrumbs setMenuOpen={setMenuOpen} />
             <ProfileInfo />
-            <LogInButton />
+            {isLargerThanMD && <LogInButton />}
             <Flex
                 display={!isLargerThanMD ? 'flex' : 'none'}
                 justify='flex-end'
@@ -59,6 +60,8 @@ export const Header = ({
             >
                 <ProfileNotification variant='mobile' isMenuOpen={isMenuOpen} />
                 <Flex gap={6} alignItems='center' justifyContent='center'>
+                    <LogInButton />
+
                     <CloseMenuButton isMenuOpen={isMenuOpen} onClick={toggleMenu} />
                     <HamburgerButton isMenuOpen={isMenuOpen} onClick={toggleMenu} />
                 </Flex>

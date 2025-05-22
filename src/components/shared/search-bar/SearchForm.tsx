@@ -8,12 +8,13 @@ import {
     IconButton,
     Input,
     SearchIcon,
-    useMediaQuery,
 } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SortIcon } from '~/components/ui/icons/SortIcon';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useToast } from '~/hooks/use-toast';
 import { setAllergensFilter, setSearchString } from '~/store/recipe-slice';
 import { selectFilters } from '~/store/selectors';
@@ -35,7 +36,7 @@ export const SearchForm = ({
     initiateSearch?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
     const filters = useSelector(selectFilters);
-    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
+    const [isLargerThanMD] = useBreakpoint('md');
     const dispatch = useDispatch();
     const [value, setValue] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -69,7 +70,11 @@ export const SearchForm = ({
     };
 
     useEffect(() => {
-        if (isError) showError('Ошибка сервера', 'Попробуйте поискать снова попозже');
+        if (isError)
+            showError({
+                title: 'Ошибка сервера',
+                description: 'Попробуйте поискать снова попозже',
+            });
     }, [isError, showError]);
 
     useEffect(() => {
@@ -93,7 +98,7 @@ export const SearchForm = ({
                     variant='outline'
                     icon={<SortIcon />}
                     onClick={onOpen}
-                    data-test-id='filter-button'
+                    data-test-id={DATA_TEST_IDS.FILTER_BUTTON}
                 />
                 <FormControl w='fit-content' isInvalid={!!errorMessage}>
                     <Box
@@ -106,7 +111,7 @@ export const SearchForm = ({
                     >
                         <Input
                             pr={0}
-                            data-test-id='search-input'
+                            data-test-id={DATA_TEST_IDS.SEARCH_INPUT}
                             onKeyDown={(e) => isValidInput && e.key === 'Enter' && handleSearch()}
                             onFocus={() => setSearchOnFocus(true)}
                             onBlur={() => setSearchOnFocus(false)}
@@ -148,7 +153,7 @@ export const SearchForm = ({
                                 onClick={handleSearch}
                                 bg='transparent'
                                 p={0}
-                                data-test-id='search-button'
+                                data-test-id={DATA_TEST_IDS.SEARCH_BUTTON}
                                 pointerEvents={
                                     value.length < 3 && selectedAllergens.length === 0
                                         ? 'none'

@@ -1,6 +1,7 @@
 import { Link } from '@chakra-ui/react';
 
 import image from '~/assets/modals/2.png';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 
 import { UiModal } from '../ui/UiModal';
 
@@ -14,7 +15,7 @@ export const SignUpSuccessModal = ({
     email: string;
 }) => (
     <UiModal
-        data-test-id='sign-up-success-modal'
+        data-test-id={DATA_TEST_IDS.SIGN_UP_SUCCESS_MODAL}
         image={image}
         isOpen={isOpen}
         onClose={onClose}

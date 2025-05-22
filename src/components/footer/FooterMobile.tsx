@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router';
 import icon from '~/assets/ava.png';
 import { HomeIcon } from '~/components/ui/icons/HomeIcon';
 import { UiIconButton } from '~/components/ui/UiIconButton';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 
 import { SearchIcon } from '../ui/icons/SearchIcon';
 
@@ -13,7 +14,7 @@ export const FooterMobile = () => {
 
     return (
         <Grid
-            data-test-id='footer'
+            data-test-id={DATA_TEST_IDS.FOOTER}
             position='fixed'
             bottom='0'
             w='100%'
@@ -22,7 +23,7 @@ export const FooterMobile = () => {
             templateColumns='repeat(4, 1fr)'
             pt={2.5}
             pb={2.5}
-            zIndex={98}
+            zIndex={20}
         >
             <Link to='/'>
                 <UiIconButton

@@ -10,6 +10,8 @@ import {
     ModalOverlay,
 } from '@chakra-ui/react';
 
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+
 type Props = {
     isOpen: boolean;
     image?: string;
@@ -39,7 +41,12 @@ export const UiModal = ({ isOpen, onClose, header, body, footer, image, ...props
                     {header}
                 </ModalHeader>
             )}
-            <ModalCloseButton size='sm' top={6} right={6} data-test-id='close-button' />
+            <ModalCloseButton
+                size='sm'
+                top={6}
+                right={6}
+                data-test-id={DATA_TEST_IDS.CLOSE_BUTTON}
+            />
             {body && <ModalBody p={0}>{body}</ModalBody>}
             {footer && (
                 <ModalFooter flexDirection='column' pt={6} pb={0}>

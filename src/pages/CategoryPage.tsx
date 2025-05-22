@@ -5,7 +5,7 @@ import { Outlet, useNavigate, useParams } from 'react-router';
 
 import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
-import { AppRoutes } from '~/config';
+import { AppRoutes } from '~/constants/routes-config';
 import { useGetCategoriesQuery } from '~/query/category-api';
 import { ApplicationState } from '~/store/configure-store';
 import { setCategoryFilter, setSubCategoryFilter } from '~/store/recipe-slice';
@@ -18,7 +18,6 @@ export const CategoryPage = () => {
     const dispatch = useDispatch();
 
     const { category, subCategory } = params;
-    console.log(category, subCategory);
 
     const { currentData: categoryData, isLoading, isError } = useGetCategoriesQuery();
 
@@ -69,7 +68,7 @@ export const CategoryPage = () => {
     ]);
 
     return (
-        <>
+        <main>
             {currentCategory && (
                 <SearchBar
                     title={currentCategory.title}
@@ -87,6 +86,6 @@ export const CategoryPage = () => {
                 <Outlet />
                 <RelevantKitchenBlock />
             </Box>
-        </>
+        </main>
     );
 };

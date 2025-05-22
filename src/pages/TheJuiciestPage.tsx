@@ -6,6 +6,7 @@ import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useGetPopularRecipesQuery } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
 import { setCurrentPage } from '~/store/recipe-slice';
@@ -53,7 +54,7 @@ export const TheJuiciestPage = () => {
     if (isError || isLoading) return null;
 
     return (
-        <>
+        <main>
             <SearchBar title='Самое сочное' />
             <Box
                 padding={{
@@ -66,7 +67,7 @@ export const TheJuiciestPage = () => {
                 {hasMore && (
                     <Flex justifyContent='center' mt={4} mb={10}>
                         <UiButton
-                            data-test-id='load-more-button'
+                            data-test-id={DATA_TEST_IDS.LOAD_MORE_BUTTON}
                             onClick={loadMore}
                             size='md'
                             text='Загрузка'
@@ -76,6 +77,6 @@ export const TheJuiciestPage = () => {
                 )}
                 <RelevantKitchenBlock />
             </Box>
-        </>
+        </main>
     );
 };

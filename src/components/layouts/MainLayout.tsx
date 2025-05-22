@@ -1,6 +1,8 @@
-import { Box, useMediaQuery } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router';
+
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 
 import { FooterMobile } from '../footer/FooterMobile';
 import { Header } from '../header/Header';
@@ -8,8 +10,8 @@ import { Navbar } from '../Navbar';
 import { Sidebar } from '../Sidebar';
 
 export const MainLayout = () => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)', { ssr: false });
-    const [menuOpen, setMenuOpen] = useState<boolean>(false);
+    const [isLargerThanMD] = useBreakpoint('md');
+    const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => setMenuOpen(isLargerThanMD), [isLargerThanMD]);
 
@@ -36,9 +38,7 @@ export const MainLayout = () => {
 
             <Navbar isMenuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
-            <main>
-                <Outlet />
-            </main>
+            <Outlet />
             {isLargerThanMD ? (
                 <Box
                     bg='background.base'
@@ -47,7 +47,6 @@ export const MainLayout = () => {
                     bottom='0'
                     top='80px'
                     w='256px'
-                    zIndex={100}
                 >
                     <Sidebar />
                 </Box>

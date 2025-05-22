@@ -1,12 +1,13 @@
-import { SimpleGrid, useMediaQuery } from '@chakra-ui/react';
+import { SimpleGrid } from '@chakra-ui/react';
 import { memo } from 'react';
 
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { Recipe } from '~/types';
 
 import { UiCard } from '../ui/UiCard';
 
 export const UiCardGrid = memo(({ data }: { data: Recipe[] | undefined }) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
+    const [isLargerThanMD] = useBreakpoint('md');
 
     if (!data) return null;
 

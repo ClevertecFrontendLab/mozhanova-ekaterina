@@ -7,7 +7,7 @@ import { SearchBar } from '~/components/shared/search-bar/SearchBar';
 import { Slider } from '~/components/shared/slider/Slider';
 
 export const Home = () => (
-    <Box>
+    <Box as='main'>
         <SearchBar title='Приятного аппетита!' />
 
         <Flex

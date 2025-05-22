@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-import { REGEXP_PATTERNS, VALIDATION_MESSAGES } from './config';
+import { REGEXP_PATTERNS, VALIDATION_MESSAGES } from './constants/validation-config';
 
 export const passwordSchema = yup
     .string()

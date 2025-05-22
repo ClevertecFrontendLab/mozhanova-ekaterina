@@ -1,7 +1,8 @@
-import { Card, CardBody, Flex, Heading, Image, Text, useMediaQuery } from '@chakra-ui/react';
+import { Card, CardBody, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 
-import { API_IMAGE_URL } from '~/config';
+import { API_IMAGE_URL } from '~/constants/api-config';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { ApplicationState } from '~/store/configure-store';
 import { selectRecipeCategories } from '~/store/selectors';
 import { Recipe } from '~/types';
@@ -14,7 +15,7 @@ import { UiCardBadge } from '../ui/UiCardBadge';
 import { UiCardStats } from '../ui/UiCardStats';
 
 export const Hero = ({ recipe }: { recipe: Recipe }) => {
-    const [isLargerThanLG] = useMediaQuery('(min-width: 1441px)');
+    const [isLargerThanLG] = useBreakpoint('lg');
 
     const rootCategories = useSelector((state: ApplicationState) =>
         selectRecipeCategories(state, recipe.categoriesIds),

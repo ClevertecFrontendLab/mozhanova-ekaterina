@@ -1,4 +1,7 @@
-import { CloseIcon, useMediaQuery } from '@chakra-ui/icons';
+import { CloseIcon } from '@chakra-ui/icons';
+
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 
 export const CloseMenuButton = ({
     isMenuOpen,
@@ -7,9 +10,9 @@ export const CloseMenuButton = ({
     isMenuOpen: boolean;
     onClick?: () => void;
 }) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
+    const [isLargerThanMD] = useBreakpoint('md');
     const isVisible = !isLargerThanMD && isMenuOpen;
 
     if (!isVisible) return null;
-    return <CloseIcon data-test-id='close-icon' onClick={onClick} />;
+    return <CloseIcon data-test-id={DATA_TEST_IDS.CLOSE_ICON} onClick={onClick} />;
 };

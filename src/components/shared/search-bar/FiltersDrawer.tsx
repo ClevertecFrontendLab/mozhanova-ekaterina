@@ -26,7 +26,8 @@ import { useNavigate } from 'react-router';
 
 import { PlusIcon } from '~/components/ui/icons/PlusIcon';
 import { UiButton } from '~/components/ui/UiButton';
-import { AppRoutes } from '~/config';
+import { AppRoutes } from '~/constants/routes-config';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { allergens } from '~/mocks/allergens';
 import { authors } from '~/mocks/authors';
 import { garnish } from '~/mocks/garnish';
@@ -131,8 +132,8 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
             onClose={onClose}
         >
             <DrawerOverlay />
-            <DrawerContent data-test-id='filter-drawer'>
-                <DrawerCloseButton data-test-id='close-filter-drawer' />
+            <DrawerContent data-test-id={DATA_TEST_IDS.FILTER_DRAWER}>
+                <DrawerCloseButton data-test-id={DATA_TEST_IDS.CLOSE_FILTER_DRAWER} />
                 <DrawerHeader>Фильтр</DrawerHeader>
                 <DrawerBody>
                     <VStack spacing={{ base: 4, md: 6 }} align='start'>
@@ -210,7 +211,7 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
                                     Исключить мои аллергены
                                 </FormLabel>
                                 <Switch
-                                    data-test-id='allergens-switcher-filter'
+                                    data-test-id={DATA_TEST_IDS.ALLERGENS_SWITCHER_FILTER}
                                     isChecked={switchAllergens}
                                     onChange={() => {
                                         setSwitchAllergens(!switchAllergens);
@@ -232,7 +233,7 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
                                 >
                                     <Flex p='8px 14px 8px 24px' gap='14px' alignItems='center'>
                                         <Input
-                                            data-test-id='add-other-allergen'
+                                            data-test-id={DATA_TEST_IDS.ADD_OTHER_ALLERGEN}
                                             variant='select'
                                             value={allergenInput}
                                             onChange={(e) => setAllergenInput(e.target.value)}
@@ -249,7 +250,7 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
                                             placeholder='Другой аллерген'
                                         />
                                         <Button
-                                            data-test-id='add-allergen-button'
+                                            data-test-id={DATA_TEST_IDS.ADD_ALLERGEN_BUTTON}
                                             size='xs'
                                             p={0}
                                             bg='transparent'
@@ -276,7 +277,7 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
                             {selectedCategory.length > 0 &&
                                 selectedCategory.map((item) => (
                                     <Tag
-                                        data-test-id='filter-tag'
+                                        data-test-id={DATA_TEST_IDS.FILTER_TAG}
                                         size='md'
                                         key={item}
                                         variant='outline'
@@ -295,7 +296,7 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
                             {selectedAuthors.length > 0 &&
                                 selectedAuthors.map((item) => (
                                     <Tag
-                                        data-test-id='filter-tag'
+                                        data-test-id={DATA_TEST_IDS.FILTER_TAG}
                                         size='md'
                                         key={item}
                                         variant='outline'
@@ -314,7 +315,7 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
                             {selectedMeat.length > 0 &&
                                 selectedMeat.map((item) => (
                                     <Tag
-                                        data-test-id='filter-tag'
+                                        data-test-id={DATA_TEST_IDS.FILTER_TAG}
                                         size='md'
                                         key={item}
                                         variant='outline'
@@ -333,7 +334,7 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
                             {selectedGarnish.length > 0 &&
                                 selectedGarnish.map((item) => (
                                     <Tag
-                                        data-test-id='filter-tag'
+                                        data-test-id={DATA_TEST_IDS.FILTER_TAG}
                                         size='md'
                                         key={item}
                                         variant='outline'
@@ -352,7 +353,7 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
                             {selectedAllergens.length > 0 &&
                                 selectedAllergens.map((item) => (
                                     <Tag
-                                        data-test-id='filter-tag'
+                                        data-test-id={DATA_TEST_IDS.FILTER_TAG}
                                         size='md'
                                         key={item}
                                         variant='outline'
@@ -371,14 +372,14 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
                         </Flex>
                         <Flex justifyContent='flex-end' gap={2}>
                             <UiButton
-                                data-test-id='clear-filter-button'
+                                data-test-id={DATA_TEST_IDS.CLEAR_FILTER_BUTTON}
                                 size={{ base: 'sm', md: 'lg' }}
                                 variant='outline'
                                 onClick={handleClean}
                                 text='Очистить фильтр'
                             />
                             <UiButton
-                                data-test-id='find-recipe-button'
+                                data-test-id={DATA_TEST_IDS.FIND_RECIPE_BUTTON}
                                 size={{ base: 'sm', md: 'lg' }}
                                 variant='solid'
                                 onClick={handleApply}

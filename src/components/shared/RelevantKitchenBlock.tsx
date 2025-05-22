@@ -2,6 +2,7 @@ import { Box, Flex, Grid, Heading, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
+import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { useToast } from '~/hooks/use-toast';
 import { useGetRecipesByCategoryQuery } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
@@ -48,7 +49,7 @@ export const RelevantKitchenBlock = () => {
 
     useEffect(() => {
         if (isError) {
-            showError('Ошибка сервера', 'Попробуйте поискать снова попозже');
+            showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
         }
     }, [isError]);
 

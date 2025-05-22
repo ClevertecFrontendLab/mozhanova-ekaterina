@@ -3,14 +3,19 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
-import { AppRoutes } from '~/config';
+import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
+import { AppRoutes } from '~/constants/routes-config';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { useErrorHandlers } from '~/hooks/use-error';
 import { useToast } from '~/hooks/use-toast';
 import { useResetPasswordMutation } from '~/query/user-api';
+import { ErrorResponse } from '~/types';
 import { RecoverySchema } from '~/validation';
 
 import { UiButton } from '../ui/UiButton';
-import { UiInput } from '../ui/UiInput';
+import { UiLoginInput } from '../ui/UiLoginInput';
 import { UiModal } from '../ui/UiModal';
+import { UiPasswordInput } from '../ui/UiPasswordInput';
 
 export const ResetCredentialsModal = ({
     email,
@@ -21,14 +26,16 @@ export const ResetCredentialsModal = ({
     isOpen: boolean;
     onClose: () => void;
 }) => {
-    const { showSuccess, showError } = useToast();
-
+    const { showSuccess } = useToast();
+    const { resetCredentialsErrorHandler } = useErrorHandlers();
     const navigate = useNavigate();
     const [reset] = useResetPasswordMutation();
 
     const {
         register,
         handleSubmit,
+        watch,
+        setValue,
         formState: { errors, isValid },
     } = useForm({
         resolver: yupResolver(RecoverySchema),
@@ -45,12 +52,12 @@ export const ResetCredentialsModal = ({
         try {
             const result = await reset({ ...data, email }).unwrap();
             if (result) {
-                showSuccess('Восстановление данных успешно', '', 15000, 'bottom-left');
+                showSuccess(NOTIFICATION_MESSAGES.RESET_CREDENTIALS_SUCCESS);
                 navigate(AppRoutes.SIGN_IN);
                 onClose();
             }
-        } catch (_error) {
-            showError('Ошибка сервера', 'Попробуйте немного позже', 15000);
+        } catch (error) {
+            resetCredentialsErrorHandler(error as ErrorResponse);
         }
     };
 
@@ -67,30 +74,27 @@ export const ResetCredentialsModal = ({
             body={
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <VStack spacing={6}>
-                        <UiInput
-                            label='Логин для входа на сайт'
-                            placeholder='Логин'
-                            helperText='Логин не менее 5 символов, только латиница'
+                        <UiLoginInput
                             error={errors.login}
                             {...register('login')}
-                            data-test-id='login-input'
+                            data-test-id={DATA_TEST_IDS.LOGIN_INPUT}
+                            setValue={(value: string) => setValue('login', value)}
+                            value={watch('login')}
                         />
-                        <UiInput
-                            type='password'
+                        <UiPasswordInput
                             label='Пароль'
-                            placeholder='Пароль'
+                            placeholder='Пароль для сайта'
                             helperText='Пароль не менее 8 символов, с заглавной буквой и цифрой'
                             error={errors.password}
                             {...register('password')}
-                            data-test-id='password-input'
+                            data-test-id={DATA_TEST_IDS.PASSWORD_INPUT}
                         />
-                        <UiInput
-                            type='password'
+                        <UiPasswordInput
                             label='Повторите пароль'
-                            placeholder='Пароль'
+                            placeholder='Повторите пароль'
                             error={errors.passwordConfirm}
                             {...register('passwordConfirm')}
-                            data-test-id='confirm-password-input'
+                            data-test-id={DATA_TEST_IDS.CONFIRM_PASSWORD_INPUT}
                         />
                     </VStack>
                     <Grid mt={8}>
@@ -99,12 +103,12 @@ export const ResetCredentialsModal = ({
                             variant='solid'
                             text='Зарегистрироваться'
                             size='lg'
-                            data-test-id='submit-button'
+                            data-test-id={DATA_TEST_IDS.SUBMIT_BUTTON}
                         />
                     </Grid>
                 </form>
             }
-            data-test-id='reset-credentials-modal'
+            data-test-id={DATA_TEST_IDS.RESET_CREDENTIALS_MODAL}
         />
     );
 };

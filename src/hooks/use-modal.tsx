@@ -7,6 +7,7 @@ import { SignInErrorModal } from '~/components/modals/SignInErrorModal';
 import { SignUpSuccessModal } from '~/components/modals/SignUpSuccessModal';
 import { VerificationCodeModal } from '~/components/modals/VerificationCodeModal';
 import { VerificationFailedModal } from '~/components/modals/VerificationFailedModal';
+import { AuthUser } from '~/types';
 
 type ModalType =
     | 'signUpSuccess'
@@ -48,7 +49,7 @@ export const useModal = () => {
         onOpen();
     };
 
-    const showSignInError = (userData: { login: string; password: string }) => {
+    const showSignInError = (userData: AuthUser) => {
         setModalType('signInError');
         setModalState(JSON.stringify(userData));
         onOpen();
@@ -64,7 +65,11 @@ export const useModal = () => {
 
             case 'sendEmail':
                 return (
-                    <SendEmailModal isOpen={isOpen} onClose={onClose} next={showVerificationCode} />
+                    <SendEmailModal
+                        isOpen={isOpen}
+                        onClose={onClose}
+                        nextModal={showVerificationCode}
+                    />
                 );
 
             case 'verificationCode':
@@ -73,7 +78,7 @@ export const useModal = () => {
                         isOpen={isOpen}
                         onClose={onClose}
                         email={modalState}
-                        next={showResetCredentials}
+                        nextModal={showResetCredentials}
                     />
                 );
 
@@ -88,7 +93,6 @@ export const useModal = () => {
                         userData={JSON.parse(modalState)}
                         isOpen={isOpen}
                         onClose={onClose}
-                        next={showSignInError}
                     />
                 );
         }

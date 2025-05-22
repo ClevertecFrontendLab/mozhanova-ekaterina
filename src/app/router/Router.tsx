@@ -4,7 +4,7 @@ import { AuthGuard } from '~/components/AuthGuard';
 import { AuthLayout } from '~/components/layouts/AuthLayout';
 import { MainLayout } from '~/components/layouts/MainLayout';
 import { RecipesTabs } from '~/components/RecipesTabs';
-import { AppRoutes } from '~/config';
+import { AppRoutes } from '~/constants/routes-config';
 import { CategoryPage } from '~/pages/CategoryPage';
 import { Home } from '~/pages/HomePage';
 import { NotFoundPage } from '~/pages/NotFoundPage';

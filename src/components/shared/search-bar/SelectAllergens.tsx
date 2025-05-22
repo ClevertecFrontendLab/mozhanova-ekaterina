@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { PlusIcon } from '~/components/ui/icons/PlusIcon';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { allergens } from '~/mocks/allergens';
 import { ApplicationState } from '~/store/configure-store';
 
@@ -42,7 +43,7 @@ export const SelectAllergens = ({
                     Исключить мои аллергены
                 </FormLabel>
                 <Switch
-                    data-test-id='allergens-switcher'
+                    data-test-id={DATA_TEST_IDS.ALLERGENS_SWITCHER}
                     isChecked={switchAllergens}
                     onChange={(e) => setSwitchAllergens(e.target.checked)}
                     id='allergens'
@@ -62,7 +63,7 @@ export const SelectAllergens = ({
                 >
                     <Flex p='8px 14px 8px 24px' gap='14px' alignItems='center'>
                         <Input
-                            data-test-id='add-other-allergen'
+                            data-test-id={DATA_TEST_IDS.ADD_OTHER_ALLERGEN}
                             variant='select'
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
@@ -76,7 +77,7 @@ export const SelectAllergens = ({
                             placeholder='Другой аллерген'
                         />
                         <Button
-                            data-test-id='add-allergen-button'
+                            data-test-id={DATA_TEST_IDS.ADD_ALLERGEN_BUTTON}
                             size='xs'
                             p={0}
                             bg='transparent'

@@ -1,11 +1,13 @@
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Text, useMediaQuery } from '@chakra-ui/react';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Text } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router';
 
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { ApplicationState } from '~/store/configure-store';
 import { selectCategories, selectSubcategories } from '~/store/selectors';
-import { defineBreadcrumbLabel } from '~/utils/breadcrumb-label';
+import { defineBreadcrumbLabel } from '~/utils/get-breadcrumb-label';
 
 export const Breadcrumbs = ({
     setMenuOpen,
@@ -15,7 +17,8 @@ export const Breadcrumbs = ({
     variant?: 'mobile' | 'default';
 }) => {
     const location = useLocation();
-    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)', { ssr: false });
+    const [isLargerThanMD] = useBreakpoint('md');
+
     const categories = useSelector(selectCategories) || [];
     const subCategories = useSelector(selectSubcategories) || [];
     const currentRecipe = useSelector((state: ApplicationState) => state.recipe.current);
@@ -26,7 +29,7 @@ export const Breadcrumbs = ({
 
     return (
         <Breadcrumb
-            data-test-id='breadcrumbs'
+            data-test-id={DATA_TEST_IDS.BREADCRUMBS}
             p={{
                 base: '0 20px',
                 md: 'unset',

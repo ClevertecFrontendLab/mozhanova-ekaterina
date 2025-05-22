@@ -2,7 +2,7 @@ import { Flex, Text } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
-import { AppRoutes } from '~/config';
+import { AppRoutes } from '~/constants/routes-config';
 import { ApplicationState } from '~/store/configure-store';
 
 import { LogInIcon } from '../ui/icons/LogInIcon';

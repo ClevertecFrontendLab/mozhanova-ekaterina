@@ -1,3 +1,5 @@
+import { ToastPosition } from '@chakra-ui/react';
+
 export type Recipe = {
     _id: string;
     title: string;
@@ -61,15 +63,13 @@ export type FormInputs = {
     email: string;
     password: string;
     passwordConfirm: string;
+    code: string;
 };
 
-export type NewUser = Omit<FormInputs, 'confirmPassword'>;
+export type NewUser = Omit<FormInputs, 'confirmPassword' | 'code'>;
 export type ResetUser = Pick<FormInputs, 'email' | 'login' | 'password' | 'passwordConfirm'>;
 export type VerifyUser = { email: string; otpToken: string };
-export type AuthUser = {
-    login: string;
-    password: string;
-};
+export type AuthUser = Pick<FormInputs, 'login' | 'password'>;
 
 export type AuthResponse = {
     message: string;
@@ -84,3 +84,46 @@ export type ErrorResponse = {
         statusCode: number;
     };
 };
+
+export type QueryFulfilled = Promise<{
+    meta?: { response?: { headers?: Headers } };
+    data?: unknown;
+}>;
+
+export enum ErrorStatus {
+    BAD_REQUEST = 400,
+    UNAUTHORIZED = 401,
+    FORBIDDEN = 403,
+}
+
+export type ErrorCase = {
+    toast?: Omit<ToastParams, 'type'>;
+    modal?: ModalType;
+    setErrorFields?: (keyof FormInputs)[];
+    setHeaderText?: string;
+};
+export type ErrorConfig = Partial<Record<ErrorStatus | 'default', ErrorCase>>;
+
+export type ToastType = 'success' | 'error' | 'warning' | 'info';
+export type ToastParams = {
+    type: ToastType;
+    title?: string;
+    description?: string;
+    duration?: number;
+    position?: ToastPosition;
+};
+
+export type NotificationMessage = {
+    title: string;
+    description?: string;
+    duration?: number;
+    position?: ToastPosition;
+};
+
+export type ModalType =
+    | 'showSignUpSuccess'
+    | 'showSignInError'
+    | 'showVerificationFailed'
+    | 'showSendEmail'
+    | 'showVerificationCode'
+    | 'showResetCredentials';

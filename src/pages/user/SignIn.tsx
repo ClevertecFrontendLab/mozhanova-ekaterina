@@ -6,20 +6,19 @@ import { useSelector } from 'react-redux';
 import { Outlet, useNavigate } from 'react-router';
 
 import { UiButton } from '~/components/ui/UiButton';
-import { UiInput } from '~/components/ui/UiInput';
-import { AppRoutes } from '~/config';
-import { useModalContext } from '~/contexts/modal-context';
-import { useToast } from '~/hooks/use-toast';
+import { UiLoginInput } from '~/components/ui/UiLoginInput';
+import { UiPasswordInput } from '~/components/ui/UiPasswordInput';
+import { AppRoutes } from '~/constants/routes-config';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { useErrorHandlers } from '~/hooks/use-error';
 import { useSignInMutation } from '~/query/user-api';
-import { ApplicationState } from '~/store/configure-store';
+import { isAuthenticated } from '~/store/selectors';
 import { ErrorResponse } from '~/types';
 import { LoginSchema } from '~/validation';
 
 export const SignIn = () => {
-    const { showError } = useToast();
     const navigate = useNavigate();
-    const { showSignInError } = useModalContext();
-    const isAuth = useSelector((state: ApplicationState) => state.user.isAuthenticated);
+    const isAuth = useSelector(isAuthenticated);
 
     const {
         register,
@@ -34,6 +33,7 @@ export const SignIn = () => {
     });
 
     const [signIn] = useSignInMutation();
+    const { loginErrorHandler } = useErrorHandlers();
 
     const onSubmit = async (userData: { login: string; password: string }) => {
         try {
@@ -42,32 +42,7 @@ export const SignIn = () => {
                 navigate(AppRoutes.HOME);
             }
         } catch (error: unknown) {
-            const response = error as ErrorResponse;
-            switch (response.status) {
-                case 401:
-                    setError('login', { message: '' });
-                    setError('password', { message: '' });
-                    showError(
-                        'Неверный логин или пароль',
-                        'Попробуйте снова',
-                        15000,
-                        'bottom-left',
-                    );
-                    break;
-                case 403:
-                    setError('login', { message: '' });
-                    setError('password', { message: '' });
-                    showError(
-                        'E-mail не верифицирован',
-                        'Проверьте почту и перейдите по ссылке',
-                        15000,
-                        'bottom-left',
-                    );
-                    break;
-                default:
-                    showSignInError(userData);
-                    break;
-            }
+            loginErrorHandler(error as ErrorResponse, userData, setError);
         }
     };
 
@@ -81,25 +56,22 @@ export const SignIn = () => {
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)} data-test-id='sign-in-form'>
+            <form onSubmit={handleSubmit(onSubmit)} data-test-id={DATA_TEST_IDS.SIGN_IN_FORM}>
                 <VStack spacing={6}>
-                    <UiInput
-                        label='Логин для входа на сайт'
-                        placeholder='Введите логин'
-                        helperText=''
+                    <UiLoginInput
                         error={errors.login}
                         {...register('login')}
+                        data-test-id={DATA_TEST_IDS.LOGIN_INPUT}
                         setValue={(value: string) => setValue('login', value)}
                         value={watch('login')}
-                        data-test-id='login-input'
                     />
-                    <UiInput
-                        type='password'
+                    <UiPasswordInput
                         label='Пароль'
                         placeholder='Пароль для сайта'
+                        helperText='Пароль не менее 8 символов, с заглавной буквой и цифрой'
                         error={errors.password}
                         {...register('password')}
-                        data-test-id='password-input'
+                        data-test-id={DATA_TEST_IDS.PASSWORD_INPUT}
                     />
                 </VStack>
 
@@ -109,17 +81,16 @@ export const SignIn = () => {
                         variant='solid'
                         text='Войти'
                         size='lg'
-                        data-test-id='submit-button'
+                        data-test-id={DATA_TEST_IDS.SUBMIT_BUTTON}
                     />
 
                     <Text
-                        zIndex={10}
                         onClick={handleRecovery}
                         type='button'
                         as='button'
                         textAlign='center'
                         fontWeight={600}
-                        data-test-id='forgot-password'
+                        data-test-id={DATA_TEST_IDS.FORGOT_PASSWORD}
                     >
                         Забыли логин или пароль?
                     </Text>

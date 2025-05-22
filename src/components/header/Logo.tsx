@@ -1,11 +1,12 @@
-import { Box, Image, useMediaQuery } from '@chakra-ui/react';
+import { Box, Image } from '@chakra-ui/react';
 import { Link } from 'react-router';
 
 import logo from '~/assets/logo/logo.png';
 import logo_mobile from '~/assets/logo/mobile_logo.png';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 
 export const Logo = () => {
-    const [isLargerThanSM] = useMediaQuery('(min-width: 361px)');
+    const [isLargerThanSM] = useBreakpoint('sm');
 
     return (
         <Box width='256px'>

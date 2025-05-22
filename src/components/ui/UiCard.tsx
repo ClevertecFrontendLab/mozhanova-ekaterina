@@ -8,14 +8,14 @@ import {
     Image,
     Stack,
     Text,
-    useMediaQuery,
 } from '@chakra-ui/react';
 import { JSX, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router';
 
 import avatar from '~/assets/blog_avatar_1.png';
-import { API_IMAGE_URL } from '~/config';
+import { API_IMAGE_URL } from '~/constants/api-config';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { ApplicationState } from '~/store/configure-store';
 import { RecipesState } from '~/store/recipe-slice';
 import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
@@ -43,6 +43,7 @@ export const UiCard = ({
     ...props
 }: Props) => {
     const { category, subCategory } = useParams();
+    const [isLargerThanMD] = useBreakpoint('md');
 
     const searchString = useSelector(
         (state: { recipe: RecipesState }) => state.recipe.filters.searchString,
@@ -63,9 +64,6 @@ export const UiCard = ({
     const rootCategories = useSelector((state: ApplicationState) =>
         selectRecipeCategories(state, rootCategoriesIds),
     );
-
-    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
-
     const categoryRoute = category || (rootCategories[0]?.category ?? '');
     const subCategoryRoute = subCategory || (subCategories[0]?.category ?? '');
 

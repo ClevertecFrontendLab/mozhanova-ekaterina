@@ -9,6 +9,7 @@ import { IngredientsTable } from '~/components/recipe/IngredientsTable';
 import { NutritionValue } from '~/components/recipe/NutritionValue';
 import { Steps } from '~/components/recipe/Steps';
 import { Slider } from '~/components/shared/slider/Slider';
+import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { useToast } from '~/hooks/use-toast';
 import { useGetRecipeByIdQuery } from '~/query/recipe-api';
 import { setCurrent } from '~/store/recipe-slice';
@@ -25,7 +26,7 @@ export const RecipePage = () => {
     });
     useEffect(() => {
         if (isError) {
-            showError('Ошибка сервера', 'Попробуйте попозже');
+            showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
             navigate(-1);
         }
     }, [isError, showError, navigate]);
@@ -33,6 +34,7 @@ export const RecipePage = () => {
     if (isLoading || isError || !data) return null;
     return (
         <Box
+            as='main'
             padding={{
                 base: '16px 16px 32px',
                 md: '56px 20px 0',

@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 
 import { ApplicationState } from './configure-store';
 
+export const isAuthenticated = (state: ApplicationState) => !!state.user.accessToken;
 export const selectAllCategories = (state: ApplicationState) => state.category.categories || [];
 
 export const selectCategories = createSelector(

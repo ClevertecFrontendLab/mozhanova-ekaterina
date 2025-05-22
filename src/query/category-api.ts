@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { API_BASE_URL } from '~/config';
+import { API_BASE_URL } from '~/constants/api-config';
 import { setCategories } from '~/store/category-slice';
 import { Category } from '~/types';
 

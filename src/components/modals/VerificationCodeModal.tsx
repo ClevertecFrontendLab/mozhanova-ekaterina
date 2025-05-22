@@ -12,9 +12,10 @@ import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
 import image from '~/assets/modals/4.png';
-import { AppRoutes } from '~/config';
-import { useToast } from '~/hooks/use-toast';
-import { useVerifyOtpMutation } from '~/query/user-api';
+import { AppRoutes } from '~/constants/routes-config';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { useErrorHandlers } from '~/hooks/use-error';
+import { useVerifyCodeMutation } from '~/query/user-api';
 import { ErrorResponse } from '~/types';
 import { verificationCodeSchema } from '~/validation';
 
@@ -24,15 +25,14 @@ export const VerificationCodeModal = ({
     isOpen,
     onClose,
     email,
-    next,
+    nextModal,
 }: {
     isOpen: boolean;
     email: string;
     onClose: () => void;
-    next: (email: string) => void;
+    nextModal: (email: string) => void;
 }) => {
     const navigate = useNavigate();
-    const { showError } = useToast();
     const [headerText, setHeaderText] = useState('');
 
     const handleClose = () => {
@@ -40,7 +40,7 @@ export const VerificationCodeModal = ({
         navigate(AppRoutes.SIGN_IN);
     };
 
-    const [verifyOtp] = useVerifyOtpMutation();
+    const [verifyCode] = useVerifyCodeMutation();
 
     const {
         control,
@@ -51,24 +51,14 @@ export const VerificationCodeModal = ({
     } = useForm({
         resolver: yupResolver(verificationCodeSchema),
     });
-
+    const { verificationCodeErrorHandler } = useErrorHandlers();
     const onSubmit = async (data: { code: string }) => {
         try {
-            const result = await verifyOtp({ email, otpToken: data.code }).unwrap();
-            if (result) next(email);
+            const result = await verifyCode({ email, otpToken: data.code }).unwrap();
+            if (result) nextModal(email);
         } catch (error) {
-            const response = error as ErrorResponse;
             resetField('code');
-            switch (response.status) {
-                case 403:
-                    setError('code', { message: '' });
-                    setHeaderText('Неверный код');
-                    break;
-
-                default:
-                    showError('Ошибка сервера', 'Попробуйте немного позже', 15000);
-                    break;
-            }
+            verificationCodeErrorHandler(error as ErrorResponse, setError, setHeaderText);
         }
     };
 
@@ -119,7 +109,7 @@ export const VerificationCodeModal = ({
                 </>
             }
             footer='Не пришло письмо? Проверьте папку Спам.'
-            data-test-id='verification-code-modal'
+            data-test-id={DATA_TEST_IDS.VERIFICATION_CODE_MODAL}
         />
     );
 };

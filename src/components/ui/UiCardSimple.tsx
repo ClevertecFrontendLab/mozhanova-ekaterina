@@ -102,7 +102,6 @@ export const UiCardSimple = ({
                                 gap='8px'
                                 color='primary.400'
                                 fontWeight='600'
-                                zIndex={50}
                                 bgColor='neutral.0'
                             >
                                 {bookmarks ? (

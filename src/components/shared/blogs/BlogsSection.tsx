@@ -1,15 +1,16 @@
 import { ArrowForwardIcon } from '@chakra-ui/icons';
-import { Flex, Heading, SimpleGrid, useMediaQuery } from '@chakra-ui/react';
+import { Flex, Heading, SimpleGrid } from '@chakra-ui/react';
 
 import avatar_1 from '~/assets/blog_avatar_1.png';
 import avatar_2 from '~/assets/blog_avatar_2.png';
 import avatar_3 from '~/assets/blog_avatar_3.png';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 
 import { UiButton } from '../../ui/UiButton';
 import { BlogCard } from './BlogCard';
 
 export const BlogsSection = () => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
+    const [isLargerThanMD] = useBreakpoint('md');
 
     return (
         <Flex

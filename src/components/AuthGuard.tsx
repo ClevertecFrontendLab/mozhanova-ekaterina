@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
-import { AppRoutes } from '~/config';
+import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
+import { AppRoutes } from '~/constants/routes-config';
 import { useToast } from '~/hooks/use-toast';
 import { useLazyCheckAuthQuery, useLazyRefreshTokenQuery } from '~/query/user-api';
 import { useAppSelector } from '~/store/hooks';
@@ -10,38 +11,39 @@ import { GlobalLoader } from './GlobalLoader';
 
 export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     const accessToken = useAppSelector((state) => state.user.accessToken);
-    const isAuthenticated = useAppSelector((state) => state.user.isAuthenticated);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
+    const location = useLocation();
     const { showError } = useToast();
     const [checkAuth] = useLazyCheckAuthQuery();
-    const [refresh] = useLazyRefreshTokenQuery();
+    const [refreshToken] = useLazyRefreshTokenQuery();
 
     useEffect(() => {
         const checkAuthHandler = async () => {
-            if (!accessToken && !isAuthenticated) {
+            if (!accessToken) {
                 try {
-                    const { data, error } = await checkAuth();
-                    if (data) {
-                        const refreshResult = await refresh();
+                    const authResult = await checkAuth();
+                    if (authResult.data) {
+                        const refreshResult = await refreshToken();
                         if (refreshResult.data) {
                             setIsLoading(false);
                         } else if (refreshResult.error) {
-                            showError('Авторизация не прошла', '', 15000, 'bottom-left');
+                            showError(NOTIFICATION_MESSAGES.AUTH_ERROR);
                             throw new Error('Token refresh failed');
                         }
-                    } else if (error) {
-                        throw new Error('Auth check failed');
+                    } else {
+                        if (location.pathname !== AppRoutes.HOME) setIsLoading(false);
+                        else throw new Error('Auth check failed');
                     }
-                } catch (_error) {
+                } catch {
                     navigate(AppRoutes.SIGN_IN);
                 }
             } else {
                 setIsLoading(false);
             }
         };
-        if (location.pathname === AppRoutes.HOME) checkAuthHandler();
-        else setIsLoading(false);
+
+        checkAuthHandler();
     }, []);
 
     if (isLoading) return <GlobalLoader />;

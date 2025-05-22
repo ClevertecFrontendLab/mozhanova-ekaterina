@@ -1,5 +1,7 @@
 import { HamburgerIcon } from '@chakra-ui/icons/Hamburger';
-import { useMediaQuery } from '@chakra-ui/react';
+
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 
 export const HamburgerButton = ({
     onClick,
@@ -8,7 +10,7 @@ export const HamburgerButton = ({
     onClick?: () => void;
     isMenuOpen: boolean;
 }) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
+    const [isLargerThanMD] = useBreakpoint('md');
 
     if (isMenuOpen && !isLargerThanMD) return null;
 
@@ -18,7 +20,7 @@ export const HamburgerButton = ({
             w={6}
             h={6}
             onClick={onClick}
-            data-test-id='hamburger-icon'
+            data-test-id={DATA_TEST_IDS.HAMBURGER_ICON}
         />
     );
 };

@@ -1,8 +1,9 @@
-import { Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery } from '@chakra-ui/react';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useToast } from '~/hooks/use-toast';
 import { useGetRecipesByCategoryQuery } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
@@ -11,7 +12,7 @@ import { selectCurrentRootCategory, selectFilters } from '~/store/selectors';
 import { UiCardGrid } from './ui/UiCardGrid';
 
 export const RecipesTabs = () => {
-    const [isLargerThanLG] = useMediaQuery('(min-width: 1441px)');
+    const [isLargerThanLG] = useBreakpoint('lg');
     const [tabIndex, setTabIndex] = useState(0);
     const navigate = useNavigate();
     const { category, subCategory } = useParams();
@@ -58,7 +59,7 @@ export const RecipesTabs = () => {
 
     useEffect(() => {
         if (isError) {
-            showError('Ошибка сервера', 'Попробуйте попозже');
+            showError({ title: 'Ошибка сервера', description: 'Попробуйте попозже' });
             navigate(-1);
         }
     }, [isError, showError, navigate]);

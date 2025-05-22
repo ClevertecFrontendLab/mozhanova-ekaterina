@@ -5,8 +5,9 @@ import { useNavigate } from 'react-router';
 import * as yup from 'yup';
 
 import image from '~/assets/modals/3.png';
-import { AppRoutes } from '~/config';
-import { useToast } from '~/hooks/use-toast';
+import { AppRoutes } from '~/constants/routes-config';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { useErrorHandlers } from '~/hooks/use-error';
 import { useForgotPasswordMutation } from '~/query/user-api';
 import { ErrorResponse } from '~/types';
 import { emailSchema } from '~/validation';
@@ -18,20 +19,20 @@ import { UiModal } from '../ui/UiModal';
 export const SendEmailModal = ({
     isOpen,
     onClose,
-    next,
+    nextModal,
 }: {
     isOpen: boolean;
     onClose: () => void;
-    next: (email: string) => void;
+    nextModal: (email: string) => void;
 }) => {
-    const { showError } = useToast();
+    const { sendEmailErrorHandler } = useErrorHandlers();
     const navigate = useNavigate();
     const handleClose = () => {
         onClose();
         navigate(AppRoutes.SIGN_IN);
     };
 
-    const [forgot] = useForgotPasswordMutation();
+    const [forgotPassword] = useForgotPasswordMutation();
 
     const {
         register,
@@ -47,25 +48,11 @@ export const SendEmailModal = ({
     const onSubmit = async (data: { email: string }) => {
         if (!isValid) return;
         try {
-            const result = await forgot(data.email).unwrap();
-            if (result) next(data.email);
+            const result = await forgotPassword(data.email).unwrap();
+            if (result) nextModal(data.email);
         } catch (error) {
-            const response = error as ErrorResponse;
-            switch (response.status) {
-                case 403:
-                    showError(
-                        'Такого e-mail нет',
-                        'Попробуйте другой e-mail или проверьте правильность его написания',
-                        15000,
-                    );
-                    break;
-
-                default:
-                    showError('Ошибка сервера', 'Попробуйте немного позже', 15000);
-                    break;
-            }
+            sendEmailErrorHandler(error as ErrorResponse, setError);
             reset();
-            setError('email', { message: '' });
         }
     };
 
@@ -87,7 +74,7 @@ export const SendEmailModal = ({
                                 placeholder='e-mail'
                                 error={errors?.email}
                                 {...register('email')}
-                                data-test-id='email-input'
+                                data-test-id={DATA_TEST_IDS.EMAIL_INPUT}
                             />
                         </Box>
 
@@ -97,14 +84,14 @@ export const SendEmailModal = ({
                                 variant='solid'
                                 text='Получить код'
                                 size='lg'
-                                data-test-id='submit-button'
+                                data-test-id={DATA_TEST_IDS.SUBMIT_BUTTON}
                             />
                         </Grid>
                     </form>
                 </>
             }
             footer='Не пришло письмо? Проверьте папку Спам.'
-            data-test-id='send-email-modal'
+            data-test-id={DATA_TEST_IDS.SEND_EMAIL_MODAL}
         />
     );
 };

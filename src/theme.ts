@@ -45,12 +45,12 @@ const theme = extendTheme({
 
         // Нейтральные цвета
         neutral: {
-            0: '#FFFFFF', // Чистый белый
+            0: '#FFFFFF',
             20: ' rgba(0, 0, 0, 0.06)',
             50: 'rgba(0, 0, 0, 0.08)', // Border light
             100: 'rgba(0, 0, 0, 0.24)',
             200: 'rgba(0, 0, 0, 0.48)', // Border dark
-            300: 'rgba(0, 0, 0, 0.64)', // Text light
+            300: 'rgba(0, 0, 0, 0.64)', // Text secondary
             350: 'rgba(0, 0, 0, 0.92)',
             400: '#000000', // Чистый черный
         },
@@ -372,10 +372,10 @@ const theme = extendTheme({
             variants: {
                 filter: {
                     overlay: {
-                        zIndex: 2002,
+                        zIndex: 50,
                     },
                     dialogContainer: {
-                        zIndex: 2002,
+                        zIndex: 50,
                     },
                     header: {
                         fontSize: '2xl',

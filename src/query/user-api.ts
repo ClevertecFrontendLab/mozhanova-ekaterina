@@ -1,13 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'; // Измените импорт
 
-import { API_BASE_URL } from '~/config';
+import { API_BASE_URL } from '~/constants/api-config';
 import { ApplicationState } from '~/store/configure-store';
-import { setAuthenticated, setCredentials } from '~/store/user-slice';
 import { AuthResponse, AuthUser, NewUser, ResetUser, VerifyUser } from '~/types';
 
 import { ApiEndpoints } from './constants/api';
 import { EndpointNames } from './constants/endpoint-names';
 import { Tags } from './constants/tags';
+import { handleAuthHeaders } from './helpers/auth-helpers';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: API_BASE_URL,
@@ -33,19 +33,7 @@ export const userApi = createApi({
                 body: credentials,
             }),
             async onQueryStarted(_args, { queryFulfilled, dispatch }) {
-                try {
-                    const { meta } = await queryFulfilled;
-
-                    const accessToken = (
-                        meta as { response: { headers: Headers } }
-                    )?.response?.headers.get('Authentication-Access');
-
-                    if (accessToken) {
-                        dispatch(setCredentials(accessToken));
-                    }
-                } catch (_error) {
-                    dispatch(setCredentials(null));
-                }
+                await handleAuthHeaders(queryFulfilled, dispatch);
             },
             invalidatesTags: [Tags.AUTH],
         }),
@@ -66,15 +54,7 @@ export const userApi = createApi({
             }),
             providesTags: [Tags.AUTH],
             async onQueryStarted(_args, { queryFulfilled, dispatch }) {
-                try {
-                    const { data } = await queryFulfilled;
-
-                    if (data) {
-                        dispatch(setAuthenticated(true));
-                    }
-                } catch (_error) {
-                    dispatch(setAuthenticated(false));
-                }
+                await handleAuthHeaders(queryFulfilled, dispatch);
             },
         }),
 
@@ -87,7 +67,7 @@ export const userApi = createApi({
             invalidatesTags: [Tags.AUTH],
         }),
 
-        [EndpointNames.VERIFY_OTP]: builder.mutation<AuthResponse, VerifyUser>({
+        [EndpointNames.VERIFY_CODE]: builder.mutation<AuthResponse, VerifyUser>({
             query: ({ email, otpToken }) => ({
                 url: ApiEndpoints.VERIFY_OTP,
                 method: 'POST',
@@ -111,19 +91,7 @@ export const userApi = createApi({
                 method: 'GET',
             }),
             async onQueryStarted(_args, { queryFulfilled, dispatch }) {
-                try {
-                    const { meta } = await queryFulfilled;
-
-                    const accessToken = (
-                        meta as { response: { headers: Headers } }
-                    )?.response?.headers.get('Authentication-Access');
-
-                    if (accessToken) {
-                        dispatch(setCredentials(accessToken));
-                    }
-                } catch (_error) {
-                    dispatch(setCredentials(null));
-                }
+                await handleAuthHeaders(queryFulfilled, dispatch);
             },
         }),
     }),
@@ -134,7 +102,7 @@ export const {
     useSignUpMutation,
     useCheckAuthQuery,
     useForgotPasswordMutation,
-    useVerifyOtpMutation,
+    useVerifyCodeMutation,
     useResetPasswordMutation,
     useLazyCheckAuthQuery,
     useLazyRefreshTokenQuery,

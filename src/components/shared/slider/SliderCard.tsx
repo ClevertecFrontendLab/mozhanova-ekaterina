@@ -1,20 +1,11 @@
-import {
-    Card,
-    CardBody,
-    CardFooter,
-    Flex,
-    Heading,
-    Image,
-    Stack,
-    Text,
-    useMediaQuery,
-} from '@chakra-ui/react';
+import { Card, CardBody, CardFooter, Flex, Heading, Image, Stack, Text } from '@chakra-ui/react';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
 import { UiCardInfo } from '~/components/ui/UiCardInfo';
-import { API_IMAGE_URL } from '~/config';
+import { API_IMAGE_URL } from '~/constants/api-config';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { ApplicationState } from '~/store/configure-store';
 import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
 import { Recipe } from '~/types';
@@ -27,7 +18,7 @@ type Props = {
 export const SliderCard = ({
     data: { title, description, image, categoriesIds, likes, bookmarks, _id },
 }: Props) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
+    const [isLargerThanMD] = useBreakpoint('md');
 
     const subCategories = useSelector((state: ApplicationState) =>
         selectRecipeSubCategories(state, categoriesIds),

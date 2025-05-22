@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
-import { AppRoutes } from '~/config';
+import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
+import { AppRoutes } from '~/constants/routes-config';
 import { useModalContext } from '~/contexts/modal-context';
 import { useToast } from '~/hooks/use-toast';
 
@@ -15,7 +16,7 @@ export const VerificationPage = () => {
     useEffect(() => {
         const verificationStatus = emailVerified === 'true';
         if (verificationStatus) {
-            showSuccess('Верификация прошла успешно', '', 15000, 'bottom-left');
+            showSuccess(NOTIFICATION_MESSAGES.VERIFICATION_SUCCESS);
             navigate(AppRoutes.SIGN_IN);
         } else {
             showVerificationFailed();

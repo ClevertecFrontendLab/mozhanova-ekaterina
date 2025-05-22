@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
-import { API_IMAGE_URL } from '~/config';
+import { API_IMAGE_URL } from '~/constants/api-config';
 import { ApplicationState } from '~/store/configure-store';
 import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
 import { Recipe } from '~/types';

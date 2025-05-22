@@ -10,7 +10,7 @@ export enum EndpointNames {
     SIGN_UP = 'signUp',
     CHECK_AUTH = 'checkAuth',
     FORGOT_PASSWORD = 'forgotPassword',
-    VERIFY_OTP = 'verifyOtp',
+    VERIFY_CODE = 'verifyCode',
     RESET_PASSWORD = 'resetPassword',
     REFRESH_TOKEN = 'refreshToken',
 }

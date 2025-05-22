@@ -2,10 +2,11 @@ import { Grid, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router';
 
 import image from '~/assets/modals/3.png';
-import { AppRoutes } from '~/config';
-import { useToast } from '~/hooks/use-toast';
+import { AppRoutes } from '~/constants/routes-config';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { useErrorHandlers } from '~/hooks/use-error';
 import { useSignInMutation } from '~/query/user-api';
-import { ErrorResponse } from '~/types';
+import { AuthUser, ErrorResponse } from '~/types';
 
 import { UiButton } from '../ui/UiButton';
 import { UiModal } from '../ui/UiModal';
@@ -14,16 +15,14 @@ export const SignInErrorModal = ({
     isOpen,
     onClose,
     userData,
-    next,
 }: {
     isOpen: boolean;
-    userData: { login: string; password: string };
+    userData: AuthUser;
     onClose: () => void;
-    next: (userData: { login: string; password: string }) => void;
 }) => {
     const navigate = useNavigate();
-    const { showError } = useToast();
     const [signIn] = useSignInMutation();
+    const { loginErrorHandler } = useErrorHandlers();
 
     const onSubmit = async (userData: { login: string; password: string }) => {
         try {
@@ -33,28 +32,7 @@ export const SignInErrorModal = ({
                 navigate(AppRoutes.HOME);
             }
         } catch (error: unknown) {
-            const response = error as ErrorResponse;
-            switch (response.status) {
-                case 401:
-                    showError(
-                        'Неверный логин или пароль',
-                        'Попробуйте снова',
-                        15000,
-                        'bottom-left',
-                    );
-                    break;
-                case 403:
-                    showError(
-                        'E-mail не верифицирован',
-                        'Проверьте почту и перейдите по ссылке',
-                        15000,
-                        'bottom-left',
-                    );
-                    break;
-                default:
-                    next(userData);
-                    break;
-            }
+            loginErrorHandler(error as ErrorResponse, userData);
         }
     };
     return (
@@ -73,7 +51,7 @@ export const SignInErrorModal = ({
                 <Grid w='100%'>
                     <UiButton
                         onClick={() => onSubmit(userData)}
-                        data-test-id='repeat-button'
+                        data-test-id={DATA_TEST_IDS.REPEAT_BUTTON}
                         type='submit'
                         variant='solid'
                         text='Повторить'
@@ -81,7 +59,7 @@ export const SignInErrorModal = ({
                     />
                 </Grid>
             }
-            data-test-id='sign-in-error-modal'
+            data-test-id={DATA_TEST_IDS.SIGN_IN_ERROR_MODAL}
         />
     );
 };

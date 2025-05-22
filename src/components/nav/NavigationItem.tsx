@@ -1,8 +1,9 @@
-import { Box, ChevronDownIcon, ChevronUpIcon, Flex, Image, useMediaQuery } from '@chakra-ui/icons';
+import { Box, ChevronDownIcon, ChevronUpIcon, Flex, Image } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 
-import { API_IMAGE_URL } from '~/config';
+import { API_IMAGE_URL } from '~/constants/api-config';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { Category } from '~/types';
 import { routeHelpers } from '~/utils/get-routes';
 
@@ -13,7 +14,7 @@ type Props = {
 };
 
 export const NavigationItem = ({ category, setMenuOpen, ...props }: Props) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)', { ssr: false });
+    const [isLargerThanMD] = useBreakpoint('md');
     const [isOpen, setIsOpen] = useState(false);
     const { category: currentCategory, subCategory: currentSubCategory } = useParams();
 

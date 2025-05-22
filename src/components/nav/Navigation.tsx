@@ -1,5 +1,6 @@
-import { Box, Flex, useMediaQuery } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { Category } from '~/types';
 
 import { Footer } from '../footer/Footer';
@@ -13,7 +14,7 @@ export const Navigation = ({
     setMenuOpen: (value: boolean) => void;
     categories: Category[];
 }) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)', { ssr: false });
+    const [isLargerThanMD] = useBreakpoint('md');
 
     return (
         <Flex

@@ -1,11 +1,12 @@
-import { Box, Flex, Image, useMediaQuery } from '@chakra-ui/react';
+import { Box, Flex, Image } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 
 import avatar from '~/assets/ava.png';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { ApplicationState } from '~/store/configure-store';
 
 export const ProfileInfo = () => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)', { ssr: false });
+    const [isLargerThanMD] = useBreakpoint('md');
     const isVisible =
         useSelector((state: ApplicationState) => state.user.accessToken) && isLargerThanMD;
 

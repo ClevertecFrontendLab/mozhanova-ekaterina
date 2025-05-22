@@ -15,15 +15,17 @@ import { useNavigate } from 'react-router';
 
 import { UiButton } from '~/components/ui/UiButton';
 import { UiInput } from '~/components/ui/UiInput';
-import { AppRoutes } from '~/config';
+import { UiLoginInput } from '~/components/ui/UiLoginInput';
+import { UiPasswordInput } from '~/components/ui/UiPasswordInput';
+import { AppRoutes } from '~/constants/routes-config';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
-import { useToast } from '~/hooks/use-toast';
+import { useErrorHandlers } from '~/hooks/use-error';
 import { useSignUpMutation } from '~/query/user-api';
-import { ErrorResponse, FormInputs } from '~/types';
+import { ErrorResponse, FormInputs, NewUser } from '~/types';
 import { RegistrationSchema } from '~/validation';
 
 export const SignUp = () => {
-    const { showError } = useToast();
     const { showSignUpSuccess } = useModalContext();
     const navigate = useNavigate();
 
@@ -33,11 +35,11 @@ export const SignUp = () => {
     ];
     const [activeStep, setActiveStep] = useState(0);
     const [activeIndex, setActiveIndex] = useState(0);
-    const allFields: (keyof FormInputs)[] = useMemo(
+    const allFields: (keyof Omit<FormInputs, 'code'>)[] = useMemo(
         () => ['name', 'lastName', 'login', 'email', 'password', 'passwordConfirm'],
         [],
     );
-    const fieldsToValidate: (keyof FormInputs)[] = useMemo(
+    const fieldsToValidate: (keyof Omit<FormInputs, 'code'>)[] = useMemo(
         () =>
             activeIndex === 0
                 ? ['name', 'lastName', 'email']
@@ -75,8 +77,9 @@ export const SignUp = () => {
     };
 
     const [signIn] = useSignUpMutation();
+    const { signUpErrorHandler } = useErrorHandlers();
 
-    const onSubmit = async (userData: FormInputs) => {
+    const onSubmit = async (userData: NewUser) => {
         if (!isValid) return;
         try {
             const result = await signIn(userData).unwrap();
@@ -85,26 +88,17 @@ export const SignUp = () => {
                 navigate(AppRoutes.SIGN_IN);
             }
         } catch (error: unknown) {
-            const response = error as ErrorResponse;
-            switch (response.status) {
-                case 400:
-                    showError(response.data?.message, '', 15000, 'bottom-left');
-                    break;
-
-                default:
-                    showError('Ошибка сервера', 'Попробуйте немного позже', 15000, 'bottom-left');
-                    break;
-            }
+            signUpErrorHandler(error as ErrorResponse);
         }
     };
 
     return (
-        <form data-test-id='sign-up-form' onSubmit={handleSubmit(onSubmit)}>
+        <form data-test-id={DATA_TEST_IDS.SIGN_UP_FORM} onSubmit={handleSubmit(onSubmit)}>
             <VStack spacing={6}>
                 <Box w='full'>
                     <FormLabel>{steps[activeIndex].description}</FormLabel>
                     <Progress
-                        data-test-id='sign-up-progress'
+                        data-test-id={DATA_TEST_IDS.SIGN_UP_PROGRESS}
                         hasStripe
                         h='8px'
                         value={progressPercent}
@@ -120,7 +114,7 @@ export const SignUp = () => {
                                     placeholder='Имя'
                                     error={errors.name}
                                     {...register('name')}
-                                    data-test-id='first-name-input'
+                                    data-test-id={DATA_TEST_IDS.FIRST_NAME_INPUT}
                                     setValue={(value: string) => setValue('name', value)}
                                     value={watch('name')}
                                 />
@@ -129,7 +123,7 @@ export const SignUp = () => {
                                     placeholder='Фамилия'
                                     error={errors.lastName}
                                     {...register('lastName')}
-                                    data-test-id='last-name-input'
+                                    data-test-id={DATA_TEST_IDS.LAST_NAME_INPUT}
                                     setValue={(value: string) => setValue('lastName', value)}
                                     value={watch('lastName')}
                                 />
@@ -139,7 +133,7 @@ export const SignUp = () => {
                                     placeholder='e-mail'
                                     error={errors.email}
                                     {...register('email')}
-                                    data-test-id='email-input'
+                                    data-test-id={DATA_TEST_IDS.EMAIL_INPUT}
                                     setValue={(value: string) => setValue('email', value)}
                                     value={watch('email')}
                                 />
@@ -147,32 +141,27 @@ export const SignUp = () => {
                         </TabPanel>
                         <TabPanel>
                             <VStack spacing={6}>
-                                <UiInput
-                                    label='Логин для входа на сайт'
-                                    placeholder='Введите логин'
-                                    helperText='Логин не менее 5 символов, только латиница, цифры и !@#$&_+-'
+                                <UiLoginInput
                                     error={errors.login}
                                     {...register('login')}
-                                    data-test-id='login-input'
+                                    data-test-id={DATA_TEST_IDS.LOGIN_INPUT}
                                     setValue={(value: string) => setValue('login', value)}
                                     value={watch('login')}
                                 />
-                                <UiInput
-                                    type='password'
+                                <UiPasswordInput
                                     label='Пароль'
                                     placeholder='Пароль для сайта'
                                     helperText='Пароль не менее 8 символов, с заглавной буквой и цифрой'
                                     error={errors.password}
                                     {...register('password')}
-                                    data-test-id='password-input'
+                                    data-test-id={DATA_TEST_IDS.PASSWORD_INPUT}
                                 />
-                                <UiInput
-                                    type='password'
+                                <UiPasswordInput
                                     label='Повторите пароль'
                                     placeholder='Повторите пароль'
                                     error={errors.passwordConfirm}
                                     {...register('passwordConfirm')}
-                                    data-test-id='confirm-password-input'
+                                    data-test-id={DATA_TEST_IDS.CONFIRM_PASSWORD_INPUT}
                                 />
                             </VStack>
                         </TabPanel>
@@ -187,7 +176,7 @@ export const SignUp = () => {
                         variant='solid'
                         text='Дальше'
                         size='lg'
-                        data-test-id='submit-button'
+                        data-test-id={DATA_TEST_IDS.SUBMIT_BUTTON}
                     />
                 ) : (
                     <UiButton
@@ -195,7 +184,7 @@ export const SignUp = () => {
                         variant='solid'
                         text='Зарегистрироваться'
                         size='lg'
-                        data-test-id='submit-button'
+                        data-test-id={DATA_TEST_IDS.SUBMIT_BUTTON}
                     />
                 )}
             </SimpleGrid>

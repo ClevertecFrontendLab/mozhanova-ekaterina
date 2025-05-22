@@ -1,4 +1,6 @@
-import { Flex, useMediaQuery } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
+
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 
 import { UiCardBadge } from './UiCardBadge';
 import { UiCardStats } from './UiCardStats';
@@ -18,7 +20,7 @@ export const UiCardInfo = ({
     categoryBgColor,
     alignItems = 'flex-end',
 }: Props) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 1001px)');
+    const [isLargerThanMD] = useBreakpoint('md');
 
     return (
         <Flex w='100%' justifyContent='space-between' alignItems={alignItems}>
