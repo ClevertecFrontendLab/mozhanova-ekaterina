@@ -8,14 +8,14 @@ import { UiButton } from '~/components/ui/UiButton';
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useGetPopularRecipesQuery } from '~/query/recipe-api';
-import { ApplicationState } from '~/store/configure-store';
 import { setCurrentPage } from '~/store/recipe-slice';
+import { paginationSelector, selectFilters } from '~/store/selectors';
 import { Recipe } from '~/types';
 
 export const TheJuiciestPage = () => {
     const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
-    const pagination = useSelector((state: ApplicationState) => state.recipe.pagination);
-    const filters = useSelector((state: ApplicationState) => state.recipe.filters);
+    const pagination = useSelector(paginationSelector);
+    const filters = useSelector(selectFilters);
     const dispatch = useDispatch();
 
     const { data, isLoading, isError, currentData } = useGetPopularRecipesQuery(

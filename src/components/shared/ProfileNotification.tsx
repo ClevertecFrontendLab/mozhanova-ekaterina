@@ -1,7 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 
-import { ApplicationState } from '~/store/configure-store';
+import { accessToken } from '~/store/selectors';
 
 import { BookmarkHeartIcon } from '../ui/icons/BookmarkHeartIcon';
 import { EmojiHeartEyesIcon } from '../ui/icons/EmojiHeartEyesIcon';
@@ -14,7 +14,7 @@ export const ProfileNotification = ({
     isMenuOpen?: boolean;
     variant?: 'default' | 'mobile';
 }) => {
-    const token = useSelector((state: ApplicationState) => state.user.accessToken);
+    const token = useSelector(accessToken);
     const isVisible = (token && variant === 'default') || (token && !isMenuOpen);
 
     return (

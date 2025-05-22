@@ -2,8 +2,11 @@ import { createSelector } from 'reselect';
 
 import { ApplicationState } from './configure-store';
 
+export const accessToken = (state: ApplicationState) => state.user.accessToken || null;
 export const isAuthenticated = (state: ApplicationState) => !!state.user.accessToken;
 export const selectAllCategories = (state: ApplicationState) => state.category.categories || [];
+export const currentRecipeSelector = (state: ApplicationState) => state.recipe.current || null;
+export const paginationSelector = (state: ApplicationState) => state.recipe.pagination || null;
 
 export const selectCategories = createSelector(
     [selectAllCategories],

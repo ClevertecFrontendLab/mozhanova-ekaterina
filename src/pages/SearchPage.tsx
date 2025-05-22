@@ -8,15 +8,14 @@ import { UiButton } from '~/components/ui/UiButton';
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { useToast } from '~/hooks/use-toast';
-import { ApplicationState } from '~/store/configure-store';
 import { useRecipesSearch } from '~/store/hooks';
 import { setCurrentPage } from '~/store/recipe-slice';
-import { selectFilters } from '~/store/selectors';
+import { paginationSelector, selectFilters } from '~/store/selectors';
 import { Recipe } from '~/types';
 
 export const SearchPage = memo(() => {
     const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
-    const pagination = useSelector((state: ApplicationState) => state.recipe.pagination);
+    const pagination = useSelector(paginationSelector);
     const filters = useSelector(selectFilters);
     const dispatch = useDispatch();
     const navigate = useNavigate();

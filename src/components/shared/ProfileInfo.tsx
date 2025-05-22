@@ -3,12 +3,11 @@ import { useSelector } from 'react-redux';
 
 import avatar from '~/assets/ava.png';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
-import { ApplicationState } from '~/store/configure-store';
+import { isAuthenticated } from '~/store/selectors';
 
 export const ProfileInfo = () => {
     const [isLargerThanMD] = useBreakpoint('md');
-    const isVisible =
-        useSelector((state: ApplicationState) => state.user.accessToken) && isLargerThanMD;
+    const isVisible = useSelector(isAuthenticated) && isLargerThanMD;
 
     return (
         <Flex display={isVisible ? 'flex' : 'none'} gap='12px'>

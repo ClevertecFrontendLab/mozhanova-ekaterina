@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
 import { AppRoutes } from '~/constants/routes-config';
-import { ApplicationState } from '~/store/configure-store';
+import { isAuthenticated } from '~/store/selectors';
 
 import { LogInIcon } from '../ui/icons/LogInIcon';
 
 export const LogInButton = () => {
-    const isVisible = !useSelector((state: ApplicationState) => state.user.accessToken);
+    const isVisible = !useSelector(isAuthenticated);
     return (
         <Flex display={isVisible ? 'flex' : 'none'}>
             <Link to={AppRoutes.SIGN_IN}>
