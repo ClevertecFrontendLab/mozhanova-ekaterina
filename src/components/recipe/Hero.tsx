@@ -1,10 +1,11 @@
-import { Card, CardBody, Flex, Heading, Image, Text, useMediaQuery } from '@chakra-ui/react';
+import { Card, CardBody, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 
-import { API_IMAGE_URL } from '~/config';
+import { API_IMAGE_URL } from '~/constants/api-config';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { ApplicationState } from '~/store/configure-store';
-import { selectRecipeCategories } from '~/store/selectors';
-import { TRecipe } from '~/types';
+import { selectRecipeCategoriesIds } from '~/store/selectors';
+import { Recipe } from '~/types';
 
 import { BookmarkHeartIcon } from '../ui/icons/BookmarkHeartIcon';
 import { ClockIcon } from '../ui/icons/ClockIcon';
@@ -13,12 +14,12 @@ import { UiButton } from '../ui/UiButton';
 import { UiCardBadge } from '../ui/UiCardBadge';
 import { UiCardStats } from '../ui/UiCardStats';
 
-export const Hero = ({ recipe }: { recipe: TRecipe }) => {
-    const [isLargerThanLG] = useMediaQuery('(min-width: 1441px)');
+export const Hero = ({ recipe }: { recipe: Recipe }) => {
+    const [isLargerThanLG] = useBreakpoint('lg');
 
-    const rootCategoryIds = useSelector((state: ApplicationState) =>
-        selectRecipeCategories(state, recipe.categoriesIds),
-    ).map((category) => category?._id ?? '');
+    const rootCategoriesIds = useSelector((state: ApplicationState) =>
+        selectRecipeCategoriesIds(state, recipe.categoriesIds),
+    );
 
     return (
         <Card
@@ -57,9 +58,10 @@ export const Hero = ({ recipe }: { recipe: TRecipe }) => {
                             md: 4,
                         }}
                     >
-                        {rootCategoryIds.map((item) => (
-                            <UiCardBadge color='secondary.100' key={item} categoryId={item} />
-                        ))}
+                        {rootCategoriesIds.length > 0 &&
+                            rootCategoriesIds.map((item) => (
+                                <UiCardBadge color='secondary.100' key={item} categoryId={item} />
+                            ))}
                     </Flex>
                     <UiCardStats
                         size={isLargerThanLG ? 'md' : 'sm'}

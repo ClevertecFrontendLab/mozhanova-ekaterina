@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { TCategory } from '~/types';
+import { Category } from '~/types';
 
-export interface CategoryState {
-    categories: TCategory[];
+export type CategoryState = {
+    categories: Category[];
     currentCategory: string | null;
-}
+};
 
 const initialState: CategoryState = {
     categories: [],

@@ -1,5 +1,7 @@
 import { Box, Flex, Spinner } from '@chakra-ui/react';
 
+import bg from '~/assets/ui/loader_bg.png';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useAppSelector } from '~/store/hooks';
 import { selectGlobalLoading } from '~/store/selectors';
 
@@ -10,7 +12,7 @@ export const GlobalLoader = () => {
 
     return (
         <Box
-            data-test-id='app-loader'
+            data-test-id={DATA_TEST_IDS.APP_LOADER}
             position='fixed'
             top='0'
             left='0'
@@ -19,7 +21,7 @@ export const GlobalLoader = () => {
             display='flex'
             alignItems='center'
             justifyContent='center'
-            zIndex={200}
+            zIndex={40}
             bg='rgba(0, 0, 0, 0.16)'
             css={{
                 backdropFilter: 'blur(4px)',
@@ -34,7 +36,7 @@ export const GlobalLoader = () => {
                     base: '134px',
                     sm: '206px',
                 }}
-                bgImage='/src/assets/ui/loader_bg.png'
+                bgImage={bg}
                 bgSize='cover'
                 alignItems='center'
                 justifyContent='center'

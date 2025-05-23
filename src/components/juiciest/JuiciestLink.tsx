@@ -1,7 +1,9 @@
 import { ArrowForwardIcon } from '@chakra-ui/icons';
-import { Box, useMediaQuery } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { memo } from 'react';
 import { Link } from 'react-router';
+
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 
 import { UiButton } from '../ui/UiButton';
 
@@ -17,10 +19,10 @@ const variants = {
 };
 
 export const JuiciestLink = memo(({ variant = 'default' }: { variant?: keyof typeof variants }) => {
-    const [isLargerThanSM] = useMediaQuery('(min-width: 361px)');
+    const [isLargerThanMD] = useBreakpoint('md');
 
     const isVisible =
-        (isLargerThanSM && variant === 'default') || (!isLargerThanSM && variant === 'mobile')
+        (isLargerThanMD && variant === 'default') || (!isLargerThanMD && variant === 'mobile')
             ? true
             : false;
 

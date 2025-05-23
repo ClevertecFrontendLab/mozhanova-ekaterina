@@ -1,17 +1,21 @@
-import { Tab, TabList, TabPanel, TabPanels, Tabs, useMediaQuery } from '@chakra-ui/react';
-import { useEffect, useMemo, useState } from 'react';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useToast } from '~/hooks/use-toast';
+import { Limit } from '~/query/constants/limits';
 import { useGetRecipesByCategoryQuery } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
 import { selectCurrentRootCategory, selectFilters } from '~/store/selectors';
+import { Category } from '~/types';
+import { getCategoryByName } from '~/utils/get-categories';
 
 import { UiCardGrid } from './ui/UiCardGrid';
 
 export const RecipesTabs = () => {
-    const [isLargerThanLG] = useMediaQuery('(min-width: 1441px)');
+    const [isLargerThanLG] = useBreakpoint('lg');
     const [tabIndex, setTabIndex] = useState(0);
     const navigate = useNavigate();
     const { category, subCategory } = useParams();
@@ -21,14 +25,10 @@ export const RecipesTabs = () => {
     const currentCategory = useSelector((state: ApplicationState) =>
         selectCurrentRootCategory(state, category as string),
     );
-    const currentSubCategory = useMemo(() => {
-        if (currentCategory)
-            return (
-                currentCategory.subCategories?.find(
-                    (category) => category.category === subCategory,
-                ) ?? null
-            );
-    }, [currentCategory, subCategory]);
+    const currentSubCategory = getCategoryByName(
+        currentCategory?.subCategories as Category[],
+        subCategory as string,
+    );
 
     const handleTabChange = (index: number) => {
         const selectedCategory = currentCategory?.subCategories[index];
@@ -39,7 +39,7 @@ export const RecipesTabs = () => {
     const { currentData, isError } = useGetRecipesByCategoryQuery(
         {
             categoryId: currentSubCategory?._id || '',
-            limit: 8,
+            limit: Limit.DEFAULT,
             ...(filters.searchString && { searchString: filters.searchString }),
             ...(filters.allergens.length > 0 && { allergens: filters.allergens }),
         },
@@ -58,7 +58,7 @@ export const RecipesTabs = () => {
 
     useEffect(() => {
         if (isError) {
-            showError('Ошибка сервера', 'Попробуйте попозже');
+            showError({ title: 'Ошибка сервера', description: 'Попробуйте попозже' });
             navigate(-1);
         }
     }, [isError, showError, navigate]);
@@ -87,7 +87,7 @@ export const RecipesTabs = () => {
                 }}
             >
                 {currentCategory &&
-                    currentCategory.subCategories.map((category, i) => (
+                    currentCategory?.subCategories?.map((category, i) => (
                         <Tab
                             data-test-id={`tab-${category.category}-${i}`}
                             whiteSpace='nowrap'
@@ -99,7 +99,7 @@ export const RecipesTabs = () => {
             </TabList>
             <TabPanels>
                 {currentCategory &&
-                    currentCategory.subCategories.map((category) => (
+                    currentCategory.subCategories?.map((category) => (
                         <TabPanel key={category._id}>
                             {category.category === subCategory && (
                                 <UiCardGrid data={currentData?.data} />

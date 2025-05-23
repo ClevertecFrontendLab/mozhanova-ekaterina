@@ -8,24 +8,26 @@ import {
     Image,
     Stack,
     Text,
-    useMediaQuery,
 } from '@chakra-ui/react';
-import { JSX, useMemo } from 'react';
+import { JSX } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router';
 
-import { API_IMAGE_URL } from '~/config';
+import avatar from '~/assets/blog_avatar_1.png';
+import { API_IMAGE_URL } from '~/constants/api-config';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { ApplicationState } from '~/store/configure-store';
 import { RecipesState } from '~/store/recipe-slice';
 import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
-import { TRecipe } from '~/types';
+import { Recipe } from '~/types';
+import { routeHelpers } from '~/utils/get-routes';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { UiButton } from './UiButton';
 import { UiCardInfo } from './UiCardInfo';
 
 type Props = {
-    data: TRecipe;
+    data: Recipe;
     size?: 'sm' | 'md' | 'lg';
     recommendation?: string;
     categoryBgColor?: 'secondary.100' | 'primary.100';
@@ -40,6 +42,9 @@ export const UiCard = ({
     index,
     ...props
 }: Props) => {
+    const { category, subCategory } = useParams();
+    const [isLargerThanMD] = useBreakpoint('md');
+
     const searchString = useSelector(
         (state: { recipe: RecipesState }) => state.recipe.filters.searchString,
     );
@@ -48,17 +53,11 @@ export const UiCard = ({
         selectRecipeSubCategories(state, categoriesIds),
     );
 
-    const rootCategoriesIds = useMemo(
-        () => subCategories.map((category) => category.rootCategoryId!),
-        [subCategories],
-    );
-
     const rootCategories = useSelector((state: ApplicationState) =>
-        selectRecipeCategories(state, rootCategoriesIds),
+        selectRecipeCategories(state, categoriesIds),
     );
-
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
-    const { category, subCategory } = useParams();
+    const categoryRoute = category || (rootCategories[0]?.category ?? '');
+    const subCategoryRoute = subCategory || (subCategories[0]?.category ?? '');
 
     return (
         <Card
@@ -96,12 +95,7 @@ export const UiCard = ({
                     fontSize='14px'
                     borderRadius='4px'
                 >
-                    <img
-                        width='16px'
-                        height='16px'
-                        src='/src/assets/blog_avatar_1.png'
-                        alt='avatar'
-                    />
+                    <img width='16px' height='16px' src={avatar} alt='avatar' />
                     {recommendation} рекомендует
                 </Flex>
             )}
@@ -116,7 +110,7 @@ export const UiCard = ({
                     >
                         <UiCardInfo
                             categoryBgColor='secondary.100'
-                            categories={rootCategories.map((category) => category?._id)}
+                            categories={rootCategories?.map((category) => category?._id)}
                             likes={likes}
                             bookmarks={bookmarks}
                             alignItems='flex-start'
@@ -162,7 +156,11 @@ export const UiCard = ({
                         />
                         {((category && subCategories) || (rootCategories && subCategories)) && (
                             <Link
-                                to={`/${category || (rootCategories[0]?.category ?? '')}/${subCategory || (subCategories[0]?.category ?? '')}/${_id}`}
+                                to={routeHelpers.getRecipePath(
+                                    categoryRoute,
+                                    subCategoryRoute,
+                                    _id,
+                                )}
                             >
                                 <UiButton
                                     data-test-id={`card-link-${index}`}

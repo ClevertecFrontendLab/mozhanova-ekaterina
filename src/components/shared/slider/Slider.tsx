@@ -1,32 +1,24 @@
 import 'swiper/swiper-bundle.css';
 
-import { Box, Flex, Heading, useMediaQuery } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { Box, Flex, Heading } from '@chakra-ui/react';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
+import { Limit } from '~/query/constants/limits';
 import { useGetLatestRecipesQuery } from '~/query/recipe-api';
-import { TRecipe } from '~/types';
 
 import { NavigationButtons } from './NavigationButtons';
 import { SliderCard } from './SliderCard';
 
 export const Slider = () => {
-    const [isLargerThanLG] = useMediaQuery('(min-width: 1441px)');
+    const [isLargerThanLG] = useBreakpoint('md');
     const { data } = useGetLatestRecipesQuery({
-        limit: 10,
+        limit: Limit.CAROUSEL,
         sortBy: 'createdAt',
     });
-    const [sortedRecipes, setSortedRecipes] = useState<TRecipe[]>([]);
-
-    useEffect(() => {
-        data &&
-            setSortedRecipes(
-                [...data.data].sort(
-                    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-                ),
-            );
-    }, [data]);
+    if (!data) return null;
 
     return (
         <Flex
@@ -52,7 +44,8 @@ export const Slider = () => {
                 <NavigationButtons />
 
                 <Swiper
-                    data-test-id='carousel'
+                    speed={0}
+                    data-test-id={DATA_TEST_IDS.CAROUSEL}
                     modules={[Navigation]}
                     navigation={{
                         nextEl: '.custom-next',
@@ -62,14 +55,14 @@ export const Slider = () => {
                     slidesPerView={4}
                     breakpoints={{
                         0: { slidesPerView: 2.1 },
-                        768: { slidesPerView: 4.5 },
+                        361: { slidesPerView: 4.5 },
                         1440: { slidesPerView: 3.1 },
                         1920: { slidesPerView: 4 },
                     }}
                     loop
                     freeMode
                 >
-                    {sortedRecipes.map((recipe, i) => (
+                    {data.data.map((recipe, i) => (
                         <SwiperSlide data-test-id={`carousel-card-${i}`} key={recipe._id}>
                             <SliderCard key={recipe._id} data={recipe} />
                         </SwiperSlide>

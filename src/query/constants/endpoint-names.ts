@@ -6,4 +6,11 @@ export enum EndpointNames {
     GET_CATEGORIES = 'getCategories',
     GET_CATEGORY_BY_ID = 'getCategoryById',
     SEARCH_RECIPES = 'searchRecipes',
+    SIGN_IN = 'signIn',
+    SIGN_UP = 'signUp',
+    CHECK_AUTH = 'checkAuth',
+    FORGOT_PASSWORD = 'forgotPassword',
+    VERIFY_CODE = 'verifyCode',
+    RESET_PASSWORD = 'resetPassword',
+    REFRESH_TOKEN = 'refreshToken',
 }

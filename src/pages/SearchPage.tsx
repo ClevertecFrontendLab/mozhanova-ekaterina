@@ -6,16 +6,16 @@ import { useNavigate } from 'react-router';
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
+import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { useToast } from '~/hooks/use-toast';
-import { ApplicationState } from '~/store/configure-store';
 import { useRecipesSearch } from '~/store/hooks';
 import { setCurrentPage } from '~/store/recipe-slice';
-import { selectFilters } from '~/store/selectors';
-import { TRecipe } from '~/types';
+import { paginationSelector, selectFilters } from '~/store/selectors';
+import { Recipe } from '~/types';
 
 export const SearchPage = memo(() => {
-    const [allRecipes, setAllRecipes] = useState<TRecipe[]>([]);
-    const pagination = useSelector((state: ApplicationState) => state.recipe.pagination);
+    const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
+    const pagination = useSelector(paginationSelector);
     const filters = useSelector(selectFilters);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -44,7 +44,7 @@ export const SearchPage = memo(() => {
     useEffect(() => {
         if (isError) {
             navigate(-1);
-            showError('Ошибка сервера', 'Попробуйте поискать снова попозже');
+            showError(NOTIFICATION_MESSAGES.GET_RECIPES_ERROR);
         }
     }, [isError, showError, navigate, dispatch]);
 
@@ -54,7 +54,7 @@ export const SearchPage = memo(() => {
         }
     };
     return (
-        <>
+        <main>
             <SearchBar title='Приятного аппетита!' />
 
             <Box
@@ -78,6 +78,6 @@ export const SearchPage = memo(() => {
                     )}
                 </Box>
             </Box>
-        </>
+        </main>
     );
 });

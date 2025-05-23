@@ -6,20 +6,22 @@ import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { Limit } from '~/query/constants/limits';
 import { useGetPopularRecipesQuery } from '~/query/recipe-api';
-import { ApplicationState } from '~/store/configure-store';
 import { setCurrentPage } from '~/store/recipe-slice';
-import { TRecipe } from '~/types';
+import { paginationSelector, selectFilters } from '~/store/selectors';
+import { Recipe } from '~/types';
 
 export const TheJuiciestPage = () => {
-    const [allRecipes, setAllRecipes] = useState<TRecipe[]>([]);
-    const pagination = useSelector((state: ApplicationState) => state.recipe.pagination);
-    const filters = useSelector((state: ApplicationState) => state.recipe.filters);
+    const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
+    const pagination = useSelector(paginationSelector);
+    const filters = useSelector(selectFilters);
     const dispatch = useDispatch();
 
     const { data, isLoading, isError, currentData } = useGetPopularRecipesQuery(
         {
-            limit: 8,
+            limit: Limit.DEFAULT,
             page: pagination.currentPage,
             ...(filters.allergens.length > 0 && { allergens: filters.allergens }),
             ...(filters.searchString && { searchString: filters.searchString }),
@@ -33,10 +35,8 @@ export const TheJuiciestPage = () => {
     useEffect(() => {
         if (currentData?.data) {
             if (pagination.currentPage === 1) {
-                // Первая страница - полная замена данных
                 setAllRecipes(currentData.data);
             } else {
-                // Последующие страницы - добавление данных
                 setAllRecipes((prev) => [...prev, ...currentData.data]);
             }
         }
@@ -55,7 +55,7 @@ export const TheJuiciestPage = () => {
     if (isError || isLoading) return null;
 
     return (
-        <>
+        <main>
             <SearchBar title='Самое сочное' />
             <Box
                 padding={{
@@ -68,7 +68,7 @@ export const TheJuiciestPage = () => {
                 {hasMore && (
                     <Flex justifyContent='center' mt={4} mb={10}>
                         <UiButton
-                            data-test-id='load-more-button'
+                            data-test-id={DATA_TEST_IDS.LOAD_MORE_BUTTON}
                             onClick={loadMore}
                             size='md'
                             text='Загрузка'
@@ -78,6 +78,6 @@ export const TheJuiciestPage = () => {
                 )}
                 <RelevantKitchenBlock />
             </Box>
-        </>
+        </main>
     );
 };

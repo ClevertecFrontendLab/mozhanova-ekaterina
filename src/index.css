@@ -58,6 +58,25 @@ h6 {
     padding: 6px 0 !important;
 }
 
+.chakra-toast {
+    transition: 'none' !important;
+    opacity: 1 !important;
+}
+
 [data-popper-placement] {
     min-width: unset !important;
+}
+
+#chakra-toast-manager-bottom-left {
+    bottom: 80px !important;
+    left: 25% !important;
+    transform: translateX(-50%);
+}
+#chakra-toast-manager-bottom {
+    bottom: 80px !important;
+}
+@media (max-width: 1001px) {
+    #chakra-toast-manager-bottom-left {
+        left: 50% !important;
+    }
 }

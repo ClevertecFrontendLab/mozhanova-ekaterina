@@ -1,4 +1,6 @@
-export type TRecipe = {
+import { AlertStatus, ToastPosition } from '@chakra-ui/react';
+
+export type Recipe = {
     _id: string;
     title: string;
     description: string;
@@ -18,14 +20,14 @@ export type TRecipe = {
     side?: string;
 };
 
-export type TMeta = {
+export type Meta = {
     total: number;
     totalPages: number;
     page: number;
     limit: number;
 };
 
-export type TParams = {
+export type Params = {
     page?: number;
     limit?: number;
     sortBy?: string;
@@ -37,19 +39,76 @@ export type TParams = {
     garnish?: string[];
     subcategoriesIds?: string[];
 };
-export type TCategory = {
+export type Category = {
     _id: string;
     title: string;
     category: string;
     icon: string;
     description: string;
-    subCategories: TSubCategory[];
+    subCategories: SubCategory[];
     rootCategoryId?: string;
 };
 
-export type TSubCategory = {
+export type SubCategory = {
     _id: string;
     title: string;
     category: string;
     rootCategoryId: string;
 };
+
+export type FormInputs = {
+    name: string;
+    lastName: string;
+    login: string;
+    email: string;
+    password: string;
+    passwordConfirm: string;
+    code: string;
+};
+
+export type NewUser = Omit<FormInputs, 'confirmPassword' | 'code'>;
+export type ResetUser = Pick<FormInputs, 'email' | 'login' | 'password' | 'passwordConfirm'>;
+export type VerifyUser = { email: string; otpToken: string };
+export type AuthUser = Pick<FormInputs, 'login' | 'password'>;
+
+export type AuthResponse = {
+    message: string;
+    statusText: string;
+};
+
+export type ErrorResponse = {
+    status: number;
+    data?: {
+        message: string;
+        error: string;
+        statusCode: number;
+    };
+};
+
+export type QueryFulfilled = Promise<{
+    meta?: { response?: { headers?: Headers } };
+    data?: unknown;
+}>;
+
+export type ToastParams = {
+    type: AlertStatus;
+    title?: string;
+    description?: string;
+    duration?: number;
+    position?: ToastPosition;
+};
+
+export type NotificationMessage = {
+    title: string;
+    description?: string;
+    duration?: number;
+    position?: ToastPosition;
+};
+
+export type ModalType =
+    | 'signUpSuccess'
+    | 'verificationFailed'
+    | 'sendEmail'
+    | 'verificationCode'
+    | 'resetCredentials'
+    | 'signInError';

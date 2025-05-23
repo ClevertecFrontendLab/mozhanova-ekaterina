@@ -5,11 +5,12 @@ import { Outlet, useNavigate, useParams } from 'react-router';
 
 import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
+import { AppRoutes } from '~/constants/routes-config';
 import { useGetCategoriesQuery } from '~/query/category-api';
 import { ApplicationState } from '~/store/configure-store';
 import { setCategoryFilter, setSubCategoryFilter } from '~/store/recipe-slice';
 import { selectCurrentRootCategory } from '~/store/selectors';
-import { TCategory } from '~/types';
+import { routeHelpers } from '~/utils/get-routes';
 
 export const CategoryPage = () => {
     const params = useParams();
@@ -21,11 +22,11 @@ export const CategoryPage = () => {
     const { currentData: categoryData, isLoading, isError } = useGetCategoriesQuery();
 
     const currentCategory = useSelector((state: ApplicationState) =>
-        selectCurrentRootCategory(state, category as string),
-    ) as TCategory;
+        selectCurrentRootCategory(state, category || ''),
+    );
 
     const currentSubCategory =
-        currentCategory?.subCategories?.find((category) => category.category === subCategory) ??
+        currentCategory?.subCategories?.find((category) => category.category === subCategory) ||
         null;
 
     useEffect(() => {
@@ -46,11 +47,16 @@ export const CategoryPage = () => {
             (currentCategory.subCategories.length > 0 && subCategory && !currentSubCategory);
 
         if (shouldRedirect) {
-            navigate('/not-found', { replace: true });
+            navigate(AppRoutes.NOT_FOUND, { replace: true });
         }
 
         if (currentCategory && !subCategory)
-            navigate(`/${currentCategory.category}/${currentCategory.subCategories[0].category}`);
+            navigate(
+                routeHelpers.getSubCategoryPath(
+                    currentCategory.category,
+                    currentCategory.subCategories[0].category,
+                ),
+            );
     }, [
         navigate,
         categoryData,
@@ -62,7 +68,7 @@ export const CategoryPage = () => {
     ]);
 
     return (
-        <>
+        <main>
             {currentCategory && (
                 <SearchBar
                     title={currentCategory.title}
@@ -80,6 +86,6 @@ export const CategoryPage = () => {
                 <Outlet />
                 <RelevantKitchenBlock />
             </Box>
-        </>
+        </main>
     );
 };

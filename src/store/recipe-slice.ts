@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { TRecipe } from '~/types';
+import { Limit } from '~/query/constants/limits';
+import { Recipe } from '~/types';
 
-export interface RecipesState {
-    current: TRecipe | null;
+export type RecipesState = {
+    current: Recipe | null;
     filters: {
         categoryName: string[];
         subcategoryIds: string[];
@@ -18,7 +19,7 @@ export interface RecipesState {
         limit: number;
         totalPages?: number;
     };
-}
+};
 
 const initialState: RecipesState = {
     current: null,
@@ -33,7 +34,7 @@ const initialState: RecipesState = {
     },
     pagination: {
         currentPage: 1,
-        limit: 8,
+        limit: Limit.DEFAULT,
     },
 };
 
@@ -71,7 +72,7 @@ export const recipesSlice = createSlice({
         setPaginationMeta: (state, action: PayloadAction<{ totalPages: number }>) => {
             state.pagination.totalPages = action.payload.totalPages;
         },
-        setCurrent: (state, action: PayloadAction<TRecipe>) => {
+        setCurrent: (state, action: PayloadAction<Recipe>) => {
             state.current = action.payload;
         },
     },

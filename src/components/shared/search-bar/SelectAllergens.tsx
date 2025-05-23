@@ -1,8 +1,9 @@
-import { Box, Button, Flex, FormLabel, Input, Switch, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Flex, FormLabel, Input, Switch } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { PlusIcon } from '~/components/ui/icons/PlusIcon';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { allergens } from '~/mocks/allergens';
 import { ApplicationState } from '~/store/configure-store';
 
@@ -17,7 +18,6 @@ export const SelectAllergens = ({
 }) => {
     const [switchAllergens, setSwitchAllergens] = useState(false);
     const [inputValue, setInputValue] = useState('');
-    const { isOpen, onToggle, onClose } = useDisclosure();
 
     const { allergens: selectedAllergens } = useSelector(
         (state: ApplicationState) => state.recipe.filters,
@@ -43,7 +43,7 @@ export const SelectAllergens = ({
                     Исключить мои аллергены
                 </FormLabel>
                 <Switch
-                    data-test-id='allergens-switcher'
+                    data-test-id={DATA_TEST_IDS.ALLERGENS_SWITCHER}
                     isChecked={switchAllergens}
                     onChange={(e) => setSwitchAllergens(e.target.checked)}
                     id='allergens'
@@ -52,9 +52,6 @@ export const SelectAllergens = ({
 
             <Box w='269px'>
                 <SelectOptions
-                    isOpen={isOpen}
-                    onClose={onClose}
-                    onToggle={onToggle}
                     setSelected={setSelected}
                     selected={selected}
                     placeholder='Выберите из списка...'
@@ -64,34 +61,32 @@ export const SelectAllergens = ({
                     dataButton='allergens-menu-button'
                     dataList='allergens-menu'
                 >
-                    {isOpen && (
-                        <Flex p='8px 14px 8px 24px' gap='14px' alignItems='center'>
-                            <Input
-                                data-test-id='add-other-allergen'
-                                variant='custom'
-                                value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter') {
-                                        setSelected([...selected, inputValue]);
-                                        setInputValue('');
-                                    }
-                                }}
-                                size='sm'
-                                placeholder='Другой аллерген'
-                            />
-                            <Button
-                                data-test-id='add-allergen-button'
-                                size='xs'
-                                p={0}
-                                bg='transparent'
-                                _hover={{ bg: 'neutral.50' }}
-                                onClick={() => setSelected([...selected, inputValue])}
-                            >
-                                <PlusIcon />
-                            </Button>
-                        </Flex>
-                    )}
+                    <Flex p='8px 14px 8px 24px' gap='14px' alignItems='center'>
+                        <Input
+                            data-test-id={DATA_TEST_IDS.ADD_OTHER_ALLERGEN}
+                            variant='select'
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    setSelected([...selected, inputValue]);
+                                    setInputValue('');
+                                }
+                            }}
+                            size='sm'
+                            placeholder='Другой аллерген'
+                        />
+                        <Button
+                            data-test-id={DATA_TEST_IDS.ADD_ALLERGEN_BUTTON}
+                            size='xs'
+                            p={0}
+                            bg='transparent'
+                            _hover={{ bg: 'neutral.50' }}
+                            onClick={() => setSelected([...selected, inputValue])}
+                        >
+                            <PlusIcon />
+                        </Button>
+                    </Flex>
                 </SelectOptions>
             </Box>
         </Flex>

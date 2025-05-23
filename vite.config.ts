@@ -2,7 +2,16 @@ import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+    build: {
+        assetsInclude: ['**/*.svg'],
+        rollupOptions: {
+            output: {
+                assetFileNames: 'assets/[name].[hash][extname]',
+            },
+        },
+    },
+    base: command === 'build' ? '/mozhanova-ekaterina/' : '/',
     plugins: [react()],
     server: {
         host: true,
@@ -14,4 +23,4 @@ export default defineConfig({
             '@public': resolve(__dirname, 'public'),
         },
     },
-});
+}));

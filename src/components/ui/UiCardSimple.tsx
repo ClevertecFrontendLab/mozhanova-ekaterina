@@ -1,10 +1,11 @@
 import { Box, Card, CardBody, Flex, Heading, Text } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router';
+import { Link } from 'react-router';
 
 import { ApplicationState } from '~/store/configure-store';
-import { selectRecipeCategories } from '~/store/selectors';
-import { TRecipe } from '~/types';
+import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
+import { Recipe } from '~/types';
+import { routeHelpers } from '~/utils/get-routes';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { EmojiHeartEyesIcon } from './icons/EmojiHeartEyesIcon';
@@ -13,17 +14,21 @@ import { UiCardBadge } from './UiCardBadge';
 export const UiCardSimple = ({
     data: { title, description, bookmarks, likes, categoriesIds, _id },
 }: {
-    data: TRecipe;
+    data: Recipe;
 }) => {
-    const { category, subCategory } = useParams();
+    const subCategories = useSelector((state: ApplicationState) =>
+        selectRecipeSubCategories(state, categoriesIds),
+    );
 
     const rootCategories = useSelector((state: ApplicationState) =>
         selectRecipeCategories(state, categoriesIds),
     );
+
+    const categoryRoute = rootCategories[0]?.category ?? '';
+    const subCategoryRoute = subCategories[0]?.category ?? '';
+
     return (
-        <Link
-            to={`/${category || rootCategories.map((c) => c?.category)[0]}/${subCategory || rootCategories.map((c) => c?.subCategories[0]?.category)[0]}/${_id}`}
-        >
+        <Link to={routeHelpers.getRecipePath(categoryRoute, subCategoryRoute, _id)}>
             <Card
                 h='100%'
                 transition='box-shadow 0.3s ease-in-out'
@@ -65,7 +70,7 @@ export const UiCardSimple = ({
                         </Text>
                     </Box>
                     <Flex wrap='wrap' gap={2}>
-                        {rootCategories.map((category) => (
+                        {rootCategories?.map((category) => (
                             <UiCardBadge
                                 key={`badge-${category?._id}`}
                                 color='secondary.100'
@@ -89,7 +94,6 @@ export const UiCardSimple = ({
                                 gap='8px'
                                 color='primary.400'
                                 fontWeight='600'
-                                zIndex={50}
                                 bgColor='neutral.0'
                             >
                                 {bookmarks ? (

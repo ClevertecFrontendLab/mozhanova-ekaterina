@@ -45,12 +45,12 @@ const theme = extendTheme({
 
         // Нейтральные цвета
         neutral: {
-            0: '#FFFFFF', // Чистый белый
+            0: '#FFFFFF',
             20: ' rgba(0, 0, 0, 0.06)',
             50: 'rgba(0, 0, 0, 0.08)', // Border light
             100: 'rgba(0, 0, 0, 0.24)',
             200: 'rgba(0, 0, 0, 0.48)', // Border dark
-            300: 'rgba(0, 0, 0, 0.64)', // Text light
+            300: 'rgba(0, 0, 0, 0.64)', // Text secondary
             350: 'rgba(0, 0, 0, 0.92)',
             400: '#000000', // Чистый черный
         },
@@ -319,7 +319,7 @@ const theme = extendTheme({
                 },
             },
             variants: {
-                custom: {
+                search: {
                     field: {
                         borderWidth: '1px',
                         borderColor: 'border.dark',
@@ -339,7 +339,21 @@ const theme = extendTheme({
                         borderColor: 'border.light',
                         color: 'neutral.300',
                         _placeholder: {
-                            color: 'neutral.300',
+                            color: 'primary.700',
+                            fontWeight: '400',
+                        },
+                        _focus: {
+                            boxShadow: 'none',
+                        },
+                    },
+                },
+                login: {
+                    field: {
+                        borderWidth: '1px',
+                        borderColor: 'primary.100',
+                        color: 'primary.700',
+                        _placeholder: {
+                            color: 'primary.700',
                             fontWeight: '400',
                         },
                         _focus: {
@@ -357,6 +371,12 @@ const theme = extendTheme({
             },
             variants: {
                 filter: {
+                    overlay: {
+                        zIndex: 50,
+                    },
+                    dialogContainer: {
+                        zIndex: 50,
+                    },
                     header: {
                         fontSize: '2xl',
                         p: { base: '16px 20px 16px 16px', md: 8 },
@@ -375,11 +395,65 @@ const theme = extendTheme({
                 },
             },
         },
+        Progress: {
+            baseStyle: {
+                track: {
+                    position: 'relative',
+                    bg: 'neutral.20',
+                    width: 'full',
+                    boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.1)',
+                },
+                filledTrack: {
+                    position: 'absolute',
+                    left: 0,
+                    transition: 'all 0.3s ease',
+                    bg: `url(./images/progress_inner.svg)`,
+                },
+            },
+        },
+        Modal: {
+            baseStyle: {
+                overlay: {
+                    zIndex: 30,
+                },
+                dialog: {
+                    w: { base: '316px', md: '396px' },
+                    p: 8,
+                    borderRadius: '16px',
+                    textAlign: 'center',
+                    zIndex: 30,
+                },
+                dialogContainer: {
+                    zIndex: 30,
+                },
+                closeButton: {
+                    borderRadius: '50%',
+                    borderWidth: '2px',
+                    borderColor: 'neutral.400',
+                    _focus: {
+                        boxShadow: 'none',
+                    },
+                },
+                header: {
+                    px: 0,
+                    fontSize: '2xl',
+                },
+                body: {
+                    px: 0,
+                },
+                footer: {
+                    px: 0,
+                    color: 'neutral.200',
+                    fontSize: 'xs',
+                    justifyContent: 'center',
+                },
+            },
+        },
     },
     breakpoints: {
         base: '0px',
         sm: '361px',
-        md: '769px',
+        md: '1001px',
         lg: '1441px',
         xl: '1920px',
     },

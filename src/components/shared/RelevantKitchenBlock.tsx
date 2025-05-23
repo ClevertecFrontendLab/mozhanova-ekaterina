@@ -2,25 +2,27 @@ import { Box, Flex, Grid, Heading, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
+import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { useToast } from '~/hooks/use-toast';
+import { Limit } from '~/query/constants/limits';
 import { useGetRecipesByCategoryQuery } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
 import { useAppSelector } from '~/store/hooks';
 import { selectCategoryById, selectSubcategories } from '~/store/selectors';
-import { TCategory, TSubCategory } from '~/types';
+import { Category, SubCategory } from '~/types';
 
 import { UiCardMini } from '../ui/UiCardMini';
 import { UiCardSimple } from '../ui/UiCardSimple';
 
 export const RelevantKitchenBlock = () => {
     const { category } = useParams();
-    const allSubCategories = useAppSelector(selectSubcategories) as TSubCategory[];
-    const [randomSubCategory, setRandomSubCategory] = useState<TSubCategory | null>(null);
+    const allSubCategories = useAppSelector(selectSubcategories) as SubCategory[];
+    const [randomSubCategory, setRandomSubCategory] = useState<SubCategory | null>(null);
     const { showError } = useToast();
 
     const currentRootCategory = useAppSelector((state: ApplicationState) =>
         selectCategoryById(state, randomSubCategory?.rootCategoryId || ''),
-    ) as TCategory;
+    ) as Category;
 
     useEffect(() => {
         if (allSubCategories.length > 0) {
@@ -32,7 +34,7 @@ export const RelevantKitchenBlock = () => {
     const { data, isError, refetch } = useGetRecipesByCategoryQuery(
         {
             categoryId: randomSubCategory?._id || '',
-            limit: 5,
+            limit: Limit.RELEVANT_KITCHEN,
         },
         {
             skip: !randomSubCategory,
@@ -48,9 +50,11 @@ export const RelevantKitchenBlock = () => {
 
     useEffect(() => {
         if (isError) {
-            showError('Ошибка сервера', 'Попробуйте поискать снова попозже');
+            showError(NOTIFICATION_MESSAGES.GET_RECIPES_ERROR);
         }
-    }, [isError, showError]);
+    }, [isError]);
+
+    if (!data?.data) return null;
 
     const relevantLeft =
         data?.data.slice(0, 2).map((recipe) => <UiCardSimple key={recipe._id} data={recipe} />) ||

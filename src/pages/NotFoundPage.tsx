@@ -1,8 +1,11 @@
 import { Box, Flex, Image, Text } from '@chakra-ui/react';
 import { Link } from 'react-router';
 
+import image from '~/assets/ui/404.png';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+
 export const NotFoundPage = () => (
-    <Box textAlign='center'>
+    <Box as='main' textAlign='center'>
         <Flex
             justifyContent='center'
             mb={8}
@@ -13,7 +16,7 @@ export const NotFoundPage = () => (
             }}
         >
             <Image
-                src='/src/assets/ui/404.png'
+                src={image}
                 w={{ base: '108px', md: '206px' }}
                 h={{ base: '108px', md: '206px' }}
             />
@@ -24,7 +27,7 @@ export const NotFoundPage = () => (
         <Text color='text.secondary'>
             Можете поискать другой рецепт
             <Text textDecoration='underline'>
-                <Link data-test-id='error-page-go-home' to='/'>
+                <Link data-test-id={DATA_TEST_IDS.ERROR_PAGE_GO_HOME} to='/'>
                     здесь.
                 </Link>
             </Text>

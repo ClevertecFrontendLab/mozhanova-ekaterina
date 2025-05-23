@@ -1,63 +1,58 @@
-import { Box, useMediaQuery } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router';
 
+import { useBreakpoint } from '~/hooks/use-breakpoint';
+
 import { FooterMobile } from '../footer/FooterMobile';
-import { GlobalLoader } from '../GlobalLoader';
 import { Header } from '../header/Header';
 import { Navbar } from '../Navbar';
 import { Sidebar } from '../Sidebar';
 
 export const MainLayout = () => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
-    const [menuOpen, setMenuOpen] = useState<boolean>(true);
+    const [isLargerThanMD] = useBreakpoint('md');
+    const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => setMenuOpen(isLargerThanMD), [isLargerThanMD]);
 
     return (
-        <>
-            <GlobalLoader />
-            <Box
-                pt={{
-                    base: '64px',
-                    md: '80px',
-                }}
-                pb={{
-                    base: '84px',
-                    md: '0',
-                }}
-                pl={{
-                    base: '0',
-                    md: '256px',
-                }}
-                pr={{
-                    base: '0',
-                    md: '256px',
-                }}
-            >
-                <Header isMenuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+        <Box
+            pt={{
+                base: '64px',
+                md: '80px',
+            }}
+            pb={{
+                base: '84px',
+                md: '0',
+            }}
+            pl={{
+                base: '0',
+                md: '256px',
+            }}
+            pr={{
+                base: '0',
+                md: '256px',
+            }}
+        >
+            <Header isMenuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
-                <Navbar isMenuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+            <Navbar isMenuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
-                <main>
-                    <Outlet />
-                </main>
-                {isLargerThanMD ? (
-                    <Box
-                        bg='background.base'
-                        position='fixed'
-                        right='0'
-                        bottom='0'
-                        top='80px'
-                        w='256px'
-                        zIndex={100}
-                    >
-                        <Sidebar />
-                    </Box>
-                ) : null}
+            <Outlet />
+            {isLargerThanMD ? (
+                <Box
+                    bg='background.base'
+                    position='fixed'
+                    right='0'
+                    bottom='0'
+                    top='80px'
+                    w='256px'
+                >
+                    <Sidebar />
+                </Box>
+            ) : null}
 
-                {!isLargerThanMD && <FooterMobile />}
-            </Box>
-        </>
+            {!isLargerThanMD && <FooterMobile />}
+        </Box>
     );
 };

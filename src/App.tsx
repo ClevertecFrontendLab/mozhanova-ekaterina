@@ -1,23 +1,25 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router';
 
 import { Router } from './app/router/Router';
-import { store } from './store/configure-store';
+import { GlobalLoader } from './components/GlobalLoader';
+import { ModalProvider } from './contexts/modal-context';
 import theme from './theme';
 
 function App() {
+    const base = import.meta.env.BASE_URL;
     return (
-        <BrowserRouter>
+        <BrowserRouter basename={base}>
             <ChakraProvider theme={theme}>
-                <Provider store={store}>
-                    <Router />
-                </Provider>
+                <ModalProvider>
+                    <>
+                        <GlobalLoader />
+                        <Router />
+                    </>
+                </ModalProvider>
             </ChakraProvider>
         </BrowserRouter>
     );
 }
 
 export default App;
-
-//Сверстаны: Главная страница, страница Веганская кухня, страница Самое сочное,

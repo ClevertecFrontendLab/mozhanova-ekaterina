@@ -1,10 +1,15 @@
-import { CloseIcon, HamburgerIcon } from '@chakra-ui/icons';
-import { Box, Flex, Image, useMediaQuery } from '@chakra-ui/react';
-import { Link } from 'react-router';
+import { Flex } from '@chakra-ui/react';
+
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
 
 import { ProfileInfo } from '../shared/ProfileInfo';
 import { ProfileNotification } from '../shared/ProfileNotification';
 import { Breadcrumbs } from './Breadcrumbs';
+import { CloseMenuButton } from './CloseMenuButton';
+import { HamburgerButton } from './HamburgerButton';
+import { LogInButton } from './LogInButton';
+import { Logo } from './Logo';
 
 export const Header = ({
     setMenuOpen,
@@ -13,8 +18,9 @@ export const Header = ({
     setMenuOpen: (value: boolean) => void;
     isMenuOpen: boolean;
 }) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)');
-    const [isLargerThanSM] = useMediaQuery('(min-width: 361px)');
+    const [isLargerThanMD] = useBreakpoint('md');
+
+    const toggleMenu = () => setMenuOpen(!isMenuOpen);
 
     return (
         <Flex
@@ -22,7 +28,7 @@ export const Header = ({
             position='fixed'
             top='0'
             left='0'
-            zIndex='101'
+            zIndex={60}
             w='100%'
             h={{
                 base: '64px',
@@ -39,60 +45,25 @@ export const Header = ({
                 md: 4,
             }}
             bg={isMenuOpen && !isLargerThanMD ? 'background.base' : 'background.header'}
-            data-test-id='header'
+            data-test-id={DATA_TEST_IDS.HEADER}
         >
-            <Box width='256px'>
-                <Link to='/'>
-                    <Image
-                        w={{
-                            base: '32px',
-                            sm: '135px',
-                        }}
-                        h='32px'
-                        src={
-                            isLargerThanSM
-                                ? '/src/assets/logo/logo.png'
-                                : '/src/assets/logo/mobile_logo.png'
-                        }
-                        alt='logo'
-                    />
-                </Link>
-            </Box>
-            {isLargerThanMD && (
-                <>
-                    <Breadcrumbs setMenuOpen={setMenuOpen} />
-                    <ProfileInfo />
-                </>
-            )}
+            <Logo />
 
+            <Breadcrumbs setMenuOpen={setMenuOpen} />
+            <ProfileInfo />
+            {isLargerThanMD && <LogInButton />}
             <Flex
-                display={isLargerThanMD ? 'none' : 'flex'}
+                display={!isLargerThanMD ? 'flex' : 'none'}
                 justify='flex-end'
                 align='center'
                 flexGrow={1}
             >
-                {!isMenuOpen && <ProfileNotification />}
-                <Flex w={6} h={6} alignItems='center' justifyContent='center'>
-                    {!isLargerThanMD && isMenuOpen && (
-                        <CloseIcon
-                            data-test-id='close-icon'
-                            onClick={() => {
-                                setMenuOpen(false);
-                            }}
-                        />
-                    )}
+                <ProfileNotification variant='mobile' isMenuOpen={isMenuOpen} />
+                <Flex gap={6} alignItems='center' justifyContent='center'>
+                    <LogInButton />
 
-                    {/* <UiLogoutButton /> */}
-                    {(isLargerThanMD || !isMenuOpen) && (
-                        <HamburgerIcon
-                            w={6}
-                            h={6}
-                            onClick={() => {
-                                setMenuOpen(true);
-                            }}
-                            data-test-id='hamburger-icon'
-                        />
-                    )}
+                    <CloseMenuButton isMenuOpen={isMenuOpen} onClick={toggleMenu} />
+                    <HamburgerButton isMenuOpen={isMenuOpen} onClick={toggleMenu} />
                 </Flex>
             </Flex>
         </Flex>

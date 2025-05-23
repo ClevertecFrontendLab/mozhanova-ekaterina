@@ -1,27 +1,28 @@
-import { Box, ChevronDownIcon, ChevronUpIcon, Flex, Image, useMediaQuery } from '@chakra-ui/icons';
+import { Box, ChevronDownIcon, ChevronUpIcon, Flex, Image } from '@chakra-ui/icons';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 
-import { API_IMAGE_URL } from '~/config';
-import { TCategory } from '~/types';
+import { API_IMAGE_URL } from '~/constants/api-config';
+import { useBreakpoint } from '~/hooks/use-breakpoint';
+import { Category } from '~/types';
+import { routeHelpers } from '~/utils/get-routes';
 
 type Props = {
-    category: TCategory;
+    category: Category;
     setMenuOpen: (value: boolean) => void;
     'data-id'?: string;
 };
 
 export const NavigationItem = ({ category, setMenuOpen, ...props }: Props) => {
-    const [isLargerThanMD] = useMediaQuery('(min-width: 769px)', { ssr: false });
+    const [isLargerThanMD] = useBreakpoint('md');
     const [isOpen, setIsOpen] = useState(false);
-    const params = useParams();
-
-    const currentCategory = params.category;
-    const currentSubCategory = params.subCategory;
+    const { category: currentCategory, subCategory: currentSubCategory } = useParams();
 
     useEffect(() => {
         currentCategory === category.category ? setIsOpen(true) : setIsOpen(false);
     }, [currentCategory, category.category]);
+
+    if (!category) return null;
 
     return (
         <Box
@@ -46,7 +47,12 @@ export const NavigationItem = ({ category, setMenuOpen, ...props }: Props) => {
                         src={`${API_IMAGE_URL}${category.icon}`}
                         alt='menu_item_icon'
                     />
-                    <Link to={`/${category.category}/${category.subCategories[0].category}`}>
+                    <Link
+                        to={routeHelpers.getSubCategoryPath(
+                            category.category,
+                            category.subCategories[0].category,
+                        )}
+                    >
                         {category.title}
                     </Link>
                 </Flex>
@@ -66,43 +72,50 @@ export const NavigationItem = ({ category, setMenuOpen, ...props }: Props) => {
             </Flex>
 
             <Box role='group' as='ul' paddingLeft='33px' display={isOpen ? 'block' : 'none'}>
-                {category.subCategories.map((sub) => (
-                    <Flex
-                        data-id={sub._id}
-                        key={`${category._id}-${sub._id}`}
-                        as='li'
-                        padding='6px 0'
-                        cursor='pointer'
-                        whiteSpace='nowrap'
-                        _hover={{
-                            fontWeight: '700',
-                            '& .divider': { width: '8px', transform: 'translateX(-100%)' },
-                        }}
-                        aria-current={sub.category === currentSubCategory ? 'page' : undefined}
-                        _activeLink={{
-                            fontWeight: '700',
-                            '& .divider': { width: '8px', transform: 'translateX(-100%)' },
-                        }}
-                        data-test-id={
-                            sub.category === currentSubCategory && `${sub.category}-active`
-                        }
-                    >
-                        <Box
-                            className='divider'
-                            marginRight='12px'
-                            width='1px'
-                            height='24px'
-                            bg='primary.200'
-                            transition='all 0.3s ease-in-out'
-                        ></Box>
-                        <Link
-                            onClick={() => !isLargerThanMD && setMenuOpen(false)}
-                            to={`/${category.category}/${sub.category}`}
+                {category.subCategories.length > 0 &&
+                    category.subCategories.map((subCategory) => (
+                        <Flex
+                            data-id={subCategory._id}
+                            key={`${category._id}-${subCategory._id}`}
+                            as='li'
+                            padding='6px 0'
+                            cursor='pointer'
+                            whiteSpace='nowrap'
+                            _hover={{
+                                fontWeight: '700',
+                                '& .divider': { width: '8px', transform: 'translateX(-100%)' },
+                            }}
+                            aria-current={
+                                subCategory.category === currentSubCategory ? 'page' : undefined
+                            }
+                            _activeLink={{
+                                fontWeight: '700',
+                                '& .divider': { width: '8px', transform: 'translateX(-100%)' },
+                            }}
+                            data-test-id={
+                                subCategory.category === currentSubCategory &&
+                                `${subCategory.category}-active`
+                            }
                         >
-                            {sub.title}
-                        </Link>
-                    </Flex>
-                ))}
+                            <Box
+                                className='divider'
+                                marginRight='12px'
+                                width='1px'
+                                height='24px'
+                                bg='primary.200'
+                                transition='all 0.3s ease-in-out'
+                            ></Box>
+                            <Link
+                                onClick={() => !isLargerThanMD && setMenuOpen(false)}
+                                to={routeHelpers.getSubCategoryPath(
+                                    category.category,
+                                    subCategory.category,
+                                )}
+                            >
+                                {subCategory.title}
+                            </Link>
+                        </Flex>
+                    ))}
             </Box>
         </Box>
     );

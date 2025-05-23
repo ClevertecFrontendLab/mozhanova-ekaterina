@@ -1,10 +1,10 @@
 import { memo } from 'react';
 
-import { TRecipe } from '~/types';
+import { Recipe } from '~/types';
 
 import { UiCard } from '../ui/UiCard';
 
-export const JuiciestList = memo(({ data }: { data?: TRecipe[] }) => {
+export const JuiciestList = memo(({ data }: { data?: Recipe[] }) => {
     if (!data) return null;
     return (
         <>

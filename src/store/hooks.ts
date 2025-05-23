@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
+import { Limit } from '~/query/constants/limits';
 import { useLazySearchRecipesQuery, useSearchRecipesQuery } from '~/query/recipe-api';
 
 import { ApplicationState, store } from './configure-store';
@@ -17,7 +18,7 @@ export const useRecipesSearch = () => {
 
     const stableArgs = useMemo(
         () => ({
-            limit: 8,
+            limit: Limit.DEFAULT,
             page: pagination.currentPage,
             sortBy: 'createdAt',
             sortOrder: 'asc',
@@ -61,7 +62,7 @@ export const useLazyRecipesSearch = () => {
 
     const stableArgs = useMemo(
         () => ({
-            limit: 8,
+            limit: Limit.DEFAULT,
             page: pagination.currentPage,
             sortBy: 'createdAt',
             sortOrder: 'asc',

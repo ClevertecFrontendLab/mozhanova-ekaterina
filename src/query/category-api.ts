@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { API_BASE_URL } from '~/config';
+import { API_BASE_URL } from '~/constants/api-config';
 import { setCategories } from '~/store/category-slice';
-import { TCategory } from '~/types';
+import { Category } from '~/types';
 
 import { ApiEndpoints } from './constants/api';
 import { EndpointNames } from './constants/endpoint-names';
@@ -13,18 +13,18 @@ export const categoryApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
     tagTypes: [Tags.CATEGORIES, Tags.CATEGORY],
     endpoints: (builder) => ({
-        [EndpointNames.GET_CATEGORIES]: builder.query<TCategory[], void>({
+        [EndpointNames.GET_CATEGORIES]: builder.query<Category[], void>({
             query: () => ApiEndpoints.CATEGORIES,
             providesTags: [Tags.CATEGORIES],
             onQueryStarted: async (_arg, { dispatch, queryFulfilled }) => {
                 try {
                     const { data } = await queryFulfilled;
                     dispatch(setCategories(data));
-                    localStorage.setItem('navCache', JSON.stringify(data));
+                    // localStorage.setItem('navCache', JSON.stringify(data));
                 } catch (_) {
                     const cachedData = localStorage.getItem('navCache');
                     if (cachedData) {
-                        const categories: TCategory[] = JSON.parse(cachedData);
+                        const categories: Category[] = JSON.parse(cachedData);
                         dispatch(setCategories(categories));
                         dispatch(
                             categoryApi.util.upsertQueryData(
@@ -37,7 +37,7 @@ export const categoryApi = createApi({
                 }
             },
         }),
-        [EndpointNames.GET_CATEGORY_BY_ID]: builder.query<TCategory, string>({
+        [EndpointNames.GET_CATEGORY_BY_ID]: builder.query<Category, string>({
             query: (id) => `${ApiEndpoints.CATEGORY_BY_ID}${id}`,
             providesTags: (_result, _error, id) => [{ type: Tags.CATEGORY, id }],
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
@@ -46,7 +46,7 @@ export const categoryApi = createApi({
                 } catch (_) {
                     const cachedData = localStorage.getItem('navCache');
                     if (cachedData) {
-                        const categories: TCategory[] = JSON.parse(cachedData);
+                        const categories: Category[] = JSON.parse(cachedData);
                         const category = categories.find((c) => c._id === id);
                         if (category) {
                             dispatch(

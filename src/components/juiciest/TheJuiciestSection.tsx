@@ -1,6 +1,7 @@
 import { Flex, Heading, SimpleGrid } from '@chakra-ui/react';
 import { useMemo } from 'react';
 
+import { Limit } from '~/query/constants/limits';
 import { useGetPopularRecipesQuery } from '~/query/recipe-api';
 
 import { JuiciestLink } from './JuiciestLink';
@@ -8,7 +9,7 @@ import { JuiciestList } from './JuiciestList';
 
 export const TheJuiciestSection = () => {
     const { data } = useGetPopularRecipesQuery({
-        limit: 4,
+        limit: Limit.JUICIEST,
     });
 
     return useMemo(

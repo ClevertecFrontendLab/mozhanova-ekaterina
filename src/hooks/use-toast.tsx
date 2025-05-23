@@ -6,61 +6,55 @@ import {
     Box,
     CloseButton,
     useToast as useChakraToast,
-    UseToastOptions,
 } from '@chakra-ui/react';
 
-type ToastType = 'success' | 'error' | 'warning' | 'info';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { ToastParams } from '~/types';
+
+export enum NotificationDuration {
+    Short = 3000,
+    Medium = 5000,
+    Long = 15000,
+}
 
 export const useToast = () => {
     const toast = useChakraToast();
-    const styles: Record<ToastType, UseToastOptions> = {
-        error: {
-            containerStyle: {
-                bg: 'error.400',
-                borderRadius: 'unset',
-                w: {
-                    base: '328px',
-                    md: '400px',
-                },
-            },
-        },
-        success: {},
-        warning: {},
-        info: {},
-    };
 
-    const showToast = (type: ToastType, title: string, description: string) =>
+    const showToast = ({ ...params }: ToastParams) => {
+        const toastId = `${params.type}-notification`;
+        if (toast.isActive(toastId)) {
+            return;
+        }
         toast({
-            title: title,
-            description: description,
-            status: type,
-            duration: 3000,
-            isClosable: true,
-            variant: 'solid',
-            ...styles[type],
+            duration: params.duration || NotificationDuration.Short,
+            position: params.position || 'bottom',
+            id: toastId,
+            containerStyle: { transition: 'none' },
+
             render: ({ onClose }) => (
                 <Alert
                     w={{ base: '328px', md: '400px' }}
-                    data-test-id='error-notification'
+                    data-test-id={DATA_TEST_IDS.ERROR_NOTIFICATION}
                     variant='solid'
-                    status={type}
+                    status={params.type}
                 >
                     <AlertIcon />
                     <Box flexGrow={1}>
-                        <AlertTitle>{title}</AlertTitle>
-                        <AlertDescription>{description}</AlertDescription>
+                        <AlertTitle>{params.title}</AlertTitle>
+                        <AlertDescription>{params.description || ''}</AlertDescription>
                     </Box>
                     <CloseButton
                         alignSelf='flex-start'
-                        data-test-id='close-alert-button'
+                        data-test-id={DATA_TEST_IDS.CLOSE_ALERT_BUTTON}
                         onClick={onClose}
                     />
                 </Alert>
             ),
         });
+    };
     return {
-        showError: (title: string, description: string) => showToast('error', title, description),
-        showSuccess: (title: string, description: string) =>
-            showToast('success', title, description),
+        showError: (params: Omit<ToastParams, 'type'>) => showToast({ ...params, type: 'error' }),
+        showSuccess: (params: Omit<ToastParams, 'type'>) =>
+            showToast({ ...params, type: 'success' }),
     };
 };

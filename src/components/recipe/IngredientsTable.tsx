@@ -15,8 +15,10 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+
 export const IngredientsTable = ({
-    ingredients,
+    ingredients = [],
     portions,
 }: {
     ingredients: {
@@ -51,11 +53,16 @@ export const IngredientsTable = ({
                                     color='neutral.400'
                                     focusBorderColor='primary.300'
                                     onChange={(value) => setPortionsQuantity(Number(value))}
+                                    min={1}
                                 >
                                     <NumberInputField w='90px' />
                                     <NumberInputStepper>
-                                        <NumberIncrementStepper data-test-id='increment-stepper' />
-                                        <NumberDecrementStepper data-test-id='decrement-stepper' />
+                                        <NumberIncrementStepper
+                                            data-test-id={DATA_TEST_IDS.INCREMENT_STEPPER}
+                                        />
+                                        <NumberDecrementStepper
+                                            data-test-id={DATA_TEST_IDS.DECREMENT_STEPPER}
+                                        />
                                     </NumberInputStepper>
                                 </NumberInput>
                             </Flex>
