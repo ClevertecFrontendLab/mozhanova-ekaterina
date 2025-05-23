@@ -11,6 +11,12 @@ import {
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { ToastParams } from '~/types';
 
+export enum NotificationDuration {
+    Short = 3000,
+    Medium = 5000,
+    Long = 15000,
+}
+
 export const useToast = () => {
     const toast = useChakraToast();
 
@@ -20,7 +26,7 @@ export const useToast = () => {
             return;
         }
         toast({
-            duration: params.duration || 3000,
+            duration: params.duration || NotificationDuration.Short,
             position: params.position || 'bottom',
             id: toastId,
             containerStyle: { transition: 'none' },

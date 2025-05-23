@@ -1,4 +1,4 @@
-import { ToastPosition } from '@chakra-ui/react';
+import { AlertStatus, ToastPosition } from '@chakra-ui/react';
 
 export type Recipe = {
     _id: string;
@@ -90,23 +90,8 @@ export type QueryFulfilled = Promise<{
     data?: unknown;
 }>;
 
-export enum ErrorStatus {
-    BAD_REQUEST = 400,
-    UNAUTHORIZED = 401,
-    FORBIDDEN = 403,
-}
-
-export type ErrorCase = {
-    toast?: Omit<ToastParams, 'type'>;
-    modal?: ModalType;
-    setErrorFields?: (keyof FormInputs)[];
-    setHeaderText?: string;
-};
-export type ErrorConfig = Partial<Record<ErrorStatus | 'default', ErrorCase>>;
-
-export type ToastType = 'success' | 'error' | 'warning' | 'info';
 export type ToastParams = {
-    type: ToastType;
+    type: AlertStatus;
     title?: string;
     description?: string;
     duration?: number;
@@ -121,9 +106,9 @@ export type NotificationMessage = {
 };
 
 export type ModalType =
-    | 'showSignUpSuccess'
-    | 'showSignInError'
-    | 'showVerificationFailed'
-    | 'showSendEmail'
-    | 'showVerificationCode'
-    | 'showResetCredentials';
+    | 'signUpSuccess'
+    | 'verificationFailed'
+    | 'sendEmail'
+    | 'verificationCode'
+    | 'resetCredentials'
+    | 'signInError';
