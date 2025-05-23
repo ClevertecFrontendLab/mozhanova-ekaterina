@@ -44,7 +44,7 @@ export const SearchPage = memo(() => {
     useEffect(() => {
         if (isError) {
             navigate(-1);
-            showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+            showError(NOTIFICATION_MESSAGES.GET_RECIPES_ERROR);
         }
     }, [isError, showError, navigate, dispatch]);
 

@@ -413,11 +413,18 @@ const theme = extendTheme({
         },
         Modal: {
             baseStyle: {
+                overlay: {
+                    zIndex: 30,
+                },
                 dialog: {
                     w: { base: '316px', md: '396px' },
                     p: 8,
                     borderRadius: '16px',
                     textAlign: 'center',
+                    zIndex: 30,
+                },
+                dialogContainer: {
+                    zIndex: 30,
                 },
                 closeButton: {
                     borderRadius: '50%',
