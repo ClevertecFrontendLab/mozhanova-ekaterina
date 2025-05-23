@@ -7,7 +7,8 @@ import * as yup from 'yup';
 import image from '~/assets/modals/3.png';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { useErrorHandlers } from '~/hooks/use-error';
+import { useModalContext } from '~/contexts/modal-context';
+import { useErrors } from '~/hooks/use-errors';
 import { useForgotPasswordMutation } from '~/query/user-api';
 import { ErrorResponse } from '~/types';
 import { emailSchema } from '~/validation';
@@ -16,16 +17,9 @@ import { UiButton } from '../ui/UiButton';
 import { UiInput } from '../ui/UiInput';
 import { UiModal } from '../ui/UiModal';
 
-export const SendEmailModal = ({
-    isOpen,
-    onClose,
-    nextModal,
-}: {
-    isOpen: boolean;
-    onClose: () => void;
-    nextModal: (email: string) => void;
-}) => {
-    const { sendEmailErrorHandler } = useErrorHandlers();
+export const SendEmailModal = () => {
+    const { sendEmailErrorHandler } = useErrors();
+    const { isOpen, onClose, showVerificationCode } = useModalContext();
     const navigate = useNavigate();
     const handleClose = () => {
         onClose();
@@ -39,6 +33,8 @@ export const SendEmailModal = ({
         handleSubmit,
         reset,
         setError,
+        watch,
+        setValue,
         formState: { errors, isValid },
     } = useForm({
         resolver: yupResolver(yup.object({ email: emailSchema })),
@@ -49,10 +45,9 @@ export const SendEmailModal = ({
         if (!isValid) return;
         try {
             const result = await forgotPassword(data.email).unwrap();
-            if (result) nextModal(data.email);
+            if (result) showVerificationCode(data.email);
         } catch (error) {
-            sendEmailErrorHandler(error as ErrorResponse, setError);
-            reset();
+            sendEmailErrorHandler(error as ErrorResponse, setError, reset);
         }
     };
 
@@ -69,6 +64,8 @@ export const SendEmailModal = ({
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Box mt={4} mb={6}>
                             <UiInput
+                                value={watch('email')}
+                                setValue={(value: string) => setValue('email', value)}
                                 type='email'
                                 label='Ваш e-mail'
                                 placeholder='e-mail'

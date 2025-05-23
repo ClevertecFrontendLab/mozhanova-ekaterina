@@ -4,27 +4,22 @@ import { useNavigate } from 'react-router';
 import image from '~/assets/modals/3.png';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { useErrorHandlers } from '~/hooks/use-error';
+import { useModalContext } from '~/contexts/modal-context';
+import { useErrors } from '~/hooks/use-errors';
 import { useSignInMutation } from '~/query/user-api';
 import { AuthUser, ErrorResponse } from '~/types';
 
 import { UiButton } from '../ui/UiButton';
 import { UiModal } from '../ui/UiModal';
 
-export const SignInErrorModal = ({
-    isOpen,
-    onClose,
-    userData,
-}: {
-    isOpen: boolean;
-    userData: AuthUser;
-    onClose: () => void;
-}) => {
+export const SignInErrorModal = () => {
     const navigate = useNavigate();
     const [signIn] = useSignInMutation();
-    const { loginErrorHandler } = useErrorHandlers();
+    const { signInErrorModalHandler } = useErrors();
+    const { isOpen, onClose, modalState } = useModalContext();
+    const userData = JSON.parse(modalState);
 
-    const onSubmit = async (userData: { login: string; password: string }) => {
+    const onSubmit = async (userData: AuthUser) => {
         try {
             const result = await signIn(userData).unwrap();
             if (result) {
@@ -32,7 +27,7 @@ export const SignInErrorModal = ({
                 navigate(AppRoutes.HOME);
             }
         } catch (error: unknown) {
-            loginErrorHandler(error as ErrorResponse, userData);
+            signInErrorModalHandler(error as ErrorResponse, userData);
         }
     };
     return (

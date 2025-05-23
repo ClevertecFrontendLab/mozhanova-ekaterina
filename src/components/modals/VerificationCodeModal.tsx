@@ -14,25 +14,17 @@ import { useNavigate } from 'react-router';
 import image from '~/assets/modals/4.png';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { useErrorHandlers } from '~/hooks/use-error';
+import { useModalContext } from '~/contexts/modal-context';
+import { useErrors } from '~/hooks/use-errors';
 import { useVerifyCodeMutation } from '~/query/user-api';
 import { ErrorResponse } from '~/types';
 import { verificationCodeSchema } from '~/validation';
 
 import { UiModal } from '../ui/UiModal';
 
-export const VerificationCodeModal = ({
-    isOpen,
-    onClose,
-    email,
-    nextModal,
-}: {
-    isOpen: boolean;
-    email: string;
-    onClose: () => void;
-    nextModal: (email: string) => void;
-}) => {
+export const VerificationCodeModal = () => {
     const navigate = useNavigate();
+    const { isOpen, onClose, modalState: email, showResetCredentials } = useModalContext();
     const [headerText, setHeaderText] = useState('');
 
     const handleClose = () => {
@@ -51,11 +43,12 @@ export const VerificationCodeModal = ({
     } = useForm({
         resolver: yupResolver(verificationCodeSchema),
     });
-    const { verificationCodeErrorHandler } = useErrorHandlers();
+    const { verificationCodeErrorHandler } = useErrors();
     const onSubmit = async (data: { code: string }) => {
+        setHeaderText('');
         try {
             const result = await verifyCode({ email, otpToken: data.code }).unwrap();
-            if (result) nextModal(email);
+            if (result) showResetCredentials(email);
         } catch (error) {
             resetField('code');
             verificationCodeErrorHandler(error as ErrorResponse, setError, setHeaderText);

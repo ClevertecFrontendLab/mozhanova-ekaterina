@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { useErrorHandlers } from '~/hooks/use-error';
+import { useModalContext } from '~/contexts/modal-context';
+import { useErrors } from '~/hooks/use-errors';
 import { useToast } from '~/hooks/use-toast';
 import { useResetPasswordMutation } from '~/query/user-api';
-import { ErrorResponse } from '~/types';
 import { RecoverySchema } from '~/validation';
 
 import { UiButton } from '../ui/UiButton';
@@ -17,19 +17,12 @@ import { UiLoginInput } from '../ui/UiLoginInput';
 import { UiModal } from '../ui/UiModal';
 import { UiPasswordInput } from '../ui/UiPasswordInput';
 
-export const ResetCredentialsModal = ({
-    email,
-    isOpen,
-    onClose,
-}: {
-    email: string;
-    isOpen: boolean;
-    onClose: () => void;
-}) => {
+export const ResetCredentialsModal = () => {
     const { showSuccess } = useToast();
-    const { resetCredentialsErrorHandler } = useErrorHandlers();
+    const { resetCredentialsErrorHandler } = useErrors();
     const navigate = useNavigate();
-    const [reset] = useResetPasswordMutation();
+    const [resetPassword] = useResetPasswordMutation();
+    const { isOpen, onClose, modalState: email } = useModalContext();
 
     const {
         register,
@@ -50,14 +43,14 @@ export const ResetCredentialsModal = ({
     const onSubmit = async (data: { login: string; password: string; passwordConfirm: string }) => {
         if (!isValid) return;
         try {
-            const result = await reset({ ...data, email }).unwrap();
+            const result = await resetPassword({ ...data, email }).unwrap();
             if (result) {
                 showSuccess(NOTIFICATION_MESSAGES.RESET_CREDENTIALS_SUCCESS);
                 navigate(AppRoutes.SIGN_IN);
                 onClose();
             }
-        } catch (error) {
-            resetCredentialsErrorHandler(error as ErrorResponse);
+        } catch {
+            resetCredentialsErrorHandler();
         }
     };
 

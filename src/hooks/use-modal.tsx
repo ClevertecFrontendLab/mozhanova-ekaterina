@@ -7,15 +7,7 @@ import { SignInErrorModal } from '~/components/modals/SignInErrorModal';
 import { SignUpSuccessModal } from '~/components/modals/SignUpSuccessModal';
 import { VerificationCodeModal } from '~/components/modals/VerificationCodeModal';
 import { VerificationFailedModal } from '~/components/modals/VerificationFailedModal';
-import { AuthUser } from '~/types';
-
-type ModalType =
-    | 'signUpSuccess'
-    | 'verificationFailed'
-    | 'sendEmail'
-    | 'verificationCode'
-    | 'resetCredentials'
-    | 'signInError';
+import { AuthUser, ModalType } from '~/types';
 
 export const useModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -58,43 +50,22 @@ export const useModal = () => {
     const ModalComponent = () => {
         switch (modalType) {
             case 'signUpSuccess':
-                return <SignUpSuccessModal email={modalState} onClose={onClose} isOpen={isOpen} />;
+                return <SignUpSuccessModal />;
 
             case 'verificationFailed':
-                return <VerificationFailedModal isOpen={isOpen} onClose={onClose} />;
+                return <VerificationFailedModal />;
 
             case 'sendEmail':
-                return (
-                    <SendEmailModal
-                        isOpen={isOpen}
-                        onClose={onClose}
-                        nextModal={showVerificationCode}
-                    />
-                );
+                return <SendEmailModal />;
 
             case 'verificationCode':
-                return (
-                    <VerificationCodeModal
-                        isOpen={isOpen}
-                        onClose={onClose}
-                        email={modalState}
-                        nextModal={showResetCredentials}
-                    />
-                );
+                return <VerificationCodeModal />;
 
             case 'resetCredentials':
-                return (
-                    <ResetCredentialsModal isOpen={isOpen} onClose={onClose} email={modalState} />
-                );
+                return <ResetCredentialsModal />;
 
             case 'signInError':
-                return (
-                    <SignInErrorModal
-                        userData={JSON.parse(modalState)}
-                        isOpen={isOpen}
-                        onClose={onClose}
-                    />
-                );
+                return <SignInErrorModal />;
         }
     };
 

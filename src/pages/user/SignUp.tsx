@@ -20,7 +20,7 @@ import { UiPasswordInput } from '~/components/ui/UiPasswordInput';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
-import { useErrorHandlers } from '~/hooks/use-error';
+import { useErrors } from '~/hooks/use-errors';
 import { useSignUpMutation } from '~/query/user-api';
 import { ErrorResponse, FormInputs, NewUser } from '~/types';
 import { RegistrationSchema } from '~/validation';
@@ -77,7 +77,7 @@ export const SignUp = () => {
     };
 
     const [signIn] = useSignUpMutation();
-    const { signUpErrorHandler } = useErrorHandlers();
+    const { signUpErrorHandler } = useErrors();
 
     const onSubmit = async (userData: NewUser) => {
         if (!isValid) return;

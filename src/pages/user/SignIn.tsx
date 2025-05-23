@@ -10,7 +10,7 @@ import { UiLoginInput } from '~/components/ui/UiLoginInput';
 import { UiPasswordInput } from '~/components/ui/UiPasswordInput';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { useErrorHandlers } from '~/hooks/use-error';
+import { useErrors } from '~/hooks/use-errors';
 import { useSignInMutation } from '~/query/user-api';
 import { isAuthenticated } from '~/store/selectors';
 import { ErrorResponse } from '~/types';
@@ -33,16 +33,14 @@ export const SignIn = () => {
     });
 
     const [signIn] = useSignInMutation();
-    const { loginErrorHandler } = useErrorHandlers();
+    const { signInErrorHandler } = useErrors();
 
     const onSubmit = async (userData: { login: string; password: string }) => {
         try {
-            const result = await signIn(userData).unwrap();
-            if (result) {
-                navigate(AppRoutes.HOME);
-            }
+            await signIn(userData).unwrap();
+            navigate(AppRoutes.HOME);
         } catch (error: unknown) {
-            loginErrorHandler(error as ErrorResponse, userData, setError);
+            signInErrorHandler(error as ErrorResponse, setError, userData);
         }
     };
 
