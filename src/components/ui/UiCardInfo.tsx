@@ -34,8 +34,7 @@ export const UiCardInfo = ({
                 top='8px'
                 left='8px'
             >
-                {categories &&
-                    Array.isArray(categories) &&
+                {categories.length > 0 &&
                     (isLargerThanMD
                         ? categories.map(
                               (id) =>

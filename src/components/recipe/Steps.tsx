@@ -1,7 +1,7 @@
 import { Box, Card, CardBody, Flex, Heading, Image, Text } from '@chakra-ui/react';
 
 export const Steps = ({
-    steps,
+    steps = [],
 }: {
     steps: { stepNumber: number; description: string; image: string }[];
 }) => (

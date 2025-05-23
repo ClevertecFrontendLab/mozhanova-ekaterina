@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { API_IMAGE_URL } from '~/constants/api-config';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { ApplicationState } from '~/store/configure-store';
-import { selectRecipeCategories } from '~/store/selectors';
+import { selectRecipeCategoriesIds } from '~/store/selectors';
 import { Recipe } from '~/types';
 
 import { BookmarkHeartIcon } from '../ui/icons/BookmarkHeartIcon';
@@ -17,13 +17,9 @@ import { UiCardStats } from '../ui/UiCardStats';
 export const Hero = ({ recipe }: { recipe: Recipe }) => {
     const [isLargerThanLG] = useBreakpoint('lg');
 
-    const rootCategories = useSelector((state: ApplicationState) =>
-        selectRecipeCategories(state, recipe.categoriesIds),
+    const rootCategoriesIds = useSelector((state: ApplicationState) =>
+        selectRecipeCategoriesIds(state, recipe.categoriesIds),
     );
-
-    const rootCategoryIds =
-        (Array.isArray(rootCategories) && rootCategories.map((category) => category?._id ?? '')) ||
-        [];
 
     return (
         <Card
@@ -62,9 +58,8 @@ export const Hero = ({ recipe }: { recipe: Recipe }) => {
                             md: 4,
                         }}
                     >
-                        {rootCategoryIds &&
-                            Array.isArray(rootCategoryIds) &&
-                            rootCategoryIds.map((item) => (
+                        {rootCategoriesIds.length > 0 &&
+                            rootCategoriesIds.map((item) => (
                                 <UiCardBadge color='secondary.100' key={item} categoryId={item} />
                             ))}
                     </Flex>

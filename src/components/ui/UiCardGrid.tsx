@@ -23,7 +23,7 @@ export const UiCardGrid = memo(({ data }: { data: Recipe[] | undefined }) => {
                 lg: 2,
             }}
         >
-            {data?.map((recipe, i) => (
+            {data.map((recipe, i) => (
                 <UiCard
                     data-test-id={`food-card-${i}`}
                     key={recipe._id}

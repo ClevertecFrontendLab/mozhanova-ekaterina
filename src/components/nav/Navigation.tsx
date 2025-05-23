@@ -42,8 +42,7 @@ export const Navigation = ({
             {!isLargerThanMD && <Breadcrumbs variant='mobile' setMenuOpen={setMenuOpen} />}
             <Box as='nav' pl='10px' pt='10px'>
                 <ul>
-                    {categories &&
-                        Array.isArray(categories) &&
+                    {categories.length > 0 &&
                         categories.map((category) => (
                             <NavigationItem
                                 setMenuOpen={setMenuOpen}

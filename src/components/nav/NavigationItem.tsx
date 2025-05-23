@@ -72,8 +72,7 @@ export const NavigationItem = ({ category, setMenuOpen, ...props }: Props) => {
             </Flex>
 
             <Box role='group' as='ul' paddingLeft='33px' display={isOpen ? 'block' : 'none'}>
-                {category.subCategories &&
-                    Array.isArray(category.subCategories) &&
+                {category.subCategories.length > 0 &&
                     category.subCategories.map((subCategory) => (
                         <Flex
                             data-id={subCategory._id}

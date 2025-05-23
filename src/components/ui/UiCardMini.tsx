@@ -1,5 +1,4 @@
 import { Box, Flex, Heading, Image } from '@chakra-ui/react';
-import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
@@ -15,16 +14,9 @@ export const UiCardMini = ({ data: { title, categoriesIds, _id } }: { data: Reci
     const subCategories = useSelector((state: ApplicationState) =>
         selectRecipeSubCategories(state, categoriesIds),
     );
-    const rootCategoriesIds = useMemo(
-        () =>
-            (Array.isArray(subCategories) &&
-                subCategories?.map((category) => category.rootCategoryId!)) ||
-            [],
-        [subCategories],
-    );
 
     const rootCategories = useSelector((state: ApplicationState) =>
-        selectRecipeCategories(state, rootCategoriesIds),
+        selectRecipeCategories(state, categoriesIds),
     );
 
     const categoryRoute = rootCategories[0]?.category ?? '';

@@ -18,7 +18,7 @@ import { useState } from 'react';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 
 export const IngredientsTable = ({
-    ingredients,
+    ingredients = [],
     portions,
 }: {
     ingredients: {
