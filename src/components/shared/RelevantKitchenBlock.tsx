@@ -50,7 +50,7 @@ export const RelevantKitchenBlock = () => {
 
     useEffect(() => {
         if (isError) {
-            showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+            showError(NOTIFICATION_MESSAGES.GET_RECIPES_ERROR);
         }
     }, [isError]);
 
