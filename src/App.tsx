@@ -7,8 +7,9 @@ import { ModalProvider } from './contexts/modal-context';
 import theme from './theme';
 
 function App() {
+    const base = import.meta.env.BASE_URL;
     return (
-        <BrowserRouter>
+        <BrowserRouter basename={base}>
             <ChakraProvider theme={theme}>
                 <ModalProvider>
                     <>
