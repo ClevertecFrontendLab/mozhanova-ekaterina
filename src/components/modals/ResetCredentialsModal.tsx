@@ -10,6 +10,7 @@ import { useModalContext } from '~/contexts/modal-context';
 import { useErrors } from '~/hooks/use-errors';
 import { useToast } from '~/hooks/use-toast';
 import { useResetPasswordMutation } from '~/query/user-api';
+import { ModalParams } from '~/types';
 import { RecoverySchema } from '~/validation';
 
 import { UiButton } from '../ui/UiButton';
@@ -17,12 +18,12 @@ import { UiLoginInput } from '../ui/UiLoginInput';
 import { UiModal } from '../ui/UiModal';
 import { UiPasswordInput } from '../ui/UiPasswordInput';
 
-export const ResetCredentialsModal = () => {
+export const ResetCredentialsModal = ({ params }: { params?: ModalParams<'resetCredentials'> }) => {
     const { showSuccess } = useToast();
     const { resetCredentialsErrorHandler } = useErrors();
     const navigate = useNavigate();
     const [resetPassword] = useResetPasswordMutation();
-    const { isOpen, onClose, modalState: email } = useModalContext();
+    const { isOpen, onClose } = useModalContext();
 
     const {
         register,
@@ -43,7 +44,7 @@ export const ResetCredentialsModal = () => {
     const onSubmit = async (data: { login: string; password: string; passwordConfirm: string }) => {
         if (!isValid) return;
         try {
-            const result = await resetPassword({ ...data, email }).unwrap();
+            const result = await resetPassword({ ...data, email: params!.email }).unwrap();
             if (result) {
                 showSuccess(NOTIFICATION_MESSAGES.RESET_CREDENTIALS_SUCCESS);
                 navigate(AppRoutes.SIGN_IN);
@@ -56,6 +57,7 @@ export const ResetCredentialsModal = () => {
 
     return (
         <UiModal
+            maxW={{ base: '316px', md: '396px' }}
             isOpen={isOpen}
             onClose={handleClose}
             header={
