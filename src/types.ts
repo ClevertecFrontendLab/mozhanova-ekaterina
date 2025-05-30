@@ -1,5 +1,7 @@
 import { AlertStatus, ToastPosition } from '@chakra-ui/react';
 
+import { modalConfig } from './constants/modal-config';
+
 export type Recipe = {
     _id: string;
     title: string;
@@ -10,15 +12,36 @@ export type Recipe = {
     likes: number;
     views: number;
     createdAt: string;
-    time: string;
+    time: number;
     portions: number;
     authorId: string;
     nutritionValue: { calories: number; protein: number; fats: number; carbohydrates: number };
-    ingredients: Array<{ title: string; count: string; measureUnit: string }>;
-    steps: Array<{ stepNumber: number; description: string; image: string }>;
+    ingredients: Ingredient[];
+    steps: Step[];
     meat?: string;
     side?: string;
 };
+
+export type Ingredient = { title: string; count: number; measureUnit: string };
+export type Step = { stepNumber: number; description: string; image?: string | undefined };
+export type MeasureUnit = {
+    _id: string;
+    name: string;
+};
+
+export type NewRecipe = Pick<
+    Recipe,
+    | 'title'
+    | 'categoriesIds'
+    | 'description'
+    | 'image'
+    | 'time'
+    | 'portions'
+    | 'steps'
+    | 'ingredients'
+>;
+
+export type RecipeDraft = Partial<Omit<NewRecipe, 'title'>> & Pick<NewRecipe, 'title'>;
 
 export type Meta = {
     total: number;
@@ -76,6 +99,22 @@ export type AuthResponse = {
     statusText: string;
 };
 
+export type MediaResponse = {
+    _id: string;
+    name: string;
+    url: string;
+};
+
+export type BookmarkResponse = {
+    message: string;
+    bookmarks: number;
+};
+
+export type LikeResponse = {
+    message: string;
+    bookmarks: number;
+};
+
 export type ErrorResponse = {
     status: number;
     data?: {
@@ -105,10 +144,31 @@ export type NotificationMessage = {
     position?: ToastPosition;
 };
 
-export type ModalType =
-    | 'signUpSuccess'
-    | 'verificationFailed'
-    | 'sendEmail'
-    | 'verificationCode'
-    | 'resetCredentials'
-    | 'signInError';
+export type ModalType = (typeof modalConfig)[number]['type'];
+
+export type ModalParams<T extends ModalType> = {
+    signUpSuccess: { email: string };
+    verificationFailed: undefined;
+    sendEmail: undefined;
+    verificationCode: { email: string };
+    resetCredentials: { email: string };
+    signInError: { userData: AuthUser };
+    uploadImage: {
+        initialImage: string;
+        uploadInputRef: React.RefObject<HTMLInputElement | null>;
+        onChange: (image: string) => void;
+    };
+    recipePreventive: { draft: RecipeDraft; link: string };
+}[T];
+
+export type ModalState<T extends ModalType = ModalType> = {
+    type: T;
+    params: ModalParams<T>;
+};
+
+export type JwtPayload = {
+    userId: string;
+    login: string;
+    exp: number;
+    iat: number;
+};
