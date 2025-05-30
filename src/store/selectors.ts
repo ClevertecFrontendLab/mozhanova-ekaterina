@@ -7,6 +7,7 @@ import {
     getCategoryById,
     getCategoryByName,
 } from '~/utils/get-categories';
+import { decodeToken } from '~/utils/jwt-utils';
 
 import { ApplicationState } from './configure-store';
 
@@ -23,6 +24,8 @@ export const selectCategories = createSelector([selectAllCategories], (categorie
 export const selectSubcategories = createSelector([selectAllCategories], (categories) =>
     Array.isArray(categories) ? categories.filter((category) => category.rootCategoryId) : [],
 );
+
+export const selectCurrentUserId = (state: ApplicationState) => decodeToken(state.user.accessToken);
 
 export const selectFilters = createSelector(
     (state: ApplicationState) => state.recipe.filters,
