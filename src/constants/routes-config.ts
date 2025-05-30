@@ -11,4 +11,7 @@ export const AppRoutes = {
     SIGN_UP: '/signup',
     VERIFICATION: '/verification',
     RECOVERY: '/signin/recovery',
+    CREATE_RECIPE: '/new-recipe',
+    EDIT: '/edit-recipe',
+    EDIT_RECIPE: '/edit-recipe/:category/:subCategory/:id',
 } as const;
