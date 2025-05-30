@@ -5,16 +5,18 @@ import { AuthLayout } from '~/components/layouts/AuthLayout';
 import { MainLayout } from '~/components/layouts/MainLayout';
 import { RecipesTabs } from '~/components/RecipesTabs';
 import { AppRoutes } from '~/constants/routes-config';
+import { EditRecipePage } from '~/pages/auth/EditRecipePage';
+import { SignIn } from '~/pages/auth/SignIn';
+import { SignUp } from '~/pages/auth/SignUp';
+import { VerificationPage } from '~/pages/auth/VerificationPage';
 import { CategoryPage } from '~/pages/CategoryPage';
+import { CreateRecipePage } from '~/pages/CreateRecipePage';
 import { Home } from '~/pages/HomePage';
 import { NotFoundPage } from '~/pages/NotFoundPage';
 import { RecipePage } from '~/pages/RecipePage';
 import { RecoveryPage } from '~/pages/RecoveryPage';
 import { SearchPage } from '~/pages/SearchPage';
 import { TheJuiciestPage } from '~/pages/TheJuiciestPage';
-import { SignIn } from '~/pages/user/SignIn';
-import { SignUp } from '~/pages/user/SignUp';
-import { VerificationPage } from '~/pages/user/VerificationPage';
 
 export const Router = () => (
     <Routes>
@@ -33,6 +35,9 @@ export const Router = () => (
             <Route path={AppRoutes.CATEGORY_WILDCARD} element={<CategoryPage />}>
                 <Route path={AppRoutes.SUB_CATEGORY} element={<RecipesTabs />} />
             </Route>
+
+            <Route path={AppRoutes.CREATE_RECIPE} element={<CreateRecipePage />} />
+            <Route path={AppRoutes.EDIT_RECIPE} element={<EditRecipePage />} />
 
             <Route path={AppRoutes.NOT_FOUND} element={<NotFoundPage />} />
         </Route>
