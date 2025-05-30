@@ -1,25 +1,12 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'; // Измените импорт
+import { createApi } from '@reduxjs/toolkit/query/react'; // Измените импорт
 
-import { API_BASE_URL } from '~/constants/api-config';
-import { ApplicationState } from '~/store/configure-store';
 import { AuthResponse, AuthUser, NewUser, ResetUser, VerifyUser } from '~/types';
 
 import { ApiEndpoints } from './constants/api';
+import { baseQuery } from './constants/base-query';
 import { EndpointNames } from './constants/endpoint-names';
 import { Tags } from './constants/tags';
 import { handleAuthHeaders } from './helpers/auth-helpers';
-
-const baseQuery = fetchBaseQuery({
-    baseUrl: API_BASE_URL,
-    credentials: 'include',
-    prepareHeaders: (headers, { getState }) => {
-        const token = (getState() as ApplicationState).user.accessToken;
-        if (token) {
-            headers.set('Authorization', `Bearer ${token}`);
-        }
-        return headers;
-    },
-});
 
 export const userApi = createApi({
     reducerPath: 'userApi',

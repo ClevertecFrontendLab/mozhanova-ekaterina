@@ -13,4 +13,13 @@ export enum EndpointNames {
     VERIFY_CODE = 'verifyCode',
     RESET_PASSWORD = 'resetPassword',
     REFRESH_TOKEN = 'refreshToken',
+    MEASURE_UNITS = 'measureUnits',
+    UPDATE_RECIPE = 'updateRecipe',
+    DELETE_RECIPE = 'deleteRecipe',
+    CREATE_RECIPE = 'createRecipe',
+    CREATE_RECIPE_DRAFT = 'createRecipeDraft',
+    GET_RECIPES_BY_USER_ID = 'getRecipesByUserId',
+    LIKE_UNLIKE_RECIPE = 'likeUnlikeRecipe',
+    SAVE_REMOVE_FROM_BOOKMARKS = 'saveRemoveFromBookmarks',
+    FILE_UPLOAD = 'fileUpload',
 }

@@ -11,4 +11,10 @@ export enum ApiEndpoints {
     FORGOT_PASSWORD = '/auth/forgot-password',
     VERIFY_OTP = '/auth/verify-otp',
     RESET_PASSWORD = '/auth/reset-password',
+    MEASURE_UNITS = '/measure-units',
+    CREATE_RECIPE_DRAFT = '/recipe/draft',
+    GET_RECIPES_BY_USER_ID = '/recipe/user/',
+    LIKE_UNLIKE_RECIPE = '/like',
+    SAVE_REMOVE_FROM_BOOKMARKS = '/bookmark',
+    FILE_UPLOAD = '/file/upload',
 }

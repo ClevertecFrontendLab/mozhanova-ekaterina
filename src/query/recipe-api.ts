@@ -1,15 +1,24 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 
-import { API_BASE_URL } from '~/constants/api-config';
-import { Meta, Params, Recipe } from '~/types';
+import {
+    BookmarkResponse,
+    LikeResponse,
+    MeasureUnit,
+    Meta,
+    NewRecipe,
+    Params,
+    Recipe,
+    RecipeDraft,
+} from '~/types';
 
 import { ApiEndpoints } from './constants/api';
+import { baseQuery } from './constants/base-query';
 import { EndpointNames } from './constants/endpoint-names';
 import { Tags } from './constants/tags';
 
 export const recipeApi = createApi({
     reducerPath: 'recipeApi',
-    baseQuery: fetchBaseQuery({ baseUrl: API_BASE_URL }),
+    baseQuery: baseQuery,
     tagTypes: [Tags.RECIPE, Tags.RECIPES],
     endpoints: (builder) => ({
         [EndpointNames.GET_LATEST_RECIPES]: builder.query<{ data: Recipe[]; meta: Meta }, Params>({
@@ -69,6 +78,58 @@ export const recipeApi = createApi({
             }),
             providesTags: [Tags.RECIPES],
         }),
+
+        [EndpointNames.MEASURE_UNITS]: builder.query<MeasureUnit[], void>({
+            query: () => ({
+                url: ApiEndpoints.MEASURE_UNITS,
+            }),
+        }),
+
+        [EndpointNames.CREATE_RECIPE]: builder.mutation<Recipe, NewRecipe>({
+            query: (recipe) => ({
+                url: ApiEndpoints.RECIPES,
+                method: 'POST',
+                body: recipe,
+            }),
+            invalidatesTags: [Tags.RECIPE],
+        }),
+        [EndpointNames.CREATE_RECIPE_DRAFT]: builder.mutation<Recipe, RecipeDraft>({
+            query: (recipe) => ({
+                url: ApiEndpoints.CREATE_RECIPE_DRAFT,
+                method: 'POST',
+                body: recipe,
+            }),
+            invalidatesTags: [Tags.RECIPE],
+        }),
+        [EndpointNames.UPDATE_RECIPE]: builder.mutation<Recipe, Recipe>({
+            query: (recipe) => ({
+                url: `${ApiEndpoints.RECIPE_BY_ID}${recipe._id}`,
+                method: 'PATCH',
+                body: recipe,
+            }),
+            invalidatesTags: [Tags.RECIPE],
+        }),
+        [EndpointNames.DELETE_RECIPE]: builder.mutation<void, string>({
+            query: (id) => ({
+                url: `${ApiEndpoints.RECIPE_BY_ID}${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: [Tags.RECIPE],
+        }),
+        [EndpointNames.LIKE_UNLIKE_RECIPE]: builder.mutation<LikeResponse, string>({
+            query: (id) => ({
+                url: `${ApiEndpoints.RECIPE_BY_ID}${id}${ApiEndpoints.LIKE_UNLIKE_RECIPE}`,
+                method: 'POST',
+            }),
+            invalidatesTags: [Tags.RECIPE],
+        }),
+        [EndpointNames.SAVE_REMOVE_FROM_BOOKMARKS]: builder.mutation<BookmarkResponse, string>({
+            query: (id) => ({
+                url: `${ApiEndpoints.RECIPE_BY_ID}${id}${ApiEndpoints.SAVE_REMOVE_FROM_BOOKMARKS}`,
+                method: 'POST',
+            }),
+            invalidatesTags: [Tags.RECIPE],
+        }),
     }),
 });
 
@@ -79,4 +140,11 @@ export const {
     useGetRecipesByCategoryQuery,
     useLazySearchRecipesQuery,
     useSearchRecipesQuery,
+    useMeasureUnitsQuery,
+    useCreateRecipeMutation,
+    useCreateRecipeDraftMutation,
+    useUpdateRecipeMutation,
+    useDeleteRecipeMutation,
+    useLikeUnlikeRecipeMutation,
+    useSaveRemoveFromBookmarksMutation,
 } = recipeApi;

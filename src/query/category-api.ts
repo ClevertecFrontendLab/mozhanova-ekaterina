@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { API_BASE_URL } from '~/constants/api-config';
+import { API_BASE_URL } from '~/query/constants/api-config';
 import { setCategories } from '~/store/category-slice';
 import { Category } from '~/types';
 
@@ -20,7 +20,7 @@ export const categoryApi = createApi({
                 try {
                     const { data } = await queryFulfilled;
                     dispatch(setCategories(data));
-                    // localStorage.setItem('navCache', JSON.stringify(data));
+                    localStorage.setItem('navCache', JSON.stringify(data));
                 } catch (_) {
                     const cachedData = localStorage.getItem('navCache');
                     if (cachedData) {
