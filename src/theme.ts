@@ -90,6 +90,15 @@ const theme = extendTheme({
             '0 2px 4px -1px rgba(32, 126, 0, 0.06), 0 4px 6px -1px rgba(32, 126, 0, 0.1)',
     },
     components: {
+        Textarea: {
+            baseStyle: {
+                fontSize: 'sm',
+                borderWidth: '1px',
+                color: 'text.secondary',
+                borderColor: 'border.light',
+                _placeholder: { color: 'text.secondary' },
+            },
+        },
         Toast: {
             baseStyle: {
                 container: {
@@ -173,10 +182,20 @@ const theme = extendTheme({
                     },
                 },
             },
+            baseStyle: {
+                container: {
+                    borderWidth: '1px',
+                    borderColor: 'border.light',
+                    transition: 'box-shadow 0.3s ease-in-out',
+                    _hover: {
+                        shadow: 'themeNeutralGreen',
+                    },
+                },
+            },
         },
         Table: {
             variants: {
-                custom: {
+                striped: {
                     thead: {
                         tr: {
                             height: '56px',
@@ -194,7 +213,7 @@ const theme = extendTheme({
                         color: 'neutral.350',
                         fontSize: '14px',
                         tr: {
-                            '&:nth-of-type(odd)': {
+                            '&:nth-of-type(odd) td': {
                                 bg: 'neutral.20',
                             },
                             textTransform: 'lowercase',
@@ -205,6 +224,73 @@ const theme = extendTheme({
                             },
                             pt: 0,
                             pb: 0,
+                        },
+                    },
+                },
+                bordered: {
+                    thead: {
+                        tr: {
+                            color: 'text.primary',
+                            fontSize: '12px',
+                        },
+                        th: {
+                            pt: 0,
+                            pb: 2,
+                            textTransform: 'unset',
+                            '&:nth-of-type(1)': {
+                                pl: 5,
+                                w: '293px',
+                            },
+                            '&:nth-of-type(2)': {
+                                px: 0,
+                                w: '105px',
+                                textAlign: 'center',
+                            },
+                            '&:nth-of-type(3)': {
+                                w: '215px',
+                                textAlign: 'center',
+                                px: 0,
+                            },
+                            p: { base: 0 },
+                        },
+                    },
+                    tbody: {
+                        color: 'neutral.350',
+                        fontSize: '14px',
+                        tr: {
+                            textTransform: 'lowercase',
+                            px: 2,
+                            // paddingInline: { base: 0 },
+                        },
+                        td: {
+                            py: 2,
+                            '&:nth-of-type(1)': {
+                                // pr: 2,
+                                paddingInlineEnd: { base: 0, sm: 3, md: 4 },
+                                paddingInlineStart: 0,
+                            },
+                            '&:nth-of-type(2)': {
+                                paddingInlineEnd: 0,
+                                paddingInlineStart: 0,
+                                // px: 2,
+                            },
+                            '&:nth-of-type(3)': {
+                                // px: 2,
+                                paddingInlineEnd: 0,
+                                paddingInlineStart: { base: 3, md: 4 },
+                            },
+                            '&:nth-of-type(4)': {
+                                // pl: 2,
+                                paddingInlineEnd: 0,
+                                paddingInlineStart: { base: 3, md: 4 },
+                                cursor: 'pointer',
+                            },
+                        },
+                    },
+                    tfoot: {
+                        tr: {},
+                        th: {
+                            color: 'text.secondary',
                         },
                     },
                 },
@@ -283,6 +369,7 @@ const theme = extendTheme({
                         border: 'none',
                         borderRadius: 'md',
                         boxShadow: 'md',
+                        maxH: '424px',
                     },
                 },
             },
@@ -306,6 +393,17 @@ const theme = extendTheme({
             },
         },
         Input: {
+            baseStyle: {
+                field: {
+                    borderWidth: '1px',
+                    _focus: {
+                        boxShadow: 'none',
+                    },
+                },
+                _placeholder: {
+                    fontWeight: '400',
+                },
+            },
             sizes: {
                 sm: {
                     field: {
@@ -321,43 +419,50 @@ const theme = extendTheme({
             variants: {
                 search: {
                     field: {
-                        borderWidth: '1px',
                         borderColor: 'border.dark',
                         color: 'primary.700',
                         _placeholder: {
                             color: 'primary.700',
-                            fontWeight: '400',
-                        },
-                        _focus: {
-                            boxShadow: 'none',
                         },
                     },
                 },
                 select: {
                     field: {
-                        borderWidth: '1px',
                         borderColor: 'border.light',
                         color: 'neutral.300',
                         _placeholder: {
                             color: 'primary.700',
-                            fontWeight: '400',
-                        },
-                        _focus: {
-                            boxShadow: 'none',
                         },
                     },
                 },
                 login: {
                     field: {
-                        borderWidth: '1px',
                         borderColor: 'primary.100',
                         color: 'primary.700',
                         _placeholder: {
                             color: 'primary.700',
-                            fontWeight: '400',
+                        },
+                    },
+                },
+                recipeForm: {
+                    field: {
+                        borderColor: 'primary.300',
+                        _placeholder: {
+                            color: 'neutral.300',
                         },
                         _focus: {
-                            boxShadow: 'none',
+                            borderColor: 'primary.300',
+                        },
+                    },
+                },
+                tableInput: {
+                    field: {
+                        borderColor: 'primary.300',
+                        _placeholder: {
+                            color: 'text.secondary',
+                        },
+                        _focus: {
+                            borderColor: 'primary.300',
                         },
                     },
                 },
@@ -417,7 +522,6 @@ const theme = extendTheme({
                     zIndex: 30,
                 },
                 dialog: {
-                    w: { base: '316px', md: '396px' },
                     p: 8,
                     borderRadius: '16px',
                     textAlign: 'center',
@@ -449,10 +553,25 @@ const theme = extendTheme({
                 },
             },
         },
+        Radio: {
+            baseStyle: {
+                control: {
+                    _checked: {
+                        bg: 'base.50',
+                        boxShadow: 'none',
+                        borderColor: 'primary.300',
+                    },
+                    _focus: {
+                        boxShadow: 'none',
+                        borderColor: 'primary.300',
+                    },
+                },
+            },
+        },
     },
     breakpoints: {
         base: '0px',
-        sm: '361px',
+        sm: '768px',
         md: '1001px',
         lg: '1441px',
         xl: '1920px',
