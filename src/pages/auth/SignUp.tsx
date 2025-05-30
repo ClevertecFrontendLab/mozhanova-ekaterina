@@ -82,11 +82,9 @@ export const SignUp = () => {
     const onSubmit = async (userData: NewUser) => {
         if (!isValid) return;
         try {
-            const result = await signIn(userData).unwrap();
-            if (result) {
-                showSignUpSuccess(getValues('email'));
-                navigate(AppRoutes.SIGN_IN);
-            }
+            await signIn(userData).unwrap();
+            showSignUpSuccess(getValues('email'));
+            navigate(AppRoutes.SIGN_IN);
         } catch (error: unknown) {
             signUpErrorHandler(error as ErrorResponse);
         }
