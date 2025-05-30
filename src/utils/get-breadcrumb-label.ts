@@ -13,6 +13,8 @@ export const defineBreadcrumbLabel = (
         case 'search':
             return 'Поиск по рецептам';
 
+        case 'new-recipe':
+            return 'Новый рецепт';
         case categories.find((c) => c.category === path)?.category:
             return categories.find((c) => c.category === path)?.title;
 
