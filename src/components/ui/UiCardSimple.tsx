@@ -28,15 +28,15 @@ export const UiCardSimple = ({
     const subCategoryRoute = subCategories[0]?.category ?? '';
 
     return (
-        <Link to={routeHelpers.getRecipePath(categoryRoute, subCategoryRoute, _id)}>
-            <Card
-                h='100%'
-                transition='box-shadow 0.3s ease-in-out'
-                _hover={{
-                    shadow: 'themeNeutralGreen',
-                }}
-                variant='outline'
-            >
+        <Card
+            h='100%'
+            transition='box-shadow 0.3s ease-in-out'
+            _hover={{
+                shadow: 'themeNeutralGreen',
+            }}
+            variant='outline'
+        >
+            <Link to={routeHelpers.getRecipePath(categoryRoute, subCategoryRoute, _id)}>
                 <CardBody
                     p={{
                         base: 3,
@@ -112,7 +112,7 @@ export const UiCardSimple = ({
                         ) : null}
                     </Flex>
                 </CardBody>
-            </Card>
-        </Link>
+            </Link>
+        </Card>
     );
 };

@@ -83,7 +83,7 @@ export const RelevantKitchenBlock = () => {
                 borderColor='border.light'
                 templateColumns={{
                     base: '1fr',
-                    sm: 'repeat(3, 1fr)',
+                    md: 'repeat(3, 1fr)',
                     lg: 'repeat(2, 1fr)',
                 }}
             >
@@ -101,7 +101,7 @@ export const RelevantKitchenBlock = () => {
 
                 <Text
                     gridColumn={{
-                        sm: '2/4',
+                        md: '2/4',
                         lg: '2/3',
                     }}
                     fontWeight='500'
