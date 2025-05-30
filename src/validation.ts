@@ -63,6 +63,82 @@ export const RecoverySchema = yup.object({
         .oneOf([yup.ref('password')], VALIDATION_MESSAGES.FORMAT.PASSWORD_MATCH),
 });
 
-export const verificationCodeSchema = yup.object({
+export const VerificationCodeSchema = yup.object({
     code: yup.string().min(6, '').required(VALIDATION_MESSAGES.REQUIRED.CODE),
 });
+
+const ingredientSchema = yup.object().shape({
+    title: yup.string().trim().required().max(50, VALIDATION_MESSAGES.LENGTH.RECIPE_MAX_50),
+    count: yup.number().required(),
+    measureUnit: yup.string().required(),
+});
+
+const stepSchema = yup.object().shape({
+    stepNumber: yup.number().required().positive().integer(),
+    description: yup
+        .string()
+        .trim()
+        .required()
+        .max(300, VALIDATION_MESSAGES.LENGTH.RECIPE_MAX_300)
+        .transform((value) => (value === '' ? undefined : value)),
+    image: yup
+        .string()
+        .optional()
+        .transform((value) => (value === '' ? undefined : value)),
+});
+
+export const stepsDraft = yup.object().shape({
+    stepNumber: yup.number().required().positive().integer(),
+    description: yup
+        .string()
+        .trim()
+        .max(300, VALIDATION_MESSAGES.LENGTH.RECIPE_MAX_300)
+        .transform((value) => (value === '' ? undefined : value)),
+    image: yup
+        .string()
+        .optional()
+        .transform((value) => (value === '' ? undefined : value)),
+});
+
+export const baseRecipeSchema = {
+    title: yup.string().required().trim().max(50, VALIDATION_MESSAGES.LENGTH.RECIPE_MAX_50),
+    description: yup
+        .string()
+        .trim()
+        .max(500, VALIDATION_MESSAGES.LENGTH.RECIPE_MAX_500)
+        .transform((value) => (value === '' ? undefined : value)),
+    categoriesIds: yup
+        .array()
+        .of(yup.string().required())
+        .transform((value) => (value.length === 0 ? undefined : value)),
+    image: yup.string().transform((value) => (value === '' ? undefined : value)),
+    time: yup
+        .number()
+
+        .max(
+            10000,
+            VALIDATION_MESSAGES.LENGTH.MAX_10000 + VALIDATION_MESSAGES.FORMAT.ONLY_POSITIVE_NUMBER,
+        )
+        .positive(
+            VALIDATION_MESSAGES.LENGTH.MAX_10000 + VALIDATION_MESSAGES.FORMAT.ONLY_POSITIVE_NUMBER,
+        ),
+    portions: yup.number(),
+    ingredients: yup
+        .array()
+        .of(ingredientSchema)
+        .transform((value) => (value.length === 0 ? undefined : value)),
+    steps: yup.array().of(stepsDraft),
+};
+
+export const RecipePublishSchema = yup.object().shape({
+    ...baseRecipeSchema,
+    description: baseRecipeSchema.description.required(),
+    categoriesIds: baseRecipeSchema.categoriesIds.required(),
+    image: baseRecipeSchema.image.required(),
+    time: baseRecipeSchema.time.required(),
+    portions: baseRecipeSchema.portions.required(),
+    ingredients: baseRecipeSchema.ingredients.required(),
+    steps: yup.array().of(stepSchema).required(),
+});
+
+export const RecipeDraftSchema = yup.object().shape(baseRecipeSchema);
