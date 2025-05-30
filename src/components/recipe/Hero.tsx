@@ -1,8 +1,8 @@
 import { Card, CardBody, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 
-import { API_IMAGE_URL } from '~/constants/api-config';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
+import { API_IMAGE_URL } from '~/query/constants/api-config';
 import { ApplicationState } from '~/store/configure-store';
 import { selectRecipeCategoriesIds } from '~/store/selectors';
 import { Recipe } from '~/types';

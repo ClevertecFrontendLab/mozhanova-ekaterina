@@ -2,8 +2,8 @@ import { Box, ChevronDownIcon, ChevronUpIcon, Flex, Image } from '@chakra-ui/ico
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 
-import { API_IMAGE_URL } from '~/constants/api-config';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
+import { API_IMAGE_URL } from '~/query/constants/api-config';
 import { Category } from '~/types';
 import { routeHelpers } from '~/utils/get-routes';
 

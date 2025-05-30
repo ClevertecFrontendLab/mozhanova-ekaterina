@@ -2,7 +2,7 @@ import { Box, Flex, Heading, Image } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
-import { API_IMAGE_URL } from '~/constants/api-config';
+import { API_IMAGE_URL } from '~/query/constants/api-config';
 import { ApplicationState } from '~/store/configure-store';
 import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
 import { Recipe } from '~/types';
