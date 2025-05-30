@@ -101,6 +101,50 @@ export const useErrors = () => {
         showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
     };
 
+    const createRecipeErrorHandler = (error: ErrorResponse) => {
+        switch (error.status) {
+            case 409:
+                showError(NOTIFICATION_MESSAGES.RECIPE_EXISTS_ERROR);
+                break;
+            default:
+                showError(NOTIFICATION_MESSAGES.CREATE_RECIPE_ERROR);
+                break;
+        }
+    };
+
+    const createDraftRecipeErrorHandler = (error: ErrorResponse) => {
+        switch (error.status) {
+            case 409:
+                showError(NOTIFICATION_MESSAGES.RECIPE_EXISTS_ERROR);
+                break;
+            default:
+                showError(NOTIFICATION_MESSAGES.SAVE_DRAFT_ERROR);
+                break;
+        }
+    };
+
+    const deleteRecipeErrorHandler = (error: ErrorResponse) => {
+        switch (error.status) {
+            case 404:
+                showError(NOTIFICATION_MESSAGES.RECIPE_NOT_FOUND_ERROR);
+                break;
+            default:
+                showError(NOTIFICATION_MESSAGES.DELETE_RECIPE_ERROR);
+                break;
+        }
+    };
+
+    const saveLikeRecipeErrorHandler = (error: ErrorResponse) => {
+        switch (error.status) {
+            case 404:
+                showError(NOTIFICATION_MESSAGES.RECIPE_NOT_FOUND_ERROR);
+                break;
+            default:
+                showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+                break;
+        }
+    };
+
     return {
         signUpErrorHandler,
         signInErrorHandler,
@@ -108,5 +152,9 @@ export const useErrors = () => {
         signInErrorModalHandler,
         sendEmailErrorHandler,
         resetCredentialsErrorHandler,
+        createRecipeErrorHandler,
+        createDraftRecipeErrorHandler,
+        deleteRecipeErrorHandler,
+        saveLikeRecipeErrorHandler,
     };
 };
