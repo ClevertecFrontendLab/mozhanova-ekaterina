@@ -2,7 +2,7 @@ import { Box, Button, Flex, FormLabel, Input, Switch } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { PlusIcon } from '~/components/ui/icons/PlusIcon';
+import { PlusIcon } from '~/components/ui/icons/GreenPlusIcon';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { allergens } from '~/mocks/allergens';
 import { ApplicationState } from '~/store/configure-store';

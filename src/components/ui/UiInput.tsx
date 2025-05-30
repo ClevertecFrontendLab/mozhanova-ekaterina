@@ -9,10 +9,10 @@ import {
 import { FieldError } from 'react-hook-form';
 
 type Props = {
-    label: string;
     placeholder: string;
     error: FieldError | undefined;
     type?: React.HTMLInputTypeAttribute;
+    label?: string;
     helperText?: string;
     value?: string;
     setValue?: (value: string) => void;

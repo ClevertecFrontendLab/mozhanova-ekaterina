@@ -37,15 +37,21 @@ const variants = {
         borderWidth: '1px',
         color: 'neutral.0',
     },
+    ghost: {
+        bg: 'transparent',
+        borderColor: 'transparent',
+        borderWidth: '1px',
+        color: 'neutral.400',
+    },
 };
 
 type Props = {
-    text: string;
+    text?: string;
     rightIcon?: React.ReactElement;
     leftIcon?: React.ReactElement;
     icon?: React.ReactElement;
     variant?: keyof typeof variants;
-    size?: ResponsiveValue<string>;
+    size?: ResponsiveValue<'xs' | 'sm' | 'md' | 'lg'>;
     iconButton?: boolean;
     fontSize?: string;
     isDisabled?: boolean;
@@ -63,6 +69,7 @@ export const UiButton = ({
     iconButton = false,
     icon,
     fontSize,
+    type = 'button',
     ...props
 }: Props) =>
     iconButton ? (
@@ -74,6 +81,7 @@ export const UiButton = ({
             color={variants[variant].color}
             aria-label='button'
             icon={icon}
+            type={type}
             {...props}
         />
     ) : (
@@ -94,6 +102,7 @@ export const UiButton = ({
                 boxShadow: 'none',
             }}
             pointerEvents={props.isDisabled ? 'none' : 'auto'}
+            type={type}
             {...props}
         >
             {text}

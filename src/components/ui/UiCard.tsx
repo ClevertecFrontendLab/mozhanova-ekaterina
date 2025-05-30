@@ -64,11 +64,6 @@ export const UiCard = ({
             position='relative'
             direction='row'
             overflow='hidden'
-            variant='outline'
-            transition='box-shadow 0.3s ease-in-out'
-            _hover={{
-                shadow: 'themeNeutralGreen',
-            }}
             size={isLargerThanMD ? size : 'sm'}
             h='auto'
             {...props}

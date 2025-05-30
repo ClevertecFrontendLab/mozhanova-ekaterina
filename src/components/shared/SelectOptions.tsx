@@ -9,22 +9,25 @@ import {
     MenuButton,
     MenuList,
     Tag,
-    TagCloseButton,
-    TagLabel,
+    useBreakpointValue,
     useDisclosure,
 } from '@chakra-ui/react';
+
+import { UiTag } from '../ui/UiTag';
 
 type Props = {
     options: string[];
     placeholder: string;
     selected: string[];
+    setSelected: (value: string[]) => void;
+    error?: boolean;
     children?: React.ReactNode;
     isDisabled?: boolean;
     dataButton?: string;
     dataList?: string;
     testSubject?: string;
     tagsCloseBtn?: boolean;
-    setSelected: (value: string[]) => void;
+    multiSelect?: boolean;
 };
 
 export const SelectOptions = ({
@@ -38,8 +41,13 @@ export const SelectOptions = ({
     dataList,
     testSubject,
     tagsCloseBtn = true,
+    error,
 }: Props) => {
     const { isOpen, onToggle, onClose } = useDisclosure();
+    const countVisibleTags = useBreakpointValue({ base: 1, md: 2 }) || 2;
+    const tagsOverflow = selected.length - countVisibleTags;
+    const visibleTags = tagsOverflow > 0 ? selected.slice(0, countVisibleTags) : selected;
+
     return (
         <Menu
             variant='select'
@@ -68,60 +76,59 @@ export const SelectOptions = ({
                 width='100%'
                 fontWeight={400}
                 borderWidth='1px'
-                borderColor='border.light'
+                borderColor={error ? 'error.400' : 'border.light'}
                 bg='neutral.0'
                 color='neutral.300'
                 _hover={{ bg: 'neutral.0' }}
                 _active={{ bg: 'neutral.0', borderColor: 'primary.300' }}
-                _focus={{ borderColor: 'primary.300', bg: 'neutral.0' }}
+                _focus={{ borderColor: 'primary.300', bg: 'neutral.0', boxShadow: 'none' }}
             >
                 {selected.length > 0 ? (
-                    <Flex gap={2} flexWrap='wrap'>
-                        {selected.map((value) => (
-                            <Tag
-                                css={{
-                                    pointerEvents: 'auto',
-                                    '& > *': {
-                                        pointerEvents: 'auto',
-                                    },
-                                }}
+                    <Flex gap={2}>
+                        {visibleTags.map((value) => (
+                            <UiTag
                                 key={value}
-                                variant='outline'
-                            >
-                                <TagLabel>{value}</TagLabel>
-                                {tagsCloseBtn && (
-                                    <TagCloseButton
-                                        as='div'
-                                        onClick={() =>
-                                            setSelected(selected.filter((item) => item !== value))
-                                        }
-                                    />
-                                )}
-                            </Tag>
+                                isClosable={tagsCloseBtn}
+                                selected={selected}
+                                setSelected={setSelected}
+                                label={value}
+                            />
                         ))}
+                        {tagsOverflow > 0 && <Tag variant='outline'>+{tagsOverflow}</Tag>}
                     </Flex>
                 ) : (
                     placeholder
                 )}
             </MenuButton>
 
-            <MenuList zIndex={10} overflow='hidden' data-test-id={dataList}>
-                <CheckboxGroup value={selected} onChange={(value: string[]) => setSelected(value)}>
-                    <Box overflowY='auto'>
-                        {options.map((option, i) => (
-                            <Checkbox
-                                data-test-id={defineDataTestId(option, i, testSubject as string)}
-                                p='6px 16px'
-                                _odd={{ bg: 'neutral.20' }}
-                                variant='select'
-                                key={option}
-                                value={option}
-                            >
-                                {option}
-                            </Checkbox>
-                        ))}
-                        {isOpen && children}
-                    </Box>
+            <MenuList zIndex={10} overflowY='scroll' data-test-id={dataList}>
+                <CheckboxGroup
+                    value={selected}
+                    onChange={(value: string[]) => {
+                        setSelected(value);
+                    }}
+                >
+                    {isOpen && (
+                        <Box maxH='424px'>
+                            {options.map((option, i) => (
+                                <Checkbox
+                                    data-test-id={defineDataTestId(
+                                        option,
+                                        i,
+                                        testSubject as string,
+                                    )}
+                                    p='6px 16px'
+                                    _odd={{ bg: 'neutral.20' }}
+                                    variant='select'
+                                    key={option + i}
+                                    value={option}
+                                >
+                                    {option}
+                                </Checkbox>
+                            ))}
+                            {children}
+                        </Box>
+                    )}
                 </CheckboxGroup>
             </MenuList>
         </Menu>
