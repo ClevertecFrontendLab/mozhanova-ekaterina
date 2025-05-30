@@ -1,21 +1,7 @@
-import {
-    Flex,
-    NumberDecrementStepper,
-    NumberIncrementStepper,
-    NumberInput,
-    NumberInputField,
-    NumberInputStepper,
-    Table,
-    TableContainer,
-    Tbody,
-    Td,
-    Th,
-    Thead,
-    Tr,
-} from '@chakra-ui/react';
+import { Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { useState } from 'react';
 
-import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { UiNumberInput } from '../ui/UiNumberInput';
 
 export const IngredientsTable = ({
     ingredients = [],
@@ -23,7 +9,7 @@ export const IngredientsTable = ({
 }: {
     ingredients: {
         title: string;
-        count: string;
+        count: number;
         measureUnit: string;
     }[];
     portions: number;
@@ -32,7 +18,7 @@ export const IngredientsTable = ({
 
     return (
         <TableContainer>
-            <Table variant='custom'>
+            <Table variant='striped'>
                 <Thead>
                     <Tr>
                         <Th pr={0} pl={{ base: 2, sm: 6 }}>
@@ -48,23 +34,12 @@ export const IngredientsTable = ({
                                 }}
                             >
                                 ПОРЦИЙ
-                                <NumberInput
+                                <UiNumberInput
                                     value={portionsQuantity}
-                                    color='neutral.400'
-                                    focusBorderColor='primary.300'
-                                    onChange={(value) => setPortionsQuantity(Number(value))}
-                                    min={1}
-                                >
-                                    <NumberInputField w='90px' />
-                                    <NumberInputStepper>
-                                        <NumberIncrementStepper
-                                            data-test-id={DATA_TEST_IDS.INCREMENT_STEPPER}
-                                        />
-                                        <NumberDecrementStepper
-                                            data-test-id={DATA_TEST_IDS.DECREMENT_STEPPER}
-                                        />
-                                    </NumberInputStepper>
-                                </NumberInput>
+                                    onChange={(_, valueAsNumber) =>
+                                        setPortionsQuantity(valueAsNumber)
+                                    }
+                                />
                             </Flex>
                         </Th>
                     </Tr>
