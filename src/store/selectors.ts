@@ -40,12 +40,21 @@ export const selectFilters = createSelector(
     }),
 );
 
-export const selectSubCategoriesByTitles = createSelector(
+export const selectCategoriesByTitles = createSelector(
     [selectCategories, (_: ApplicationState, titles: string[]) => titles],
     (categories, titles) => {
         if (!Array.isArray(categories) || !Array.isArray(titles)) return [];
         const selectedCategories = getCategoriesByTitles(categories, titles);
         return getAllSubsByRoots(selectedCategories).flatMap((category) => category._id);
+    },
+);
+
+export const selectSubCategoriesByTitles = createSelector(
+    [selectSubcategories, (_: ApplicationState, titles: string[]) => titles],
+    (categories, titles) => {
+        if (!Array.isArray(categories) || !Array.isArray(titles)) return [];
+        const selectedCategories = getCategoriesByTitles(categories, titles);
+        return selectedCategories.map((category) => category._id);
     },
 );
 
@@ -68,6 +77,13 @@ export const selectRecipeCategories = createSelector(
         const rootIds = selectedSubCategories.map((category) => category?.rootCategoryId);
         return getCategoriesByIds(categories, rootIds);
     },
+);
+export const selectSubCategoriesTitlesByIds = createSelector(
+    [selectSubcategories, (_: ApplicationState, categoryIds: string[]) => categoryIds],
+    (categories, ids) =>
+        Array.isArray(categories) && Array.isArray(ids)
+            ? getCategoriesByIds(categories, ids).map((category) => category.title)
+            : [],
 );
 
 export const selectRecipeCategoriesIds = createSelector(
@@ -101,6 +117,7 @@ export const selectGlobalLoading = createSelector(
             state.categoryApi?.mutations || {},
             state.userApi?.queries || {},
             state.userApi?.mutations || {},
+            state.fileUploadApi?.mutations || {},
         ];
 
         return apiStates.some((apiState) =>
