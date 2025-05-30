@@ -53,6 +53,7 @@ export const SendEmailModal = () => {
 
     return (
         <UiModal
+            maxW={{ base: '316px', md: '396px' }}
             image={image}
             isOpen={isOpen}
             onClose={handleClose}

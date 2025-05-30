@@ -17,14 +17,14 @@ import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
 import { useErrors } from '~/hooks/use-errors';
 import { useVerifyCodeMutation } from '~/query/user-api';
-import { ErrorResponse } from '~/types';
-import { verificationCodeSchema } from '~/validation';
+import { ErrorResponse, ModalParams } from '~/types';
+import { VerificationCodeSchema } from '~/validation';
 
 import { UiModal } from '../ui/UiModal';
 
-export const VerificationCodeModal = () => {
+export const VerificationCodeModal = ({ params }: { params?: ModalParams<'verificationCode'> }) => {
     const navigate = useNavigate();
-    const { isOpen, onClose, modalState: email, showResetCredentials } = useModalContext();
+    const { isOpen, onClose, showResetCredentials } = useModalContext();
     const [headerText, setHeaderText] = useState('');
 
     const handleClose = () => {
@@ -41,14 +41,14 @@ export const VerificationCodeModal = () => {
         setError,
         formState: { errors, isValid },
     } = useForm({
-        resolver: yupResolver(verificationCodeSchema),
+        resolver: yupResolver(VerificationCodeSchema),
     });
     const { verificationCodeErrorHandler } = useErrors();
     const onSubmit = async (data: { code: string }) => {
         setHeaderText('');
         try {
-            const result = await verifyCode({ email, otpToken: data.code }).unwrap();
-            if (result) showResetCredentials(email);
+            const result = await verifyCode({ email: params!.email, otpToken: data.code }).unwrap();
+            if (result) showResetCredentials(params!.email);
         } catch (error) {
             resetField('code');
             verificationCodeErrorHandler(error as ErrorResponse, setError, setHeaderText);
@@ -63,6 +63,7 @@ export const VerificationCodeModal = () => {
 
     return (
         <UiModal
+            maxW={{ base: '316px', md: '396px' }}
             image={image}
             isOpen={isOpen}
             onClose={handleClose}
@@ -70,7 +71,7 @@ export const VerificationCodeModal = () => {
             body={
                 <>
                     <p>
-                        Мы отправили вам на e-mail <br /> <b>{email} </b> <br />
+                        Мы отправили вам на e-mail <br /> <b>{params!.email} </b> <br />
                         шестизначный код. Введите его ниже.
                     </p>
                     <form onSubmit={handleSubmit(onSubmit)}>

@@ -1,75 +1,57 @@
 import { useDisclosure } from '@chakra-ui/react';
+import React from 'react';
 import { useState } from 'react';
 
-import { ResetCredentialsModal } from '~/components/modals/ResetCredentialsModal';
-import { SendEmailModal } from '~/components/modals/SendEmailModal';
-import { SignInErrorModal } from '~/components/modals/SignInErrorModal';
-import { SignUpSuccessModal } from '~/components/modals/SignUpSuccessModal';
-import { VerificationCodeModal } from '~/components/modals/VerificationCodeModal';
-import { VerificationFailedModal } from '~/components/modals/VerificationFailedModal';
-import { AuthUser, ModalType } from '~/types';
+import { modalConfig } from '~/constants/modal-config';
+import { AuthUser, ModalParams, ModalState, ModalType, RecipeDraft } from '~/types';
 
 export const useModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [modalType, setModalType] = useState<ModalType | null>(null);
-    const [modalState, setModalState] = useState('');
+    const [modalState, setModalState] = useState<ModalState | null>(null);
 
-    const showSignUpSuccess = (email: string) => {
-        setModalType('signUpSuccess');
-        setModalState(email);
+    const showModal = <T extends ModalType>(type: T, params: ModalParams<T>) => {
+        setModalState({ type, params });
         onOpen();
     };
 
-    const showVerificationFailed = () => {
-        setModalType('verificationFailed');
-        onOpen();
-    };
+    const showSignUpSuccess = (email: string) => showModal('signUpSuccess', { email });
 
-    const showSendEmail = () => {
-        setModalType('sendEmail');
-        onOpen();
-    };
-    const showVerificationCode = (email: string) => {
-        setModalType('verificationCode');
-        setModalState(email);
-        onOpen();
-    };
+    const showVerificationFailed = () => showModal('verificationFailed', undefined);
 
-    const showResetCredentials = (email: string) => {
-        setModalType('resetCredentials');
-        setModalState(email);
-        onOpen();
-    };
+    const showSendEmail = () => showModal('sendEmail', undefined);
 
-    const showSignInError = (userData: AuthUser) => {
-        setModalType('signInError');
-        setModalState(JSON.stringify(userData));
-        onOpen();
+    const showVerificationCode = (email: string) => showModal('verificationCode', { email });
+
+    const showResetCredentials = (email: string) => showModal('resetCredentials', { email });
+
+    const showSignInError = (userData: AuthUser) => showModal('signInError', { userData });
+
+    const showUploadImage = (params: ModalParams<'uploadImage'>) =>
+        showModal('uploadImage', { ...params });
+
+    const showRecipePreventive = (draft: RecipeDraft, link: string) =>
+        showModal('recipePreventive', { draft, link });
+
+    const handleClose = () => {
+        setModalState(null);
+        onClose();
     };
 
     const ModalComponent = () => {
-        switch (modalType) {
-            case 'signUpSuccess':
-                return <SignUpSuccessModal />;
+        if (!modalState) return null;
 
-            case 'verificationFailed':
-                return <VerificationFailedModal />;
+        const modalConfigItem = modalConfig.find((modal) => modal.type === modalState.type);
 
-            case 'sendEmail':
-                return <SendEmailModal />;
+        if (!modalConfigItem) return null;
 
-            case 'verificationCode':
-                return <VerificationCodeModal />;
-
-            case 'resetCredentials':
-                return <ResetCredentialsModal />;
-
-            case 'signInError':
-                return <SignInErrorModal />;
-        }
+        return React.cloneElement(modalConfigItem.component, {
+            params: modalState.params,
+        });
     };
 
     return {
+        isOpen,
+        onClose: handleClose,
         ModalComponent,
         showSignUpSuccess,
         showSignInError,
@@ -77,8 +59,7 @@ export const useModal = () => {
         showSendEmail,
         showVerificationCode,
         showResetCredentials,
-        onClose,
-        isOpen,
-        modalState,
+        showUploadImage,
+        showRecipePreventive,
     };
 };

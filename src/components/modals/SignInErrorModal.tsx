@@ -7,17 +7,16 @@ import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
 import { useErrors } from '~/hooks/use-errors';
 import { useSignInMutation } from '~/query/user-api';
-import { AuthUser, ErrorResponse } from '~/types';
+import { AuthUser, ErrorResponse, ModalParams } from '~/types';
 
 import { UiButton } from '../ui/UiButton';
 import { UiModal } from '../ui/UiModal';
 
-export const SignInErrorModal = () => {
+export const SignInErrorModal = ({ params }: { params?: ModalParams<'signInError'> }) => {
     const navigate = useNavigate();
     const [signIn] = useSignInMutation();
     const { signInErrorModalHandler } = useErrors();
-    const { isOpen, onClose, modalState } = useModalContext();
-    const userData = JSON.parse(modalState);
+    const { isOpen, onClose } = useModalContext();
 
     const onSubmit = async (userData: AuthUser) => {
         try {
@@ -32,6 +31,7 @@ export const SignInErrorModal = () => {
     };
     return (
         <UiModal
+            maxW={{ base: '316px', md: '396px' }}
             image={image}
             isOpen={isOpen}
             onClose={onClose}
@@ -45,7 +45,7 @@ export const SignInErrorModal = () => {
             footer={
                 <Grid w='100%'>
                     <UiButton
-                        onClick={() => onSubmit(userData)}
+                        onClick={() => onSubmit(params!.userData)}
                         data-test-id={DATA_TEST_IDS.REPEAT_BUTTON}
                         type='submit'
                         variant='solid'

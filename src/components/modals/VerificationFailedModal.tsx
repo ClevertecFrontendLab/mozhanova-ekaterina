@@ -10,6 +10,7 @@ export const VerificationFailedModal = () => {
     const { isOpen, onClose } = useModalContext();
     return (
         <UiModal
+            maxW={{ base: '316px', md: '396px' }}
             image={image}
             isOpen={isOpen}
             onClose={onClose}

@@ -3,13 +3,15 @@ import { Link } from '@chakra-ui/react';
 import image from '~/assets/modals/2.png';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
+import { ModalParams } from '~/types';
 
 import { UiModal } from '../ui/UiModal';
 
-export const SignUpSuccessModal = () => {
-    const { isOpen, onClose, modalState: email } = useModalContext();
+export const SignUpSuccessModal = ({ params }: { params?: ModalParams<'signUpSuccess'> }) => {
+    const { isOpen, onClose } = useModalContext();
     return (
         <UiModal
+            maxW={{ base: '316px', md: '396px' }}
             data-test-id={DATA_TEST_IDS.SIGN_UP_SUCCESS_MODAL}
             image={image}
             isOpen={isOpen}
@@ -19,7 +21,7 @@ export const SignUpSuccessModal = () => {
                 <>
                     <p>Мы отправили вам на почту</p>
                     <p>
-                        <b>{email}</b>
+                        <b>{params!.email}</b>
                     </p>
                     <p>ссылку для верификации.</p>
                 </>
