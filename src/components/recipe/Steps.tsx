@@ -3,7 +3,7 @@ import { Box, Card, CardBody, Flex, Heading, Image, Text } from '@chakra-ui/reac
 export const Steps = ({
     steps = [],
 }: {
-    steps: { stepNumber: number; description: string; image: string }[];
+    steps: { stepNumber: number; description: string; image?: string }[];
 }) => (
     <Flex
         gap={{
@@ -24,7 +24,7 @@ export const Steps = ({
 const StepCard = ({
     step,
 }: {
-    step: { stepNumber: number; description: string; image: string };
+    step: { stepNumber: number; description: string; image?: string };
 }) => (
     <Card
         direction='row'

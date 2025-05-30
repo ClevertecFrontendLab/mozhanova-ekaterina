@@ -1,5 +1,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 
+import { NutritionCard } from './NutritionCard';
+
 export const NutritionValue = ({
     nutritionValue: { calories, protein, fats, carbohydrates },
 }: {
@@ -19,207 +21,16 @@ export const NutritionValue = ({
                 base: 'column',
                 sm: 'row',
             }}
+            justify='center'
             gap={{
                 base: 3,
                 lg: 6,
             }}
         >
-            <Flex
-                direction={{
-                    base: 'row',
-                    sm: 'column',
-                }}
-                borderColor='border.light'
-                borderWidth='1px'
-                borderRadius='16px'
-                p={{
-                    base: '0 12px',
-                    sm: 4,
-                }}
-                h={{
-                    base: '64px',
-                    sm: '136px',
-                }}
-                w={{
-                    base: 'auto',
-                    sm: '173px',
-                }}
-                alignItems='center'
-                justifyContent='space-between'
-            >
-                <Text flexBasis='40%' textTransform='lowercase' color='neutral.200' fontSize='sm'>
-                    калорийность
-                </Text>
-                <Text
-                    color='primary.700'
-                    fontWeight={500}
-                    fontSize={{
-                        base: '2xl',
-                        sm: '4xl',
-                    }}
-                >
-                    {calories}
-                </Text>
-                <Text
-                    color='neutral.350'
-                    textTransform='uppercase'
-                    flexBasis='20%'
-                    fontWeight={600}
-                    fontSize={{
-                        base: 'xs',
-                        sm: 'sm',
-                    }}
-                >
-                    ККАЛ
-                </Text>
-            </Flex>
-            <Flex
-                direction={{
-                    base: 'row',
-                    sm: 'column',
-                }}
-                borderColor='border.light'
-                borderWidth='1px'
-                borderRadius='16px'
-                p={{
-                    base: '0 12px',
-                    sm: 4,
-                }}
-                h={{
-                    base: '64px',
-                    sm: '136px',
-                }}
-                w={{
-                    base: 'auto',
-                    sm: '173px',
-                }}
-                alignItems='center'
-                justifyContent='space-between'
-            >
-                <Text flexBasis='40%' textTransform='lowercase' color='neutral.200' fontSize='sm'>
-                    белки
-                </Text>
-                <Text
-                    color='primary.700'
-                    fontWeight={500}
-                    fontSize={{
-                        base: '2xl',
-                        sm: '4xl',
-                    }}
-                >
-                    {protein}
-                </Text>
-                <Text
-                    textTransform='uppercase'
-                    flexBasis='20%'
-                    fontWeight={600}
-                    fontSize={{
-                        base: 'xs',
-                        sm: 'sm',
-                    }}
-                    color='neutral.350'
-                >
-                    ГРАММ
-                </Text>
-            </Flex>
-            <Flex
-                direction={{
-                    base: 'row',
-                    sm: 'column',
-                }}
-                borderColor='border.light'
-                borderWidth='1px'
-                borderRadius='16px'
-                p={{
-                    base: '0 12px',
-                    sm: 4,
-                }}
-                h={{
-                    base: '64px',
-                    sm: '136px',
-                }}
-                w={{
-                    base: 'auto',
-                    sm: '173px',
-                }}
-                alignItems='center'
-                justifyContent='space-between'
-            >
-                <Text flexBasis='40%' textTransform='lowercase' color='neutral.200' fontSize='sm'>
-                    жиры
-                </Text>
-                <Text
-                    color='primary.700'
-                    fontWeight={500}
-                    fontSize={{
-                        base: '2xl',
-                        sm: '4xl',
-                    }}
-                >
-                    {fats}
-                </Text>
-                <Text
-                    textTransform='uppercase'
-                    flexBasis='20%'
-                    fontWeight={600}
-                    fontSize={{
-                        base: 'xs',
-                        sm: 'sm',
-                    }}
-                    color='neutral.350'
-                >
-                    ГРАММ
-                </Text>
-            </Flex>
-            <Flex
-                direction={{
-                    base: 'row',
-                    sm: 'column',
-                }}
-                borderColor='border.light'
-                borderWidth='1px'
-                borderRadius='16px'
-                p={{
-                    base: '0 12px',
-                    sm: 4,
-                }}
-                h={{
-                    base: '64px',
-                    sm: '136px',
-                }}
-                w={{
-                    base: 'auto',
-                    sm: '173px',
-                }}
-                alignItems='center'
-                justifyContent='space-between'
-            >
-                <Text flexBasis='40%' textTransform='lowercase' color='neutral.200' fontSize='sm'>
-                    углеводы
-                </Text>
-                <Text
-                    color='primary.700'
-                    fontWeight={500}
-                    fontSize={{
-                        base: '2xl',
-                        sm: '4xl',
-                    }}
-                >
-                    {carbohydrates}
-                </Text>
-                <Text
-                    textTransform='uppercase'
-                    flexBasis='20%'
-                    fontWeight={600}
-                    fontSize={{
-                        base: 'xs',
-                        sm: 'sm',
-                    }}
-                    color='neutral.350'
-                >
-                    ГРАММ
-                </Text>
-            </Flex>
+            <NutritionCard title='калории' value={calories} unit='ккал' />
+            <NutritionCard title='углеводы' value={carbohydrates} unit='ГРАММ' />
+            <NutritionCard title='жиры' value={fats} unit='ГРАММ' />
+            <NutritionCard title='белки' value={protein} unit='ГРАММ' />
         </Flex>
     </Box>
 );
