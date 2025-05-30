@@ -8,6 +8,7 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
+    ResponsiveValue,
 } from '@chakra-ui/react';
 
 import { DATA_TEST_IDS } from '~/constants/test-ids';
@@ -18,6 +19,7 @@ type Props = {
     header?: React.ReactNode;
     body?: React.ReactNode;
     footer?: React.ReactNode;
+    maxW?: ResponsiveValue<string>;
     'data-test-id'?: string;
     onClose: () => void;
 };
