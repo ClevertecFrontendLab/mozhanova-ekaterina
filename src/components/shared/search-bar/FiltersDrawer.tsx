@@ -15,17 +15,15 @@ import {
     Heading,
     Input,
     Switch,
-    Tag,
-    TagCloseButton,
-    TagLabel,
     VStack,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
-import { PlusIcon } from '~/components/ui/icons/PlusIcon';
+import { PlusIcon } from '~/components/ui/icons/GreenPlusIcon';
 import { UiButton } from '~/components/ui/UiButton';
+import { UiTag } from '~/components/ui/UiTag';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { allergens } from '~/mocks/allergens';
@@ -42,7 +40,7 @@ import {
     setMeatFilter,
     setSubCategoryFilter,
 } from '~/store/recipe-slice';
-import { selectCategories, selectFilters, selectSubCategoriesByTitles } from '~/store/selectors';
+import { selectCategories, selectCategoriesByTitles, selectFilters } from '~/store/selectors';
 
 import { SelectOptions } from '../SelectOptions';
 
@@ -62,7 +60,7 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
         filters.allergens.length > 0 ? true : false,
     );
     const selectedCategoriesIds = useSelector((state: ApplicationState) =>
-        selectSubCategoriesByTitles(state, selectedCategory),
+        selectCategoriesByTitles(state, selectedCategory),
     );
     const navigate = useNavigate();
 
@@ -276,98 +274,58 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
                         <Flex gap={4} wrap='wrap'>
                             {selectedCategory.length > 0 &&
                                 selectedCategory.map((item) => (
-                                    <Tag
-                                        data-test-id={DATA_TEST_IDS.FILTER_TAG}
-                                        size='md'
-                                        key={item}
-                                        variant='outline'
+                                    <UiTag
                                         bg='primary.50'
-                                    >
-                                        <TagLabel>{item}</TagLabel>
-                                        <TagCloseButton
-                                            onClick={() =>
-                                                setSelectedCategory([
-                                                    ...selectedCategory.filter((i) => i !== item),
-                                                ])
-                                            }
-                                        />
-                                    </Tag>
+                                        key={item}
+                                        selected={selectedCategory}
+                                        setSelected={setSelectedCategory}
+                                        label={item}
+                                        data-test-id={DATA_TEST_IDS.FILTER_TAG}
+                                    />
                                 ))}
                             {selectedAuthors.length > 0 &&
                                 selectedAuthors.map((item) => (
-                                    <Tag
-                                        data-test-id={DATA_TEST_IDS.FILTER_TAG}
-                                        size='md'
-                                        key={item}
-                                        variant='outline'
+                                    <UiTag
                                         bg='primary.50'
-                                    >
-                                        <TagLabel>{item}</TagLabel>
-                                        <TagCloseButton
-                                            onClick={() =>
-                                                setSelectedAuthors([
-                                                    ...selectedAuthors.filter((i) => i !== item),
-                                                ])
-                                            }
-                                        />
-                                    </Tag>
+                                        key={item}
+                                        selected={selectedAuthors}
+                                        setSelected={setSelectedAuthors}
+                                        label={item}
+                                        data-test-id={DATA_TEST_IDS.FILTER_TAG}
+                                    />
                                 ))}
                             {selectedMeat.length > 0 &&
                                 selectedMeat.map((item) => (
-                                    <Tag
-                                        data-test-id={DATA_TEST_IDS.FILTER_TAG}
-                                        size='md'
-                                        key={item}
-                                        variant='outline'
+                                    <UiTag
                                         bg='primary.50'
-                                    >
-                                        <TagLabel>{item}</TagLabel>
-                                        <TagCloseButton
-                                            onClick={() =>
-                                                setSelectedMeat([
-                                                    ...selectedMeat.filter((i) => i !== item),
-                                                ])
-                                            }
-                                        />
-                                    </Tag>
+                                        key={item}
+                                        selected={selectedMeat}
+                                        setSelected={setSelectedMeat}
+                                        label={item}
+                                        data-test-id={DATA_TEST_IDS.FILTER_TAG}
+                                    />
                                 ))}
                             {selectedGarnish.length > 0 &&
                                 selectedGarnish.map((item) => (
-                                    <Tag
-                                        data-test-id={DATA_TEST_IDS.FILTER_TAG}
-                                        size='md'
-                                        key={item}
-                                        variant='outline'
+                                    <UiTag
                                         bg='primary.50'
-                                    >
-                                        <TagLabel>{item}</TagLabel>
-                                        <TagCloseButton
-                                            onClick={() =>
-                                                setSelectedGarnish([
-                                                    ...selectedGarnish.filter((i) => i !== item),
-                                                ])
-                                            }
-                                        />
-                                    </Tag>
+                                        key={item}
+                                        selected={selectedGarnish}
+                                        setSelected={setSelectedGarnish}
+                                        label={item}
+                                        data-test-id={DATA_TEST_IDS.FILTER_TAG}
+                                    />
                                 ))}
                             {selectedAllergens.length > 0 &&
                                 selectedAllergens.map((item) => (
-                                    <Tag
-                                        data-test-id={DATA_TEST_IDS.FILTER_TAG}
-                                        size='md'
-                                        key={item}
-                                        variant='outline'
+                                    <UiTag
                                         bg='primary.50'
-                                    >
-                                        <TagLabel>{item}</TagLabel>
-                                        <TagCloseButton
-                                            onClick={() =>
-                                                setSelectedAllergens([
-                                                    ...selectedAllergens.filter((i) => i !== item),
-                                                ])
-                                            }
-                                        />
-                                    </Tag>
+                                        key={item}
+                                        selected={selectedAllergens}
+                                        setSelected={setSelectedAllergens}
+                                        label={item}
+                                        data-test-id={DATA_TEST_IDS.FILTER_TAG}
+                                    />
                                 ))}
                         </Flex>
                         <Flex justifyContent='flex-end' gap={2}>
