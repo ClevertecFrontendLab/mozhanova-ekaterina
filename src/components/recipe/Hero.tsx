@@ -7,12 +7,10 @@ import { ApplicationState } from '~/store/configure-store';
 import { selectRecipeCategoriesIds } from '~/store/selectors';
 import { Recipe } from '~/types';
 
-import { BookmarkHeartIcon } from '../ui/icons/BookmarkHeartIcon';
 import { ClockIcon } from '../ui/icons/ClockIcon';
-import { EmojiHeartEyesIcon } from '../ui/icons/EmojiHeartEyesIcon';
-import { UiButton } from '../ui/UiButton';
 import { UiCardBadge } from '../ui/UiCardBadge';
 import { UiCardStats } from '../ui/UiCardStats';
+import { Controls } from './Controls';
 
 export const Hero = ({ recipe }: { recipe: Recipe }) => {
     const [isLargerThanLG] = useBreakpoint('lg');
@@ -23,6 +21,9 @@ export const Hero = ({ recipe }: { recipe: Recipe }) => {
 
     return (
         <Card
+            borderColor='transparent !important'
+            boxShadow='none !important'
+            _hover={{ boxShadow: 'none !important' }}
             gap={{
                 base: 4,
                 md: 6,
@@ -112,36 +113,9 @@ export const Hero = ({ recipe }: { recipe: Recipe }) => {
                             {recipe.time} минут
                         </Text>
                     </Flex>
-                    <Controls />
+                    <Controls authorId={recipe.authorId} _id={recipe._id} />
                 </Flex>
             </CardBody>
         </Card>
     );
 };
-
-function Controls() {
-    return (
-        <Flex gap={{ base: 3, lg: 4 }}>
-            <UiButton
-                size={{
-                    base: 'xs',
-                    md: 'sm',
-                    lg: 'lg',
-                }}
-                variant='primaryOutline'
-                leftIcon={<EmojiHeartEyesIcon />}
-                text='Оценить рецепт'
-            />
-            <UiButton
-                size={{
-                    base: 'xs',
-                    md: 'sm',
-                    lg: 'lg',
-                }}
-                variant='primary'
-                leftIcon={<BookmarkHeartIcon />}
-                text='Сохранить в закладки'
-            />
-        </Flex>
-    );
-}
