@@ -27,7 +27,6 @@ export const StepCard = ({ index, control, step, removeStep, error }: Props) => 
                 <StepImageControl
                     index={index}
                     error={error}
-                    w={{ base: '100%', sm: '346px' }}
                     value={field.value}
                     onChange={(image: string) => field.onChange(image)}
                 />
@@ -55,9 +54,6 @@ export const StepCard = ({ index, control, step, removeStep, error }: Props) => 
                 render={({ field }) => (
                     <Textarea
                         data-test-id={`recipe-steps-description-${index}`}
-                        // onBlur={() =>
-                        //     handleUpdate({ ...step, description: description.trim() })
-                        // }
                         h='104px'
                         isInvalid={!!error}
                         _focus={

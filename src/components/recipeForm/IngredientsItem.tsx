@@ -18,7 +18,6 @@ type Props = {
     control: Control<NewRecipe>;
     register: UseFormRegister<NewRecipe>;
     onAdd: (ingredient: Ingredient) => void;
-    // updateIngredient: (ingredient: Ingredient) => void;
 };
 
 export const IngredientsItem = ({
@@ -88,21 +87,13 @@ export const IngredientsItem = ({
             </Td>
 
             <Td flexGrow={1}>
-                {/* <Controller
-                    control={control}
-                    name={`ingredients.${index}.measureUnit`}
-                    render={({ field }) => ( */}
                 <UiSelect
                     index={index}
                     error={error}
                     {...register(`ingredients.${index}.measureUnit`)}
-                    // onChange={field.onChange}
-                    // value={field.value}
                     measureUnits={measureUnits}
                     placeholder='Единица измерения'
                 />
-                {/* )}
-                /> */}
             </Td>
 
             <Td>

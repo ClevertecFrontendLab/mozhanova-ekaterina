@@ -81,22 +81,6 @@ export const Form = ({
         }
     }, [clickedLink, isDirty]);
 
-    // console.log(!isDirty, 'form clean');
-    // console.log(isValid);
-    // console.log(isDraftValid, 'isDraftValid');
-
-    // console.log(watch('steps'), 'steps');
-    // console.log(watch('ingredients'), 'ingredients');
-    // console.log(watch('portions'), 'portions');
-
-    // console.log(errors.portions, 'errors.portions');
-    // console.log(errors, 'errors');
-    // console.log(isDraft);
-    // console.log(getValues(), 'getValues');
-    // console.log(watch('categoriesIds'), 'categoriesIds')
-    // console.log(watch('image'), 'image');
-    // console.log(isRecipeValid, 'isRecipeValid');
-
     const handleSave = () => {
         onSave(getValues());
     };

@@ -1,7 +1,6 @@
 import { Flex, Grid } from '@chakra-ui/react';
 import { Control, useFieldArray } from 'react-hook-form';
 
-// import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { NewRecipe, Step } from '~/types';
 
 import { PlusIconRoundedFill } from '../ui/icons/PlusIconRoundedFill';
@@ -14,7 +13,7 @@ type Props = {
 };
 
 export const StepsControl = ({ control, error }: Props) => {
-    const { fields, append, remove, update } = useFieldArray({
+    const { fields, append, remove } = useFieldArray({
         control,
         name: 'steps',
     });
@@ -43,18 +42,11 @@ export const StepsControl = ({ control, error }: Props) => {
                         ...step,
                         stepNumber: index + 1,
                     }}
-                    updateStep={(updatedStep) =>
-                        update(index, {
-                            ...updatedStep,
-                            stepNumber: index + 1,
-                        })
-                    }
                     removeStep={() => remove(index)}
                 />
             ))}
             <Flex justify='flex-end'>
                 <UiButton
-                    // data-test-id={DATA_TEST_IDS.RECIPE_ADD_INGREDIENTS_BUTTON}
                     onClick={addNewStep}
                     text='Новый шаг'
                     rightIcon={<PlusIconRoundedFill />}
