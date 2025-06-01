@@ -140,7 +140,7 @@ export const useErrors = () => {
                 showError(NOTIFICATION_MESSAGES.RECIPE_NOT_FOUND_ERROR);
                 break;
             default:
-                showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+                showError({ ...NOTIFICATION_MESSAGES.SERVER_ERROR, position: 'bottom' });
                 break;
         }
     };

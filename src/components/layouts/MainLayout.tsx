@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { Outlet } from 'react-router';
+import { Outlet, useLocation } from 'react-router';
 
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 
@@ -12,6 +12,11 @@ import { Sidebar } from '../Sidebar';
 export const MainLayout = () => {
     const [isLargerThanMD] = useBreakpoint('md');
     const [menuOpen, setMenuOpen] = useState(false);
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
     useEffect(() => setMenuOpen(isLargerThanMD), [isLargerThanMD]);
 

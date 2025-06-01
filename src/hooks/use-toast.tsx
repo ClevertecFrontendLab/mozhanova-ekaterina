@@ -14,14 +14,14 @@ import { ToastParams } from '~/types';
 export enum NotificationDuration {
     Short = 3000,
     Medium = 5000,
-    Long = 15000,
+    Long = 150000,
 }
 
 export const useToast = () => {
     const toast = useChakraToast();
 
     const showToast = ({ ...params }: ToastParams) => {
-        const toastId = `${params.type}-notification`;
+        const toastId = `${params.type}${params.title}-notification`;
         if (toast.isActive(toastId)) {
             return;
         }
@@ -33,6 +33,7 @@ export const useToast = () => {
 
             render: ({ onClose }) => (
                 <Alert
+                    zIndex={10}
                     w={{ base: '328px', md: '400px' }}
                     data-test-id={DATA_TEST_IDS.ERROR_NOTIFICATION}
                     variant='solid'

@@ -8,6 +8,7 @@ import { UiButton } from '../ui/UiButton';
 export const SubmitButtons = ({ saveDraft }: { saveDraft: () => void }) => (
     <Flex gap={5} direction={{ base: 'column', sm: 'row' }} justify='center'>
         <UiButton
+            zIndex={32}
             size='lg'
             leftIcon={<EditIcon />}
             variant='outline'
@@ -16,6 +17,7 @@ export const SubmitButtons = ({ saveDraft }: { saveDraft: () => void }) => (
             data-test-id={DATA_TEST_IDS.RECIPE_SAVE_DRAFT_BUTTON}
         />
         <UiButton
+            zIndex={32}
             size='lg'
             variant='solid'
             text='Опубликовать рецепт'

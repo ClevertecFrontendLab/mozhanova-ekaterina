@@ -37,6 +37,7 @@ export const TagsControl = ({ error, control }: Props) => {
     );
 
     useEffect(() => {
+        if (!selectedCategoriesIds.length) return;
         onChange(selectedCategoriesIds);
     }, [selectedCategoriesIds]);
 

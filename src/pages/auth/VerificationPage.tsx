@@ -22,6 +22,6 @@ export const VerificationPage = () => {
             showVerificationFailed();
             navigate(AppRoutes.SIGN_UP);
         }
-    }, [navigate, showSuccess, showVerificationFailed, emailVerified]);
+    }, []);
     return null;
 };

@@ -27,21 +27,24 @@ export const EditRecipePage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { createRecipeErrorHandler, createDraftRecipeErrorHandler } = useErrors();
-
+    const [isFormValid, setIsFormValid] = useState(true);
     const [updateRecipe] = useUpdateRecipeMutation();
     const [saveDraft] = useCreateRecipeDraftMutation();
 
     const handleSubmit = async (recipe: NewRecipe) => {
         try {
             const response = await updateRecipe(recipe as Recipe).unwrap();
+            showSuccess(NOTIFICATION_MESSAGES.CREATE_RECIPE_SUCCESS);
             navigate(getRecipePath(response.categoriesIds, response._id));
         } catch (error) {
             createRecipeErrorHandler(error as ErrorResponse);
         }
     };
     const handleSaveDraft = async (recipe: RecipeDraft) => {
-        const isValid = await RecipeDraftSchema.isValid(recipe);
-        if (!isValid) return;
+        const isDraftValid = await RecipeDraftSchema.isValid(recipe);
+
+        setIsFormValid(isDraftValid);
+        if (!isDraftValid) return;
         try {
             const data = (await RecipeDraftSchema.validate(recipe)) as RecipeDraft;
             await saveDraft(data).unwrap();
@@ -68,7 +71,12 @@ export const EditRecipePage = () => {
 
     return (
         <Box as='main' px={{ base: 4, sm: 5, md: 6 }} pt={14} pb={{ base: 4, md: 8 }}>
-            <Form onSave={handleSaveDraft} onSubmit={handleSubmit} data={formData} />
+            <Form
+                isDraftValid={isFormValid}
+                onSave={handleSaveDraft}
+                onSubmit={handleSubmit}
+                data={formData}
+            />
         </Box>
     );
 };

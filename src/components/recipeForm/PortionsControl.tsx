@@ -1,5 +1,5 @@
 import { Flex, Text } from '@chakra-ui/react';
-import { Control, Controller } from 'react-hook-form';
+import { Control, useController } from 'react-hook-form';
 
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { NewRecipe } from '~/types';
@@ -12,21 +12,30 @@ export const PortionsControl = ({
 }: {
     error: boolean;
     control: Control<NewRecipe>;
-}) => (
-    <Flex
-        data-test-id={DATA_TEST_IDS.RECIPE_PORTIONS}
-        w='100%'
-        align='center'
-        gap={6}
-        justify={{ base: 'space-between', sm: 'flex-start' }}
-    >
-        <Text fontWeight={600}>На сколько человек ваш рецепт?</Text>
-        <Controller
-            control={control}
-            name='portions'
-            render={({ field: { onChange, value } }) => (
-                <UiNumberInput error={error} onChange={onChange} value={value} />
-            )}
-        />
-    </Flex>
-);
+}) => {
+    const {
+        field: { onChange, value },
+    } = useController({ control, name: 'portions' });
+
+    const handleChange = (valueString: string) => {
+        const num = Number(valueString);
+        if (valueString.trim() === '' || num === 0) {
+            onChange(undefined);
+        } else {
+            onChange(num);
+        }
+    };
+
+    return (
+        <Flex w='100%' align='center' gap={6} justify={{ base: 'space-between', sm: 'flex-start' }}>
+            <Text fontWeight={600}>На сколько человек ваш рецепт?</Text>
+
+            <UiNumberInput
+                dataInputId={DATA_TEST_IDS.RECIPE_PORTIONS}
+                error={error}
+                onChange={handleChange}
+                value={value}
+            />
+        </Flex>
+    );
+};

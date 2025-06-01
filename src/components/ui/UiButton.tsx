@@ -56,6 +56,7 @@ type Props = {
     fontSize?: string;
     isDisabled?: boolean;
     type?: 'button' | 'submit' | 'reset';
+    zIndex?: number;
     'data-test-id'?: string;
     onClick?: () => void;
 };
@@ -70,6 +71,7 @@ export const UiButton = ({
     icon,
     fontSize,
     type = 'button',
+    zIndex,
     ...props
 }: Props) =>
     iconButton ? (
@@ -86,6 +88,7 @@ export const UiButton = ({
         />
     ) : (
         <Button
+            zIndex={zIndex}
             size={size}
             bg={variants[variant].bg}
             borderColor={variants[variant].borderColor}

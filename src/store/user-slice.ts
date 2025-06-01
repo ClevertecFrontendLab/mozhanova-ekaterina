@@ -9,7 +9,7 @@ export type UserState = {
 
 const initialState: UserState = {
     user: null,
-    accessToken: null,
+    accessToken: localStorage.getItem('accessToken') || null,
 };
 
 export const userSlice = createSlice({

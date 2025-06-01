@@ -55,7 +55,7 @@ const theme = extendTheme({
             400: '#000000', // Чистый черный
         },
         error: {
-            400: '#e53e3e',
+            400: 'rgb(229, 62, 62)',
         },
     },
     semanticTokens: {

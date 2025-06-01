@@ -68,4 +68,5 @@ export const DATA_TEST_IDS = {
     RECIPE_DELETE_BUTTON: 'recipe-delete-button',
     HEADER_LOGO: 'header-logo',
     ADD_RECIPE_BUTTON: 'add-recipe-button',
+    RECIPE_FORM: 'recipe-form',
 };

@@ -35,6 +35,7 @@ export const StepsControl = ({ control, error }: Props) => {
             </Flex>
             {fields.map((step, index) => (
                 <StepCard
+                    control={control}
                     index={index}
                     error={error}
                     key={step.id}

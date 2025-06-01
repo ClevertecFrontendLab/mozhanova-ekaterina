@@ -71,9 +71,11 @@ h6 {
     bottom: 80px !important;
     left: 25% !important;
     transform: translateX(-50%);
+    z-index: 31 !important;
 }
 #chakra-toast-manager-bottom {
     bottom: 80px !important;
+    z-index: 31 !important;
 }
 @media (max-width: 1001px) {
     #chakra-toast-manager-bottom-left {

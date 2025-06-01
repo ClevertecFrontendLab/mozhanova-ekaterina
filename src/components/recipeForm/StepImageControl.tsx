@@ -1,5 +1,4 @@
 import { Box, Image, ResponsiveValue } from '@chakra-ui/react';
-import { useRef } from 'react';
 
 import default_image from '~/assets/ui/image_default.png';
 import { useModalContext } from '~/contexts/modal-context';
@@ -8,7 +7,7 @@ import { API_IMAGE_URL } from '~/query/constants/api-config';
 type Props = {
     index: number;
     error: boolean;
-    value?: string;
+    value?: string | null;
     onChange: (image: string) => void;
     w?: ResponsiveValue<string>;
     maxH?: ResponsiveValue<string>;
@@ -16,8 +15,15 @@ type Props = {
 
 export const StepImageControl = ({ index, error, value, onChange, ...props }: Props) => {
     const { showUploadImage } = useModalContext();
-    const uploadInputRef = useRef<HTMLInputElement>(null);
     const preview = value ? `${API_IMAGE_URL}${value}` : default_image;
+
+    const showUploadImageModal = () => {
+        showUploadImage({
+            preview,
+            onSave: onChange,
+            testId: `recipe-steps-image-block-${index}-input-file`,
+        });
+    };
 
     return (
         <Box
@@ -28,12 +34,12 @@ export const StepImageControl = ({ index, error, value, onChange, ...props }: Pr
             overflow='hidden'
             {...props}
         >
-            <input
+            {/* <input
                 ref={uploadInputRef}
                 style={{ display: 'none' }}
                 type='file'
                 data-test-id={`recipe-steps-image-block-${index}-input-file`}
-            />
+            /> */}
 
             <Image
                 data-test-id={`recipe-steps-image-block-${index}-preview-image`}
@@ -41,7 +47,7 @@ export const StepImageControl = ({ index, error, value, onChange, ...props }: Pr
                 h='100%'
                 cursor='pointer'
                 src={preview}
-                onClick={() => showUploadImage({ initialImage: preview, uploadInputRef, onChange })}
+                onClick={showUploadImageModal}
                 objectFit='cover'
                 alt='Загруженное изображение'
                 borderRadius='8px'

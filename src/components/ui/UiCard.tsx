@@ -11,11 +11,13 @@ import {
 } from '@chakra-ui/react';
 import { JSX } from 'react';
 import { useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router';
+import { ErrorResponse, Link, useParams } from 'react-router';
 
 import avatar from '~/assets/blog_avatar_1.png';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
+import { useErrors } from '~/hooks/use-errors';
 import { API_IMAGE_URL } from '~/query/constants/api-config';
+import { useSaveRemoveFromBookmarksMutation } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
 import { RecipesState } from '~/store/recipe-slice';
 import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
@@ -44,6 +46,8 @@ export const UiCard = ({
 }: Props) => {
     const { category, subCategory } = useParams();
     const [isLargerThanMD] = useBreakpoint('md');
+    const [saveRecipe] = useSaveRemoveFromBookmarksMutation();
+    const { saveLikeRecipeErrorHandler } = useErrors();
 
     const searchString = useSelector(
         (state: { recipe: RecipesState }) => state.recipe.filters.searchString,
@@ -58,6 +62,14 @@ export const UiCard = ({
     );
     const categoryRoute = category || (rootCategories[0]?.category ?? '');
     const subCategoryRoute = subCategory || (subCategories[0]?.category ?? '');
+
+    const handleSave = async () => {
+        try {
+            await saveRecipe(_id).unwrap();
+        } catch (error) {
+            saveLikeRecipeErrorHandler(error as ErrorResponse);
+        }
+    };
 
     return (
         <Card
@@ -104,6 +116,7 @@ export const UiCard = ({
                         }}
                     >
                         <UiCardInfo
+                            _id={_id}
                             categoryBgColor='secondary.100'
                             categories={rootCategories?.map((category) => category?._id)}
                             likes={likes}
@@ -143,6 +156,7 @@ export const UiCard = ({
                 <CardFooter>
                     <Flex gap='8px' justifyContent='flex-end' w='100%'>
                         <UiButton
+                            onClick={handleSave}
                             size={isLargerThanMD ? 'sm' : 'xs'}
                             text='Сохранить'
                             leftIcon={<BookmarkHeartIcon />}

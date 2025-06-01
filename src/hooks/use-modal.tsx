@@ -3,7 +3,7 @@ import React from 'react';
 import { useState } from 'react';
 
 import { modalConfig } from '~/constants/modal-config';
-import { AuthUser, ModalParams, ModalState, ModalType, RecipeDraft } from '~/types';
+import { AuthUser, ModalParams, ModalState, ModalType } from '~/types';
 
 export const useModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -29,8 +29,8 @@ export const useModal = () => {
     const showUploadImage = (params: ModalParams<'uploadImage'>) =>
         showModal('uploadImage', { ...params });
 
-    const showRecipePreventive = (draft: RecipeDraft, link: string) =>
-        showModal('recipePreventive', { draft, link });
+    const showRecipePreventive = (params: ModalParams<'recipePreventive'>) =>
+        showModal('recipePreventive', { ...params });
 
     const handleClose = () => {
         setModalState(null);

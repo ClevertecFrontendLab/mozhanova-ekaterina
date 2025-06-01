@@ -32,6 +32,8 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
                             throw new Error('Token refresh failed');
                         }
                     } else {
+                        await refreshToken();
+
                         if (location.pathname !== AppRoutes.HOME) setIsLoading(false);
                         else throw new Error('Auth check failed');
                     }

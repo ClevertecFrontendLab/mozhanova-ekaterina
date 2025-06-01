@@ -1,4 +1,5 @@
 import { Box } from '@chakra-ui/react';
+import { useState } from 'react';
 import { ErrorResponse, useNavigate } from 'react-router';
 
 import { Form } from '~/components/recipeForm/Form';
@@ -18,8 +19,11 @@ export const CreateRecipePage = () => {
     const { getRecipePath } = useRoutes();
     const [createRecipe] = useCreateRecipeMutation();
     const [saveDraft] = useCreateRecipeDraftMutation();
+    const [isDraftValid, setIsDraftValid] = useState(true);
 
     const handleSubmit = async (data: NewRecipe) => {
+        console.log(data);
+
         try {
             const response = await createRecipe(data).unwrap();
             showSuccess(NOTIFICATION_MESSAGES.CREATE_RECIPE_SUCCESS);
@@ -31,6 +35,8 @@ export const CreateRecipePage = () => {
 
     const handleSaveDraft = async (recipe: RecipeDraft) => {
         const isValid = await RecipeDraftSchema.isValid(recipe);
+
+        setIsDraftValid(isValid);
         if (!isValid) return;
         try {
             const data = (await RecipeDraftSchema.validate(recipe)) as RecipeDraft;
@@ -41,9 +47,10 @@ export const CreateRecipePage = () => {
             createDraftRecipeErrorHandler(error as ErrorResponse);
         }
     };
+
     return (
         <Box as='main' px={{ base: 4, sm: 5, md: 6 }} pt={14} pb={{ base: 4, md: 8 }}>
-            <Form onSubmit={handleSubmit} onSave={handleSaveDraft} />
+            <Form isDraftValid={isDraftValid} onSubmit={handleSubmit} onSave={handleSaveDraft} />
         </Box>
     );
 };

@@ -10,7 +10,11 @@ export const DescriptionControl = ({ error, ...props }: Props) => (
         isInvalid={!!error}
         placeholder='Краткое описание рецепта'
         borderColor='border.light'
-        _focus={{ borderColor: 'border.light', boxShadow: 'none' }}
+        _focus={
+            error
+                ? { borderColor: 'error.400' }
+                : { borderColor: 'border.light', boxShadow: 'none' }
+        }
         css={{
             '&[aria-invalid=true]': { boxShadow: 'none' },
         }}

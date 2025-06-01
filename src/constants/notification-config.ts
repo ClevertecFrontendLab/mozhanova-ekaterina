@@ -56,10 +56,12 @@ export const NOTIFICATION_MESSAGES = {
     UPLOAD_IMAGE_ERROR: {
         title: NOTIFICATION_TITLES.SERVER_ERROR,
         description: 'Попробуйте сохранить фото позже.',
+        duration: NotificationDuration.Long,
     },
     GET_RECIPES_ERROR: {
         title: NOTIFICATION_TITLES.SERVER_ERROR,
         description: 'Попробуйте поискать снова попозже',
+        duration: NotificationDuration.Long,
     },
     RESET_CREDENTIALS_SUCCESS: {
         title: NOTIFICATION_TITLES.RESET_CREDENTIALS_SUCCESS,
@@ -74,26 +76,37 @@ export const NOTIFICATION_MESSAGES = {
     RECIPE_EXISTS_ERROR: {
         title: NOTIFICATION_TITLES.ERROR,
         description: 'Рецепт с таким названием уже существует.',
+        duration: NotificationDuration.Long,
     },
     CREATE_RECIPE_ERROR: {
         title: NOTIFICATION_TITLES.SERVER_ERROR,
         description: 'Попробуйте пока сохранить в черновик.',
+        duration: NotificationDuration.Long,
     },
     SAVE_DRAFT_ERROR: {
         title: NOTIFICATION_TITLES.SERVER_ERROR,
         description: 'Не удалось сохранить черновик рецепта.',
-    },
-    CREATE_RECIPE_SUCCESS: {
-        title: 'Рецепт успешно опубликован.',
+        duration: NotificationDuration.Long,
     },
     CREATE_RECIPE_DRAFT_SUCCESS: {
         title: 'Черновик успешно сохранен.',
+        duration: NotificationDuration.Long,
+    },
+    CREATE_RECIPE_SUCCESS: {
+        title: 'Рецепт успешно опубликован.',
+        duration: NotificationDuration.Long,
     },
     DELETE_RECIPE_ERROR: {
         title: NOTIFICATION_TITLES.SERVER_ERROR,
         description: 'Не удалось удалить рецепт.',
+        duration: NotificationDuration.Long,
+    },
+    DELETE_RECIPE_SUCCESS: {
+        title: 'Рецепт успешно удален.',
+        duration: NotificationDuration.Long,
     },
     RECIPE_NOT_FOUND_ERROR: {
         title: 'Рецепт не найден',
+        duration: NotificationDuration.Long,
     },
 } as const satisfies Record<string, NotificationMessage>;

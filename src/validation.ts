@@ -73,6 +73,16 @@ const ingredientSchema = yup.object().shape({
     measureUnit: yup.string().required(),
 });
 
+const ingredientsDraftSchema = yup.object().shape({
+    title: yup
+        .string()
+        .trim()
+        .max(50, VALIDATION_MESSAGES.LENGTH.RECIPE_MAX_50)
+        .transform((value) => (value === '' ? undefined : value)),
+    count: yup.number().transform((value) => (value === 0 ? undefined : value)),
+    measureUnit: yup.string().transform((value) => (value === '' ? undefined : value)),
+});
+
 const stepSchema = yup.object().shape({
     stepNumber: yup.number().required().positive().integer(),
     description: yup
@@ -83,11 +93,11 @@ const stepSchema = yup.object().shape({
         .transform((value) => (value === '' ? undefined : value)),
     image: yup
         .string()
-        .optional()
-        .transform((value) => (value === '' ? undefined : value)),
+        .nullable()
+        .transform((value) => (value === '' ? null : value)),
 });
 
-export const stepsDraft = yup.object().shape({
+const stepsDraftSchema = yup.object().shape({
     stepNumber: yup.number().required().positive().integer(),
     description: yup
         .string()
@@ -96,8 +106,8 @@ export const stepsDraft = yup.object().shape({
         .transform((value) => (value === '' ? undefined : value)),
     image: yup
         .string()
-        .optional()
-        .transform((value) => (value === '' ? undefined : value)),
+        .nullable()
+        .transform((value) => (value === '' ? null : value)),
 });
 
 export const baseRecipeSchema = {
@@ -110,6 +120,7 @@ export const baseRecipeSchema = {
     categoriesIds: yup
         .array()
         .of(yup.string().required())
+        .min(3)
         .transform((value) => (value.length === 0 ? undefined : value)),
     image: yup.string().transform((value) => (value === '' ? undefined : value)),
     time: yup
@@ -125,9 +136,9 @@ export const baseRecipeSchema = {
     portions: yup.number(),
     ingredients: yup
         .array()
-        .of(ingredientSchema)
+        .of(ingredientsDraftSchema)
         .transform((value) => (value.length === 0 ? undefined : value)),
-    steps: yup.array().of(stepsDraft),
+    steps: yup.array().of(stepsDraftSchema),
 };
 
 export const RecipePublishSchema = yup.object().shape({
@@ -137,7 +148,7 @@ export const RecipePublishSchema = yup.object().shape({
     image: baseRecipeSchema.image.required(),
     time: baseRecipeSchema.time.required(),
     portions: baseRecipeSchema.portions.required(),
-    ingredients: baseRecipeSchema.ingredients.required(),
+    ingredients: yup.array().of(ingredientSchema).required(),
     steps: yup.array().of(stepSchema).required(),
 });
 

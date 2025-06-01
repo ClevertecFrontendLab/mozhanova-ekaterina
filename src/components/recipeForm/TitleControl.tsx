@@ -9,6 +9,7 @@ export const TitleControl = ({ error, ...props }: Props) => (
         <Input
             data-test-id='recipe-title'
             borderColor={error ? 'error.400' : 'primary.300'}
+            _focus={error ? { borderColor: 'error.400' } : { borderColor: 'primary.300' }}
             size='lg'
             variant='recipeForm'
             placeholder='Название рецепта'

@@ -1,11 +1,9 @@
 import { Box, Grid, Image } from '@chakra-ui/react';
-import { useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import default_image from '~/assets/ui/image_default.png';
-import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
-import { useToast } from '~/hooks/use-toast';
 import { useFileUploadMutation } from '~/query/file-upload-api';
 import { ModalParams } from '~/types';
 
@@ -14,46 +12,60 @@ import { UiModal } from '../ui/UiModal';
 
 export const UploadImageModal = ({ params }: { params?: ModalParams<'uploadImage'> }) => {
     const { isOpen, onClose } = useModalContext();
-    const [preview, setPreview] = useState(params!.initialImage);
-    const [file, setFile] = useState<File | null>(null);
-    const { showError } = useToast();
+    const uploadInputRef = useRef<HTMLInputElement>(null);
+    const [localFile, setLocalFile] = useState<File | null>(null);
+    const [localPreview, setLocalPreview] = useState(params?.preview);
     const [uploadFile] = useFileUploadMutation();
 
-    const handleUploadImage = async () => {
+    const handleUpload = async () => {
+        if (!localFile) return;
+
         const formData = new FormData();
-        if (!file) return;
-        formData.append('file', file);
+        formData.append('file', localFile);
 
         try {
             const data = await uploadFile(formData).unwrap();
-            params!.onChange(data.url);
+            params?.onSave(data.url);
             onClose();
-        } catch {
-            showError(NOTIFICATION_MESSAGES.UPLOAD_IMAGE_ERROR);
-            onClose();
+        } catch (error) {
+            console.error('Upload failed', error);
         }
     };
 
-    const handleFileChange = (element: HTMLInputElement) => {
-        const file = element.files?.[0];
+    const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
 
         if (!file) return;
-        setFile(file);
-        const reader = new FileReader();
 
+        setLocalFile(file);
+        const reader = new FileReader();
         reader.onload = () => {
-            setPreview(reader.result as string);
+            const newPreview = reader.result as string;
+            setLocalPreview(newPreview);
         };
         reader.readAsDataURL(file);
     };
 
-    const handleResetImage = () => {
-        setPreview(default_image);
-        setFile(null);
+    const handleCancel = () => {
+        params?.onSave('');
+        onClose();
     };
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (uploadInputRef.current) {
+                uploadInputRef.current.click();
+            }
+        }, 0);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (!params) return null;
 
     return (
         <UiModal
+            data-test-id={DATA_TEST_IDS.RECIPE_IMAGE_MODAL}
             isOpen={isOpen}
             onClose={onClose}
             header='Изображение'
@@ -67,19 +79,21 @@ export const UploadImageModal = ({ params }: { params?: ModalParams<'uploadImage
                     pt={4}
                 >
                     <input
+                        // value={''}
+                        data-test-id={params.testId}
                         style={{ display: 'none' }}
                         type='file'
-                        ref={params!.uploadInputRef}
-                        onChange={(e) => handleFileChange(e.target)}
+                        ref={uploadInputRef}
+                        onChange={(e) => handleFileChange(e)}
                     />
                     <Image
                         borderRadius='8px'
-                        onClick={() => params!.uploadInputRef?.current?.click()}
+                        onClick={() => uploadInputRef.current?.click()}
                         data-test-id={DATA_TEST_IDS.RECIPE_IMAGE_MODAL_PREVIEW_IMAGE}
                         mx='auto'
                         h='206px'
                         w='206px'
-                        src={preview}
+                        src={localPreview}
                         cursor='pointer'
                         objectFit='cover'
                         alt='Загруженное изображение'
@@ -87,20 +101,15 @@ export const UploadImageModal = ({ params }: { params?: ModalParams<'uploadImage
                 </Box>
             }
             footer={
-                preview !== default_image && (
+                localPreview !== default_image && (
                     <Grid w='100%' gap={4}>
                         <UiButton
-                            onClick={handleUploadImage}
+                            onClick={handleUpload}
                             size='lg'
                             variant='solid'
                             text='Сохранить'
                         />
-                        <UiButton
-                            onClick={handleResetImage}
-                            size='lg'
-                            variant='ghost'
-                            text='Удалить'
-                        />
+                        <UiButton onClick={handleCancel} size='lg' variant='ghost' text='Удалить' />
                     </Grid>
                 )
             }

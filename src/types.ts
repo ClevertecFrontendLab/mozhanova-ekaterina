@@ -23,11 +23,12 @@ export type Recipe = {
 };
 
 export type Ingredient = { title: string; count: number; measureUnit: string };
-export type Step = { stepNumber: number; description: string; image?: string | undefined };
+export type Step = { stepNumber: number; description: string; image?: string | null | undefined };
 export type MeasureUnit = {
     _id: string;
     name: string;
 };
+export type RecipeDraft = Partial<Omit<NewRecipe, 'title'>> & Pick<NewRecipe, 'title'>;
 
 export type NewRecipe = Pick<
     Recipe,
@@ -40,8 +41,6 @@ export type NewRecipe = Pick<
     | 'steps'
     | 'ingredients'
 >;
-
-export type RecipeDraft = Partial<Omit<NewRecipe, 'title'>> & Pick<NewRecipe, 'title'>;
 
 export type Meta = {
     total: number;
@@ -154,11 +153,11 @@ export type ModalParams<T extends ModalType> = {
     resetCredentials: { email: string };
     signInError: { userData: AuthUser };
     uploadImage: {
-        initialImage: string;
-        uploadInputRef: React.RefObject<HTMLInputElement | null>;
-        onChange: (image: string) => void;
+        preview: string;
+        testId: string;
+        onSave: (url: string) => void;
     };
-    recipePreventive: { draft: RecipeDraft; link: string };
+    recipePreventive: { draft: RecipeDraft; setError: VoidFunction; link: string };
 }[T];
 
 export type ModalState<T extends ModalType = ModalType> = {

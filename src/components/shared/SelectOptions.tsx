@@ -81,7 +81,11 @@ export const SelectOptions = ({
                 color='neutral.300'
                 _hover={{ bg: 'neutral.0' }}
                 _active={{ bg: 'neutral.0', borderColor: 'primary.300' }}
-                _focus={{ borderColor: 'primary.300', bg: 'neutral.0', boxShadow: 'none' }}
+                _focus={
+                    error
+                        ? { borderColor: 'error.400' }
+                        : { borderColor: 'primary.300', bg: 'neutral.0', boxShadow: 'none' }
+                }
             >
                 {selected.length > 0 ? (
                     <Flex gap={2}>

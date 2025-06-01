@@ -14,7 +14,7 @@ export const IngredientsTable = ({
     }[];
     portions: number;
 }) => {
-    const [portionsQuantity, setPortionsQuantity] = useState(portions);
+    const [portionsQuantity, setPortionsQuantity] = useState(String(portions));
 
     return (
         <TableContainer>
@@ -36,9 +36,7 @@ export const IngredientsTable = ({
                                 ПОРЦИЙ
                                 <UiNumberInput
                                     value={portionsQuantity}
-                                    onChange={(_, valueAsNumber) =>
-                                        setPortionsQuantity(valueAsNumber)
-                                    }
+                                    onChange={(value: string) => setPortionsQuantity(value)}
                                 />
                             </Flex>
                         </Th>
@@ -55,7 +53,8 @@ export const IngredientsTable = ({
                                 pl={0}
                                 pr={{ base: 2, sm: 6 }}
                             >
-                                {(Number(ingredient.count) / portions) * portionsQuantity || ''}
+                                {(Number(ingredient.count) / portions) *
+                                    parseInt(portionsQuantity) || ''}
                                 {' ' + ingredient.measureUnit}
                             </Td>
                         </Tr>

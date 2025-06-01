@@ -1,27 +1,26 @@
 import { Flex, Grid, Table, TableContainer, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
-import { Control, useFieldArray } from 'react-hook-form';
+import { Control, useFieldArray, UseFormRegister } from 'react-hook-form';
 
 import { useMeasureUnitsQuery } from '~/query/recipe-api';
 import { NewRecipe } from '~/types';
 
 import { RoundedPlusIcon } from '../ui/icons/RoundedPlusIcon';
-import { AddNewIngredient } from './AddNewIngredient';
 import { IngredientsItem } from './IngredientsItem';
 
 type Props = {
     error: boolean;
     control: Control<NewRecipe>;
+    register: UseFormRegister<NewRecipe>;
 };
 
-export const IngredientsControl = ({ control, error }: Props) => {
-    const { fields, append, remove, update } = useFieldArray({
+export const IngredientsControl = ({ control, error, register }: Props) => {
+    const { fields, append, remove } = useFieldArray({
         control,
         name: 'ingredients',
     });
-    const { data } = useMeasureUnitsQuery();
-    const measureUnits = data?.map((item) => item.name);
+    const { data: measureUnits } = useMeasureUnitsQuery();
 
-    if (!data) return null;
+    if (!measureUnits) return null;
 
     return (
         <Grid gap={{ base: 3, sm: 4 }}>
@@ -47,20 +46,18 @@ export const IngredientsControl = ({ control, error }: Props) => {
                         {fields &&
                             fields.map((ingredient, index) => (
                                 <IngredientsItem
+                                    register={register}
+                                    control={control}
                                     index={index}
                                     error={error}
                                     key={ingredient.id}
                                     measureUnits={measureUnits}
-                                    updateIngredient={(ingredient) => update(index, ingredient)}
                                     removeIngredient={() => remove(index)}
                                     ingredient={ingredient}
+                                    onAdd={(ingredient) => append(ingredient)}
+                                    isLast={index === fields.length - 1}
                                 />
                             ))}
-                        <AddNewIngredient
-                            error={error}
-                            measureUnits={measureUnits}
-                            onAdd={(ingredient) => append(ingredient)}
-                        />
                     </Tbody>
                 </Table>
             </TableContainer>

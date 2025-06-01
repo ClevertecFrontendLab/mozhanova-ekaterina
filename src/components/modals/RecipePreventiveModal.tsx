@@ -20,12 +20,17 @@ export const RecipePreventiveModal = ({ params }: { params?: ModalParams<'recipe
     const { isOpen, onClose } = useModalContext();
     const [saveDraft] = useCreateRecipeDraftMutation();
     const { createDraftRecipeErrorHandler } = useErrors();
-    const { showSuccess } = useToast();
+    const { showSuccess, showError } = useToast();
     const navigate = useNavigate();
 
     const handleSave = async () => {
         const isValid = await RecipeDraftSchema.isValid(params?.draft);
-        if (!isValid) return;
+        if (!isValid) {
+            params?.setError();
+            showError(NOTIFICATION_MESSAGES.SAVE_DRAFT_ERROR);
+            onClose();
+            return;
+        }
         try {
             const data = (await RecipeDraftSchema.validate(params?.draft)) as RecipeDraft;
             await saveDraft(data).unwrap();

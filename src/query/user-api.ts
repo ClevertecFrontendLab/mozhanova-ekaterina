@@ -34,15 +34,22 @@ export const userApi = createApi({
             invalidatesTags: [Tags.AUTH],
         }),
 
+        [EndpointNames.REFRESH_TOKEN]: builder.query<AuthResponse, void>({
+            query: () => ({
+                url: ApiEndpoints.REFRESH_TOKEN,
+                method: 'GET',
+            }),
+            async onQueryStarted(_args, { queryFulfilled, dispatch }) {
+                await handleAuthHeaders(queryFulfilled, dispatch);
+            },
+        }),
+
         [EndpointNames.CHECK_AUTH]: builder.query<AuthResponse, void>({
             query: () => ({
                 url: ApiEndpoints.CHECK_AUTH,
                 method: 'GET',
             }),
             providesTags: [Tags.AUTH],
-            async onQueryStarted(_args, { queryFulfilled, dispatch }) {
-                await handleAuthHeaders(queryFulfilled, dispatch);
-            },
         }),
 
         [EndpointNames.FORGOT_PASSWORD]: builder.mutation<AuthResponse, string>({
@@ -71,16 +78,6 @@ export const userApi = createApi({
             }),
             invalidatesTags: [Tags.AUTH],
         }),
-
-        [EndpointNames.REFRESH_TOKEN]: builder.query<AuthResponse, void>({
-            query: () => ({
-                url: ApiEndpoints.REFRESH_TOKEN,
-                method: 'GET',
-            }),
-            async onQueryStarted(_args, { queryFulfilled, dispatch }) {
-                await handleAuthHeaders(queryFulfilled, dispatch);
-            },
-        }),
     }),
 });
 
@@ -93,4 +90,5 @@ export const {
     useResetPasswordMutation,
     useLazyCheckAuthQuery,
     useLazyRefreshTokenQuery,
+    useRefreshTokenQuery,
 } = userApi;
