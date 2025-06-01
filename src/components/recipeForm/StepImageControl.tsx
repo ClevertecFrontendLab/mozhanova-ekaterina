@@ -34,6 +34,7 @@ export const StepImageControl = ({ index, error, value, onChange }: Props) => {
             <Image
                 data-test-id={`recipe-steps-image-block-${index}-preview-image`}
                 w={{ base: '100%', sm: '346px' }}
+                h='100%'
                 cursor='pointer'
                 src={preview}
                 onClick={showUploadImageModal}

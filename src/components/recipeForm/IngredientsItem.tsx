@@ -86,7 +86,7 @@ export const IngredientsItem = ({
                 />
             </Td>
 
-            <Td flexGrow={1}>
+            <Td flexGrow={1} flexBasis='60%'>
                 <UiSelect
                     index={index}
                     error={error}
