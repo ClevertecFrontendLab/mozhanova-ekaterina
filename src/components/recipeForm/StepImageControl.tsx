@@ -1,4 +1,4 @@
-import { Box, Image, ResponsiveValue } from '@chakra-ui/react';
+import { Box, Image } from '@chakra-ui/react';
 
 import default_image from '~/assets/ui/image_default.png';
 import { useModalContext } from '~/contexts/modal-context';
@@ -9,11 +9,9 @@ type Props = {
     error: boolean;
     value?: string | null;
     onChange: (image: string) => void;
-    w?: ResponsiveValue<string>;
-    maxH?: ResponsiveValue<string>;
 };
 
-export const StepImageControl = ({ index, error, value, onChange, ...props }: Props) => {
+export const StepImageControl = ({ index, error, value, onChange }: Props) => {
     const { showUploadImage } = useModalContext();
     const preview = value ? `${API_IMAGE_URL}${value}` : default_image;
 
@@ -32,18 +30,10 @@ export const StepImageControl = ({ index, error, value, onChange, ...props }: Pr
             borderWidth='1px'
             borderRadius='md'
             overflow='hidden'
-            {...props}
         >
-            {/* <input
-                ref={uploadInputRef}
-                style={{ display: 'none' }}
-                type='file'
-                data-test-id={`recipe-steps-image-block-${index}-input-file`}
-            /> */}
-
             <Image
                 data-test-id={`recipe-steps-image-block-${index}-preview-image`}
-                w='100%'
+                w={{ base: '100%', sm: '346px' }}
                 h='100%'
                 cursor='pointer'
                 src={preview}

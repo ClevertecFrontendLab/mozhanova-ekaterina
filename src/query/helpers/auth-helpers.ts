@@ -8,7 +8,6 @@ export const handleAuthHeaders = async (queryFulfilled: QueryFulfilled, dispatch
         const { meta } = await queryFulfilled;
         const accessToken = meta?.response?.headers?.get('Authentication-Access');
 
-        // localStorage.setItem('accessToken', accessToken || '');
         dispatch(accessToken ? setCredentials(accessToken) : setCredentials(null));
     } catch {
         dispatch(setCredentials(null));
