@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { NewUser } from '~/types';
+import { BloggerInfo } from '~/types';
 
 export type UserState = {
-    user: NewUser | null;
+    user: BloggerInfo | null;
     accessToken: string | null;
 };
 
