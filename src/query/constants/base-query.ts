@@ -42,7 +42,6 @@ export const baseQueryWithReauth: BaseQueryFn<
 
         if (refreshResult.meta?.response?.ok) {
             const accessToken = refreshResult.meta.response.headers?.get('Authentication-Access');
-            console.log(accessToken);
 
             api.dispatch(accessToken ? setCredentials(accessToken) : setCredentials(null));
 

@@ -26,7 +26,8 @@ export const selectSubcategories = createSelector([selectAllCategories], (catego
     Array.isArray(categories) ? categories.filter((category) => category.rootCategoryId) : [],
 );
 
-export const selectCurrentUserId = (state: ApplicationState) => decodeToken(state.user.accessToken);
+export const selectCurrentUserId = (state: ApplicationState) =>
+    decodeToken(state.user.accessToken) || '';
 
 export const selectFilters = createSelector(
     (state: ApplicationState) => state.recipe.filters,
@@ -106,18 +107,38 @@ export const selectCurrentRootCategory = createSelector(
     (categories, name) => (Array.isArray(categories) ? getCategoryByName(categories, name) : null),
 );
 
+// export const selectGlobalLoading = createSelector(
+//     (state: ApplicationState) => state,
+//     (state) => {
+//         const apiStates = [
+//             state['authorized-api']?.queries || {},
+//             state['authorized-api']?.mutations || {},
+//             state['unauthorized-api']?.queries || {},
+//             state['unauthorized-api']?.mutations || {},
+//         ];
+
+//         return apiStates.some((apiState) =>
+//             Object.values(apiState).some((item) => item?.status === 'pending'),
+//         );
+//     },
+// );
 export const selectGlobalLoading = createSelector(
     (state: ApplicationState) => state,
     (state) => {
-        const apiStates = [
-            state['authorized-api']?.queries || {},
-            state['authorized-api']?.mutations || {},
-            state['unauthorized-api']?.queries || {},
-            state['unauthorized-api']?.mutations || {},
-        ];
+        const apiServices = [state['authorized-api'], state['unauthorized-api']];
 
-        return apiStates.some((apiState) =>
-            Object.values(apiState).some((item) => item?.status === 'pending'),
-        );
+        return apiServices.some((apiState) => {
+            if (!apiState) return false;
+
+            const allOperations = [
+                ...Object.values(apiState.queries || {}),
+                ...Object.values(apiState.mutations || {}),
+            ];
+
+            return allOperations.some(
+                (operation) =>
+                    operation?.status === 'pending' && !operation?.meta?.ignoreGlobalLoader,
+            );
+        });
     },
 );
