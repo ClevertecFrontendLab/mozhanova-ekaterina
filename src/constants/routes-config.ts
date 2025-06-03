@@ -15,5 +15,5 @@ export const AppRoutes = {
     EDIT: '/edit-recipe',
     EDIT_RECIPE: '/edit-recipe/:category/:subCategory/:id',
     BLOGS: '/blogs',
-    BLOGS_USER: '/blogs/:userId',
+    BLOGS_USER: '/blogs/:bloggerId',
 } as const;
