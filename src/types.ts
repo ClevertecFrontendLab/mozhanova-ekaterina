@@ -49,7 +49,7 @@ export type Meta = {
     limit: number;
 };
 
-export type Params = {
+export type RecipeParams = {
     page?: number;
     limit?: number;
     sortBy?: string;
@@ -60,6 +60,33 @@ export type Params = {
     meat?: string[];
     garnish?: string[];
     subcategoriesIds?: string[];
+};
+export type BloggersParams = {
+    currentUserId: string;
+    bloggerId?: string;
+    page?: number;
+    limit?: number;
+    sortBy?: string;
+    sortOrder?: string;
+};
+export type Note = {
+    date: string;
+    text: string;
+};
+export type Blogger = {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    login: string;
+    subscribersCount: number;
+    bookmarksCount: number;
+    isFavorite: boolean;
+    notes: Note[];
+    newRecipesCount: number;
+};
+export type Bloggers = {
+    favorites: Blogger[];
+    others: Blogger[];
 };
 export type Category = {
     _id: string;

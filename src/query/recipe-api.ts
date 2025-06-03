@@ -4,9 +4,9 @@ import {
     MeasureUnit,
     Meta,
     NewRecipe,
-    Params,
     Recipe,
     RecipeDraft,
+    RecipeParams,
 } from '~/types';
 
 import { authorizedApi } from './authorized-api';
@@ -16,7 +16,10 @@ import { Tags } from './constants/tags';
 
 export const recipeApi = authorizedApi.injectEndpoints({
     endpoints: (builder) => ({
-        [EndpointNames.GET_LATEST_RECIPES]: builder.query<{ data: Recipe[]; meta: Meta }, Params>({
+        [EndpointNames.GET_LATEST_RECIPES]: builder.query<
+            { data: Recipe[]; meta: Meta },
+            RecipeParams
+        >({
             query: (params) => ({
                 url: ApiEndpoints.RECIPES,
                 params: {
@@ -28,7 +31,10 @@ export const recipeApi = authorizedApi.injectEndpoints({
             providesTags: [Tags.RECIPES],
         }),
 
-        [EndpointNames.GET_POPULAR_RECIPES]: builder.query<{ data: Recipe[]; meta: Meta }, Params>({
+        [EndpointNames.GET_POPULAR_RECIPES]: builder.query<
+            { data: Recipe[]; meta: Meta },
+            RecipeParams
+        >({
             query: (params) => ({
                 url: ApiEndpoints.RECIPES,
                 params: {
@@ -49,7 +55,7 @@ export const recipeApi = authorizedApi.injectEndpoints({
 
         [EndpointNames.GET_RECIPES_BY_CATEGORY]: builder.query<
             { data: Recipe[]; meta: Meta },
-            Params
+            RecipeParams
         >({
             query: ({ categoryId, ...params }) => ({
                 url: `${ApiEndpoints.RECIPE_CATEGORY}${categoryId}`,
@@ -60,19 +66,21 @@ export const recipeApi = authorizedApi.injectEndpoints({
             providesTags: [Tags.RECIPES],
         }),
 
-        [EndpointNames.SEARCH_RECIPES]: builder.query<{ data: Recipe[]; meta: Meta }, Params>({
-            query: (params) => ({
-                url: ApiEndpoints.RECIPES,
-                params: {
-                    ...params,
-                    allergens: params.allergens?.join(','),
-                    meat: params.meat?.join(','),
-                    garnish: params.garnish?.join(','),
-                    subcategoriesIds: params.subcategoriesIds?.join(','),
-                },
-            }),
-            providesTags: [Tags.RECIPES],
-        }),
+        [EndpointNames.SEARCH_RECIPES]: builder.query<{ data: Recipe[]; meta: Meta }, RecipeParams>(
+            {
+                query: (params) => ({
+                    url: ApiEndpoints.RECIPES,
+                    params: {
+                        ...params,
+                        allergens: params.allergens?.join(','),
+                        meat: params.meat?.join(','),
+                        garnish: params.garnish?.join(','),
+                        subcategoriesIds: params.subcategoriesIds?.join(','),
+                    },
+                }),
+                providesTags: [Tags.RECIPES],
+            },
+        ),
 
         [EndpointNames.MEASURE_UNITS]: builder.query<MeasureUnit[], void>({
             query: () => ({
