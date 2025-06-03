@@ -7,4 +7,5 @@ export const routeHelpers = {
         `/${category}/${subCategory}/${id}`,
     getEditRecipePath: (category: string, subCategory: string, id: string) =>
         `${AppRoutes.EDIT}/${category}/${subCategory}/${id}`,
+    getBlogPath: (id: string) => `${AppRoutes.BLOGS}/${id}`,
 };
