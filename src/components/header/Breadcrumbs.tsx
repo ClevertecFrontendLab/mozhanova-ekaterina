@@ -5,7 +5,12 @@ import { Link, useLocation } from 'react-router';
 
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
-import { currentRecipeSelector, selectCategories, selectSubcategories } from '~/store/selectors';
+import {
+    currentRecipeSelector,
+    selectCategories,
+    selectCurrentUser,
+    selectSubcategories,
+} from '~/store/selectors';
 import { defineBreadcrumbLabel } from '~/utils/get-breadcrumb-label';
 
 export const Breadcrumbs = ({
@@ -17,7 +22,7 @@ export const Breadcrumbs = ({
 }) => {
     const location = useLocation();
     const [isLargerThanMD] = useBreakpoint('md');
-
+    const currentUser = useSelector(selectCurrentUser);
     const categories = useSelector(selectCategories);
     const subCategories = useSelector(selectSubcategories);
     const currentRecipe = useSelector(currentRecipeSelector);
@@ -58,6 +63,7 @@ export const Breadcrumbs = ({
                         categories,
                         subCategories,
                         currentRecipe,
+                        currentUser,
                     );
 
                     return (

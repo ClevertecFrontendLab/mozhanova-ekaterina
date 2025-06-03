@@ -16,6 +16,7 @@ export const isAuthenticated = (state: ApplicationState) => !!state.user.accessT
 export const selectAllCategories = (state: ApplicationState) => state.category.categories || [];
 export const currentRecipeSelector = (state: ApplicationState) => state.recipe.current || null;
 export const paginationSelector = (state: ApplicationState) => state.recipe.pagination || null;
+export const selectCurrentUser = (state: ApplicationState) => state.user.user || null;
 
 export const selectCategories = createSelector([selectAllCategories], (categories) =>
     Array.isArray(categories) ? categories?.filter((category) => !category.rootCategoryId) : [],
