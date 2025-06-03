@@ -21,7 +21,7 @@ import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
 import { useErrors } from '~/hooks/use-errors';
-import { useSignUpMutation } from '~/query/user-api';
+import { useSignUpMutation } from '~/query/auth-api';
 import { ErrorResponse, FormInputs, NewUser } from '~/types';
 import { RegistrationSchema } from '~/validation';
 

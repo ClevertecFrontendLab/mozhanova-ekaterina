@@ -6,7 +6,7 @@ import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
 import { useErrors } from '~/hooks/use-errors';
-import { useSignInMutation } from '~/query/user-api';
+import { useSignInMutation } from '~/query/auth-api';
 import { AuthUser, ErrorResponse, ModalParams } from '~/types';
 
 import { UiButton } from '../ui/UiButton';

@@ -6,7 +6,7 @@ import { EndpointNames } from './constants/endpoint-names';
 import { Tags } from './constants/tags';
 import { handleAuthHeaders } from './helpers/auth-helpers';
 
-export const userApi = authorizedApi.injectEndpoints({
+export const authApi = authorizedApi.injectEndpoints({
     endpoints: (builder) => ({
         [EndpointNames.SIGN_IN]: builder.mutation<AuthResponse, AuthUser>({
             query: (credentials) => ({
@@ -86,4 +86,4 @@ export const {
     useLazyCheckAuthQuery,
     useLazyRefreshTokenQuery,
     useRefreshTokenQuery,
-} = userApi;
+} = authApi;

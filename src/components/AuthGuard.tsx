@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
 import { AppRoutes } from '~/constants/routes-config';
-import { useLazyRefreshTokenQuery } from '~/query/user-api';
+import { useLazyRefreshTokenQuery } from '~/query/auth-api';
 import { useAppSelector } from '~/store/hooks';
 import { accessToken } from '~/store/selectors';
 

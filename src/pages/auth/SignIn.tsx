@@ -11,7 +11,7 @@ import { UiPasswordInput } from '~/components/ui/UiPasswordInput';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useErrors } from '~/hooks/use-errors';
-import { useSignInMutation } from '~/query/user-api';
+import { useSignInMutation } from '~/query/auth-api';
 import { isAuthenticated } from '~/store/selectors';
 import { ErrorResponse } from '~/types';
 import { LoginSchema } from '~/validation';

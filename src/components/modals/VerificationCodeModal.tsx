@@ -16,7 +16,7 @@ import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
 import { useErrors } from '~/hooks/use-errors';
-import { useVerifyCodeMutation } from '~/query/user-api';
+import { useVerifyCodeMutation } from '~/query/auth-api';
 import { ErrorResponse, ModalParams } from '~/types';
 import { VerificationCodeSchema } from '~/validation';
 
