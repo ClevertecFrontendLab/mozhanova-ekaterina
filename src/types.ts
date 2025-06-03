@@ -62,7 +62,9 @@ export type RecipeParams = {
     subcategoriesIds?: string[];
 };
 export type BloggersParams = {
-    currentUserId: string;
+    currentUserId?: string;
+    toUserId?: string;
+    fromUserId?: string;
     bloggerId?: string;
     page?: number;
     limit?: number;
@@ -73,21 +75,44 @@ export type Note = {
     date: string;
     text: string;
 };
-export type Blogger = {
+export interface BloggerInfo {
     _id: string;
+    email: string;
+    login: string;
     firstName: string;
     lastName: string;
-    login: string;
-    subscribersCount: number;
+    recipesIds: string[];
+    drafts: RecipeDraft[];
+    subscriptions: string[];
+    subscribers: string[];
+    notes: Note[];
+}
+export type Blogger = Pick<BloggerInfo, '_id' | 'login' | 'firstName' | 'lastName' | 'notes'> & {
     bookmarksCount: number;
     isFavorite: boolean;
-    notes: Note[];
     newRecipesCount: number;
+    subscribersCount: number;
 };
-export type Bloggers = {
+export type AllBloggersResponse = {
     favorites: Blogger[];
     others: Blogger[];
 };
+
+export type BloggerResponse = {
+    bloggerInfo: BloggerInfo;
+    totalSubscribers: number;
+    totalBookmarks: number;
+    isFavorite: boolean;
+};
+
+export type RecipesByUserResponse = {
+    recipes: Recipe[];
+    totalBookmarks: number;
+    totalSubscribers: number;
+    userId: string;
+    notes: Note[];
+};
+
 export type Category = {
     _id: string;
     title: string;
