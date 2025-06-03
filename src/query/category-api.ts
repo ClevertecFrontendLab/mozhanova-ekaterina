@@ -1,17 +1,12 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-
 import { setCategories } from '~/store/category-slice';
 import { Category } from '~/types';
 
 import { ApiEndpoints } from './constants/api';
-import { baseQuery } from './constants/base-query';
 import { EndpointNames } from './constants/endpoint-names';
 import { Tags } from './constants/tags';
+import { unauthorizedApi } from './unauthorized-api';
 
-export const categoryApi = createApi({
-    reducerPath: 'categoryApi',
-    baseQuery: baseQuery,
-    tagTypes: [Tags.CATEGORIES, Tags.CATEGORY],
+export const categoryApi = unauthorizedApi.injectEndpoints({
     endpoints: (builder) => ({
         [EndpointNames.GET_CATEGORIES]: builder.query<Category[], void>({
             query: () => ApiEndpoints.CATEGORIES,
@@ -39,7 +34,7 @@ export const categoryApi = createApi({
         }),
         [EndpointNames.GET_CATEGORY_BY_ID]: builder.query<Category, string>({
             query: (id) => `${ApiEndpoints.CATEGORY_BY_ID}${id}`,
-            providesTags: (_result, _error, id) => [{ type: Tags.CATEGORY, id }],
+            // providesTags: (_result, _error, id) => [{ type: Tags.CATEGORY, id }],
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
                     await queryFulfilled;

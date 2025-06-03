@@ -109,15 +109,10 @@ export const selectGlobalLoading = createSelector(
     (state: ApplicationState) => state,
     (state) => {
         const apiStates = [
-            state.recipeApi?.queries || {},
-            state.recipeApi?.mutations || {},
-            state.recipeApi?.queries || {},
-            state.recipeApi?.mutations || {},
-            state.categoryApi?.queries || {},
-            state.categoryApi?.mutations || {},
-            state.userApi?.queries || {},
-            state.userApi?.mutations || {},
-            state.fileUploadApi?.mutations || {},
+            state['authorized-api']?.queries || {},
+            state['authorized-api']?.mutations || {},
+            state['unauthorized-api']?.queries || {},
+            state['unauthorized-api']?.mutations || {},
         ];
 
         return apiStates.some((apiState) =>

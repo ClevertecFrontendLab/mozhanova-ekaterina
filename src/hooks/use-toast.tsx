@@ -14,7 +14,7 @@ import { ToastParams } from '~/types';
 export enum NotificationDuration {
     Short = 3000,
     Medium = 5000,
-    Long = 150000,
+    Long = 15000,
 }
 
 export const useToast = () => {

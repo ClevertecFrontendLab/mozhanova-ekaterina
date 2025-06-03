@@ -91,4 +91,3 @@ export const {
     setPaginationMeta,
     setCurrent,
 } = recipesSlice.actions;
-export default recipesSlice.reducer;

@@ -1,5 +1,3 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-
 import {
     BookmarkResponse,
     LikeResponse,
@@ -11,15 +9,12 @@ import {
     RecipeDraft,
 } from '~/types';
 
+import { authorizedApi } from './authorized-api';
 import { ApiEndpoints } from './constants/api';
-import { baseQuery } from './constants/base-query';
 import { EndpointNames } from './constants/endpoint-names';
 import { Tags } from './constants/tags';
 
-export const recipeApi = createApi({
-    reducerPath: 'recipeApi',
-    baseQuery: baseQuery,
-    tagTypes: [Tags.RECIPE, Tags.RECIPES],
+export const recipeApi = authorizedApi.injectEndpoints({
     endpoints: (builder) => ({
         [EndpointNames.GET_LATEST_RECIPES]: builder.query<{ data: Recipe[]; meta: Meta }, Params>({
             query: (params) => ({

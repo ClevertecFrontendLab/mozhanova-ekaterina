@@ -1,17 +1,12 @@
-import { createApi } from '@reduxjs/toolkit/query/react'; // Измените импорт
-
 import { AuthResponse, AuthUser, NewUser, ResetUser, VerifyUser } from '~/types';
 
+import { authorizedApi } from './authorized-api';
 import { ApiEndpoints } from './constants/api';
-import { baseQuery } from './constants/base-query';
 import { EndpointNames } from './constants/endpoint-names';
 import { Tags } from './constants/tags';
 import { handleAuthHeaders } from './helpers/auth-helpers';
 
-export const userApi = createApi({
-    reducerPath: 'userApi',
-    baseQuery: baseQuery,
-    tagTypes: [Tags.AUTH],
+export const userApi = authorizedApi.injectEndpoints({
     endpoints: (builder) => ({
         [EndpointNames.SIGN_IN]: builder.mutation<AuthResponse, AuthUser>({
             query: (credentials) => ({
