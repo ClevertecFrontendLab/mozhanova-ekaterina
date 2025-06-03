@@ -2,10 +2,12 @@ import { Flex } from '@chakra-ui/react';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { EmojiHeartEyesIcon } from './icons/EmojiHeartEyesIcon';
+import { PeopleOutlineIcon } from './icons/PeopleOutlineIcon';
 
 type Props = {
     bookmarks?: number;
     likes?: number;
+    subscribersCount?: number;
     size?: keyof typeof sizes;
 };
 
@@ -20,7 +22,7 @@ const sizes = {
     },
 };
 
-export const UiCardStats = ({ bookmarks, likes, size = 'sm' }: Props) => (
+export const UiCardStats = ({ bookmarks, likes, subscribersCount, size = 'sm' }: Props) => (
     <Flex
         h='fit-content'
         fontSize={sizes[size].fontSize}
@@ -38,6 +40,12 @@ export const UiCardStats = ({ bookmarks, likes, size = 'sm' }: Props) => (
             <Flex p='4px' gap='6px' align='center'>
                 <EmojiHeartEyesIcon size={sizes[size].iconSize} />
                 {likes}
+            </Flex>
+        ) : null}
+        {subscribersCount ? (
+            <Flex p='4px' gap='6px' align='center'>
+                <PeopleOutlineIcon />
+                {subscribersCount}
             </Flex>
         ) : null}
     </Flex>
