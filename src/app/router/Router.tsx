@@ -38,14 +38,13 @@ export const Router = () => (
                 <Route path={AppRoutes.SUB_CATEGORY} element={<RecipesTabs />} />
             </Route>
 
+            <Route path={AppRoutes.BLOGS} element={<BlogsPage />} />
+            <Route path={AppRoutes.BLOGS_USER} element={<BloggerPage />} />
+
             <Route path={AppRoutes.CREATE_RECIPE} element={<CreateRecipePage />} />
             <Route path={AppRoutes.EDIT_RECIPE} element={<EditRecipePage />} />
 
             <Route path={AppRoutes.NOT_FOUND} element={<NotFoundPage />} />
-
-            <Route path={AppRoutes.BLOGS} element={<BlogsPage />} />
-
-            <Route path={AppRoutes.BLOGS_USER} element={<BloggerPage />} />
         </Route>
 
         <Route element={<AuthLayout />}>
