@@ -70,7 +70,9 @@ export const RecipePage = () => {
                 <Steps steps={data.steps} />
                 <AuthorInfo />
             </Flex>
-            <Slider />
+            <Box mt={{ base: 10, lg: 14 }}>
+                <Slider />
+            </Box>
         </Box>
     );
 };
