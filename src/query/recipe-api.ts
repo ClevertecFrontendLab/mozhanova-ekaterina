@@ -1,4 +1,5 @@
 import {
+    BloggersParams,
     BookmarkResponse,
     LikeResponse,
     MeasureUnit,
@@ -7,6 +8,7 @@ import {
     Recipe,
     RecipeDraft,
     RecipeParams,
+    RecipesByUserResponse,
 } from '~/types';
 
 import { authorizedApi } from './authorized-api';
@@ -133,6 +135,18 @@ export const recipeApi = authorizedApi.injectEndpoints({
             }),
             invalidatesTags: [Tags.RECIPE],
         }),
+        [EndpointNames.GET_RECIPES_BY_USER_ID]: builder.query<
+            RecipesByUserResponse,
+            BloggersParams
+        >({
+            query: (params) => ({
+                url: `${ApiEndpoints.GET_RECIPES_BY_USER_ID}${params.bloggerId}`,
+                params: {
+                    ...params,
+                },
+            }),
+            providesTags: [Tags.RECIPES],
+        }),
     }),
 });
 
@@ -151,4 +165,5 @@ export const {
     useDeleteRecipeMutation,
     useLikeUnlikeRecipeMutation,
     useSaveRemoveFromBookmarksMutation,
+    useGetRecipesByUserIdQuery,
 } = recipeApi;
