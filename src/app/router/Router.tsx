@@ -9,8 +9,8 @@ import { RecoveryPage } from '~/pages/auth/RecoveryPage';
 import { SignIn } from '~/pages/auth/SignIn';
 import { SignUp } from '~/pages/auth/SignUp';
 import { VerificationPage } from '~/pages/auth/VerificationPage';
-import { CategoryPage } from '~/pages/CategoryPage';
-import { CreateRecipePage } from '~/pages/CreateRecipePage';
+import { BloggerPage } from '~/pages/bloggers/BloggerPage';
+import { BlogsPage } from '~/pages/bloggers/BlogsPage';
 import { Home } from '~/pages/HomePage';
 import { NotFoundPage } from '~/pages/NotFoundPage';
 import { CategoryPage } from '~/pages/recipes/CategoryPage';
@@ -42,6 +42,10 @@ export const Router = () => (
             <Route path={AppRoutes.EDIT_RECIPE} element={<EditRecipePage />} />
 
             <Route path={AppRoutes.NOT_FOUND} element={<NotFoundPage />} />
+
+            <Route path={AppRoutes.BLOGS} element={<BlogsPage />} />
+
+            <Route path={AppRoutes.BLOGS_USER} element={<BloggerPage />} />
         </Route>
 
         <Route element={<AuthLayout />}>
