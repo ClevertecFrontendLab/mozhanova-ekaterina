@@ -145,6 +145,10 @@ export const useErrors = () => {
         }
     };
 
+    const toggleSubscribeErrorHandler = (_error: ErrorResponse) => {
+        showError({ ...NOTIFICATION_MESSAGES.SERVER_ERROR, position: 'bottom' });
+    };
+
     return {
         signUpErrorHandler,
         signInErrorHandler,
@@ -156,5 +160,6 @@ export const useErrors = () => {
         createDraftRecipeErrorHandler,
         deleteRecipeErrorHandler,
         saveLikeRecipeErrorHandler,
+        toggleSubscribeErrorHandler,
     };
 };
