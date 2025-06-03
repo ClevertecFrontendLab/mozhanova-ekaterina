@@ -37,6 +37,12 @@ const variants = {
         borderWidth: '1px',
         color: 'neutral.0',
     },
+    solidAccent: {
+        bg: 'primary.300',
+        borderColor: 'primary.300',
+        borderWidth: '1px',
+        color: 'neutral.400',
+    },
     ghost: {
         bg: 'transparent',
         borderColor: 'transparent',
