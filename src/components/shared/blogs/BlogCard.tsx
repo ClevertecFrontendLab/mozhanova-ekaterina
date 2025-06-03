@@ -1,13 +1,57 @@
-import { Box, Card, CardBody, Flex, Heading, Image, Text } from '@chakra-ui/react';
+import {
+    Box,
+    Card,
+    CardBody,
+    CardFooter,
+    Flex,
+    Heading,
+    Image,
+    Spinner,
+    Tag,
+    Text,
+} from '@chakra-ui/react';
+import { Link } from 'react-router';
+
+import loader from '~/assets/ui/loader_bg.png';
+import { ManIcon } from '~/components/ui/icons/ManIcon';
+import { SubscribeIcon } from '~/components/ui/icons/SubscribeIcon';
+import { UiButton } from '~/components/ui/UiButton';
+import { UiCardStats } from '~/components/ui/UiCardStats';
+import { routeHelpers } from '~/utils/get-routes';
 
 type Props = {
     avatarSrc: string;
-    title: string;
-    subtitle: string;
-    text: string;
+    name: string[];
+    login: string;
+    bloggerId?: string;
+    isCurrentUserSubscribed?: boolean;
+    isLoading?: boolean;
+    toggleSubscribe?: VoidFunction;
+    note?: string;
+    subscribersCount?: number;
+    newRecipesCount?: number;
+    bookmarksCount?: number;
+    showControls?: boolean;
+    showStats?: boolean;
+    isFavorite?: boolean;
 };
 
-export const BlogCard = ({ avatarSrc, title, subtitle, text }: Props) => (
+export const BlogCard = ({
+    name,
+    login,
+    subscribersCount,
+    bookmarksCount,
+    note,
+    newRecipesCount,
+    avatarSrc,
+    showControls,
+    showStats,
+    bloggerId,
+    toggleSubscribe,
+    isCurrentUserSubscribed,
+    isLoading,
+    isFavorite,
+}: Props) => (
     <Card
         overflow='hidden'
         size={{
@@ -19,12 +63,20 @@ export const BlogCard = ({ avatarSrc, title, subtitle, text }: Props) => (
             shadow: 'themeNeutralGreen',
         }}
     >
-        <CardBody pt={6}>
+        {newRecipesCount ? (
+            <Box position='absolute' right='8px' top='8px'>
+                <Tag bg='neutral.20'>{`${newRecipesCount} новых рецептов`}</Tag>
+                {/* ???: */}
+            </Box>
+        ) : null}
+
+        <CardBody>
             <Flex
                 gap={{
                     base: 2,
                     md: 3,
                 }}
+                pt={3}
                 pb={{
                     base: 2,
                     md: 4,
@@ -54,7 +106,7 @@ export const BlogCard = ({ avatarSrc, title, subtitle, text }: Props) => (
                         whiteSpace='nowrap'
                         overflowX='hidden'
                     >
-                        {title}
+                        {`${name[0]} ${name[1]}`}
                     </Heading>
                     <Text
                         color='text.secondary'
@@ -63,7 +115,7 @@ export const BlogCard = ({ avatarSrc, title, subtitle, text }: Props) => (
                             md: 'sm',
                         }}
                     >
-                        {subtitle}
+                        {`@${login}`}
                     </Text>
                 </Box>
             </Flex>
@@ -75,8 +127,75 @@ export const BlogCard = ({ avatarSrc, title, subtitle, text }: Props) => (
                     md: 3,
                 }}
             >
-                {text}
+                {note}
             </Text>
         </CardBody>
+        {(showControls || showStats) && (
+            <CardFooter
+                pt={0}
+                px={{ base: 4, md: 6 }}
+                pb={{ base: 4, md: 5 }}
+                justify='space-between'
+            >
+                <Flex gap={2} align='flex-end'>
+                    {isFavorite ? (
+                        <UiButton
+                            onClick={toggleSubscribe}
+                            size='xs'
+                            variant='solidAccent'
+                            text='Рецепты'
+                        />
+                    ) : isCurrentUserSubscribed ? (
+                        <UiButton
+                            onClick={toggleSubscribe}
+                            leftIcon={<ManIcon />}
+                            size='xs'
+                            variant='outline'
+                            text='Вы подписаны'
+                        />
+                    ) : (
+                        <UiButton
+                            onClick={toggleSubscribe}
+                            leftIcon={<SubscribeIcon />}
+                            size='xs'
+                            variant='solid'
+                            text='Подписаться'
+                        />
+                    )}
+
+                    {bloggerId ? (
+                        <Link to={routeHelpers.getBlogPath(bloggerId)}>
+                            <UiButton size='xs' variant='accentOutline' text='Читать' />
+                        </Link>
+                    ) : null}
+                </Flex>
+                <UiCardStats bookmarks={bookmarksCount} subscribersCount={subscribersCount} />
+            </CardFooter>
+        )}
+        {isLoading && <Loader />}
     </Card>
 );
+
+function Loader() {
+    return (
+        <Flex
+            // data-test-id={DATA_TEST_IDS.LOADER_SEARCH_BLOCK}
+            w='134px'
+            h='134px'
+            bgImage={loader}
+            bgSize='cover'
+            alignItems='center'
+            justifyContent='center'
+            borderRadius='50%'
+            position='absolute'
+            left={0}
+            bottom={0}
+            top={0}
+            right={0}
+            mx='auto'
+            my='auto'
+        >
+            <Spinner size='lg' color='black' />
+        </Flex>
+    );
+}
