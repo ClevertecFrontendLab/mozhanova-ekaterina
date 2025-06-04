@@ -1,5 +1,5 @@
 import { Flex, Grid } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router';
 
 import { Hero } from '~/components/shared/blogs/Hero';
@@ -21,6 +21,14 @@ export const BloggerPage = () => {
     const navigate = useNavigate();
     const { showError } = useToast();
     const hash = useLocation().hash;
+    // const notesRef = useRef<HTMLDivElement>(null);
+    const [notesElement, setNotesElement] = useState<HTMLElement | null>(null);
+
+    const notesRef = (node: HTMLDivElement) => {
+        if (node !== null) {
+            setNotesElement(node);
+        }
+    };
 
     const { data: blogger, isError } = useGetBloggerByIdQuery(
         {
@@ -46,10 +54,14 @@ export const BloggerPage = () => {
     }, [blogger, dispatch]);
 
     useEffect(() => {
-        if (hash) {
-            document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [hash]);
+        console.log(notesElement);
+
+        setTimeout(() => {
+            if (hash === '#notes' && notesElement) {
+                notesElement.scrollIntoView();
+            }
+        }, 100);
+    }, [notesElement]);
 
     if (!blogger || !recipes) return null;
     return (
@@ -75,7 +87,7 @@ export const BloggerPage = () => {
                     />
                 </Flex>
             </>
-            <NotesList notes={blogger.bloggerInfo.notes || []} />
+            <NotesList ref={notesRef} notes={blogger.bloggerInfo.notes || []} />
         </Grid>
     );
 };

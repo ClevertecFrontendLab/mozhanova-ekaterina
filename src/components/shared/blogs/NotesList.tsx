@@ -8,7 +8,13 @@ import { Note } from '~/types';
 
 import { NoteCard } from './NoteCard';
 
-export const NotesList = ({ notes }: { notes: Note[] }) => {
+export const NotesList = ({
+    notes,
+    ref,
+}: {
+    notes: Note[];
+    ref: (node: HTMLDivElement) => void;
+}) => {
     const { width } = useWindowSize();
     const slicedNotes = width < BREAKPOINTS_VALUES.sm ? notes.slice(0, 2) : notes.slice(0, 3);
     const [notesToShow, setShowNotes] = useState(slicedNotes);
@@ -19,7 +25,14 @@ export const NotesList = ({ notes }: { notes: Note[] }) => {
     };
 
     return (
-        <Grid id='notes' gap={4} p={{ base: 4, md: 6 }} bg='neutral.10' borderRadius='16px'>
+        <Grid
+            ref={ref}
+            id='notes'
+            gap={4}
+            p={{ base: 4, md: 6 }}
+            bg='neutral.10'
+            borderRadius='16px'
+        >
             <Heading fontSize={{ base: '20px' }}>
                 Заметки {` `}
                 <Text display='inline-block' color='text.secondary'>
