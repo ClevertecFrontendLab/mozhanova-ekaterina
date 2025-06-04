@@ -58,7 +58,9 @@ export const Header = ({
                 align='center'
                 flexGrow={1}
             >
-                <ProfileNotification variant='mobile' isMenuOpen={isMenuOpen} />
+                {currentUser ? (
+                    <ProfileNotification variant='mobile' isMenuOpen={isMenuOpen} />
+                ) : null}
                 <Flex gap={6} alignItems='center' justifyContent='center'>
                     <LogInButton />
 
