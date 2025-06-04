@@ -4,6 +4,7 @@ import { useLocation, useNavigate, useParams } from 'react-router';
 
 import { Hero } from '~/components/shared/blogs/Hero';
 import { NotesList } from '~/components/shared/blogs/NotesList';
+import { OtherBlogsList } from '~/components/shared/blogs/OtherBlogsList';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
@@ -69,9 +70,9 @@ export const BloggerPage = () => {
             as='main'
             gap={{ base: 8, md: 10 }}
             padding={{
-                base: '16px 16px 32px',
-                md: '56px 20px 0',
-                lg: '56px 24px 0',
+                base: '16px',
+                md: '32px 20px 0',
+                lg: '32px 24px 0',
             }}
         >
             <>
@@ -88,6 +89,7 @@ export const BloggerPage = () => {
                 </Flex>
             </>
             <NotesList ref={notesRef} notes={blogger.bloggerInfo.notes || []} />
+            <OtherBlogsList currentUserId={currentUserId} />
         </Grid>
     );
 };

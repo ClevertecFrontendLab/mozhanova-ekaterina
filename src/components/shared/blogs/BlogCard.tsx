@@ -130,7 +130,7 @@ export const BlogCard = ({
                 {note}
             </Text>
         </CardBody>
-        {(showControls || showStats) && (
+        {showControls ? (
             <CardFooter
                 pt={0}
                 px={{ base: 4, md: 6 }}
@@ -171,9 +171,11 @@ export const BlogCard = ({
                         </Link>
                     ) : null}
                 </Flex>
-                <UiCardStats bookmarks={bookmarksCount} subscribersCount={subscribersCount} />
+                {showStats ? (
+                    <UiCardStats bookmarks={bookmarksCount} subscribersCount={subscribersCount} />
+                ) : null}
             </CardFooter>
-        )}
+        ) : null}
         {isLoading && <Loader />}
     </Card>
 );

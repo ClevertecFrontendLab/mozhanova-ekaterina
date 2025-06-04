@@ -6,7 +6,6 @@ import { UiCardBadge } from './UiCardBadge';
 import { UiCardStats } from './UiCardStats';
 
 type Props = {
-    _id: string;
     likes: number;
     bookmarks: number;
     categoryBgColor: 'secondary.100' | 'primary.100';
@@ -15,7 +14,6 @@ type Props = {
 };
 
 export const UiCardInfo = ({
-    _id,
     categories = [],
     likes,
     bookmarks,
@@ -52,9 +50,7 @@ export const UiCardInfo = ({
                               <UiCardBadge color={categoryBgColor} categoryId={categories[0]} />
                           ))}
             </Flex>
-            {bookmarks || likes ? (
-                <UiCardStats _id={_id} bookmarks={bookmarks} likes={likes} />
-            ) : null}
+            {bookmarks || likes ? <UiCardStats bookmarks={bookmarks} likes={likes} /> : null}
         </Flex>
     );
 };
