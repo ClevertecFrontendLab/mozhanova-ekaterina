@@ -12,13 +12,16 @@ import { Slider } from '~/components/shared/slider/Slider';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { useToast } from '~/hooks/use-toast';
 import { useGetRecipeByIdQuery } from '~/query/recipe-api';
+import { useAppSelector } from '~/store/hooks';
 import { setCurrent } from '~/store/recipe-slice';
+import { selectCurrentUserId } from '~/store/selectors';
 
 export const RecipePage = () => {
     const { id } = useParams();
     const { showError } = useToast();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const currentUserId = useAppSelector(selectCurrentUserId);
     const { data, isLoading, isError } = useGetRecipeByIdQuery(id || '', { skip: !id });
 
     useEffect(() => {
@@ -68,7 +71,7 @@ export const RecipePage = () => {
             >
                 <IngredientsTable portions={data.portions} ingredients={data.ingredients} />
                 <Steps steps={data.steps} />
-                <AuthorInfo />
+                <AuthorInfo currentUserId={currentUserId} authorId={data.authorId} />
             </Flex>
             <Box mt={{ base: 10, lg: 14 }}>
                 <Slider />
