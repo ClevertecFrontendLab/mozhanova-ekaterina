@@ -1,8 +1,9 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Flex, Grid } from '@chakra-ui/react';
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router';
 
 import { Hero } from '~/components/shared/blogs/Hero';
+import { NotesList } from '~/components/shared/blogs/NotesList';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
@@ -19,6 +20,7 @@ export const BloggerPage = () => {
     const currentUserId = useAppSelector(selectCurrentUserId);
     const navigate = useNavigate();
     const { showError } = useToast();
+    const hash = useLocation().hash;
 
     const { data: blogger, isError } = useGetBloggerByIdQuery(
         {
@@ -43,27 +45,37 @@ export const BloggerPage = () => {
         }
     }, [blogger, dispatch]);
 
-    if (!blogger) return null;
+    useEffect(() => {
+        if (hash) {
+            document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [hash]);
+
+    if (!blogger || !recipes) return null;
     return (
-        <Box
+        <Grid
             as='main'
+            gap={{ base: 8, md: 10 }}
             padding={{
                 base: '16px 16px 32px',
                 md: '56px 20px 0',
                 lg: '56px 24px 0',
             }}
         >
-            <Hero blogger={blogger} />
-            <UiCardGrid data={recipes?.recipes} />
-            <Flex justifyContent='center' mt={4} mb={10}>
-                <UiButton
-                    // data-test-id={DATA_TEST_IDS.LOAD_MORE_BUTTON}
-                    // onClick={loadMore}
-                    size='md'
-                    text='Загрузка'
-                    variant='primary'
-                />
-            </Flex>
-        </Box>
+            <>
+                <Hero blogger={blogger} />
+                <UiCardGrid data={recipes?.recipes} />
+                <Flex justifyContent='center' mt={4} mb={10}>
+                    <UiButton
+                        // data-test-id={DATA_TEST_IDS.LOAD_MORE_BUTTON}
+                        // onClick={loadMore}
+                        size='md'
+                        text='Загрузить еще'
+                        variant='primary'
+                    />
+                </Flex>
+            </>
+            <NotesList notes={blogger.bloggerInfo.notes || []} />
+        </Grid>
     );
 };

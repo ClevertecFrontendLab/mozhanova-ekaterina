@@ -164,7 +164,9 @@ export const BlogCard = ({
                     )}
 
                     {bloggerId ? (
-                        <Link to={routeHelpers.getBlogPath(bloggerId)}>
+                        <Link
+                            to={{ pathname: routeHelpers.getBlogPath(bloggerId), hash: '#notes' }}
+                        >
                             <UiButton size='xs' variant='accentOutline' text='Читать' />
                         </Link>
                     ) : null}
