@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Image, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, Image, Text, Tooltip } from '@chakra-ui/react';
 
 import avatar_1 from '~/assets/blog_avatar_1.png';
 import { ManIcon } from '~/components/ui/icons/ManIcon';
@@ -56,13 +56,24 @@ export const Hero = ({ blogger }: { blogger: BloggerResponse }) => {
                         gap={{ sm: '57px' }}
                     >
                         {blogger.isFavorite ? (
-                            <UiButton
-                                onClick={handleSubscribe}
-                                leftIcon={<ManIcon />}
-                                size='xs'
-                                variant='outline'
-                                text='Вы подписаны'
-                            />
+                            <Tooltip
+                                hasArrow
+                                placement='bottom-end'
+                                label={
+                                    <>
+                                        <p>Нажмите, если</p>
+                                        <p>хотите отписаться</p>
+                                    </>
+                                }
+                            >
+                                <UiButton
+                                    onClick={handleSubscribe}
+                                    leftIcon={<ManIcon />}
+                                    size='xs'
+                                    variant='outline'
+                                    text='Вы подписаны'
+                                />
+                            </Tooltip>
                         ) : (
                             <UiButton
                                 onClick={handleSubscribe}

@@ -8,7 +8,7 @@ const theme = extendTheme({
                 height: '8px',
             },
             '::-webkit-scrollbar-track': {
-                background: 'rgba(0, 0, 0, 0.04);',
+                background: 'neutral.10',
                 borderRadius: '8px',
             },
             '::-webkit-scrollbar-thumb': {
@@ -46,6 +46,7 @@ const theme = extendTheme({
         // Нейтральные цвета
         neutral: {
             0: '#FFFFFF',
+            10: 'rgba(0, 0, 0, 0.04)',
             20: ' rgba(0, 0, 0, 0.06)',
             50: 'rgba(0, 0, 0, 0.08)', // Border light
             100: 'rgba(0, 0, 0, 0.24)',
@@ -566,6 +567,13 @@ const theme = extendTheme({
                         borderColor: 'primary.300',
                     },
                 },
+            },
+        },
+        Tooltip: {
+            baseStyle: {
+                bg: 'neutral.400',
+                color: 'neutral.0',
+                borderRadius: '4px',
             },
         },
     },

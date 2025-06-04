@@ -62,6 +62,9 @@ h6 {
     transition: 'none' !important;
     opacity: 1 !important;
 }
+.chakra-tooltip__arrow {
+    background-color: black !important;
+}
 
 [data-popper-placement] {
     min-width: unset !important;
