@@ -11,7 +11,7 @@ import { useGetBloggerByIdQuery } from '~/query/blogs-api';
 import { useGetRecipesByUserIdQuery } from '~/query/recipe-api';
 import { useAppDispatch, useAppSelector } from '~/store/hooks';
 import { selectCurrentUserId } from '~/store/selectors';
-import { setUser } from '~/store/user-slice';
+import { setBlogger } from '~/store/user-slice';
 
 export const BloggerPage = () => {
     const { bloggerId } = useParams();
@@ -39,7 +39,7 @@ export const BloggerPage = () => {
 
     useEffect(() => {
         if (blogger) {
-            dispatch(setUser(blogger.bloggerInfo));
+            dispatch(setBlogger(blogger.bloggerInfo));
         }
     }, [blogger, dispatch]);
 
