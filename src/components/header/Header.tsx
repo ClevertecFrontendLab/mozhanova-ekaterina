@@ -2,6 +2,9 @@ import { Flex } from '@chakra-ui/react';
 
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
+import { useGetBloggerByIdQuery } from '~/query/blogs-api';
+import { useAppSelector } from '~/store/hooks';
+import { selectCurrentUserId } from '~/store/selectors';
 
 import { ProfileInfo } from '../shared/ProfileInfo';
 import { ProfileNotification } from '../shared/ProfileNotification';
@@ -21,6 +24,14 @@ export const Header = ({
     const [isLargerThanMD] = useBreakpoint('md');
 
     const toggleMenu = () => setMenuOpen(!isMenuOpen);
+    const currentUserId = useAppSelector(selectCurrentUserId);
+    const { data: currentUser } = useGetBloggerByIdQuery(
+        {
+            bloggerId: currentUserId,
+            currentUserId,
+        },
+        { skip: !currentUserId },
+    );
 
     return (
         <Flex
@@ -50,7 +61,15 @@ export const Header = ({
             <Logo />
 
             <Breadcrumbs setMenuOpen={setMenuOpen} />
-            <ProfileInfo />
+            {currentUser ? (
+                <ProfileInfo
+                    currentUserId={currentUserId}
+                    login={currentUser.bloggerInfo.login}
+                    firstName={currentUser.bloggerInfo.lastName}
+                    lastName={currentUser.bloggerInfo.lastName}
+                />
+            ) : null}
+
             {isLargerThanMD && <LogInButton />}
             <Flex
                 display={!isLargerThanMD ? 'flex' : 'none'}
