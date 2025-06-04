@@ -3,21 +3,26 @@ import { createSlice } from '@reduxjs/toolkit';
 import { BloggerInfo } from '~/types';
 
 export type UserState = {
-    user: BloggerInfo | null;
+    currentBlogger: BloggerInfo | null;
+    currentUser: BloggerInfo | null;
     accessToken: string | null;
 };
 
 const initialState: UserState = {
-    user: null,
-    accessToken: localStorage.getItem('accessToken') || null,
+    currentBlogger: null,
+    currentUser: null,
+    accessToken: null,
 };
 
 export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
+        setBlogger: (state, { payload }) => {
+            state.currentBlogger = payload;
+        },
         setUser: (state, { payload }) => {
-            state.user = payload;
+            state.currentUser = payload;
         },
         setCredentials: (state, { payload }: { payload: string | null }) => {
             state.accessToken = payload;
@@ -25,4 +30,4 @@ export const userSlice = createSlice({
     },
 });
 
-export const { setUser, setCredentials } = userSlice.actions;
+export const { setBlogger, setUser, setCredentials } = userSlice.actions;
