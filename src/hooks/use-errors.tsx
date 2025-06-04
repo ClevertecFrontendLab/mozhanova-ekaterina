@@ -20,7 +20,7 @@ export const useErrors = () => {
                 break;
 
             default:
-                showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+                showError({ ...NOTIFICATION_MESSAGES.SERVER_ERROR, position: 'bottom-left' });
                 break;
         }
     };
@@ -73,7 +73,7 @@ export const useErrors = () => {
                 break;
 
             default:
-                showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+                showError({ ...NOTIFICATION_MESSAGES.SERVER_ERROR, position: 'bottom-left' });
                 break;
         }
     };
@@ -91,14 +91,14 @@ export const useErrors = () => {
 
             default:
                 reset();
-                showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+                showError({ ...NOTIFICATION_MESSAGES.SERVER_ERROR, position: 'bottom-left' });
                 break;
         }
         setError('email', { message: '' });
     };
 
     const resetCredentialsErrorHandler = () => {
-        showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+        showError({ ...NOTIFICATION_MESSAGES.SERVER_ERROR, position: 'bottom-left' });
     };
 
     const createRecipeErrorHandler = (error: ErrorResponse) => {
@@ -140,13 +140,13 @@ export const useErrors = () => {
                 showError(NOTIFICATION_MESSAGES.RECIPE_NOT_FOUND_ERROR);
                 break;
             default:
-                showError({ ...NOTIFICATION_MESSAGES.SERVER_ERROR, position: 'bottom' });
+                showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
                 break;
         }
     };
 
     const toggleSubscribeErrorHandler = (_error: ErrorResponse) => {
-        showError({ ...NOTIFICATION_MESSAGES.SERVER_ERROR, position: 'bottom' });
+        showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
     };
 
     return {
