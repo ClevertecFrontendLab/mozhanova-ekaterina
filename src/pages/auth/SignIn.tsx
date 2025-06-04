@@ -12,13 +12,13 @@ import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useErrors } from '~/hooks/use-errors';
 import { useSignInMutation } from '~/query/auth-api';
-import { isAuthenticated } from '~/store/selectors';
+import { accessToken } from '~/store/selectors';
 import { ErrorResponse } from '~/types';
 import { LoginSchema } from '~/validation';
 
 export const SignIn = () => {
     const navigate = useNavigate();
-    const isAuth = useSelector(isAuthenticated);
+    const isAuth = useSelector(accessToken);
 
     const {
         register,
