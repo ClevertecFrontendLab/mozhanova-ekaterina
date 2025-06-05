@@ -71,7 +71,9 @@ export const RecipePage = () => {
             >
                 <IngredientsTable portions={data.portions} ingredients={data.ingredients} />
                 <Steps steps={data.steps} />
-                <AuthorInfo currentUserId={currentUserId} authorId={data.authorId} />
+                {currentUserId !== data.authorId && (
+                    <AuthorInfo currentUserId={currentUserId} authorId={data.authorId} />
+                )}
             </Flex>
             <Box mt={{ base: 10, lg: 14 }}>
                 <Slider />
