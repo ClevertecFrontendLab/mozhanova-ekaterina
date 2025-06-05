@@ -1,24 +1,13 @@
-import {
-    Box,
-    Card,
-    CardBody,
-    CardFooter,
-    Flex,
-    Heading,
-    Image,
-    Spinner,
-    Tag,
-    Text,
-} from '@chakra-ui/react';
+import { Box, Card, CardBody, CardFooter, Flex, Heading, Image, Tag, Text } from '@chakra-ui/react';
 import { ErrorResponse, Link } from 'react-router';
 
-import loader from '~/assets/ui/loader_bg.png';
 import {
     UiReadButton,
     UiRecipesButton,
     UiSubscribeButton,
 } from '~/components/ui/UiBlogCardButtons';
 import { UiCardStats } from '~/components/ui/UiCardStats';
+import { UiLoader } from '~/components/ui/UiLoader';
 import { useErrors } from '~/hooks/use-errors';
 import { useToggleSubscriptionMutation } from '~/query/blogs-api';
 import { useAppSelector } from '~/store/hooks';
@@ -150,13 +139,11 @@ export const BlogCard = ({
             </CardBody>
             {showFooter ? isFavorite ? <FavoriteCardFooter /> : <Footer /> : null}
 
-            {isLoading && <Loader />}
+            {isLoading && <UiLoader />}
         </Card>
     );
 
     function Footer() {
-        console.log(colsInGrid);
-
         return (
             <CardFooter
                 flexDirection={{
@@ -195,30 +182,6 @@ export const BlogCard = ({
 
                 <UiCardStats bookmarks={bookmarksCount} subscribersCount={subscribersCount} />
             </CardFooter>
-        );
-    }
-
-    function Loader() {
-        return (
-            <Flex
-                // data-test-id={DATA_TEST_IDS.LOADER_SEARCH_BLOCK}
-                w='134px'
-                h='134px'
-                bgImage={loader}
-                bgSize='cover'
-                alignItems='center'
-                justifyContent='center'
-                borderRadius='50%'
-                position='absolute'
-                left={0}
-                bottom={0}
-                top={0}
-                right={0}
-                mx='auto'
-                my='auto'
-            >
-                <Spinner size='lg' color='black' />
-            </Flex>
         );
     }
 };

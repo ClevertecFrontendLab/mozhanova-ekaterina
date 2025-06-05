@@ -128,7 +128,10 @@ export const selectGlobalLoading = createSelector(
                     return false;
                 }
 
-                if (operation?.endpointName === 'getBloggers') {
+                if (
+                    operation?.endpointName === 'getBloggers' ||
+                    operation?.endpointName === 'getBloggerById'
+                ) {
                     return operation?.status === 'pending' && operation?.data === undefined;
                 }
 

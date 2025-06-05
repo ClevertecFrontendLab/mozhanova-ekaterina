@@ -5,6 +5,7 @@ import { ManIcon } from '~/components/ui/icons/ManIcon';
 import { SubscribeIcon } from '~/components/ui/icons/SubscribeIcon';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCardStats } from '~/components/ui/UiCardStats';
+import { UiLoader } from '~/components/ui/UiLoader';
 import { useErrors } from '~/hooks/use-errors';
 import { useToggleSubscriptionMutation } from '~/query/blogs-api';
 import { useAppSelector } from '~/store/hooks';
@@ -12,7 +13,7 @@ import { selectCurrentUserId } from '~/store/selectors';
 import { BloggerResponse, ErrorResponse } from '~/types';
 
 export const Hero = ({ blogger }: { blogger: BloggerResponse }) => {
-    const [toggleSubscribe] = useToggleSubscriptionMutation();
+    const [toggleSubscribe, { isLoading }] = useToggleSubscriptionMutation();
     const currentUserId = useAppSelector(selectCurrentUserId);
     const { toggleSubscribeErrorHandler } = useErrors();
 
@@ -28,7 +29,7 @@ export const Hero = ({ blogger }: { blogger: BloggerResponse }) => {
     };
 
     return (
-        <Box pb={{ base: 4, md: 6 }}>
+        <Box position='relative' pb={{ base: 4, md: 6 }}>
             <Flex align='center' direction={{ base: 'column', sm: 'row' }} gap={6}>
                 <Box flexBasis='65%'>
                     <Image
@@ -91,6 +92,7 @@ export const Hero = ({ blogger }: { blogger: BloggerResponse }) => {
                     </Flex>
                 </Box>
             </Flex>
+            {isLoading && <UiLoader />}
         </Box>
     );
 };
