@@ -23,7 +23,7 @@ type Props = {
     avatarSrc: string;
     name: string[];
     login: string;
-    bloggerId?: string;
+    bloggerId: string;
     isCurrentUserSubscribed?: boolean;
     isLoading?: boolean;
     toggleSubscribe?: VoidFunction;
@@ -97,19 +97,22 @@ export const BlogCard = ({
                     alt='avatar'
                 />
                 <Box minW={0}>
-                    <Heading
-                        as='h3'
-                        fontSize={{
-                            base: 'md',
-                            md: 'lg',
-                        }}
-                        fontWeight='500'
-                        textOverflow='ellipsis'
-                        whiteSpace='nowrap'
-                        overflowX='hidden'
-                    >
-                        {`${name[0]} ${name[1]}`}
-                    </Heading>
+                    <Link to={routeHelpers.getBlogPath(bloggerId)}>
+                        <Heading
+                            as='h3'
+                            fontSize={{
+                                base: 'md',
+                                md: 'lg',
+                            }}
+                            fontWeight='500'
+                            textOverflow='ellipsis'
+                            whiteSpace='nowrap'
+                            overflowX='hidden'
+                        >
+                            {`${name[0]} ${name[1]}`}
+                        </Heading>
+                    </Link>
+
                     <Text
                         color='text.secondary'
                         fontSize={{
@@ -148,12 +151,14 @@ export const BlogCard = ({
             >
                 <Flex order={{ base: 2, sm: colsInGrid === 2 ? 0 : 2 }} gap={2} align='flex-end'>
                     {isFavorite ? (
-                        <UiButton
-                            onClick={toggleSubscribe}
-                            size='xs'
-                            variant='solidAccent'
-                            text='Рецепты'
-                        />
+                        <Link to={routeHelpers.getBlogPath(bloggerId)}>
+                            <UiButton
+                                onClick={toggleSubscribe}
+                                size='xs'
+                                variant='solidAccent'
+                                text='Рецепты'
+                            />
+                        </Link>
                     ) : isCurrentUserSubscribed ? (
                         <UiButton
                             onClick={toggleSubscribe}

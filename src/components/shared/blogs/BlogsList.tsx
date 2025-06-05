@@ -1,6 +1,7 @@
-import { SimpleGrid } from '@chakra-ui/react';
+import { Box, Grid, SimpleGrid } from '@chakra-ui/react';
 
 import avatar_1 from '~/assets/blog_avatar_1.png';
+import { UiAllAuthorsButton } from '~/components/ui/UiAllAuthorsButton';
 import { useErrors } from '~/hooks/use-errors';
 import { useToggleSubscriptionMutation } from '~/query/blogs-api';
 import { Blogger, ErrorResponse } from '~/types';
@@ -28,32 +29,37 @@ export const BlogsList = ({
     if (!bloggers) return null;
 
     return (
-        <SimpleGrid
+        <Grid
             p={{
                 base: 3,
                 md: 6,
             }}
             bg='neutral.10'
-            spacing={{ base: 4, md: 6 }}
-            columns={{ base: 1, sm: 2, lg: 3 }}
+            borderRadius='16px'
+            gap={{ base: 4, md: 6 }}
         >
-            {bloggers.map((blogger) => (
-                <BlogCard
-                    key={blogger._id}
-                    bloggerId={blogger._id}
-                    avatarSrc={avatar_1}
-                    name={[blogger.firstName, blogger.lastName]}
-                    login={blogger.login}
-                    note={blogger.notes[0]?.text}
-                    subscribersCount={blogger.subscribersCount}
-                    bookmarksCount={blogger.bookmarksCount}
-                    toggleSubscribe={() => handleSubscribe(blogger._id)}
-                    isCurrentUserSubscribed={blogger.isFavorite}
-                    showControls
-                    showStats
-                    isLoading={isLoading}
-                />
-            ))}
-        </SimpleGrid>
+            <SimpleGrid spacing={{ base: 4, md: 6 }} columns={{ base: 1, sm: 2, lg: 3 }}>
+                {bloggers.map((blogger) => (
+                    <BlogCard
+                        key={blogger._id}
+                        bloggerId={blogger._id}
+                        avatarSrc={avatar_1}
+                        name={[blogger.firstName, blogger.lastName]}
+                        login={blogger.login}
+                        note={blogger.notes[0]?.text}
+                        subscribersCount={blogger.subscribersCount}
+                        bookmarksCount={blogger.bookmarksCount}
+                        toggleSubscribe={() => handleSubscribe(blogger._id)}
+                        isCurrentUserSubscribed={blogger.isFavorite}
+                        showControls
+                        showStats
+                        isLoading={isLoading}
+                    />
+                ))}
+            </SimpleGrid>
+            <Box justifySelf='center'>
+                <UiAllAuthorsButton />
+            </Box>
+        </Grid>
     );
 };

@@ -1,12 +1,9 @@
-import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { Flex, Heading, SimpleGrid } from '@chakra-ui/react';
 import { useEffect } from 'react';
-import { Link } from 'react-router';
 
 import avatar_1 from '~/assets/blog_avatar_1.png';
-import { UiButton } from '~/components/ui/UiButton';
+import { UiAllAuthorsButton } from '~/components/ui/UiAllAuthorsButton';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
-import { AppRoutes } from '~/constants/routes-config';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useToast } from '~/hooks/use-toast';
 import { useLazyGetBloggersQuery } from '~/query/blogs-api';
@@ -59,16 +56,7 @@ export const BlogsSection = () => {
                 >
                     Кулинарные блоги
                 </Heading>
-                {isLargerThanMD && (
-                    <Link to={AppRoutes.BLOGS}>
-                        <UiButton
-                            text='Все авторы'
-                            variant='primaryGhost'
-                            rightIcon={<ArrowForwardIcon />}
-                            size='lg'
-                        />
-                    </Link>
-                )}
+                {isLargerThanMD && <UiAllAuthorsButton />}
             </Flex>
             <SimpleGrid
                 columns={{
@@ -82,6 +70,7 @@ export const BlogsSection = () => {
             >
                 {bloggers.others.map((blogger) => (
                     <BlogCard
+                        bloggerId={blogger._id}
                         avatarSrc={avatar_1}
                         key={blogger._id}
                         name={[blogger.firstName, blogger.lastName]}
@@ -91,16 +80,7 @@ export const BlogsSection = () => {
                     />
                 ))}
             </SimpleGrid>
-            {!isLargerThanMD && (
-                <Link to={AppRoutes.BLOGS}>
-                    <UiButton
-                        text='Все авторы'
-                        variant='primaryGhost'
-                        rightIcon={<ArrowForwardIcon />}
-                        size='md'
-                    />
-                </Link>
-            )}
+            {!isLargerThanMD && <UiAllAuthorsButton size='sm' />}
         </Flex>
     );
 };
