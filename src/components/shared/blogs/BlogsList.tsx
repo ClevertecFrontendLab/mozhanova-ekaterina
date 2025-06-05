@@ -28,7 +28,15 @@ export const BlogsList = ({
     if (!bloggers) return null;
 
     return (
-        <SimpleGrid spacing={{ base: 4, md: 6 }} columns={{ base: 1, sm: 2, lg: 3 }}>
+        <SimpleGrid
+            p={{
+                base: 3,
+                md: 6,
+            }}
+            bg='neutral.10'
+            spacing={{ base: 4, md: 6 }}
+            columns={{ base: 1, sm: 2, lg: 3 }}
+        >
             {bloggers.map((blogger) => (
                 <BlogCard
                     key={blogger._id}

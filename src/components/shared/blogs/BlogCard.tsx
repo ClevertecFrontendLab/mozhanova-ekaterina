@@ -34,6 +34,7 @@ type Props = {
     showControls?: boolean;
     showStats?: boolean;
     isFavorite?: boolean;
+    colsInGrid?: number;
 };
 
 export const BlogCard = ({
@@ -51,6 +52,7 @@ export const BlogCard = ({
     isCurrentUserSubscribed,
     isLoading,
     isFavorite,
+    colsInGrid = 2,
 }: Props) => (
     <Card
         overflow='hidden'
@@ -135,9 +137,16 @@ export const BlogCard = ({
                 pt={0}
                 px={{ base: 4, md: 6 }}
                 pb={{ base: 4, md: 5 }}
-                justify='space-between'
+                justifyContent={{ base: 'flex-end', sm: 'space-between' }}
+                alignItems='flex-end'
+                flexDirection={{
+                    base: 'column',
+                    sm: colsInGrid === 2 ? 'row' : 'column',
+                    lg: 'row',
+                }}
+                gap={4}
             >
-                <Flex gap={2} align='flex-end'>
+                <Flex order={{ base: 2, sm: colsInGrid === 2 ? 0 : 2 }} gap={2} align='flex-end'>
                     {isFavorite ? (
                         <UiButton
                             onClick={toggleSubscribe}

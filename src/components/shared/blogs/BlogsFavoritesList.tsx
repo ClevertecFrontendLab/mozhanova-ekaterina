@@ -60,7 +60,7 @@ export const BlogsFavoritesList = ({
                 columns={{
                     base: 1,
                     sm: 2,
-                    md: bloggers.length > 8 ? 3 : 2,
+                    md: bloggers.length > 6 ? 3 : 2,
                 }}
                 gap={{
                     base: 3,

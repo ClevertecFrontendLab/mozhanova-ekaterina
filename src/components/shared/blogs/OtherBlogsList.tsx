@@ -45,6 +45,7 @@ export const OtherBlogsList = ({ currentUserId }: { currentUserId: string }) => 
                         bookmarksCount={blogger.bookmarksCount}
                         subscribersCount={blogger.subscribersCount}
                         newRecipesCount={blogger.newRecipesCount}
+                        colsInGrid={3}
                         showControls
                         showStats
                     />
