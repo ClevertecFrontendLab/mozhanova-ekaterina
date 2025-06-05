@@ -121,7 +121,10 @@ export const selectGlobalLoading = createSelector(
             ];
 
             return allOperations.some((operation) => {
-                if (operation?.endpointName === 'toggleSubscription') {
+                if (
+                    operation?.endpointName === 'toggleSubscription' ||
+                    operation?.endpointName === 'searchRecipes'
+                ) {
                     return false;
                 }
 
