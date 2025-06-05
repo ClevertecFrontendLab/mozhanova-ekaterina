@@ -5,6 +5,8 @@ import { BlogsFavoritesList } from '~/components/shared/blogs/BlogsFavoritesList
 import { BlogsList } from '~/components/shared/blogs/BlogsList';
 import { Slider } from '~/components/shared/slider/Slider';
 import { BREAKPOINTS_VALUES } from '~/constants/breakpoints-config';
+import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
+import { useToast } from '~/hooks/use-toast';
 import { useWindowSize } from '~/hooks/use-window-size';
 import { useLazyGetBloggersQuery } from '~/query/blogs-api';
 import { Limit } from '~/query/constants/limits';
@@ -13,15 +15,22 @@ import { selectCurrentUserId } from '~/store/selectors';
 
 export const BlogsPage = () => {
     const userId = useAppSelector(selectCurrentUserId);
-    const [getBloggers, { data: bloggers }] = useLazyGetBloggersQuery();
+    const [getBloggers, { data: bloggers, error }] = useLazyGetBloggersQuery();
+    const { showError } = useToast();
     const { width } = useWindowSize();
     const limit = width > BREAKPOINTS_VALUES.lg ? Limit.BLOGS : Limit.DEFAULT;
 
     useEffect(() => {
-        if (!userId || !limit) return;
+        if (!userId) return;
 
         getBloggers({ currentUserId: userId, limit: limit });
     }, [userId]);
+
+    useEffect(() => {
+        if (error) {
+            showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+        }
+    }, [error]);
 
     if (!userId || !bloggers) return null;
 
