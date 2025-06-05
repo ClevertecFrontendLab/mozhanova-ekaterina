@@ -1,10 +1,11 @@
 import { Flex } from '@chakra-ui/react';
+import { useEffect } from 'react';
 
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
-import { useGetBloggerByIdQuery } from '~/query/blogs-api';
+import { useLazyGetBloggerByIdQuery } from '~/query/blogs-api';
 import { useAppSelector } from '~/store/hooks';
-import { selectCurrentUserId } from '~/store/selectors';
+import { selectCurrentUser, selectCurrentUserId } from '~/store/selectors';
 
 import { ProfileInfo } from '../shared/ProfileInfo';
 import { ProfileNotification } from '../shared/ProfileNotification';
@@ -25,13 +26,13 @@ export const Header = ({
 
     const toggleMenu = () => setMenuOpen(!isMenuOpen);
     const currentUserId = useAppSelector(selectCurrentUserId);
-    const { data: currentUser } = useGetBloggerByIdQuery(
-        {
-            bloggerId: currentUserId,
-            currentUserId,
-        },
-        { skip: !currentUserId },
-    );
+    const currentUser = useAppSelector(selectCurrentUser);
+    const [getCurrentUser, { data: userData }] = useLazyGetBloggerByIdQuery();
+
+    useEffect(() => {
+        if (currentUser || !currentUserId) return;
+        getCurrentUser({ bloggerId: currentUserId, currentUserId });
+    }, [currentUserId, currentUser]);
 
     return (
         <Flex
@@ -61,12 +62,12 @@ export const Header = ({
             <Logo />
 
             <Breadcrumbs setMenuOpen={setMenuOpen} />
-            {currentUser ? (
+            {userData ? (
                 <ProfileInfo
-                    currentUserId={currentUserId}
-                    login={currentUser.bloggerInfo.login}
-                    firstName={currentUser.bloggerInfo.lastName}
-                    lastName={currentUser.bloggerInfo.lastName}
+                    currentUserId={userData.bloggerInfo._id}
+                    login={userData.bloggerInfo.login}
+                    firstName={userData.bloggerInfo.lastName}
+                    lastName={userData.bloggerInfo.lastName}
                 />
             ) : null}
 
