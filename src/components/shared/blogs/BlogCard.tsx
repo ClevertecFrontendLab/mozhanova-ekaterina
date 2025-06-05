@@ -176,7 +176,7 @@ export const BlogCard = ({
                 pb={{ base: 4, md: 5 }}
             >
                 <Flex gap={2}>
-                    <UiRecipesButton bloggerId={bloggerId} handleSubscribe={handleSubscribe} />
+                    <UiRecipesButton bloggerId={bloggerId} />
                     <UiReadButton bloggerId={bloggerId} />
                 </Flex>
 

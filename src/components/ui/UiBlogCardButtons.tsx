@@ -16,15 +16,9 @@ export const UiReadButton = ({ bloggerId }: { bloggerId: string }) => (
     </Link>
 );
 
-export const UiRecipesButton = ({
-    bloggerId,
-    handleSubscribe,
-}: {
-    bloggerId: string;
-    handleSubscribe: () => void;
-}) => (
+export const UiRecipesButton = ({ bloggerId }: { bloggerId: string }) => (
     <Link to={routeHelpers.getBlogPath(bloggerId)}>
-        <UiButton onClick={handleSubscribe} size='xs' variant='solidAccent' text='Рецепты' />
+        <UiButton size='xs' variant='solidAccent' text='Рецепты' />
     </Link>
 );
 
