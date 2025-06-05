@@ -1,11 +1,9 @@
 import { Flex } from '@chakra-ui/react';
-import { useEffect } from 'react';
 
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
-import { useLazyGetBloggerByIdQuery } from '~/query/blogs-api';
 import { useAppSelector } from '~/store/hooks';
-import { selectCurrentUser, selectCurrentUserId } from '~/store/selectors';
+import { accessToken } from '~/store/selectors';
 
 import { ProfileInfo } from '../shared/ProfileInfo';
 import { ProfileNotification } from '../shared/ProfileNotification';
@@ -23,16 +21,8 @@ export const Header = ({
     isMenuOpen: boolean;
 }) => {
     const [isLargerThanMD] = useBreakpoint('md');
-
+    const token = useAppSelector(accessToken);
     const toggleMenu = () => setMenuOpen(!isMenuOpen);
-    const currentUserId = useAppSelector(selectCurrentUserId);
-    const currentUser = useAppSelector(selectCurrentUser);
-    const [getCurrentUser, { data: userData }] = useLazyGetBloggerByIdQuery();
-
-    useEffect(() => {
-        if (currentUser || !currentUserId) return;
-        getCurrentUser({ bloggerId: currentUserId, currentUserId });
-    }, [currentUserId, currentUser]);
 
     return (
         <Flex
@@ -62,13 +52,8 @@ export const Header = ({
             <Logo />
 
             <Breadcrumbs setMenuOpen={setMenuOpen} />
-            {userData ? (
-                <ProfileInfo
-                    currentUserId={userData.bloggerInfo._id}
-                    login={userData.bloggerInfo.login}
-                    firstName={userData.bloggerInfo.lastName}
-                    lastName={userData.bloggerInfo.lastName}
-                />
+            {token ? (
+                <ProfileInfo login='mozhKa' firstName='Екатерина' lastName='Можанова' />
             ) : null}
 
             {isLargerThanMD && <LogInButton />}
@@ -78,8 +63,14 @@ export const Header = ({
                 align='center'
                 flexGrow={1}
             >
-                {currentUser ? (
-                    <ProfileNotification variant='mobile' isMenuOpen={isMenuOpen} />
+                {token ? (
+                    <ProfileNotification
+                        totalBookmarks={12}
+                        totalSubscribers={500}
+                        totalLikes={1000}
+                        variant='mobile'
+                        isMenuOpen={isMenuOpen}
+                    />
                 ) : null}
                 <Flex gap={6} alignItems='center' justifyContent='center'>
                     <LogInButton />

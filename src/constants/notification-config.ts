@@ -51,7 +51,6 @@ export const NOTIFICATION_MESSAGES = {
         title: NOTIFICATION_TITLES.SERVER_ERROR,
         description: 'Попробуйте немного позже',
         duration: NotificationDuration.Long,
-        position: 'bottom-left',
     },
     UPLOAD_IMAGE_ERROR: {
         title: NOTIFICATION_TITLES.SERVER_ERROR,

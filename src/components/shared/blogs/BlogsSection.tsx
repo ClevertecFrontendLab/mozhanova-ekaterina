@@ -77,6 +77,7 @@ export const BlogsSection = () => {
                         note={blogger.notes[0]?.text}
                         login={blogger.login}
                         newRecipesCount={blogger.newRecipesCount}
+                        showFooter={false}
                     />
                 ))}
             </SimpleGrid>

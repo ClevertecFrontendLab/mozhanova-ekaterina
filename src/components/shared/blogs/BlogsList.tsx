@@ -2,30 +2,11 @@ import { Box, Grid, SimpleGrid } from '@chakra-ui/react';
 
 import avatar_1 from '~/assets/blog_avatar_1.png';
 import { UiAllAuthorsButton } from '~/components/ui/UiAllAuthorsButton';
-import { useErrors } from '~/hooks/use-errors';
-import { useToggleSubscriptionMutation } from '~/query/blogs-api';
-import { Blogger, ErrorResponse } from '~/types';
+import { Blogger } from '~/types';
 
 import { BlogCard } from './BlogCard';
 
-export const BlogsList = ({
-    bloggers,
-    currentUserId,
-}: {
-    bloggers: Blogger[] | undefined;
-    currentUserId: string;
-}) => {
-    const [toggleSubscribe, { isLoading }] = useToggleSubscriptionMutation();
-    const { toggleSubscribeErrorHandler } = useErrors();
-
-    const handleSubscribe = async (bloggerId: string) => {
-        try {
-            await toggleSubscribe({ fromUserId: currentUserId, toUserId: bloggerId });
-        } catch (error) {
-            toggleSubscribeErrorHandler(error as ErrorResponse);
-        }
-    };
-
+export const BlogsList = ({ bloggers }: { bloggers: Blogger[] | undefined }) => {
     if (!bloggers) return null;
 
     return (
@@ -49,11 +30,6 @@ export const BlogsList = ({
                         note={blogger.notes[0]?.text}
                         subscribersCount={blogger.subscribersCount}
                         bookmarksCount={blogger.bookmarksCount}
-                        toggleSubscribe={() => handleSubscribe(blogger._id)}
-                        isCurrentUserSubscribed={blogger.isFavorite}
-                        showControls
-                        showStats
-                        isLoading={isLoading}
                     />
                 ))}
             </SimpleGrid>

@@ -119,7 +119,7 @@ export const recipeApi = authorizedApi.injectEndpoints({
                 url: `${ApiEndpoints.RECIPE_BY_ID}${id}`,
                 method: 'DELETE',
             }),
-            // invalidatesTags: [Tags.RECIPE],
+            invalidatesTags: [Tags.RECIPE],
         }),
         [EndpointNames.LIKE_UNLIKE_RECIPE]: builder.mutation<LikeResponse, string>({
             query: (id) => ({

@@ -10,13 +10,19 @@ import {
     Tag,
     Text,
 } from '@chakra-ui/react';
-import { Link } from 'react-router';
+import { ErrorResponse, Link } from 'react-router';
 
 import loader from '~/assets/ui/loader_bg.png';
-import { ManIcon } from '~/components/ui/icons/ManIcon';
-import { SubscribeIcon } from '~/components/ui/icons/SubscribeIcon';
-import { UiButton } from '~/components/ui/UiButton';
+import {
+    UiReadButton,
+    UiRecipesButton,
+    UiSubscribeButton,
+} from '~/components/ui/UiBlogCardButtons';
 import { UiCardStats } from '~/components/ui/UiCardStats';
+import { useErrors } from '~/hooks/use-errors';
+import { useToggleSubscriptionMutation } from '~/query/blogs-api';
+import { useAppSelector } from '~/store/hooks';
+import { selectCurrentUserId } from '~/store/selectors';
 import { routeHelpers } from '~/utils/get-routes';
 
 type Props = {
@@ -24,16 +30,12 @@ type Props = {
     name: string[];
     login: string;
     bloggerId: string;
-    isCurrentUserSubscribed?: boolean;
-    isLoading?: boolean;
-    toggleSubscribe?: VoidFunction;
     note?: string;
     subscribersCount?: number;
     newRecipesCount?: number;
     bookmarksCount?: number;
-    showControls?: boolean;
-    showStats?: boolean;
     isFavorite?: boolean;
+    showFooter?: boolean;
     colsInGrid?: number;
 };
 
@@ -45,175 +47,178 @@ export const BlogCard = ({
     note,
     newRecipesCount,
     avatarSrc,
-    showControls,
-    showStats,
+    showFooter = true,
     bloggerId,
-    toggleSubscribe,
-    isCurrentUserSubscribed,
-    isLoading,
     isFavorite,
     colsInGrid = 2,
-}: Props) => (
-    <Card
-        overflow='hidden'
-        size={{
-            base: 'md',
-            md: 'lg',
-        }}
-        transition='box-shadow 0.3s ease-in-out'
-        _hover={{
-            shadow: 'themeNeutralGreen',
-        }}
-    >
-        {newRecipesCount ? (
-            <Box position='absolute' right='8px' top='8px'>
-                <Tag bg='neutral.20'>{`${newRecipesCount} новых рецептов`}</Tag>
-                {/* ???: */}
-            </Box>
-        ) : null}
+}: Props) => {
+    const [toggleSubscribe, { isLoading }] = useToggleSubscriptionMutation();
+    const { toggleSubscribeErrorHandler } = useErrors();
+    const currentUserId = useAppSelector(selectCurrentUserId);
 
-        <CardBody>
-            <Flex
-                gap={{
-                    base: 2,
-                    md: 3,
-                }}
-                pt={3}
-                pb={{
-                    base: 2,
-                    md: 4,
-                }}
-            >
-                <Image
-                    w={{
-                        base: '32px',
-                        md: '48px',
-                    }}
-                    h={{
-                        base: '32px',
-                        md: '48px',
-                    }}
-                    src={avatarSrc}
-                    alt='avatar'
-                />
-                <Box minW={0}>
-                    <Link to={routeHelpers.getBlogPath(bloggerId)}>
-                        <Heading
-                            as='h3'
-                            fontSize={{
-                                base: 'md',
-                                md: 'lg',
-                            }}
-                            fontWeight='500'
-                            textOverflow='ellipsis'
-                            whiteSpace='nowrap'
-                            overflowX='hidden'
-                        >
-                            {`${name[0]} ${name[1]}`}
-                        </Heading>
-                    </Link>
-
-                    <Text
-                        color='text.secondary'
-                        fontSize={{
-                            base: 'xs',
-                            md: 'sm',
-                        }}
-                    >
-                        {`@${login}`}
-                    </Text>
+    const handleSubscribe = async () => {
+        try {
+            await toggleSubscribe({ fromUserId: currentUserId, toUserId: bloggerId });
+        } catch (error) {
+            toggleSubscribeErrorHandler(error as ErrorResponse);
+        }
+    };
+    return (
+        <Card
+            overflow='hidden'
+            size={{
+                base: 'md',
+                md: 'lg',
+            }}
+            transition='box-shadow 0.3s ease-in-out'
+            _hover={{
+                shadow: 'themeNeutralGreen',
+            }}
+        >
+            {newRecipesCount ? (
+                <Box
+                    position='absolute'
+                    right={{ base: '4px', md: '8px' }}
+                    top={{ base: '4px', md: '8px' }}
+                >
+                    <Tag bg='neutral.20'>{`${newRecipesCount} новых рецептов`}</Tag>
                 </Box>
-            </Flex>
-            <Text
-                fontSize='sm'
-                noOfLines={3}
-                pt={{
-                    base: 2,
-                    md: 3,
-                }}
-            >
-                {note}
-            </Text>
-        </CardBody>
-        {showControls ? (
+            ) : null}
+
+            <CardBody>
+                <Flex
+                    gap={{
+                        base: 2,
+                        md: 3,
+                    }}
+                    pt={3}
+                    pb={{
+                        base: 2,
+                        md: 4,
+                    }}
+                >
+                    <Image
+                        w={{
+                            base: '32px',
+                            md: '48px',
+                        }}
+                        h={{
+                            base: '32px',
+                            md: '48px',
+                        }}
+                        src={avatarSrc}
+                        alt='avatar'
+                    />
+                    <Box minW={0}>
+                        <Link to={routeHelpers.getBlogPath(bloggerId)}>
+                            <Heading
+                                as='h3'
+                                fontSize={{
+                                    base: 'md',
+                                    md: 'lg',
+                                }}
+                                fontWeight='500'
+                                textOverflow='ellipsis'
+                                whiteSpace='nowrap'
+                                overflowX='hidden'
+                            >
+                                {`${name[0]} ${name[1]}`}
+                            </Heading>
+                        </Link>
+
+                        <Text
+                            color='text.secondary'
+                            fontSize={{
+                                base: 'xs',
+                                md: 'sm',
+                            }}
+                        >
+                            {`@${login}`}
+                        </Text>
+                    </Box>
+                </Flex>
+                <Text
+                    fontSize='sm'
+                    noOfLines={3}
+                    pt={{
+                        base: 2,
+                        md: 3,
+                    }}
+                >
+                    {note}
+                </Text>
+            </CardBody>
+            {showFooter ? isFavorite ? <FavoriteCardFooter /> : <Footer /> : null}
+
+            {isLoading && <Loader />}
+        </Card>
+    );
+
+    function Footer() {
+        console.log(colsInGrid);
+
+        return (
             <CardFooter
-                pt={0}
-                px={{ base: 4, md: 6 }}
-                pb={{ base: 4, md: 5 }}
-                justifyContent={{ base: 'flex-end', sm: 'space-between' }}
-                alignItems='flex-end'
                 flexDirection={{
                     base: 'column',
                     sm: colsInGrid === 2 ? 'row' : 'column',
                     lg: 'row',
                 }}
+                justifyContent='space-between'
+                alignItems='flex-end'
                 gap={4}
+                pt={0}
+                px={{ base: 4, md: 6 }}
+                pb={{ base: 4, md: 5 }}
             >
-                <Flex order={{ base: 2, sm: colsInGrid === 2 ? 0 : 2 }} gap={2} align='flex-end'>
-                    {isFavorite ? (
-                        <Link to={routeHelpers.getBlogPath(bloggerId)}>
-                            <UiButton
-                                onClick={toggleSubscribe}
-                                size='xs'
-                                variant='solidAccent'
-                                text='Рецепты'
-                            />
-                        </Link>
-                    ) : isCurrentUserSubscribed ? (
-                        <UiButton
-                            onClick={toggleSubscribe}
-                            leftIcon={<ManIcon />}
-                            size='xs'
-                            variant='outline'
-                            text='Вы подписаны'
-                        />
-                    ) : (
-                        <UiButton
-                            onClick={toggleSubscribe}
-                            leftIcon={<SubscribeIcon />}
-                            size='xs'
-                            variant='solid'
-                            text='Подписаться'
-                        />
-                    )}
-
-                    {bloggerId ? (
-                        <Link
-                            to={{ pathname: routeHelpers.getBlogPath(bloggerId), hash: '#notes' }}
-                        >
-                            <UiButton size='xs' variant='accentOutline' text='Читать' />
-                        </Link>
-                    ) : null}
+                <Flex order={{ base: 1 }} gap={2} align='flex-end'>
+                    <UiSubscribeButton handleSubscribe={handleSubscribe} />
+                    <UiReadButton bloggerId={bloggerId} />
                 </Flex>
-                {showStats ? (
-                    <UiCardStats bookmarks={bookmarksCount} subscribersCount={subscribersCount} />
-                ) : null}
-            </CardFooter>
-        ) : null}
-        {isLoading && <Loader />}
-    </Card>
-);
 
-function Loader() {
-    return (
-        <Flex
-            // data-test-id={DATA_TEST_IDS.LOADER_SEARCH_BLOCK}
-            w='134px'
-            h='134px'
-            bgImage={loader}
-            bgSize='cover'
-            alignItems='center'
-            justifyContent='center'
-            borderRadius='50%'
-            position='absolute'
-            left={0}
-            bottom={0}
-            top={0}
-            right={0}
-            mx='auto'
-            my='auto'
-        >
-            <Spinner size='lg' color='black' />
-        </Flex>
-    );
-}
+                <UiCardStats bookmarks={bookmarksCount} subscribersCount={subscribersCount} />
+            </CardFooter>
+        );
+    }
+    function FavoriteCardFooter() {
+        return (
+            <CardFooter
+                justifyContent='space-between'
+                pt={0}
+                px={{ base: 4, md: 6 }}
+                pb={{ base: 4, md: 5 }}
+            >
+                <Flex gap={2}>
+                    <UiRecipesButton bloggerId={bloggerId} handleSubscribe={handleSubscribe} />
+                    <UiReadButton bloggerId={bloggerId} />
+                </Flex>
+
+                <UiCardStats bookmarks={bookmarksCount} subscribersCount={subscribersCount} />
+            </CardFooter>
+        );
+    }
+
+    function Loader() {
+        return (
+            <Flex
+                // data-test-id={DATA_TEST_IDS.LOADER_SEARCH_BLOCK}
+                w='134px'
+                h='134px'
+                bgImage={loader}
+                bgSize='cover'
+                alignItems='center'
+                justifyContent='center'
+                borderRadius='50%'
+                position='absolute'
+                left={0}
+                bottom={0}
+                top={0}
+                right={0}
+                mx='auto'
+                my='auto'
+            >
+                <Spinner size='lg' color='black' />
+            </Flex>
+        );
+    }
+};

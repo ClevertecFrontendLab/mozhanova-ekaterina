@@ -107,21 +107,6 @@ export const selectCurrentRootCategory = createSelector(
     (categories, name) => (Array.isArray(categories) ? getCategoryByName(categories, name) : null),
 );
 
-// export const selectGlobalLoading = createSelector(
-//     (state: ApplicationState) => state,
-//     (state) => {
-//         const apiStates = [
-//             state['authorized-api']?.queries || {},
-//             state['authorized-api']?.mutations || {},
-//             state['unauthorized-api']?.queries || {},
-//             state['unauthorized-api']?.mutations || {},
-//         ];
-
-//         return apiStates.some((apiState) =>
-//             Object.values(apiState).some((item) => item?.status === 'pending'),
-//         );
-//     },
-// );
 export const selectGlobalLoading = createSelector(
     (state: ApplicationState) => state,
     (state) => {
@@ -135,10 +120,17 @@ export const selectGlobalLoading = createSelector(
                 ...Object.values(apiState.mutations || {}),
             ];
 
-            return allOperations.some(
-                (operation) =>
-                    operation?.status === 'pending' && !operation?.meta?.ignoreGlobalLoader,
-            );
+            return allOperations.some((operation) => {
+                if (operation?.endpointName === 'toggleSubscription') {
+                    return false;
+                }
+
+                if (operation?.endpointName === 'getBloggers') {
+                    return operation?.status === 'pending' && operation?.data === undefined;
+                }
+
+                return operation?.status === 'pending';
+            });
         });
     },
 );

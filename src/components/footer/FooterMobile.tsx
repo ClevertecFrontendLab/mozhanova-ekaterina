@@ -2,7 +2,7 @@ import { EditIcon } from '@chakra-ui/icons';
 import { Grid, Image } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router';
 
-import icon from '~/assets/ava.png';
+import icon from '~/assets/ava.jpg';
 import { HomeIcon } from '~/components/ui/icons/HomeIcon';
 import { UiIconButton } from '~/components/ui/UiIconButton';
 import { AppRoutes } from '~/constants/routes-config';

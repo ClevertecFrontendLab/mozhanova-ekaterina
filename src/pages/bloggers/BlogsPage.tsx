@@ -36,7 +36,7 @@ export const BlogsPage = () => {
         >
             <Grid gap={{ base: 8, lg: 10 }}>
                 <BlogsFavoritesList bloggers={bloggers?.favorites} heading='Избранные блоги' />
-                <BlogsList currentUserId={userId} bloggers={bloggers?.others} />
+                <BlogsList bloggers={bloggers?.others} />
             </Grid>
             <Box mt={{ base: 3, sm: 8 }}>
                 <Slider />

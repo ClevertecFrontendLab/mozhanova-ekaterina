@@ -13,16 +13,13 @@ export const BlogsApi = authorizedApi.injectEndpoints({
                 params: params,
             }),
             providesTags: [Tags.BLOGGERS],
-            extraOptions: { meta: { ignoreGlobalLoader: true } },
         }),
         [EndpointNames.GET_BLOGGER_BY_ID]: builder.query<BloggerResponse, BloggersParams>({
             query: (params) => ({
                 url: `${ApiEndpoints.BLOGGERS}/${params.bloggerId}`,
                 params: params,
             }),
-            providesTags: (result) =>
-                result ? [{ type: Tags.BLOGGERS, id: result.bloggerInfo._id }] : [Tags.BLOGGERS],
-            extraOptions: { meta: { ignoreGlobalLoader: true } },
+            providesTags: [Tags.BLOGGERS],
         }),
         [EndpointNames.TOGGLE_SUBSCRIPTION]: builder.mutation<void, BloggersParams>({
             query: (params) => ({
@@ -31,7 +28,6 @@ export const BlogsApi = authorizedApi.injectEndpoints({
                 body: params,
             }),
             invalidatesTags: [Tags.BLOGGERS],
-            extraOptions: { meta: { ignoreGlobalLoader: true } },
         }),
     }),
 });
