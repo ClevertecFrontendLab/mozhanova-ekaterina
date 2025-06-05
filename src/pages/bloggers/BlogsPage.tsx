@@ -4,7 +4,8 @@ import { useEffect } from 'react';
 import { BlogsFavoritesList } from '~/components/shared/blogs/BlogsFavoritesList';
 import { BlogsList } from '~/components/shared/blogs/BlogsList';
 import { Slider } from '~/components/shared/slider/Slider';
-import { useBreakpoint } from '~/hooks/use-breakpoint';
+import { BREAKPOINTS_VALUES } from '~/constants/breakpoints-config';
+import { useWindowSize } from '~/hooks/use-window-size';
 import { useLazyGetBloggersQuery } from '~/query/blogs-api';
 import { Limit } from '~/query/constants/limits';
 import { useAppSelector } from '~/store/hooks';
@@ -12,10 +13,9 @@ import { selectCurrentUserId } from '~/store/selectors';
 
 export const BlogsPage = () => {
     const userId = useAppSelector(selectCurrentUserId);
-    const isLargerThanLG = useBreakpoint('lg');
     const [getBloggers, { data: bloggers }] = useLazyGetBloggersQuery();
-
-    const limit = isLargerThanLG ? Limit.BLOGS : Limit.DEFAULT; //???:
+    const { width } = useWindowSize();
+    const limit = width > BREAKPOINTS_VALUES.lg ? Limit.BLOGS : Limit.DEFAULT;
 
     useEffect(() => {
         if (!userId || !limit) return;
