@@ -19,7 +19,7 @@ export const BlogsFavoritesList = ({
 }) => {
     const [isLargerThanMD] = useBreakpoint('md');
 
-    if (!bloggers) return null;
+    if (!bloggers || bloggers?.length === 0) return null;
     return (
         <Flex
             direction='column'
@@ -78,8 +78,6 @@ export const BlogsFavoritesList = ({
                         bloggerId={blogger._id}
                         bookmarksCount={blogger.bookmarksCount}
                         subscribersCount={blogger.subscribersCount}
-                        showControls
-                        showStats
                         isFavorite
                     />
                 ))}
