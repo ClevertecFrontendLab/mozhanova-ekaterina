@@ -1,7 +1,9 @@
 import { Flex, Grid, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Link } from 'react-router';
 
 import avatar_1 from '~/assets/blog_avatar_1.png';
 import { UiAllAuthorsButton } from '~/components/ui/UiAllAuthorsButton';
+import { AppRoutes } from '~/constants/routes-config';
 import { useGetBloggersQuery } from '~/query/blogs-api';
 
 import { BlogCard } from './BlogCard';
@@ -21,7 +23,9 @@ export const OtherBlogsList = ({ currentUserId }: { currentUserId: string }) => 
                 >
                     Кулинарные блоги
                 </Heading>
-                <UiAllAuthorsButton size={{ base: 'sm', md: 'lg' }} />
+                <Link to={AppRoutes.BLOGS}>
+                    <UiAllAuthorsButton size={{ base: 'sm', md: 'lg' }} />
+                </Link>
             </Flex>
             <SimpleGrid columns={{ sm: 3 }} spacing={4}>
                 {bloggers?.others.map((blogger) => (
@@ -36,8 +40,6 @@ export const OtherBlogsList = ({ currentUserId }: { currentUserId: string }) => 
                         subscribersCount={blogger.subscribersCount}
                         newRecipesCount={blogger.newRecipesCount}
                         colsInGrid={3}
-                        showControls
-                        showStats
                     />
                 ))}
             </SimpleGrid>

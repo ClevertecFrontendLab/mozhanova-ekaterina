@@ -67,7 +67,7 @@ export type BloggersParams = {
     fromUserId?: string;
     bloggerId?: string;
     page?: number;
-    limit?: number;
+    limit?: number | 'all';
     sortBy?: string;
     sortOrder?: string;
 };

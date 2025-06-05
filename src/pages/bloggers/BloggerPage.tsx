@@ -22,7 +22,6 @@ export const BloggerPage = () => {
     const navigate = useNavigate();
     const { showError } = useToast();
     const hash = useLocation().hash;
-    // const notesRef = useRef<HTMLDivElement>(null);
     const [notesElement, setNotesElement] = useState<HTMLElement | null>(null);
 
     const notesRef = (node: HTMLDivElement) => {
@@ -55,8 +54,6 @@ export const BloggerPage = () => {
     }, [blogger, dispatch]);
 
     useEffect(() => {
-        console.log(notesElement);
-
         setTimeout(() => {
             if (hash === '#notes' && notesElement) {
                 notesElement.scrollIntoView();

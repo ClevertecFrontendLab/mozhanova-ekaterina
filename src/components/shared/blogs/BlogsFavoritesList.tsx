@@ -1,11 +1,6 @@
-import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { Flex, Heading, SimpleGrid } from '@chakra-ui/react';
-import { Link } from 'react-router';
 
 import avatar_1 from '~/assets/blog_avatar_1.png';
-import { UiButton } from '~/components/ui/UiButton';
-import { AppRoutes } from '~/constants/routes-config';
-import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { Blogger } from '~/types';
 
 import { BlogCard } from './BlogCard';
@@ -17,8 +12,6 @@ export const BlogsFavoritesList = ({
     bloggers: Blogger[] | undefined;
     heading?: string;
 }) => {
-    const [isLargerThanMD] = useBreakpoint('md');
-
     if (!bloggers || bloggers?.length === 0) return null;
     return (
         <Flex
@@ -45,16 +38,6 @@ export const BlogsFavoritesList = ({
                 >
                     {heading}
                 </Heading>
-                {isLargerThanMD && (
-                    <Link to={AppRoutes.BLOGS}>
-                        <UiButton
-                            text='Все авторы'
-                            variant='primaryGhost'
-                            rightIcon={<ArrowForwardIcon />}
-                            size='lg'
-                        />
-                    </Link>
-                )}
             </Flex>
             <SimpleGrid
                 columns={{
@@ -82,16 +65,6 @@ export const BlogsFavoritesList = ({
                     />
                 ))}
             </SimpleGrid>
-            {!isLargerThanMD && (
-                <Link to={AppRoutes.BLOGS}>
-                    <UiButton
-                        text='Все авторы'
-                        variant='primaryGhost'
-                        rightIcon={<ArrowForwardIcon />}
-                        size='md'
-                    />
-                </Link>
-            )}
         </Flex>
     );
 };

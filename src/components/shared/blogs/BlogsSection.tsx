@@ -1,9 +1,11 @@
 import { Flex, Heading, SimpleGrid } from '@chakra-ui/react';
 import { useEffect } from 'react';
+import { Link } from 'react-router';
 
 import avatar_1 from '~/assets/blog_avatar_1.png';
 import { UiAllAuthorsButton } from '~/components/ui/UiAllAuthorsButton';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
+import { AppRoutes } from '~/constants/routes-config';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useToast } from '~/hooks/use-toast';
 import { useLazyGetBloggersQuery } from '~/query/blogs-api';
@@ -56,7 +58,12 @@ export const BlogsSection = () => {
                 >
                     Кулинарные блоги
                 </Heading>
-                {isLargerThanMD && <UiAllAuthorsButton />}
+
+                {isLargerThanMD && (
+                    <Link to={AppRoutes.BLOGS}>
+                        <UiAllAuthorsButton />
+                    </Link>
+                )}
             </Flex>
             <SimpleGrid
                 columns={{
@@ -81,7 +88,13 @@ export const BlogsSection = () => {
                     />
                 ))}
             </SimpleGrid>
-            {!isLargerThanMD && <UiAllAuthorsButton size='sm' />}
+            {!isLargerThanMD && (
+                <Flex justify='center'>
+                    <Link to={AppRoutes.BLOGS}>
+                        <UiAllAuthorsButton />
+                    </Link>
+                </Flex>
+            )}
         </Flex>
     );
 };
