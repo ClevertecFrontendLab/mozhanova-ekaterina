@@ -25,6 +25,7 @@ export const UiCardInfo = ({
     return (
         <Flex w='100%' justifyContent='space-between' alignItems={alignItems}>
             <Flex
+                maxW='144px'
                 direction='column'
                 gap={3}
                 position={{

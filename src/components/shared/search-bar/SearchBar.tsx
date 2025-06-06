@@ -81,6 +81,7 @@ export const SearchBar = ({ title, description }: Props) => {
                 <Box display={isFetching ? 'none' : 'block'}>
                     {description && (
                         <Text
+                            mx='auto'
                             fontSize={{
                                 base: 'sm',
                                 lg: 'md',

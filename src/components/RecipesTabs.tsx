@@ -15,7 +15,7 @@ import { getCategoryByName } from '~/utils/get-categories';
 import { UiCardGrid } from './ui/UiCardGrid';
 
 export const RecipesTabs = () => {
-    const [isLargerThanLG] = useBreakpoint('lg');
+    const [isLargerThanMD] = useBreakpoint('md');
     const [tabIndex, setTabIndex] = useState(0);
     const navigate = useNavigate();
     const { category, subCategory } = useParams();
@@ -66,12 +66,11 @@ export const RecipesTabs = () => {
     return (
         <Tabs
             variant='line'
-            align={isLargerThanLG ? 'center' : 'start'}
+            align={isLargerThanMD ? 'center' : 'start'}
             index={tabIndex}
             onChange={handleTabChange}
         >
             <TabList
-                w='fit-content'
                 maxW='100%'
                 overflowX={{
                     base: 'auto',
