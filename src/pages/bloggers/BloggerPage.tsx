@@ -1,5 +1,5 @@
 import { Flex, Grid } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useParams } from 'react-router';
 
 import { Hero } from '~/components/shared/blogs/Hero';
@@ -8,12 +8,12 @@ import { OtherBlogsList } from '~/components/shared/blogs/OtherBlogsList';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
 import { useErrors } from '~/hooks/use-errors';
-import { useGetBloggerByIdQuery } from '~/query/blogs-api';
-import { useGetRecipesByUserIdQuery } from '~/query/recipe-api';
+import { useLazyGetBloggerByIdQuery } from '~/query/blogs-api';
+import { useLazyGetRecipesByUserIdQuery } from '~/query/recipe-api';
 import { useAppDispatch, useAppSelector } from '~/store/hooks';
 import { selectCurrentUserId } from '~/store/selectors';
 import { setBlogger } from '~/store/user-slice';
-import { ErrorResponse } from '~/types';
+import { ErrorResponse, Recipe } from '~/types';
 
 export const BloggerPage = () => {
     const { bloggerId } = useParams();
@@ -22,6 +22,8 @@ export const BloggerPage = () => {
     const hash = useLocation().hash;
     const [notesElement, setNotesElement] = useState<HTMLElement | null>(null);
     const { loadBloggerAndRecipesErrorHandler } = useErrors();
+    const showMoreRef = useRef<HTMLButtonElement>(null);
+    const [recipesToShow, setRecipesToShow] = useState<Recipe[]>([]);
 
     const notesRef = (node: HTMLDivElement) => {
         if (node !== null) {
@@ -29,18 +31,28 @@ export const BloggerPage = () => {
         }
     };
 
-    const { data: blogger, error: bloggerError } = useGetBloggerByIdQuery(
-        {
-            bloggerId,
-            currentUserId,
-        },
-        { skip: !bloggerId || !currentUserId },
-    );
+    const [getBlogger, { data: blogger, error: bloggerError }] = useLazyGetBloggerByIdQuery();
+    const [getRecipes, { data: recipes, error: recipesError }] = useLazyGetRecipesByUserIdQuery();
 
-    const { data: recipes, error: recipesError } = useGetRecipesByUserIdQuery(
-        { bloggerId },
-        { skip: !bloggerId },
-    );
+    const handleLoadData = async () => {
+        getBlogger({ bloggerId, currentUserId });
+        getRecipes({ bloggerId });
+    };
+
+    useEffect(() => {
+        handleLoadData();
+    }, [bloggerId, currentUserId]);
+
+    useEffect(() => {
+        if (recipes) {
+            setRecipesToShow(recipes.recipes.slice(0, 8));
+        }
+    }, [recipes]);
+
+    const handleShowMore = () => {
+        if (recipes) setRecipesToShow(recipes.recipes);
+        showMoreRef.current!.style.display = 'none';
+    };
 
     useEffect(() => {
         if (bloggerError || recipesError) {
@@ -78,11 +90,17 @@ export const BloggerPage = () => {
         >
             <>
                 <Hero blogger={blogger} />
-                <UiCardGrid data={recipes?.recipes} />
-                <Flex justifyContent='center' mt={4} mb={10}>
+                <UiCardGrid data={recipesToShow} />
+                <Flex
+                    justifyContent='center'
+                    mt={4}
+                    mb={10}
+                    display={recipesToShow.length < recipes.recipes.length ? 'flex' : 'none'}
+                >
                     <UiButton
                         // data-test-id={DATA_TEST_IDS.LOAD_MORE_BUTTON}
-                        // onClick={loadMore}
+                        onClick={handleShowMore}
+                        ref={showMoreRef}
                         size='md'
                         text='Загрузить еще'
                         variant='primary'
