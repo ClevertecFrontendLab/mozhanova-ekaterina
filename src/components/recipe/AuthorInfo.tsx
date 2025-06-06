@@ -37,7 +37,7 @@ export const AuthorInfo = ({
         }
     };
 
-    if (!author) return null;
+    if (!author || !author.bloggerInfo) return null;
     return (
         <Flex
             p={{ base: 3, sm: 6 }}

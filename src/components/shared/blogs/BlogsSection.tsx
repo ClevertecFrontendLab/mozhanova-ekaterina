@@ -31,7 +31,7 @@ export const BlogsSection = () => {
         }
     }, [userId]);
 
-    if (!bloggers) return null;
+    if (!bloggers?.others) return null;
 
     return (
         <Flex
