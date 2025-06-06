@@ -92,6 +92,7 @@ export const DATA_TEST_IDS = {
     BLOG_OTHERS_BUTTON: 'blogs-others-button',
 
     // Blogger page
+    BLOGGER_USER_INFO_BOX: 'blogger-user-info-box',
     BLOGGER_USER_INFO_NAME: 'blogger-user-info-name',
     BLOGGER_USER_INFO_LOGIN: 'blogger-user-info-login',
     BLOGGER_FOLLOWERS_COUNT: 'blogger-followers-count',
@@ -99,6 +100,8 @@ export const DATA_TEST_IDS = {
     BLOGGER_USER_NOTES_COUNT: 'blogger-user-notes-count',
     BLOGGER_USER_NOTES_GRID: 'blogger-user-notes-grid',
     BLOGGER_USER_NOTES_BUTTON: 'blogger-user-notes-button',
+    RECIPE_CARD_LIST: 'recipe-card-list',
+    BLOG_NOTES_BOX: 'blog-notes-box',
 
     // Notes
     NOTES_CARD_DATE: 'notes-card-date',

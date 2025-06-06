@@ -6,6 +6,7 @@ import avatar_1 from '~/assets/blog_avatar_1.png';
 import { UiAllAuthorsButton } from '~/components/ui/UiAllAuthorsButton';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { AppRoutes } from '~/constants/routes-config';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useToast } from '~/hooks/use-toast';
 import { useLazyGetBloggersQuery } from '~/query/blogs-api';
@@ -35,6 +36,7 @@ export const BlogsSection = () => {
 
     return (
         <Flex
+            data-test-id={DATA_TEST_IDS.MAIN_PAGE_BLOGS_BOX}
             direction='column'
             bg='primary.200'
             p={{
@@ -60,12 +62,13 @@ export const BlogsSection = () => {
                 </Heading>
 
                 {isLargerThanMD && (
-                    <Link to={AppRoutes.BLOGS}>
+                    <Link data-test-id={DATA_TEST_IDS.MAIN_PAGE_BLOGS_BUTTON} to={AppRoutes.BLOGS}>
                         <UiAllAuthorsButton />
                     </Link>
                 )}
             </Flex>
             <SimpleGrid
+                data-test-id={DATA_TEST_IDS.MAIN_PAGE_BLOGS_GRID}
                 columns={{
                     base: 1,
                     sm: 3,

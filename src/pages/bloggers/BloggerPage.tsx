@@ -7,6 +7,7 @@ import { NotesList } from '~/components/shared/blogs/NotesList';
 import { OtherBlogsList } from '~/components/shared/blogs/OtherBlogsList';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useErrors } from '~/hooks/use-errors';
 import { useLazyGetBloggerByIdQuery } from '~/query/blogs-api';
 import { useLazyGetRecipesByUserIdQuery } from '~/query/recipe-api';
@@ -90,7 +91,7 @@ export const BloggerPage = () => {
         >
             <>
                 <Hero blogger={blogger} />
-                <UiCardGrid data={recipesToShow} />
+                <UiCardGrid dataTest={DATA_TEST_IDS.RECIPE_CARD_LIST} data={recipesToShow} />
                 <Flex
                     justifyContent='center'
                     mt={4}

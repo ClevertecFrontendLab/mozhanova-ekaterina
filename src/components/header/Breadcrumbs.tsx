@@ -73,6 +73,13 @@ export const Breadcrumbs = ({
                             isCurrentPage={i === pathnames.length - 1}
                         >
                             <BreadcrumbLink
+                                data-test-id={
+                                    path === 'blogs'
+                                        ? DATA_TEST_IDS.BLOGGER_USER_BREADCRUMB_SECTION
+                                        : currentUser?._id
+                                          ? DATA_TEST_IDS.BLOGGER_USER_BREADCRUMB_NAME
+                                          : ''
+                                }
                                 whiteSpace='nowrap'
                                 overflowX='hidden'
                                 as={Link}

@@ -6,10 +6,11 @@ import {
     UiReadButton,
     UiRecipesButton,
     UiSubscribeButton,
+    UiUnsubscribeButton,
 } from '~/components/ui/UiBlogCardButtons';
 import { UiCardStats } from '~/components/ui/UiCardStats';
 import { UiLoader } from '~/components/ui/UiLoader';
-import { UiSubscribedButton } from '~/components/ui/UiSubscribedButton';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useErrors } from '~/hooks/use-errors';
 import { useToggleSubscriptionMutation } from '~/query/blogs-api';
 import { useAppSelector } from '~/store/hooks';
@@ -58,6 +59,7 @@ export const BlogCard = ({
     };
     return (
         <Card
+            data-test-id={DATA_TEST_IDS.BLOG_CARD}
             overflow='hidden'
             size={{
                 base: 'md',
@@ -70,6 +72,7 @@ export const BlogCard = ({
         >
             {newRecipesCount ? (
                 <Box
+                    data-test-id={DATA_TEST_IDS.BLOG_CARD_NEW_RECIPES_BADGE}
                     position='absolute'
                     right={{ base: '4px', md: '8px' }}
                     top={{ base: '4px', md: '8px' }}
@@ -105,6 +108,7 @@ export const BlogCard = ({
                     <Box minW={0}>
                         <Link to={routeHelpers.getBlogPath(bloggerId)}>
                             <Heading
+                                data-test-id={DATA_TEST_IDS.BLOG_CARD_NAME}
                                 as='h3'
                                 fontSize={{
                                     base: 'md',
@@ -120,6 +124,7 @@ export const BlogCard = ({
                         </Link>
 
                         <Text
+                            data-test-id={DATA_TEST_IDS.BLOG_CARD_LOGIN}
                             color='text.secondary'
                             fontSize={{
                                 base: 'xs',
@@ -131,6 +136,7 @@ export const BlogCard = ({
                     </Box>
                 </Flex>
                 <Text
+                    data-test-id={DATA_TEST_IDS.BLOG_CARD_NOTES_TEXT}
                     fontSize='sm'
                     noOfLines={3}
                     pt={{
@@ -143,7 +149,7 @@ export const BlogCard = ({
             </CardBody>
             {showFooter ? isFavorite ? <FavoriteCardFooter /> : <Footer /> : null}
 
-            {isLoading && <UiLoader />}
+            {isLoading && <UiLoader testId={DATA_TEST_IDS.MOBILE_LOADER} />}
         </Card>
     );
 
@@ -164,9 +170,12 @@ export const BlogCard = ({
             >
                 <Flex order={{ base: 1 }} gap={2} align='flex-end'>
                     {isSubscribed ? (
-                        <UiSubscribedButton onClick={handleSubscribe} />
+                        <UiUnsubscribeButton onClick={handleSubscribe} />
                     ) : (
-                        <UiSubscribeButton onClick={handleSubscribe} />
+                        <UiSubscribeButton
+                            dataTest={DATA_TEST_IDS.BLOG_TOGGLE_SUBSCRIBE}
+                            onClick={handleSubscribe}
+                        />
                     )}
                     <UiReadButton bloggerId={bloggerId} />
                 </Flex>

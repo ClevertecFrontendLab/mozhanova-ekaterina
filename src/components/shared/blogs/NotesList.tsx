@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import { UiButton } from '~/components/ui/UiButton';
 import { BREAKPOINTS_VALUES } from '~/constants/breakpoints-config';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useWindowSize } from '~/hooks/use-window-size';
 import { Note } from '~/types';
 
@@ -26,6 +27,7 @@ export const NotesList = ({
 
     return (
         <Grid
+            data-test-id={DATA_TEST_IDS.BLOG_NOTES_BOX}
             ref={ref}
             id='notes'
             gap={4}
@@ -35,13 +37,18 @@ export const NotesList = ({
         >
             <Heading fontSize={{ base: '20px' }}>
                 Заметки {` `}
-                <Text display='inline-block' color='text.secondary'>
+                <Text
+                    data-test-id={DATA_TEST_IDS.BLOGGER_USER_NOTES_COUNT}
+                    display='inline-block'
+                    color='text.secondary'
+                >
                     {`(${notes.length})`}
                 </Text>
             </Heading>
             {notes.length > 0 ? (
                 <>
                     <SimpleGrid
+                        data-test-id={DATA_TEST_IDS.BLOGGER_USER_NOTES_GRID}
                         columns={{ base: notes.length === 1 ? 1 : 6, md: 6 }}
                         gap={{ base: 3, md: 4 }}
                     >
@@ -57,6 +64,7 @@ export const NotesList = ({
                     {showToggleButton ? (
                         notesToShow.length < notes.length ? (
                             <UiButton
+                                data-test-id={DATA_TEST_IDS.BLOGGER_USER_NOTES_BUTTON}
                                 text='Показать больше'
                                 variant='ghost'
                                 size={{ base: 'xs', md: 'sm' }}

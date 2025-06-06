@@ -5,12 +5,17 @@ import { UiButton } from './UiButton';
 export const UiAllAuthorsButton = ({
     size = 'lg',
     onClick,
+    text = 'Все авторы',
+    dataTest,
 }: {
     size?: ResponsiveValue<'xs' | 'sm' | 'md' | 'lg'>;
+    text?: string;
+    dataTest?: string;
     onClick?: () => void;
 }) => (
     <UiButton
-        text='Все авторы'
+        data-test-id={dataTest}
+        text={text}
         variant='primaryGhost'
         rightIcon={<ArrowForwardIcon />}
         size={size}

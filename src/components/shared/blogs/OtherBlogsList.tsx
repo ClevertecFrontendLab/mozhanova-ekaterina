@@ -6,6 +6,7 @@ import avatar_1 from '~/assets/blog_avatar_1.png';
 import { UiAllAuthorsButton } from '~/components/ui/UiAllAuthorsButton';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { AppRoutes } from '~/constants/routes-config';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useToast } from '~/hooks/use-toast';
 import { useGetBloggersQuery } from '~/query/blogs-api';
 
@@ -34,10 +35,17 @@ export const OtherBlogsList = ({ currentUserId }: { currentUserId: string }) => 
                     Кулинарные блоги
                 </Heading>
                 <Link to={AppRoutes.BLOGS}>
-                    <UiAllAuthorsButton size={{ base: 'sm', md: 'lg' }} />
+                    <UiAllAuthorsButton
+                        dataTest={DATA_TEST_IDS.BLOGGER_USER_OTHER_BLOGS_BUTTON}
+                        size={{ base: 'sm', md: 'lg' }}
+                    />
                 </Link>
             </Flex>
-            <SimpleGrid columns={{ sm: 3 }} spacing={4}>
+            <SimpleGrid
+                data-test-id={DATA_TEST_IDS.BLOGGER_USER_OTHER_BLOGS_GRID}
+                columns={{ sm: 3 }}
+                spacing={4}
+            >
                 {bloggers.others.map((blogger) => (
                     <BlogCard
                         key={blogger._id}

@@ -1,6 +1,7 @@
 import { Flex, Heading, SimpleGrid } from '@chakra-ui/react';
 
 import avatar_1 from '~/assets/blog_avatar_1.png';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { Blogger } from '~/types';
 
 import { BlogCard } from './BlogCard';
@@ -15,6 +16,7 @@ export const BlogsFavoritesList = ({
     if (!bloggers || bloggers?.length === 0) return null;
     return (
         <Flex
+            data-test-id={DATA_TEST_IDS.BLOG_FAVORITES_BOX}
             direction='column'
             bg='primary.200'
             p={{
@@ -40,6 +42,7 @@ export const BlogsFavoritesList = ({
                 </Heading>
             </Flex>
             <SimpleGrid
+                data-test-id={DATA_TEST_IDS.BLOG_FAVORITES_GRID}
                 columns={{
                     base: 1,
                     sm: 2,

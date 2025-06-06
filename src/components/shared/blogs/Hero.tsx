@@ -2,10 +2,11 @@ import { Box, Flex, Heading, Image, Text, Tooltip } from '@chakra-ui/react';
 
 import avatar_1 from '~/assets/blog_avatar_1.png';
 import { SubscribeIcon } from '~/components/ui/icons/SubscribeIcon';
+import { UiUnsubscribeButton } from '~/components/ui/UiBlogCardButtons';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCardStats } from '~/components/ui/UiCardStats';
 import { UiLoader } from '~/components/ui/UiLoader';
-import { UiSubscribedButton } from '~/components/ui/UiSubscribedButton';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useErrors } from '~/hooks/use-errors';
 import { useToggleSubscriptionMutation } from '~/query/blogs-api';
 import { useAppSelector } from '~/store/hooks';
@@ -29,7 +30,11 @@ export const Hero = ({ blogger }: { blogger: BloggerResponse }) => {
     };
 
     return (
-        <Box position='relative' pb={{ base: 4, md: 6 }}>
+        <Box
+            data-test-id={DATA_TEST_IDS.BLOGGER_USER_INFO_BOX}
+            position='relative'
+            pb={{ base: 4, md: 6 }}
+        >
             <Flex align='center' direction={{ base: 'column', sm: 'row' }} gap={6}>
                 <Box flexBasis='65%'>
                     <Image
@@ -43,10 +48,15 @@ export const Hero = ({ blogger }: { blogger: BloggerResponse }) => {
                 <Box w='100%'>
                     <Box textAlign={{ base: 'center', sm: 'left' }} mb={4}>
                         <Heading
+                            data-test-id={DATA_TEST_IDS.BLOGGER_USER_INFO_NAME}
                             mb={3}
                             fontSize={{ base: '24px', md: '48px' }}
                         >{`${blogger.bloggerInfo.firstName} ${blogger.bloggerInfo.lastName}`}</Heading>
-                        <Text color='text.secondary' fontSize='14px'>
+                        <Text
+                            data-test-id={DATA_TEST_IDS.BLOGGER_USER_INFO_LOGIN}
+                            color='text.secondary'
+                            fontSize='14px'
+                        >
                             @{blogger.bloggerInfo.login}
                         </Text>
                     </Box>
@@ -58,6 +68,7 @@ export const Hero = ({ blogger }: { blogger: BloggerResponse }) => {
                     >
                         {blogger.isFavorite ? (
                             <Tooltip
+                                data-test-id={DATA_TEST_IDS.BLOG_TOOLTIP}
                                 hasArrow
                                 placement='bottom-end'
                                 label={
@@ -67,7 +78,7 @@ export const Hero = ({ blogger }: { blogger: BloggerResponse }) => {
                                     </>
                                 }
                             >
-                                <UiSubscribedButton onClick={handleSubscribe} />
+                                <UiUnsubscribeButton onClick={handleSubscribe} />
                             </Tooltip>
                         ) : (
                             <UiButton
