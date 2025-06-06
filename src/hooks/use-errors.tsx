@@ -1,6 +1,8 @@
 import { UseFormSetError } from 'react-hook-form';
+import { useNavigate } from 'react-router';
 
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
+import { AppRoutes } from '~/constants/routes-config';
 import { useModalContext } from '~/contexts/modal-context';
 import { NotificationDuration, useToast } from '~/hooks/use-toast';
 import { AuthUser, ErrorResponse, FormInputs } from '~/types';
@@ -8,6 +10,7 @@ import { AuthUser, ErrorResponse, FormInputs } from '~/types';
 export const useErrors = () => {
     const { showError } = useToast();
     const { showSignInError } = useModalContext();
+    const navigate = useNavigate();
 
     const signUpErrorHandler = (error: ErrorResponse) => {
         switch (error.status) {
@@ -149,6 +152,14 @@ export const useErrors = () => {
         showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
     };
 
+    const loadBloggerAndRecipesErrorHandler = (errors: ErrorResponse[]) => {
+        if (errors.some((error) => error.status === 404)) {
+            navigate(AppRoutes.NOT_FOUND);
+            return;
+        } else showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+        navigate(AppRoutes.HOME);
+    };
+
     return {
         signUpErrorHandler,
         signInErrorHandler,
@@ -161,5 +172,6 @@ export const useErrors = () => {
         deleteRecipeErrorHandler,
         saveLikeRecipeErrorHandler,
         toggleSubscribeErrorHandler,
+        loadBloggerAndRecipesErrorHandler,
     };
 };

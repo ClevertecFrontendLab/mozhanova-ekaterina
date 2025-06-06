@@ -166,4 +166,5 @@ export const {
     useLikeUnlikeRecipeMutation,
     useSaveRemoveFromBookmarksMutation,
     useGetRecipesByUserIdQuery,
+    useLazyGetRecipesByUserIdQuery,
 } = recipeApi;

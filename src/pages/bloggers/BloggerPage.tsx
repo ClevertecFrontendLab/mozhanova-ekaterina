@@ -1,28 +1,27 @@
 import { Flex, Grid } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router';
+import { useLocation, useParams } from 'react-router';
 
 import { Hero } from '~/components/shared/blogs/Hero';
 import { NotesList } from '~/components/shared/blogs/NotesList';
 import { OtherBlogsList } from '~/components/shared/blogs/OtherBlogsList';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
-import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
-import { useToast } from '~/hooks/use-toast';
+import { useErrors } from '~/hooks/use-errors';
 import { useGetBloggerByIdQuery } from '~/query/blogs-api';
 import { useGetRecipesByUserIdQuery } from '~/query/recipe-api';
 import { useAppDispatch, useAppSelector } from '~/store/hooks';
 import { selectCurrentUserId } from '~/store/selectors';
 import { setBlogger } from '~/store/user-slice';
+import { ErrorResponse } from '~/types';
 
 export const BloggerPage = () => {
     const { bloggerId } = useParams();
     const dispatch = useAppDispatch();
     const currentUserId = useAppSelector(selectCurrentUserId);
-    const navigate = useNavigate();
-    const { showError } = useToast();
     const hash = useLocation().hash;
     const [notesElement, setNotesElement] = useState<HTMLElement | null>(null);
+    const { loadBloggerAndRecipesErrorHandler } = useErrors();
 
     const notesRef = (node: HTMLDivElement) => {
         if (node !== null) {
@@ -30,7 +29,7 @@ export const BloggerPage = () => {
         }
     };
 
-    const { data: blogger, isError } = useGetBloggerByIdQuery(
+    const { data: blogger, error: bloggerError } = useGetBloggerByIdQuery(
         {
             bloggerId,
             currentUserId,
@@ -38,14 +37,19 @@ export const BloggerPage = () => {
         { skip: !bloggerId || !currentUserId },
     );
 
-    const { data: recipes } = useGetRecipesByUserIdQuery({ bloggerId }, { skip: !bloggerId });
+    const { data: recipes, error: recipesError } = useGetRecipesByUserIdQuery(
+        { bloggerId },
+        { skip: !bloggerId },
+    );
 
     useEffect(() => {
-        if (isError) {
-            showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
-            navigate(-1);
+        if (bloggerError || recipesError) {
+            loadBloggerAndRecipesErrorHandler([
+                bloggerError as ErrorResponse,
+                recipesError as ErrorResponse,
+            ]);
         }
-    }, [isError, showError, navigate]);
+    }, [bloggerError, recipesError]);
 
     useEffect(() => {
         if (blogger) {

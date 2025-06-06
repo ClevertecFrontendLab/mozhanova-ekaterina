@@ -12,14 +12,17 @@ export const BlogsApi = authorizedApi.injectEndpoints({
                 url: ApiEndpoints.BLOGGERS,
                 params: params,
             }),
-            providesTags: [Tags.BLOGGERS],
+            providesTags: (_result, _error, arg) => {
+                if (arg.limit === 3) return [];
+                return [Tags.BLOGGERS];
+            },
         }),
         [EndpointNames.GET_BLOGGER_BY_ID]: builder.query<BloggerResponse, BloggersParams>({
             query: (params) => ({
                 url: `${ApiEndpoints.BLOGGERS}/${params.bloggerId}`,
                 params: params,
             }),
-            providesTags: [Tags.BLOGGERS],
+            providesTags: (_result, _error, arg) => [{ type: Tags.BLOGGERS, id: arg.bloggerId }],
         }),
         [EndpointNames.TOGGLE_SUBSCRIPTION]: builder.mutation<void, BloggersParams>({
             query: (params) => ({
@@ -27,7 +30,7 @@ export const BlogsApi = authorizedApi.injectEndpoints({
                 method: 'PATCH',
                 body: params,
             }),
-            invalidatesTags: [Tags.BLOGGERS],
+            invalidatesTags: (_result, _error, arg) => [{ type: Tags.BLOGGERS, id: arg.bloggerId }],
         }),
     }),
 });

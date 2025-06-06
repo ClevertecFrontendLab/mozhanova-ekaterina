@@ -1,4 +1,5 @@
 import { Box, Card, CardBody, CardFooter, Flex, Heading, Image, Tag, Text } from '@chakra-ui/react';
+import { useState } from 'react';
 import { ErrorResponse, Link } from 'react-router';
 
 import {
@@ -8,6 +9,7 @@ import {
 } from '~/components/ui/UiBlogCardButtons';
 import { UiCardStats } from '~/components/ui/UiCardStats';
 import { UiLoader } from '~/components/ui/UiLoader';
+import { UiSubscribedButton } from '~/components/ui/UiSubscribedButton';
 import { useErrors } from '~/hooks/use-errors';
 import { useToggleSubscriptionMutation } from '~/query/blogs-api';
 import { useAppSelector } from '~/store/hooks';
@@ -44,10 +46,12 @@ export const BlogCard = ({
     const [toggleSubscribe, { isLoading }] = useToggleSubscriptionMutation();
     const { toggleSubscribeErrorHandler } = useErrors();
     const currentUserId = useAppSelector(selectCurrentUserId);
+    const [isSubscribed, setIsSubscribed] = useState(isFavorite);
 
     const handleSubscribe = async () => {
         try {
             await toggleSubscribe({ fromUserId: currentUserId, toUserId: bloggerId });
+            setIsSubscribed(!isSubscribed);
         } catch (error) {
             toggleSubscribeErrorHandler(error as ErrorResponse);
         }
@@ -159,7 +163,11 @@ export const BlogCard = ({
                 pb={{ base: 4, md: 5 }}
             >
                 <Flex order={{ base: 1 }} gap={2} align='flex-end'>
-                    <UiSubscribeButton handleSubscribe={handleSubscribe} />
+                    {isSubscribed ? (
+                        <UiSubscribedButton onClick={handleSubscribe} />
+                    ) : (
+                        <UiSubscribeButton onClick={handleSubscribe} />
+                    )}
                     <UiReadButton bloggerId={bloggerId} />
                 </Flex>
 

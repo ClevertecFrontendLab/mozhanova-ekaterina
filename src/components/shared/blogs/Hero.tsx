@@ -1,11 +1,11 @@
 import { Box, Flex, Heading, Image, Text, Tooltip } from '@chakra-ui/react';
 
 import avatar_1 from '~/assets/blog_avatar_1.png';
-import { ManIcon } from '~/components/ui/icons/ManIcon';
 import { SubscribeIcon } from '~/components/ui/icons/SubscribeIcon';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCardStats } from '~/components/ui/UiCardStats';
 import { UiLoader } from '~/components/ui/UiLoader';
+import { UiSubscribedButton } from '~/components/ui/UiSubscribedButton';
 import { useErrors } from '~/hooks/use-errors';
 import { useToggleSubscriptionMutation } from '~/query/blogs-api';
 import { useAppSelector } from '~/store/hooks';
@@ -67,13 +67,7 @@ export const Hero = ({ blogger }: { blogger: BloggerResponse }) => {
                                     </>
                                 }
                             >
-                                <UiButton
-                                    onClick={handleSubscribe}
-                                    leftIcon={<ManIcon />}
-                                    size='xs'
-                                    variant='outline'
-                                    text='Вы подписаны'
-                                />
+                                <UiSubscribedButton onClick={handleSubscribe} />
                             </Tooltip>
                         ) : (
                             <UiButton

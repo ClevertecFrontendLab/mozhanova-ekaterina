@@ -22,9 +22,9 @@ export const UiRecipesButton = ({ bloggerId }: { bloggerId: string }) => (
     </Link>
 );
 
-export const UiSubscribeButton = ({ handleSubscribe }: { handleSubscribe: () => void }) => (
+export const UiSubscribeButton = ({ onClick }: { onClick: () => void }) => (
     <UiButton
-        onClick={handleSubscribe}
+        onClick={onClick}
         leftIcon={<SubscribeIcon />}
         size='xs'
         variant='solid'
