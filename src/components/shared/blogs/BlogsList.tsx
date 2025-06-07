@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import avatar_1 from '~/assets/blog_avatar_1.png';
 import { UiAllAuthorsButton } from '~/components/ui/UiAllAuthorsButton';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { Blogger } from '~/types';
+import { Blogger, GetBloggersParams } from '~/types';
 
 import { BlogCard } from './BlogCard';
 
@@ -15,13 +15,14 @@ export const BlogsList = ({
 }: {
     data: Blogger[];
     limit: number;
-    onLoadBloggers: (limit: 'all') => void;
+    onLoadBloggers: (limit: GetBloggersParams['limit']) => void;
 }) => {
     const [isAllBloggersLoaded, setIsAllBloggersLoaded] = useState(false);
     const [bloggers, setBloggers] = useState<Blogger[] | null>(data);
 
     const handleLoadBloggers = () => {
         if (isAllBloggersLoaded) {
+            onLoadBloggers(limit);
             setBloggers(bloggers!.slice(0, limit));
             setIsAllBloggersLoaded(false);
         } else {
