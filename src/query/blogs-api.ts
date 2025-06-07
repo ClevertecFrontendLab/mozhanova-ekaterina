@@ -1,4 +1,10 @@
-import { AllBloggersResponse, BloggerResponse, BloggersParams } from '~/types';
+import {
+    AllBloggersResponse,
+    BloggerResponse,
+    GetBloggerByIdParams,
+    GetBloggersParams,
+    ToggleSubsParams,
+} from '~/types';
 
 import { authorizedApi } from './authorized-api';
 import { ApiEndpoints } from './constants/api';
@@ -7,7 +13,7 @@ import { Tags } from './constants/tags';
 
 export const BlogsApi = authorizedApi.injectEndpoints({
     endpoints: (builder) => ({
-        [EndpointNames.GET_BLOGGERS]: builder.query<AllBloggersResponse, BloggersParams>({
+        [EndpointNames.GET_BLOGGERS]: builder.query<AllBloggersResponse, GetBloggersParams>({
             query: (params) => ({
                 url: ApiEndpoints.BLOGGERS,
                 params: params,
@@ -17,20 +23,22 @@ export const BlogsApi = authorizedApi.injectEndpoints({
                 return [Tags.BLOGGERS];
             },
         }),
-        [EndpointNames.GET_BLOGGER_BY_ID]: builder.query<BloggerResponse, BloggersParams>({
+        [EndpointNames.GET_BLOGGER_BY_ID]: builder.query<BloggerResponse, GetBloggerByIdParams>({
             query: (params) => ({
                 url: `${ApiEndpoints.BLOGGERS}/${params.bloggerId}`,
-                params: params,
+                params: {
+                    currentUserId: params.currentUserId,
+                },
             }),
-            providesTags: (_result, _error, arg) => [{ type: Tags.BLOGGERS, id: arg.bloggerId }],
+            providesTags: [Tags.BLOGGERS],
         }),
-        [EndpointNames.TOGGLE_SUBSCRIPTION]: builder.mutation<void, BloggersParams>({
+        [EndpointNames.TOGGLE_SUBSCRIPTION]: builder.mutation<void, ToggleSubsParams>({
             query: (params) => ({
                 url: ApiEndpoints.USER_TOGGLE_SUBSCRIPTION,
                 method: 'PATCH',
                 body: params,
             }),
-            invalidatesTags: (_result, _error, arg) => [{ type: Tags.BLOGGERS, id: arg.bloggerId }],
+            invalidatesTags: [Tags.BLOGGERS],
         }),
     }),
 });

@@ -1,8 +1,9 @@
 import { Box, Flex, Heading, Image, Text, Tooltip } from '@chakra-ui/react';
+import { useState } from 'react';
 
 import avatar_1 from '~/assets/blog_avatar_1.png';
+import { ManIcon } from '~/components/ui/icons/ManIcon';
 import { SubscribeIcon } from '~/components/ui/icons/SubscribeIcon';
-import { UiUnsubscribeButton } from '~/components/ui/UiBlogCardButtons';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCardStats } from '~/components/ui/UiCardStats';
 import { UiLoader } from '~/components/ui/UiLoader';
@@ -17,6 +18,7 @@ export const Hero = ({ blogger }: { blogger: BloggerResponse }) => {
     const [toggleSubscribe, { isLoading }] = useToggleSubscriptionMutation();
     const currentUserId = useAppSelector(selectCurrentUserId);
     const { toggleSubscribeErrorHandler } = useErrors();
+    const [isSubscribed, setIsSubscribed] = useState(blogger.isFavorite);
 
     const handleSubscribe = async () => {
         try {
@@ -24,6 +26,7 @@ export const Hero = ({ blogger }: { blogger: BloggerResponse }) => {
                 fromUserId: currentUserId,
                 toUserId: blogger.bloggerInfo._id,
             });
+            setIsSubscribed(!isSubscribed);
         } catch (error) {
             toggleSubscribeErrorHandler(error as ErrorResponse);
         }
@@ -66,22 +69,30 @@ export const Hero = ({ blogger }: { blogger: BloggerResponse }) => {
                         w='100%'
                         gap={{ sm: '57px' }}
                     >
-                        {blogger.isFavorite ? (
+                        {isSubscribed ? (
                             <Tooltip
                                 data-test-id={DATA_TEST_IDS.BLOG_TOOLTIP}
                                 hasArrow
                                 placement='bottom-end'
                                 label={
                                     <>
-                                        <p>Нажмите, если</p>
+                                        <p>Нажмите, если{`${' '}`}</p>
                                         <p>хотите отписаться</p>
                                     </>
                                 }
                             >
-                                <UiUnsubscribeButton onClick={handleSubscribe} />
+                                <UiButton
+                                    data-test-id={DATA_TEST_IDS.BLOG_TOGGLE_UNSUBSCRIBE}
+                                    onClick={handleSubscribe}
+                                    leftIcon={<ManIcon />}
+                                    size='xs'
+                                    variant='outline'
+                                    text='Вы подписаны'
+                                />
                             </Tooltip>
                         ) : (
                             <UiButton
+                                data-test-id={DATA_TEST_IDS.BLOG_TOGGLE_SUBSCRIBE}
                                 onClick={handleSubscribe}
                                 leftIcon={<SubscribeIcon />}
                                 size='xs'
@@ -97,7 +108,7 @@ export const Hero = ({ blogger }: { blogger: BloggerResponse }) => {
                     </Flex>
                 </Box>
             </Flex>
-            {isLoading && <UiLoader />}
+            {isLoading && <UiLoader testId={DATA_TEST_IDS.MOBILE_LOADER} />}
         </Box>
     );
 };

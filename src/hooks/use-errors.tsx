@@ -152,12 +152,15 @@ export const useErrors = () => {
         showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
     };
 
-    const loadBloggerAndRecipesErrorHandler = (errors: ErrorResponse[]) => {
-        if (errors.some((error) => error.status === 404)) {
-            navigate(AppRoutes.NOT_FOUND);
-            return;
-        } else showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
-        navigate(AppRoutes.HOME);
+    const loadBloggerAndRecipesErrorHandler = (error: ErrorResponse) => {
+        switch (error.status) {
+            case 404:
+                navigate(AppRoutes.NOT_FOUND);
+                break;
+            default:
+                showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+                navigate(AppRoutes.HOME);
+        }
     };
 
     return {

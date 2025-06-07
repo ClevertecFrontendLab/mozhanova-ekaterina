@@ -34,7 +34,7 @@ export const categoryApi = unauthorizedApi.injectEndpoints({
         }),
         [EndpointNames.GET_CATEGORY_BY_ID]: builder.query<Category, string>({
             query: (id) => `${ApiEndpoints.CATEGORY_BY_ID}${id}`,
-            // providesTags: (_result, _error, id) => [{ type: Tags.CATEGORY, id }],
+            providesTags: [Tags.CATEGORIES],
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
                     await queryFulfilled;

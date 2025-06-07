@@ -15,6 +15,7 @@ import { useErrors } from '~/hooks/use-errors';
 import { useToggleSubscriptionMutation } from '~/query/blogs-api';
 import { useAppSelector } from '~/store/hooks';
 import { selectCurrentUserId } from '~/store/selectors';
+import { getRecipesWord } from '~/utils/get-recipes-word';
 import { routeHelpers } from '~/utils/get-routes';
 
 type Props = {
@@ -77,7 +78,7 @@ export const BlogCard = ({
                     right={{ base: '4px', md: '8px' }}
                     top={{ base: '4px', md: '8px' }}
                 >
-                    <Tag bg='neutral.20'>{`${newRecipesCount} новых рецептов`}</Tag>
+                    <Tag bg='neutral.20'>{`${newRecipesCount} ${getRecipesWord(newRecipesCount)}`}</Tag>
                 </Box>
             ) : null}
 

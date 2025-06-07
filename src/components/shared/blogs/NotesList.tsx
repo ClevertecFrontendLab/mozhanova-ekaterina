@@ -1,5 +1,5 @@
 import { Grid, Heading, SimpleGrid, Text } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { UiButton } from '~/components/ui/UiButton';
 import { BREAKPOINTS_VALUES } from '~/constants/breakpoints-config';
@@ -19,11 +19,16 @@ export const NotesList = ({
     const { width } = useWindowSize();
     const slicedNotes = width < BREAKPOINTS_VALUES.sm ? notes.slice(0, 2) : notes.slice(0, 3);
     const [notesToShow, setShowNotes] = useState(slicedNotes);
+    const notesToHide = notes.slice(slicedNotes.length);
     const showToggleButton = notes.length !== slicedNotes.length;
 
     const toggleNotes = () => {
         setShowNotes(notesToShow.length === notes.length ? slicedNotes : notes);
     };
+
+    useEffect(() => {
+        setShowNotes(slicedNotes);
+    }, [notes]);
 
     return (
         <Grid
@@ -56,7 +61,16 @@ export const NotesList = ({
                             <NoteCard
                                 key={note.date}
                                 index={index}
-                                notesLength={notes.length}
+                                notesLength={notesToShow.length}
+                                note={note}
+                            />
+                        ))}
+                        {notesToHide.map((note, index) => (
+                            <NoteCard
+                                key={note.date}
+                                index={index}
+                                notesLength={notesToShow.length}
+                                isVisible={false}
                                 note={note}
                             />
                         ))}
@@ -72,6 +86,7 @@ export const NotesList = ({
                             />
                         ) : (
                             <UiButton
+                                data-test-id={DATA_TEST_IDS.BLOGGER_USER_NOTES_BUTTON}
                                 text='Свернуть'
                                 variant='ghost'
                                 size={{ base: 'xs', md: 'sm' }}

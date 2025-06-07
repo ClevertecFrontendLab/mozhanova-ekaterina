@@ -5,7 +5,7 @@ import { UiButton } from './UiButton';
 export const UiAllAuthorsButton = ({
     size = 'lg',
     onClick,
-    text = 'Все авторы',
+    text = 'Всe авторы',
     dataTest,
 }: {
     size?: ResponsiveValue<'xs' | 'sm' | 'md' | 'lg'>;

@@ -13,14 +13,17 @@ import { useGetBloggersQuery } from '~/query/blogs-api';
 import { BlogCard } from './BlogCard';
 
 export const OtherBlogsList = ({ currentUserId }: { currentUserId: string }) => {
-    const { data: bloggers, isError } = useGetBloggersQuery({ limit: 3, currentUserId });
+    const { data: bloggers, isError } = useGetBloggersQuery({
+        currentUserId: currentUserId,
+        limit: '',
+    });
     const { showError } = useToast();
 
     useEffect(() => {
         if (isError) showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
     }, [isError]);
 
-    if (!bloggers) return null;
+    if (!bloggers?.others) return null;
     return (
         <Grid gap={{ base: 4, md: 6 }} mb={{ base: 4, md: 6 }}>
             <Flex justify='space-between' align='center'>

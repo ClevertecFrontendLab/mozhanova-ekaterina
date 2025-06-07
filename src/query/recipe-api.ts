@@ -1,5 +1,4 @@
 import {
-    BloggersParams,
     BookmarkResponse,
     LikeResponse,
     MeasureUnit,
@@ -135,16 +134,8 @@ export const recipeApi = authorizedApi.injectEndpoints({
             }),
             invalidatesTags: [Tags.RECIPE],
         }),
-        [EndpointNames.GET_RECIPES_BY_USER_ID]: builder.query<
-            RecipesByUserResponse,
-            BloggersParams
-        >({
-            query: (params) => ({
-                url: `${ApiEndpoints.GET_RECIPES_BY_USER_ID}${params.bloggerId}`,
-                params: {
-                    ...params,
-                },
-            }),
+        [EndpointNames.GET_RECIPES_BY_USER_ID]: builder.query<RecipesByUserResponse, string>({
+            query: (bloggerId) => `${ApiEndpoints.GET_RECIPES_BY_USER_ID}${bloggerId}`,
             providesTags: [Tags.RECIPES],
         }),
     }),

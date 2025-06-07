@@ -14,25 +14,27 @@ import { useLazyGetBloggersQuery } from '~/query/blogs-api';
 import { Limit } from '~/query/constants/limits';
 import { useAppSelector } from '~/store/hooks';
 import { selectCurrentUserId } from '~/store/selectors';
-import { BloggersParams } from '~/types';
+import { GetBloggersParams } from '~/types';
 
 export const BlogsPage = () => {
     const userId = useAppSelector(selectCurrentUserId);
     const { width } = useWindowSize();
     const limit = width > BREAKPOINTS_VALUES.lg ? Limit.BLOGS : Limit.DEFAULT;
-    const [loadBloggers, { data: bloggers }] = useLazyGetBloggersQuery();
+    const [loadBloggers, { data: bloggers, error }] = useLazyGetBloggersQuery();
 
-    const handleLoadBloggers = async (limit: BloggersParams['limit']) => {
-        try {
-            await loadBloggers({ currentUserId: userId, limit });
-        } catch {
-            showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
-            navigate(AppRoutes.HOME);
-        }
+    const handleLoadBloggers = async (limit: GetBloggersParams['limit']) => {
+        await loadBloggers({ currentUserId: userId, limit });
     };
 
     const { showError } = useToast();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (error) {
+            showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+            navigate(AppRoutes.HOME);
+        }
+    }, [error]);
 
     useEffect(() => {
         if (!userId) return;

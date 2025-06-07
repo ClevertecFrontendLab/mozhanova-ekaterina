@@ -42,14 +42,14 @@ export const useToast = () => {
                     <AlertIcon />
                     <Box flexGrow={1}>
                         <AlertTitle
-                            data-test-it={
+                            data-test-id={
                                 params.type === 'error' && DATA_TEST_IDS.ERROR_NOTIFICATION_TITLE
                             }
                         >
                             {params.title}
                         </AlertTitle>
                         <AlertDescription
-                            data-test-it={
+                            data-test-id={
                                 params.type === 'error' &&
                                 DATA_TEST_IDS.ERROR_NOTIFICATION_DESCRIPTION
                             }

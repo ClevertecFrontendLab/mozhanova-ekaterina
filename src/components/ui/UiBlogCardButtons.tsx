@@ -20,7 +20,10 @@ export const UiReadButton = ({ bloggerId }: { bloggerId: string }) => (
 );
 
 export const UiRecipesButton = ({ bloggerId }: { bloggerId: string }) => (
-    <Link to={routeHelpers.getBlogPath(bloggerId)}>
+    <Link
+        data-test-id={DATA_TEST_IDS.BLOG_CARD_RECIPES_BUTTON}
+        to={routeHelpers.getBlogPath(bloggerId)}
+    >
         <UiButton size='xs' variant='solidAccent' text='Рецепты' />
     </Link>
 );

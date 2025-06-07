@@ -61,15 +61,18 @@ export type RecipeParams = {
     garnish?: string[];
     subcategoriesIds?: string[];
 };
-export type BloggersParams = {
-    currentUserId?: string;
-    toUserId?: string;
-    fromUserId?: string;
-    bloggerId?: string;
-    page?: number;
-    limit?: number | 'all';
-    sortBy?: string;
-    sortOrder?: string;
+
+export type ToggleSubsParams = {
+    fromUserId: string;
+    toUserId: string;
+};
+export type GetBloggerByIdParams = {
+    bloggerId: string;
+    currentUserId: string;
+};
+export type GetBloggersParams = {
+    currentUserId: string;
+    limit: number | 'all' | '';
 };
 export type Note = {
     date: string;

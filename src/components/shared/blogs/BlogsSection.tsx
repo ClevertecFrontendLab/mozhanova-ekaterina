@@ -10,7 +10,6 @@ import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useToast } from '~/hooks/use-toast';
 import { useLazyGetBloggersQuery } from '~/query/blogs-api';
-import { Limit } from '~/query/constants/limits';
 import { useAppSelector } from '~/store/hooks';
 import { selectCurrentUserId } from '~/store/selectors';
 
@@ -21,16 +20,16 @@ export const BlogsSection = () => {
     const { showError } = useToast();
     const [isLargerThanMD] = useBreakpoint('md');
 
-    const [getBloggers, { data: bloggers }] = useLazyGetBloggersQuery();
+    const [getBloggers, { data: bloggers, error }] = useLazyGetBloggersQuery();
 
     useEffect(() => {
         if (!userId) return;
-        try {
-            getBloggers({ currentUserId: userId, limit: Limit.BLOGS_HOME });
-        } catch {
-            showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
-        }
+        getBloggers({ currentUserId: userId, limit: '' });
     }, [userId]);
+
+    useEffect(() => {
+        if (error) showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+    }, [error]);
 
     if (!bloggers?.others) return null;
 

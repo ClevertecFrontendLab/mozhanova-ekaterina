@@ -36,16 +36,16 @@ export const BloggerPage = () => {
     const [getRecipes, { data: recipes, error: recipesError }] = useLazyGetRecipesByUserIdQuery();
 
     const handleLoadData = async () => {
-        getBlogger({ bloggerId, currentUserId });
-        getRecipes({ bloggerId });
+        getBlogger({ bloggerId: bloggerId as string, currentUserId });
+        getRecipes(bloggerId as string);
     };
 
     useEffect(() => {
-        handleLoadData();
+        if (bloggerId && currentUserId) handleLoadData();
     }, [bloggerId, currentUserId]);
 
     useEffect(() => {
-        if (recipes) {
+        if (recipes?.recipes) {
             setRecipesToShow(recipes.recipes.slice(0, 8));
         }
     }, [recipes]);
@@ -57,10 +57,9 @@ export const BloggerPage = () => {
 
     useEffect(() => {
         if (bloggerError || recipesError) {
-            loadBloggerAndRecipesErrorHandler([
-                bloggerError as ErrorResponse,
-                recipesError as ErrorResponse,
-            ]);
+            loadBloggerAndRecipesErrorHandler(
+                (bloggerError as ErrorResponse) || (recipesError as ErrorResponse),
+            );
         }
     }, [bloggerError, recipesError]);
 
@@ -78,7 +77,7 @@ export const BloggerPage = () => {
         }, 100);
     }, [notesElement]);
 
-    if (!blogger || !recipes) return null;
+    if (!blogger || !recipes?.recipes) return null;
     return (
         <Grid
             as='main'
@@ -99,7 +98,7 @@ export const BloggerPage = () => {
                     display={recipesToShow.length < recipes.recipes.length ? 'flex' : 'none'}
                 >
                     <UiButton
-                        // data-test-id={DATA_TEST_IDS.LOAD_MORE_BUTTON}
+                        data-test-id={DATA_TEST_IDS.LOAD_MORE_BUTTON}
                         onClick={handleShowMore}
                         ref={showMoreRef}
                         size='md'
