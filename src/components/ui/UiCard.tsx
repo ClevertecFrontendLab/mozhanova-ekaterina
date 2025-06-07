@@ -9,7 +9,6 @@ import {
     Stack,
     Text,
 } from '@chakra-ui/react';
-import { JSX } from 'react';
 import { useSelector } from 'react-redux';
 import { ErrorResponse, Link, useParams } from 'react-router';
 
@@ -23,6 +22,7 @@ import { RecipesState } from '~/store/recipe-slice';
 import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
 import { Recipe } from '~/types';
 import { routeHelpers } from '~/utils/get-routes';
+import { highlightMatches } from '~/utils/highlight-mathces';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { UiButton } from './UiButton';
@@ -116,7 +116,6 @@ export const UiCard = ({
                         }}
                     >
                         <UiCardInfo
-                            _id={_id}
                             categoryBgColor='secondary.100'
                             categories={rootCategories?.map((category) => category?._id)}
                             likes={likes}
@@ -154,12 +153,12 @@ export const UiCard = ({
                 </CardBody>
 
                 <CardFooter>
-                    <Flex gap='8px' justifyContent='flex-end' w='100%'>
+                    <Flex gap='8px' justify='flex-end' align='flex-end' w='100%'>
                         <UiButton
                             onClick={handleSave}
-                            size={isLargerThanMD ? 'sm' : 'xs'}
+                            size={{ base: 'xs', md: 'sm' }}
                             text='Сохранить'
-                            leftIcon={<BookmarkHeartIcon />}
+                            leftIcon={isLargerThanMD ? <BookmarkHeartIcon /> : undefined}
                             icon={<BookmarkHeartIcon size={!isLargerThanMD ? '12px' : '16px'} />}
                             iconButton={!isLargerThanMD}
                         />
@@ -185,39 +184,3 @@ export const UiCard = ({
         </Card>
     );
 };
-
-function highlightMatches(str: string, substr: string) {
-    const result: JSX.Element[] = [];
-    const lowerStr = str.toLowerCase();
-    const lowerSub = substr.toLowerCase();
-    let lastIndex = 0;
-    let index = lowerStr.indexOf(lowerSub);
-    while (index !== -1) {
-        if (index > lastIndex) {
-            result.push(
-                <Text as='span' key={`text-${lastIndex}`}>
-                    {str.slice(lastIndex, index)}
-                </Text>,
-            );
-        }
-
-        result.push(
-            <Text as='span' key={`match-${index}`} color='text.primary'>
-                {str.slice(index, index + substr.length)}
-            </Text>,
-        );
-
-        lastIndex = index + substr.length;
-        index = lowerStr.indexOf(lowerSub, lastIndex);
-    }
-
-    if (lastIndex < str.length) {
-        result.push(
-            <Text as='span' key={`text-${lastIndex}`}>
-                {str.slice(lastIndex)}
-            </Text>,
-        );
-    }
-
-    return <>{result}</>;
-}

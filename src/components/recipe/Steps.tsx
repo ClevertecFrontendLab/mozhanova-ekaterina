@@ -1,10 +1,8 @@
 import { Box, Card, CardBody, Flex, Heading, Image, Text } from '@chakra-ui/react';
 
-export const Steps = ({
-    steps = [],
-}: {
-    steps: { stepNumber: number; description: string; image?: string }[];
-}) => (
+import { Step } from '~/types';
+
+export const Steps = ({ steps = [] }: { steps: Step[] }) => (
     <Flex
         gap={{
             base: 5,
@@ -21,11 +19,7 @@ export const Steps = ({
     </Flex>
 );
 
-const StepCard = ({
-    step,
-}: {
-    step: { stepNumber: number; description: string; image?: string };
-}) => (
+const StepCard = ({ step }: { step: Step }) => (
     <Card
         direction='row'
         borderRadius='8px'

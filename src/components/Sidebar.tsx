@@ -21,7 +21,11 @@ export const Sidebar = () => {
         >
             {location.pathname !== AppRoutes.CREATE_RECIPE && (
                 <>
-                    <ProfileNotification />
+                    <ProfileNotification
+                        totalLikes={1000}
+                        totalBookmarks={200}
+                        totalSubscribers={100}
+                    />
                     <Box position='absolute' bottom='52px' left={0} right={0}>
                         <Link
                             to={AppRoutes.CREATE_RECIPE}

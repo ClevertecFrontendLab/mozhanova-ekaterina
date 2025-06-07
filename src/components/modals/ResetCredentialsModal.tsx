@@ -9,7 +9,7 @@ import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
 import { useErrors } from '~/hooks/use-errors';
 import { useToast } from '~/hooks/use-toast';
-import { useResetPasswordMutation } from '~/query/user-api';
+import { useResetPasswordMutation } from '~/query/auth-api';
 import { ModalParams } from '~/types';
 import { RecoverySchema } from '~/validation';
 

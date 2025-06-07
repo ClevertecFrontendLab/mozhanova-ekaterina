@@ -50,7 +50,13 @@ export const Hero = ({ recipe }: { recipe: Recipe }) => {
                     lg: '553px',
                 }}
             />
-            <CardBody p={0} borderRadius='8px' overflow='hidden'>
+            <CardBody
+                p={0}
+                borderRadius='8px'
+                overflow='hidden'
+                display='flex'
+                flexDirection='column'
+            >
                 <Flex justifyContent='space-between'>
                     <Flex
                         wrap='wrap'

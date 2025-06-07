@@ -69,4 +69,61 @@ export const DATA_TEST_IDS = {
     HEADER_LOGO: 'header-logo',
     ADD_RECIPE_BUTTON: 'add-recipe-button',
     RECIPE_FORM: 'recipe-form',
+    MAIN_PAGE_BLOGS_BOX: 'main-page-blogs-box',
+    MAIN_PAGE_BLOGS_BUTTON: 'main-page-blogs-button',
+    MAIN_PAGE_BLOGS_GRID: 'main-page-blogs-grid',
+
+    // Blog cards
+    BLOG_CARD: 'blogs-card',
+    BLOG_CARD_NAME: 'blogs-card-name',
+    BLOG_CARD_LOGIN: 'blogs-card-login',
+    BLOG_CARD_NOTES_TEXT: 'blogs-card-notes-text',
+    BLOG_CARD_NEW_RECIPES_BADGE: 'blogs-card-new-recipes-badge',
+    BLOG_CARD_RECIPES_BUTTON: 'blogs-card-recipes-button',
+    BLOG_CARD_NOTES_BUTTON: 'blogs-card-notes-button',
+
+    // Favorites section
+    BLOG_FAVORITES_BOX: 'blogs-favorites-box',
+    BLOG_FAVORITES_GRID: 'blogs-favorites-grid',
+
+    // Others section
+    BLOG_OTHERS_BOX: 'blogs-others-box',
+    BLOG_OTHERS_GRID: 'blogs-others-grid',
+    BLOG_OTHERS_BUTTON: 'blogs-others-button',
+
+    // Blogger page
+    BLOGGER_USER_INFO_BOX: 'blogger-user-info-box',
+    BLOGGER_USER_INFO_NAME: 'blogger-user-info-name',
+    BLOGGER_USER_INFO_LOGIN: 'blogger-user-info-login',
+    BLOGGER_FOLLOWERS_COUNT: 'blogger-followers-count',
+    BLOGGER_FOLLOWERS_BOOKMARKS: 'blogger-followers-bookmarks',
+    BLOGGER_USER_NOTES_COUNT: 'blogger-user-notes-count',
+    BLOGGER_USER_NOTES_GRID: 'blogger-user-notes-grid',
+    BLOGGER_USER_NOTES_BUTTON: 'blogger-user-notes-button',
+    RECIPE_CARD_LIST: 'recipe-card-list',
+    BLOG_NOTES_BOX: 'blog-notes-box',
+
+    // Notes
+    NOTES_CARD_DATE: 'notes-card-date',
+    NOTES_CARD_TEXT: 'notes-card-text',
+
+    // Other blogs
+    BLOGGER_USER_OTHER_BLOGS_BUTTON: 'blogger-user-other-blogs-button',
+    BLOGGER_USER_OTHER_BLOGS_GRID: 'blogger-user-other-blogs-grid',
+
+    // Subscription
+    BLOG_TOGGLE_SUBSCRIBE: 'blog-toggle-subscribe',
+    BLOG_TOGGLE_UNSUBSCRIBE: 'blog-toggle-unsubscribe',
+
+    // Breadcrumbs
+    BLOGGER_USER_BREADCRUMB_NAME: 'blogger-user-breadcrumb-name',
+    BLOGGER_USER_BREADCRUMB_SECTION: 'blogger-user-breadcrumb-section',
+
+    // Error
+    ERROR_NOTIFICATION_TITLE: 'error-notification-title',
+    ERROR_NOTIFICATION_DESCRIPTION: 'error-notification-description',
+
+    // Other
+    BLOG_TOOLTIP: 'blog-tooltip',
+    MOBILE_LOADER: 'mobile-loader',
 };

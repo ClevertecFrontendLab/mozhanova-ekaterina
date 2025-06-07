@@ -21,21 +21,26 @@ export const SearchPage = memo(() => {
     const navigate = useNavigate();
     const { showError } = useToast();
 
-    const { isError, data } = useRecipesSearch();
+    const { isError, data, refetch } = useRecipesSearch();
 
     const hasMore = pagination.totalPages ? pagination.currentPage < pagination.totalPages : false;
 
     useEffect(() => {
-        if (data) {
-            if (pagination.currentPage === 1) {
-                setAllRecipes(data);
-            } else {
-                setAllRecipes((prev) => [...prev, ...data]);
-            }
-        }
-    }, [data, pagination.currentPage]);
+        setAllRecipes([]);
+        dispatch(setCurrentPage(1));
+        refetch();
+    }, [filters, dispatch]);
 
-    useEffect(() => {}, [navigate, data]);
+    useEffect(() => {
+        if (!data) return;
+
+        const newIds = new Set(data.map((item) => item._id));
+
+        setAllRecipes((prev) => {
+            const filteredPrev = prev.filter((item) => !newIds.has(item._id));
+            return [...filteredPrev, ...data];
+        });
+    }, [data]);
 
     useEffect(() => {
         dispatch(setCurrentPage(1));
@@ -46,7 +51,7 @@ export const SearchPage = memo(() => {
             navigate(-1);
             showError(NOTIFICATION_MESSAGES.GET_RECIPES_ERROR);
         }
-    }, [isError, showError, navigate, dispatch]);
+    }, [isError, showError]);
 
     const loadMore = () => {
         if (hasMore) {

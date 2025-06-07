@@ -31,9 +31,10 @@ export const useRecipesSearch = () => {
         [filters, pagination.currentPage],
     );
 
-    const { data, isError, isFetching, isLoading, isSuccess, currentData } = useSearchRecipesQuery({
-        ...stableArgs,
-    });
+    const { data, isError, isFetching, isLoading, isSuccess, currentData, refetch } =
+        useSearchRecipesQuery({
+            ...stableArgs,
+        });
 
     useEffect(() => {
         if (data?.meta) {
@@ -53,6 +54,7 @@ export const useRecipesSearch = () => {
         isFetching,
         isError,
         isSuccess,
+        refetch,
     };
 };
 export const useLazyRecipesSearch = () => {

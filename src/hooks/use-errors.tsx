@@ -1,6 +1,8 @@
 import { UseFormSetError } from 'react-hook-form';
+import { useNavigate } from 'react-router';
 
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
+import { AppRoutes } from '~/constants/routes-config';
 import { useModalContext } from '~/contexts/modal-context';
 import { NotificationDuration, useToast } from '~/hooks/use-toast';
 import { AuthUser, ErrorResponse, FormInputs } from '~/types';
@@ -8,6 +10,7 @@ import { AuthUser, ErrorResponse, FormInputs } from '~/types';
 export const useErrors = () => {
     const { showError } = useToast();
     const { showSignInError } = useModalContext();
+    const navigate = useNavigate();
 
     const signUpErrorHandler = (error: ErrorResponse) => {
         switch (error.status) {
@@ -20,7 +23,7 @@ export const useErrors = () => {
                 break;
 
             default:
-                showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+                showError({ ...NOTIFICATION_MESSAGES.SERVER_ERROR, position: 'bottom-left' });
                 break;
         }
     };
@@ -73,7 +76,7 @@ export const useErrors = () => {
                 break;
 
             default:
-                showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+                showError({ ...NOTIFICATION_MESSAGES.SERVER_ERROR, position: 'bottom-left' });
                 break;
         }
     };
@@ -91,14 +94,14 @@ export const useErrors = () => {
 
             default:
                 reset();
-                showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+                showError({ ...NOTIFICATION_MESSAGES.SERVER_ERROR, position: 'bottom-left' });
                 break;
         }
         setError('email', { message: '' });
     };
 
     const resetCredentialsErrorHandler = () => {
-        showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+        showError({ ...NOTIFICATION_MESSAGES.SERVER_ERROR, position: 'bottom-left' });
     };
 
     const createRecipeErrorHandler = (error: ErrorResponse) => {
@@ -140,8 +143,23 @@ export const useErrors = () => {
                 showError(NOTIFICATION_MESSAGES.RECIPE_NOT_FOUND_ERROR);
                 break;
             default:
-                showError({ ...NOTIFICATION_MESSAGES.SERVER_ERROR, position: 'bottom' });
+                showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
                 break;
+        }
+    };
+
+    const toggleSubscribeErrorHandler = (_error: ErrorResponse) => {
+        showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+    };
+
+    const loadBloggerAndRecipesErrorHandler = (error: ErrorResponse) => {
+        switch (error.status) {
+            case 404:
+                navigate(AppRoutes.NOT_FOUND);
+                break;
+            default:
+                showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+                navigate(AppRoutes.HOME);
         }
     };
 
@@ -156,5 +174,7 @@ export const useErrors = () => {
         createDraftRecipeErrorHandler,
         deleteRecipeErrorHandler,
         saveLikeRecipeErrorHandler,
+        toggleSubscribeErrorHandler,
+        loadBloggerAndRecipesErrorHandler,
     };
 };

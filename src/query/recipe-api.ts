@@ -1,27 +1,26 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-
 import {
     BookmarkResponse,
     LikeResponse,
     MeasureUnit,
     Meta,
     NewRecipe,
-    Params,
     Recipe,
     RecipeDraft,
+    RecipeParams,
+    RecipesByUserResponse,
 } from '~/types';
 
+import { authorizedApi } from './authorized-api';
 import { ApiEndpoints } from './constants/api';
-import { baseQuery } from './constants/base-query';
 import { EndpointNames } from './constants/endpoint-names';
 import { Tags } from './constants/tags';
 
-export const recipeApi = createApi({
-    reducerPath: 'recipeApi',
-    baseQuery: baseQuery,
-    tagTypes: [Tags.RECIPE, Tags.RECIPES],
+export const recipeApi = authorizedApi.injectEndpoints({
     endpoints: (builder) => ({
-        [EndpointNames.GET_LATEST_RECIPES]: builder.query<{ data: Recipe[]; meta: Meta }, Params>({
+        [EndpointNames.GET_LATEST_RECIPES]: builder.query<
+            { data: Recipe[]; meta: Meta },
+            RecipeParams
+        >({
             query: (params) => ({
                 url: ApiEndpoints.RECIPES,
                 params: {
@@ -33,7 +32,10 @@ export const recipeApi = createApi({
             providesTags: [Tags.RECIPES],
         }),
 
-        [EndpointNames.GET_POPULAR_RECIPES]: builder.query<{ data: Recipe[]; meta: Meta }, Params>({
+        [EndpointNames.GET_POPULAR_RECIPES]: builder.query<
+            { data: Recipe[]; meta: Meta },
+            RecipeParams
+        >({
             query: (params) => ({
                 url: ApiEndpoints.RECIPES,
                 params: {
@@ -54,7 +56,7 @@ export const recipeApi = createApi({
 
         [EndpointNames.GET_RECIPES_BY_CATEGORY]: builder.query<
             { data: Recipe[]; meta: Meta },
-            Params
+            RecipeParams
         >({
             query: ({ categoryId, ...params }) => ({
                 url: `${ApiEndpoints.RECIPE_CATEGORY}${categoryId}`,
@@ -65,19 +67,21 @@ export const recipeApi = createApi({
             providesTags: [Tags.RECIPES],
         }),
 
-        [EndpointNames.SEARCH_RECIPES]: builder.query<{ data: Recipe[]; meta: Meta }, Params>({
-            query: (params) => ({
-                url: ApiEndpoints.RECIPES,
-                params: {
-                    ...params,
-                    allergens: params.allergens?.join(','),
-                    meat: params.meat?.join(','),
-                    garnish: params.garnish?.join(','),
-                    subcategoriesIds: params.subcategoriesIds?.join(','),
-                },
-            }),
-            providesTags: [Tags.RECIPES],
-        }),
+        [EndpointNames.SEARCH_RECIPES]: builder.query<{ data: Recipe[]; meta: Meta }, RecipeParams>(
+            {
+                query: (params) => ({
+                    url: ApiEndpoints.RECIPES,
+                    params: {
+                        ...params,
+                        allergens: params.allergens?.join(','),
+                        meat: params.meat?.join(','),
+                        garnish: params.garnish?.join(','),
+                        subcategoriesIds: params.subcategoriesIds?.join(','),
+                    },
+                }),
+                providesTags: [Tags.RECIPES],
+            },
+        ),
 
         [EndpointNames.MEASURE_UNITS]: builder.query<MeasureUnit[], void>({
             query: () => ({
@@ -114,7 +118,7 @@ export const recipeApi = createApi({
                 url: `${ApiEndpoints.RECIPE_BY_ID}${id}`,
                 method: 'DELETE',
             }),
-            // invalidatesTags: [Tags.RECIPE],
+            invalidatesTags: [Tags.RECIPE],
         }),
         [EndpointNames.LIKE_UNLIKE_RECIPE]: builder.mutation<LikeResponse, string>({
             query: (id) => ({
@@ -129,6 +133,10 @@ export const recipeApi = createApi({
                 method: 'POST',
             }),
             invalidatesTags: [Tags.RECIPE],
+        }),
+        [EndpointNames.GET_RECIPES_BY_USER_ID]: builder.query<RecipesByUserResponse, string>({
+            query: (bloggerId) => `${ApiEndpoints.GET_RECIPES_BY_USER_ID}${bloggerId}`,
+            providesTags: [Tags.RECIPES],
         }),
     }),
 });
@@ -148,4 +156,6 @@ export const {
     useDeleteRecipeMutation,
     useLikeUnlikeRecipeMutation,
     useSaveRemoveFromBookmarksMutation,
+    useGetRecipesByUserIdQuery,
+    useLazyGetRecipesByUserIdQuery,
 } = recipeApi;

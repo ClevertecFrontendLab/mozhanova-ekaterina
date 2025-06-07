@@ -22,4 +22,7 @@ export enum EndpointNames {
     LIKE_UNLIKE_RECIPE = 'likeUnlikeRecipe',
     SAVE_REMOVE_FROM_BOOKMARKS = 'saveRemoveFromBookmarks',
     FILE_UPLOAD = 'fileUpload',
+    GET_BLOGGER_BY_ID = 'getBloggerById',
+    GET_BLOGGERS = 'getBloggers',
+    TOGGLE_SUBSCRIPTION = 'toggleSubscription',
 }
