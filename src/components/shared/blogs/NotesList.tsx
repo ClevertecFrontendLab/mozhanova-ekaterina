@@ -40,7 +40,7 @@ export const NotesList = ({
             bg='neutral.10'
             borderRadius='16px'
         >
-            <Heading fontSize={{ base: '20px' }}>
+            <Heading fontSize={{ base: '20px', md: '36px' }} fontWeight={400}>
                 Заметки {` `}
                 <Text
                     data-test-id={DATA_TEST_IDS.BLOGGER_USER_NOTES_COUNT}
@@ -50,7 +50,7 @@ export const NotesList = ({
                     {`(${notes.length})`}
                 </Text>
             </Heading>
-            {notes.length > 0 ? (
+            {notes.length > 0 && (
                 <>
                     <SimpleGrid
                         data-test-id={DATA_TEST_IDS.BLOGGER_USER_NOTES_GRID}
@@ -75,27 +75,19 @@ export const NotesList = ({
                             />
                         ))}
                     </SimpleGrid>
-                    {showToggleButton ? (
-                        notesToShow.length < notes.length ? (
-                            <UiButton
-                                data-test-id={DATA_TEST_IDS.BLOGGER_USER_NOTES_BUTTON}
-                                text='Показать больше'
-                                variant='ghost'
-                                size={{ base: 'xs', md: 'sm' }}
-                                onClick={toggleNotes}
-                            />
-                        ) : (
-                            <UiButton
-                                data-test-id={DATA_TEST_IDS.BLOGGER_USER_NOTES_BUTTON}
-                                text='Свернуть'
-                                variant='ghost'
-                                size={{ base: 'xs', md: 'sm' }}
-                                onClick={toggleNotes}
-                            />
-                        )
-                    ) : null}
+                    {showToggleButton && (
+                        <UiButton
+                            data-test-id={DATA_TEST_IDS.BLOGGER_USER_NOTES_BUTTON}
+                            text={
+                                notesToShow.length === notes.length ? 'Свернуть' : 'Показать больше'
+                            }
+                            variant='ghost'
+                            size={{ base: 'xs', md: 'sm' }}
+                            onClick={toggleNotes}
+                        />
+                    )}
                 </>
-            ) : null}
+            )}
         </Grid>
     );
 };

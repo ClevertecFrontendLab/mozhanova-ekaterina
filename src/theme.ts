@@ -1,5 +1,7 @@
 import { extendTheme } from '@chakra-ui/react';
 
+import { BREAKPOINTS_VALUES } from './constants/breakpoints-config';
+
 const theme = extendTheme({
     styles: {
         global: {
@@ -579,10 +581,10 @@ const theme = extendTheme({
     },
     breakpoints: {
         base: '0px',
-        sm: '768px',
-        md: '1001px',
-        lg: '1441px',
-        xl: '1920px',
+        sm: `${BREAKPOINTS_VALUES.sm}px`,
+        md: `${BREAKPOINTS_VALUES.md}px`,
+        lg: `${BREAKPOINTS_VALUES.lg}px`,
+        xl: `${BREAKPOINTS_VALUES.xl}px`,
     },
 });
 

@@ -1,7 +1,6 @@
 import { Box, Grid, SimpleGrid } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
-import avatar_1 from '~/assets/blog_avatar_1.png';
 import { UiAllAuthorsButton } from '~/components/ui/UiAllAuthorsButton';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { Blogger, GetBloggersParams } from '~/types';
@@ -57,7 +56,6 @@ export const BlogsList = ({
                     <BlogCard
                         key={blogger._id}
                         bloggerId={blogger._id}
-                        avatarSrc={avatar_1}
                         name={[blogger.firstName, blogger.lastName]}
                         login={blogger.login}
                         note={blogger.notes[0]?.text}

@@ -1,4 +1,4 @@
-import { Box, Card, CardBody, CardFooter, Flex, Heading, Image, Tag, Text } from '@chakra-ui/react';
+import { Box, Card, CardBody, CardFooter, Flex, Heading, Tag, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ErrorResponse, Link } from 'react-router';
 
@@ -9,6 +9,7 @@ import {
     UiUnsubscribeButton,
 } from '~/components/ui/UiBlogCardButtons';
 import { UiCardStats } from '~/components/ui/UiCardStats';
+import { UiInitialsAvatar } from '~/components/ui/UiInitialsAvatar';
 import { UiLoader } from '~/components/ui/UiLoader';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useErrors } from '~/hooks/use-errors';
@@ -19,7 +20,6 @@ import { getRecipesWord } from '~/utils/get-recipes-word';
 import { routeHelpers } from '~/utils/get-routes';
 
 type Props = {
-    avatarSrc: string;
     name: string[];
     login: string;
     bloggerId: string;
@@ -39,7 +39,6 @@ export const BlogCard = ({
     bookmarksCount,
     note,
     newRecipesCount,
-    avatarSrc,
     showFooter = true,
     bloggerId,
     isFavorite,
@@ -58,6 +57,7 @@ export const BlogCard = ({
             toggleSubscribeErrorHandler(error as ErrorResponse);
         }
     };
+
     return (
         <Card
             data-test-id={DATA_TEST_IDS.BLOG_CARD}
@@ -71,7 +71,7 @@ export const BlogCard = ({
                 shadow: 'themeNeutralGreen',
             }}
         >
-            {newRecipesCount ? (
+            {newRecipesCount !== 0 && newRecipesCount && (
                 <Box
                     data-test-id={DATA_TEST_IDS.BLOG_CARD_NEW_RECIPES_BADGE}
                     position='absolute'
@@ -80,7 +80,7 @@ export const BlogCard = ({
                 >
                     <Tag bg='neutral.20'>{`${newRecipesCount} ${getRecipesWord(newRecipesCount)}`}</Tag>
                 </Box>
-            ) : null}
+            )}
 
             <CardBody>
                 <Flex
@@ -94,17 +94,12 @@ export const BlogCard = ({
                         md: 4,
                     }}
                 >
-                    <Image
-                        w={{
+                    <UiInitialsAvatar
+                        name={name}
+                        size={{
                             base: '32px',
                             md: '48px',
                         }}
-                        h={{
-                            base: '32px',
-                            md: '48px',
-                        }}
-                        src={avatarSrc}
-                        alt='avatar'
                     />
                     <Box minW={0}>
                         <Link to={routeHelpers.getBlogPath(bloggerId)}>
@@ -148,7 +143,7 @@ export const BlogCard = ({
                     {note}
                 </Text>
             </CardBody>
-            {showFooter ? isFavorite ? <FavoriteCardFooter /> : <Footer /> : null}
+            {showFooter && isFavorite ? <FavoriteCardFooter /> : <Footer />}
 
             {isLoading && <UiLoader testId={DATA_TEST_IDS.MOBILE_LOADER} />}
         </Card>
@@ -169,7 +164,11 @@ export const BlogCard = ({
                 px={{ base: 4, md: 6 }}
                 pb={{ base: 4, md: 5 }}
             >
-                <Flex order={{ base: 1 }} gap={2} align='flex-end'>
+                <Flex
+                    order={{ base: 1, sm: colsInGrid === 2 ? 0 : 1, lg: 0 }}
+                    gap={2}
+                    align='flex-end'
+                >
                     {isSubscribed ? (
                         <UiUnsubscribeButton onClick={handleSubscribe} />
                     ) : (

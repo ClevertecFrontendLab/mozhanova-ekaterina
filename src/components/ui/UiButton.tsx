@@ -54,7 +54,7 @@ const variants = {
 type Props = {
     text?: string;
     rightIcon?: React.ReactElement;
-    leftIcon?: React.ReactElement | undefined;
+    leftIcon?: React.ReactElement;
     icon?: React.ReactElement;
     variant?: keyof typeof variants;
     size?: ResponsiveValue<'xs' | 'sm' | 'md' | 'lg'>;

@@ -81,7 +81,7 @@ export const SliderCard = ({
                                 {title}
                             </Heading>
                             <Text fontSize='sm' noOfLines={3}>
-                                {isLargerThanMD ? description : null}
+                                {isLargerThanMD && description}
                             </Text>
                         </Flex>
                     </CardBody>

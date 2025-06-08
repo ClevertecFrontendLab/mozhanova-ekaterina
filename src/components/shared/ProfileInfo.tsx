@@ -1,7 +1,8 @@
-import { Box, Flex, Image } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
-import avatar from '~/assets/ava.jpg';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
+
+import { UiInitialsAvatar } from '../ui/UiInitialsAvatar';
 
 export const ProfileInfo = ({
     login,
@@ -16,7 +17,7 @@ export const ProfileInfo = ({
 
     return (
         <Flex display={isLargerThanMD ? 'flex' : 'none'} gap='12px'>
-            <Image width='48px' height='48px' borderRadius='50%' src={avatar} alt='avatar' />
+            <UiInitialsAvatar name={[firstName, lastName]} size='48px' />
             <div>
                 <Box fontSize='18px' fontWeight='500'>
                     {`${firstName} ${lastName}`}

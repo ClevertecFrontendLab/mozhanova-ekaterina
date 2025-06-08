@@ -147,7 +147,7 @@ export const UiCard = ({
                             {searchString ? highlightMatches(title, searchString) : title}
                         </Heading>
                         <Text fontSize='sm' noOfLines={3}>
-                            {isLargerThanMD ? description : null}
+                            {isLargerThanMD && description}
                         </Text>
                     </Flex>
                 </CardBody>

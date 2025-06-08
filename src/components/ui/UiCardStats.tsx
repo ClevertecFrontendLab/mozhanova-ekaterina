@@ -32,7 +32,7 @@ export const UiCardStats = ({ bookmarks, likes, subscribersCount, size = 'sm' }:
         color='primary.400'
         fontWeight='600'
     >
-        {bookmarks ? (
+        {bookmarks && (
             <Flex
                 data-test-id={DATA_TEST_IDS.BLOGGER_FOLLOWERS_BOOKMARKS}
                 p='4px'
@@ -42,14 +42,14 @@ export const UiCardStats = ({ bookmarks, likes, subscribersCount, size = 'sm' }:
                 <BookmarkHeartIcon size={sizes[size].iconSize} />
                 {bookmarks}
             </Flex>
-        ) : null}
-        {likes ? (
+        )}
+        {likes && (
             <Flex p='4px' gap='6px' align='center'>
                 <EmojiHeartEyesIcon size={sizes[size].iconSize} />
                 {likes}
             </Flex>
-        ) : null}
-        {subscribersCount ? (
+        )}
+        {subscribersCount && (
             <Flex
                 data-test-id={DATA_TEST_IDS.BLOGGER_FOLLOWERS_COUNT}
                 p='4px'
@@ -59,6 +59,6 @@ export const UiCardStats = ({ bookmarks, likes, subscribersCount, size = 'sm' }:
                 <PeopleOutlineIcon />
                 {subscribersCount}
             </Flex>
-        ) : null}
+        )}
     </Flex>
 );

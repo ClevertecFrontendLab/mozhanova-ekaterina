@@ -52,9 +52,7 @@ export const Header = ({
             <Logo />
 
             <Breadcrumbs setMenuOpen={setMenuOpen} />
-            {token ? (
-                <ProfileInfo login='mozhKa' firstName='Екатерина' lastName='Можанова' />
-            ) : null}
+            {token && <ProfileInfo login='mozhKa' firstName='Екатерина' lastName='Можанова' />}
 
             {isLargerThanMD && <LogInButton />}
             <Flex
@@ -63,7 +61,7 @@ export const Header = ({
                 align='center'
                 flexGrow={1}
             >
-                {token ? (
+                {token && (
                     <ProfileNotification
                         totalBookmarks={12}
                         totalSubscribers={500}
@@ -71,7 +69,7 @@ export const Header = ({
                         variant='mobile'
                         isMenuOpen={isMenuOpen}
                     />
-                ) : null}
+                )}
                 <Flex gap={6} alignItems='center' justifyContent='center'>
                     <LogInButton />
 

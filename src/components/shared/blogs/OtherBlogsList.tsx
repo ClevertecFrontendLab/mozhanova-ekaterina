@@ -2,7 +2,6 @@ import { Flex, Grid, Heading, SimpleGrid } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { Link } from 'react-router';
 
-import avatar_1 from '~/assets/blog_avatar_1.png';
 import { UiAllAuthorsButton } from '~/components/ui/UiAllAuthorsButton';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { AppRoutes } from '~/constants/routes-config';
@@ -56,7 +55,6 @@ export const OtherBlogsList = ({ currentUserId }: { currentUserId: string }) => 
                         name={[blogger.firstName, blogger.lastName]}
                         login={blogger.login}
                         note={blogger.notes[0]?.text}
-                        avatarSrc={avatar_1}
                         bookmarksCount={blogger.bookmarksCount}
                         subscribersCount={blogger.subscribersCount}
                         newRecipesCount={blogger.newRecipesCount}

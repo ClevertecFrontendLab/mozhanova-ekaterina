@@ -1,4 +1,4 @@
-import { Box, Grid } from '@chakra-ui/react';
+import { Box, Grid, Heading } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -48,10 +48,13 @@ export const BlogsPage = () => {
             as='main'
             padding={{
                 base: '16px 16px 32px',
-                md: '56px 20px 0',
-                lg: '56px 24px 0',
+                md: '32px 20px 0',
+                lg: '32px 24px 0',
             }}
         >
+            <Heading textAlign='center' fontSize={{ base: '24px', md: '48px' }} mb={6}>
+                Кулинарные блоги
+            </Heading>
             <Grid gap={{ base: 8, lg: 10 }}>
                 <BlogsFavoritesList bloggers={bloggers.favorites} heading='Избранные блоги' />
                 <BlogsList

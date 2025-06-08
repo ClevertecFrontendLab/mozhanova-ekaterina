@@ -35,7 +35,7 @@ export const ProfileNotification = ({
                 md: '16px',
             }}
         >
-            {totalBookmarks ? (
+            {totalBookmarks !== 0 && (
                 <Flex
                     justifyContent='center'
                     padding={{
@@ -53,9 +53,9 @@ export const ProfileNotification = ({
                     <BookmarkHeartIcon />
                     <div>{totalBookmarks}</div>
                 </Flex>
-            ) : null}
+            )}
 
-            {totalSubscribers ? (
+            {totalSubscribers !== 0 && (
                 <Flex
                     justifyContent='center'
                     padding={{
@@ -70,9 +70,9 @@ export const ProfileNotification = ({
                     <PeopleIcon />
                     <div>{totalSubscribers}</div>
                 </Flex>
-            ) : null}
+            )}
 
-            {totalLikes ? (
+            {totalLikes !== 0 && (
                 <Flex
                     justifyContent='center'
                     padding={{
@@ -86,7 +86,7 @@ export const ProfileNotification = ({
                 >
                     <EmojiHeartEyesIcon /> <div>{totalLikes}</div>
                 </Flex>
-            ) : null}
+            )}
         </Flex>
     );
 };
