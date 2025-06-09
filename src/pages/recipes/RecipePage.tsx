@@ -13,7 +13,7 @@ import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { useToast } from '~/hooks/use-toast';
 import { useGetRecipeByIdQuery } from '~/query/recipe-api';
 import { useAppSelector } from '~/store/hooks';
-import { setCurrent } from '~/store/recipe-slice';
+import { setCurrentRecipe } from '~/store/recipe-slice';
 import { selectCurrentUserId } from '~/store/selectors';
 
 export const RecipePage = () => {
@@ -25,7 +25,7 @@ export const RecipePage = () => {
     const { data, isLoading, isError } = useGetRecipeByIdQuery(id || '', { skip: !id });
 
     useEffect(() => {
-        if (data) dispatch(setCurrent(data));
+        if (data) dispatch(setCurrentRecipe(data));
     });
     useEffect(() => {
         if (isError) {

@@ -3,7 +3,7 @@ import { Flex } from '@chakra-ui/react';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useAppSelector } from '~/store/hooks';
-import { accessToken } from '~/store/selectors';
+import { accessToken } from '~/store/user-slice';
 
 import { ProfileInfo } from '../shared/ProfileInfo';
 import { ProfileNotification } from '../shared/ProfileNotification';

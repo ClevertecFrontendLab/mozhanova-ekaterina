@@ -1,4 +1,14 @@
-import { Box, Card, CardBody, CardFooter, Flex, Heading, Tag, Text } from '@chakra-ui/react';
+import {
+    Avatar,
+    Box,
+    Card,
+    CardBody,
+    CardFooter,
+    Flex,
+    Heading,
+    Tag,
+    Text,
+} from '@chakra-ui/react';
 import { useState } from 'react';
 import { ErrorResponse, Link } from 'react-router';
 
@@ -9,7 +19,6 @@ import {
     UiUnsubscribeButton,
 } from '~/components/ui/UiBlogCardButtons';
 import { UiCardStats } from '~/components/ui/UiCardStats';
-import { UiInitialsAvatar } from '~/components/ui/UiInitialsAvatar';
 import { UiLoader } from '~/components/ui/UiLoader';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useErrors } from '~/hooks/use-errors';
@@ -94,13 +103,7 @@ export const BlogCard = ({
                         md: 4,
                     }}
                 >
-                    <UiInitialsAvatar
-                        name={name}
-                        size={{
-                            base: '32px',
-                            md: '48px',
-                        }}
-                    />
+                    <Avatar name={`${name[0]} ${name[1]}`} size={{ base: 'sm', md: 'md' }} />
                     <Box minW={0}>
                         <Link to={routeHelpers.getBlogPath(bloggerId)}>
                             <Heading

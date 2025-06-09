@@ -13,6 +13,8 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 
+import { getOptionTestId } from '~/utils/test-utils';
+
 import { UiTag } from '../ui/UiTag';
 
 type Props = {
@@ -39,7 +41,7 @@ export const SelectOptions = ({
     isDisabled = false,
     dataButton,
     dataList,
-    testSubject,
+    testSubject = '',
     tagsCloseBtn = true,
     error,
 }: Props) => {
@@ -116,11 +118,7 @@ export const SelectOptions = ({
                         <Box maxH='424px'>
                             {options.map((option, i) => (
                                 <Checkbox
-                                    data-test-id={defineDataTestId(
-                                        option,
-                                        i,
-                                        testSubject as string,
-                                    )}
+                                    data-test-id={getOptionTestId(option, i, testSubject)}
                                     p='6px 16px'
                                     _odd={{ bg: 'neutral.20' }}
                                     variant='select'
@@ -138,14 +136,3 @@ export const SelectOptions = ({
         </Menu>
     );
 };
-
-function defineDataTestId(option: string, i: number, testSubject: string) {
-    switch (option) {
-        case 'Картошка':
-            return 'checkbox-картошка';
-        case 'Веганская кухня':
-            return 'checkbox-веганская кухня';
-        default:
-            return testSubject === 'allergens' ? `allergen-${i}` : '';
-    }
-}

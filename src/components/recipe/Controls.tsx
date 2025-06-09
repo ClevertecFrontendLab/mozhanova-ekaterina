@@ -38,7 +38,6 @@ export const Controls = ({ _id, authorId }: { _id: string; authorId: string }) =
         try {
             await deleteRecipe(_id).unwrap();
             showSuccess(NOTIFICATION_MESSAGES.DELETE_RECIPE_SUCCESS);
-            // navigate(-1);
         } catch (error) {
             deleteRecipeErrorHandler(error as ErrorResponse);
         }

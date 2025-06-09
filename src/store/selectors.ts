@@ -9,14 +9,9 @@ import {
 } from '~/utils/get-categories';
 import { decodeToken } from '~/utils/jwt-utils';
 
+import { selectAllCategories } from './category-slice';
 import { ApplicationState } from './configure-store';
-
-export const accessToken = (state: ApplicationState) => state.user.accessToken || null;
-export const selectAllCategories = (state: ApplicationState) => state.category.categories || [];
-export const currentRecipeSelector = (state: ApplicationState) => state.recipe.current || null;
-export const paginationSelector = (state: ApplicationState) => state.recipe.pagination || null;
-export const selectCurrentUser = (state: ApplicationState) => state.user.currentBlogger || null;
-export const selectCurrentBlogger = (state: ApplicationState) => state.user.currentBlogger || null;
+import { accessToken } from './user-slice';
 
 export const selectCategories = createSelector([selectAllCategories], (categories) =>
     Array.isArray(categories) ? categories?.filter((category) => !category.rootCategoryId) : [],
@@ -26,8 +21,10 @@ export const selectSubcategories = createSelector([selectAllCategories], (catego
     Array.isArray(categories) ? categories.filter((category) => category.rootCategoryId) : [],
 );
 
-export const selectCurrentUserId = (state: ApplicationState) =>
-    decodeToken(state.user.accessToken) || '';
+export const selectCurrentUserId = createSelector(
+    [accessToken],
+    (token) => decodeToken(token) || '',
+);
 
 export const selectFilters = createSelector(
     (state: ApplicationState) => state.recipe.filters,

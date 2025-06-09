@@ -14,7 +14,7 @@ import {
     useGetRecipeByIdQuery,
     useUpdateRecipeMutation,
 } from '~/query/recipe-api';
-import { setCurrent } from '~/store/recipe-slice';
+import { setCurrentRecipe } from '~/store/recipe-slice';
 import { NewRecipe, Recipe, RecipeDraft } from '~/types';
 import { RecipeDraftSchema } from '~/validation';
 
@@ -63,7 +63,7 @@ export const EditRecipePage = () => {
     }, [isError, showError, navigate]);
 
     useEffect(() => {
-        if (recipe) dispatch(setCurrent(recipe));
+        if (recipe) dispatch(setCurrentRecipe(recipe));
         setFormData(recipe as Recipe);
     }, [recipe]);
 

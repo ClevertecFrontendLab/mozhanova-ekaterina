@@ -2,11 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { BloggerInfo } from '~/types';
 
+import { ApplicationState } from './configure-store';
+
 export type UserState = {
     currentBlogger: BloggerInfo | null;
     currentUser: BloggerInfo | null;
     accessToken: string | null;
 };
+
+export const selectCurrentUser = (state: ApplicationState) => state.user.currentUser || null;
+export const selectCurrentBlogger = (state: ApplicationState) => state.user.currentBlogger || null;
+export const accessToken = (state: ApplicationState) => state.user.accessToken || null;
 
 const initialState: UserState = {
     currentBlogger: null,

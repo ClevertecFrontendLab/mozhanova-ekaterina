@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
 
 import { AppRoutes } from '~/constants/routes-config';
-import { accessToken } from '~/store/selectors';
+import { accessToken } from '~/store/user-slice';
 
 import { LogInIcon } from '../ui/icons/LogInIcon';
 

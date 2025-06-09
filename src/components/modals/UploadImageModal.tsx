@@ -79,7 +79,6 @@ export const UploadImageModal = ({ params }: { params?: ModalParams<'uploadImage
                     pt={4}
                 >
                     <input
-                        // value={''}
                         data-test-id={params.testId}
                         style={{ display: 'none' }}
                         type='file'

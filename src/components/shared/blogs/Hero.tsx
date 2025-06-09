@@ -1,7 +1,6 @@
-import { Box, Flex, Heading, Image, Text, Tooltip } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Avatar, Box, Flex, Heading, Text, Tooltip } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 
-import avatar_1 from '~/assets/blog_avatar_1.png';
 import { ManIcon } from '~/components/ui/icons/ManIcon';
 import { SubscribeIcon } from '~/components/ui/icons/SubscribeIcon';
 import { UiButton } from '~/components/ui/UiButton';
@@ -32,22 +31,20 @@ export const Hero = ({ blogger }: { blogger: BloggerResponse }) => {
         }
     };
 
+    useEffect(() => {
+        setIsSubscribed(blogger.isFavorite);
+    }, [blogger.isFavorite]);
+
     return (
-        <Box
-            data-test-id={DATA_TEST_IDS.BLOGGER_USER_INFO_BOX}
-            position='relative'
-            pb={{ base: 4, md: 6 }}
-        >
+        <Box data-test-id={DATA_TEST_IDS.BLOGGER_USER_INFO_BOX} position='relative'>
             <Flex align='center' direction={{ base: 'column', sm: 'row' }} gap={6}>
-                <Box flexBasis='65%'>
-                    <Image
-                        w={{ base: '96px', md: '128px' }}
-                        h={{ base: '96px', md: '128px' }}
-                        src={avatar_1}
-                        rounded='full'
+                <Flex flexBasis='65%'>
+                    <Avatar
+                        size={{ base: 'xl', md: '2xl' }}
+                        name={`${blogger.bloggerInfo.firstName} ${blogger.bloggerInfo.lastName}`}
                         ml={{ sm: 'auto' }}
                     />
-                </Box>
+                </Flex>
                 <Box w='100%'>
                     <Box textAlign={{ base: 'center', sm: 'left' }} mb={4}>
                         <Heading

@@ -17,7 +17,6 @@ export const UiCardGrid = memo(
                 data-test-id={dataTest}
                 rowGap={4}
                 columnGap={6}
-                pt={6}
                 columns={{
                     base: 1,
                     sm: 2,

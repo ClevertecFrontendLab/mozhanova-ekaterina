@@ -1,7 +1,6 @@
-import { Flex, Heading, Image, Text } from '@chakra-ui/react';
+import { Avatar, Flex, Heading, Text } from '@chakra-ui/react';
 import { Link } from 'react-router';
 
-import avatar from '~/assets/ava_1.png';
 import { useErrors } from '~/hooks/use-errors';
 import { useGetBloggerByIdQuery, useToggleSubscriptionMutation } from '~/query/blogs-api';
 import { ErrorResponse } from '~/types';
@@ -47,7 +46,10 @@ export const AuthorInfo = ({
             position='relative'
             mb={{ base: 10, md: 8 }}
         >
-            <Image w='96px' h='96px' borderRadius='50%' src={avatar} alt='avatar' />
+            <Avatar
+                name={`${author.bloggerInfo.firstName} ${author.bloggerInfo.lastName}`}
+                size='xl'
+            />
             <Flex direction='column' grow={1}>
                 <Link to={routeHelpers.getBlogPath(author.bloggerInfo._id)}>
                     <Heading mt={2} fontSize='lg' fontWeight={600}>

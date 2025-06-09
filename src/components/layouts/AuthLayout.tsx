@@ -12,8 +12,8 @@ import {
 } from '@chakra-ui/react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 
+import bg from '~/assets/auth/page_bg.png';
 import logo from '~/assets/logo/logo.png';
-import bg from '~/assets/user/page_bg.png';
 import { AppRoutes } from '~/constants/routes-config';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 

@@ -27,8 +27,6 @@ export const useClickOutside = (trigger: boolean) => {
         document.addEventListener('click', handleClick, true);
 
         return () => {
-            console.log('test');
-
             document.removeEventListener('click', handleClick, true);
         };
     }, [trigger]);

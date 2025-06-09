@@ -9,6 +9,7 @@ import {
 import { authorizedApi } from './authorized-api';
 import { ApiEndpoints } from './constants/api';
 import { EndpointNames } from './constants/endpoint-names';
+import { Limit } from './constants/limits';
 import { Tags } from './constants/tags';
 
 export const BlogsApi = authorizedApi.injectEndpoints({
@@ -19,7 +20,7 @@ export const BlogsApi = authorizedApi.injectEndpoints({
                 params: params,
             }),
             providesTags: (_result, _error, arg) => {
-                if (arg.limit === 3) return [];
+                if (arg.limit === Limit.OTHER_BLOGS) return [];
                 return [Tags.BLOGGERS];
             },
         }),

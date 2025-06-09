@@ -1,4 +1,5 @@
 import {
+    Avatar,
     Box,
     Card,
     CardBody,
@@ -12,7 +13,6 @@ import {
 import { useSelector } from 'react-redux';
 import { ErrorResponse, Link, useParams } from 'react-router';
 
-import avatar from '~/assets/blog_avatar_1.png';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useErrors } from '~/hooks/use-errors';
 import { API_IMAGE_URL } from '~/query/constants/api-config';
@@ -101,8 +101,9 @@ export const UiCard = ({
                     gap='8px'
                     fontSize='14px'
                     borderRadius='4px'
+                    align='center'
                 >
-                    <img width='16px' height='16px' src={avatar} alt='avatar' />
+                    <Avatar name='Можанова Екатерина' size='xs' />
                     {recommendation} рекомендует
                 </Flex>
             )}

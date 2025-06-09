@@ -51,7 +51,7 @@ export const UiCardInfo = ({
                               <UiCardBadge color={categoryBgColor} categoryId={categories[0]} />
                           ))}
             </Flex>
-            {bookmarks || likes ? <UiCardStats bookmarks={bookmarks} likes={likes} /> : null}
+            <UiCardStats bookmarks={bookmarks} likes={likes} />
         </Flex>
     );
 };

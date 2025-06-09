@@ -2,7 +2,6 @@ import { Flex, Heading, SimpleGrid } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { Link } from 'react-router';
 
-import avatar_1 from '~/assets/blog_avatar_1.png';
 import { UiAllAuthorsButton } from '~/components/ui/UiAllAuthorsButton';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { AppRoutes } from '~/constants/routes-config';
@@ -20,7 +19,7 @@ export const BlogsSection = () => {
     const { showError } = useToast();
     const [isLargerThanMD] = useBreakpoint('md');
 
-    const [getBloggers, { data: bloggers, error }] = useLazyGetBloggersQuery();
+    const [getBloggers, { data: bloggers, isError }] = useLazyGetBloggersQuery();
 
     useEffect(() => {
         if (!userId) return;
@@ -28,8 +27,8 @@ export const BlogsSection = () => {
     }, [userId]);
 
     useEffect(() => {
-        if (error) showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
-    }, [error]);
+        if (isError) showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+    }, [isError]);
 
     if (!bloggers?.others) return null;
 
@@ -80,7 +79,6 @@ export const BlogsSection = () => {
                 {bloggers.others.map((blogger) => (
                     <BlogCard
                         bloggerId={blogger._id}
-                        avatarSrc={avatar_1}
                         key={blogger._id}
                         name={[blogger.firstName, blogger.lastName]}
                         note={blogger.notes[0]?.text}

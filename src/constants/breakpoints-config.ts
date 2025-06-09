@@ -1,7 +1,7 @@
 export const BREAKPOINTS_VALUES = {
     sm: 768,
     md: 1300,
-    lg: 1441,
+    lg: 1850,
     xl: 1920,
 } as const;
 

@@ -19,7 +19,7 @@ export const Slider = () => {
         limit: Limit.CAROUSEL,
         sortBy: 'createdAt',
     });
-    if (!data) return null;
+    if (!data?.data) return null;
 
     return (
         <Flex

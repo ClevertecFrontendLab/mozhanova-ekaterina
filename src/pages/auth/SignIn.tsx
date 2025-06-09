@@ -12,7 +12,7 @@ import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useErrors } from '~/hooks/use-errors';
 import { useSignInMutation } from '~/query/auth-api';
-import { accessToken } from '~/store/selectors';
+import { accessToken } from '~/store/user-slice';
 import { ErrorResponse } from '~/types';
 import { LoginSchema } from '~/validation';
 

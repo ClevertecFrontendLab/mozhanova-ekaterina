@@ -1,5 +1,5 @@
 import { EditIcon } from '@chakra-ui/icons';
-import { Grid } from '@chakra-ui/react';
+import { Avatar, Grid } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router';
 
 import { HomeIcon } from '~/components/ui/icons/HomeIcon';
@@ -11,7 +11,6 @@ import { selectCurrentUserId } from '~/store/selectors';
 import { routeHelpers } from '~/utils/get-routes';
 
 import { SearchIcon } from '../ui/icons/SearchIcon';
-import { UiInitialsAvatar } from '../ui/UiInitialsAvatar';
 
 export const FooterMobile = () => {
     const location = useLocation();
@@ -50,7 +49,7 @@ export const FooterMobile = () => {
             </Link>
             <Link to={routeHelpers.getBlogPath(currentUserId)}>
                 <UiIconButton
-                    icon={<UiInitialsAvatar size='48px' name={['Е', 'М']} />}
+                    icon={<Avatar size='md' name='Можанова Екатерина' />}
                     text='Мой профиль'
                 />
             </Link>

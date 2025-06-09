@@ -578,6 +578,16 @@ const theme = extendTheme({
                 borderRadius: '4px',
             },
         },
+        Avatar: {
+            sizes: {
+                xs: {
+                    container: {
+                        w: '16px',
+                        h: '16px',
+                    },
+                },
+            },
+        },
     },
     breakpoints: {
         base: '0px',

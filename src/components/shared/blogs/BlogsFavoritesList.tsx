@@ -1,6 +1,5 @@
 import { Flex, Heading, SimpleGrid } from '@chakra-ui/react';
 
-import avatar_1 from '~/assets/blog_avatar_1.png';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { Blogger } from '~/types';
 
@@ -10,7 +9,7 @@ export const BlogsFavoritesList = ({
     bloggers,
     heading,
 }: {
-    bloggers: Blogger[] | undefined;
+    bloggers?: Blogger[];
     heading?: string;
 }) => {
     if (!bloggers || bloggers?.length === 0) return null;
@@ -55,7 +54,6 @@ export const BlogsFavoritesList = ({
             >
                 {bloggers.map((blogger) => (
                     <BlogCard
-                        avatarSrc={avatar_1}
                         key={blogger._id}
                         name={[blogger.firstName, blogger.lastName]}
                         note={blogger.notes[0]?.text}

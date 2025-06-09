@@ -46,8 +46,6 @@ export const baseQueryWithReauth: BaseQueryFn<
             api.dispatch(accessToken ? setCredentials(accessToken) : setCredentials(null));
 
             result = await baseQuery(args, api, extraOptions);
-        } else {
-            // api.dispatch(logout());
         }
     }
     return result;
