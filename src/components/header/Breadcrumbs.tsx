@@ -3,10 +3,14 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Text } from '@chakra-ui/rea
 import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router';
 
+import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
-import { currentRecipeSelector, selectCategories, selectSubcategories } from '~/store/selectors';
+import { currentRecipeSelector } from '~/store/recipe-slice';
+import { selectCategories, selectSubcategories } from '~/store/selectors';
+import { selectCurrentBlogger } from '~/store/user-slice';
 import { defineBreadcrumbLabel } from '~/utils/get-breadcrumb-label';
+import { getBreadcrumbTestId } from '~/utils/test-utils';
 
 export const Breadcrumbs = ({
     setMenuOpen,
@@ -17,7 +21,7 @@ export const Breadcrumbs = ({
 }) => {
     const location = useLocation();
     const [isLargerThanMD] = useBreakpoint('md');
-
+    const currentBlogger = useSelector(selectCurrentBlogger);
     const categories = useSelector(selectCategories);
     const subCategories = useSelector(selectSubcategories);
     const currentRecipe = useSelector(currentRecipeSelector);
@@ -43,7 +47,7 @@ export const Breadcrumbs = ({
             <BreadcrumbItem isCurrentPage={pathnames.length === 0}>
                 <BreadcrumbLink
                     as={Link}
-                    to='/'
+                    to={AppRoutes.HOME}
                     onClick={() => !isLargerThanMD && setMenuOpen(false)}
                 >
                     Главная
@@ -58,6 +62,7 @@ export const Breadcrumbs = ({
                         categories,
                         subCategories,
                         currentRecipe,
+                        currentBlogger,
                     );
 
                     return (
@@ -67,6 +72,7 @@ export const Breadcrumbs = ({
                             isCurrentPage={i === pathnames.length - 1}
                         >
                             <BreadcrumbLink
+                                data-test-id={getBreadcrumbTestId(path, currentBlogger?._id)}
                                 whiteSpace='nowrap'
                                 overflowX='hidden'
                                 as={Link}

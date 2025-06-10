@@ -9,7 +9,7 @@ import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
 import { useErrors } from '~/hooks/use-errors';
-import { useForgotPasswordMutation } from '~/query/user-api';
+import { useForgotPasswordMutation } from '~/query/auth-api';
 import { ErrorResponse } from '~/types';
 import { emailSchema } from '~/validation';
 

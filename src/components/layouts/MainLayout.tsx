@@ -44,7 +44,7 @@ export const MainLayout = () => {
             <Navbar isMenuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
             <Outlet />
-            {isLargerThanMD ? (
+            {isLargerThanMD && (
                 <Box
                     bg='background.base'
                     position='fixed'
@@ -55,7 +55,7 @@ export const MainLayout = () => {
                 >
                     <Sidebar />
                 </Box>
-            ) : null}
+            )}
 
             {!isLargerThanMD && <FooterMobile />}
         </Box>

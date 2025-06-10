@@ -17,4 +17,6 @@ export enum ApiEndpoints {
     LIKE_UNLIKE_RECIPE = '/like',
     SAVE_REMOVE_FROM_BOOKMARKS = '/bookmark',
     FILE_UPLOAD = '/file/upload',
+    BLOGGERS = '/bloggers',
+    USER_TOGGLE_SUBSCRIPTION = '/users/toggle-subscription',
 }

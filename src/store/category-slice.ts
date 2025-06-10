@@ -2,10 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { Category } from '~/types';
 
+import { ApplicationState } from './configure-store';
+
 export type CategoryState = {
     categories: Category[];
     currentCategory: string | null;
 };
+
+export const selectAllCategories = (state: ApplicationState) => state.category.categories || [];
 
 const initialState: CategoryState = {
     categories: [],
@@ -26,5 +30,3 @@ export const categorySlice = createSlice({
 });
 
 export const { setCategories, setCurrentCategory } = categorySlice.actions;
-
-export default categorySlice.reducer;

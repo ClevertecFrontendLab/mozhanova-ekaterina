@@ -4,27 +4,15 @@ import { MeasureUnit } from '~/types';
 
 type Props = {
     index: number;
-    // value: string;
     placeholder: string;
     measureUnits: MeasureUnit[];
     error: boolean;
-    // onChange: () => void;
 };
 
-export const UiSelect = ({
-    index,
-    // value,
-    measureUnits,
-    placeholder,
-    // onChange,
-    error,
-    ...props
-}: Props) => (
+export const UiSelect = ({ index, measureUnits, placeholder, error, ...props }: Props) => (
     <Select
         {...props}
         data-test-id={`recipe-ingredients-measureUnit-${index}`}
-        // onChange={onChange}
-        // value={value}
         placeholder={placeholder}
         borderColor={error ? 'error.400' : 'border.light'}
         _focus={
@@ -41,6 +29,5 @@ export const UiSelect = ({
                 {unit.name}
             </option>
         ))}
-        {/* <option value={value}>{value}</option> */}
     </Select>
 );

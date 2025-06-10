@@ -1,7 +1,4 @@
 import { Flex } from '@chakra-ui/react';
-import { useSelector } from 'react-redux';
-
-import { accessToken } from '~/store/selectors';
 
 import { BookmarkHeartIcon } from '../ui/icons/BookmarkHeartIcon';
 import { EmojiHeartEyesIcon } from '../ui/icons/EmojiHeartEyesIcon';
@@ -10,12 +7,17 @@ import { PeopleIcon } from '../ui/icons/PeopleIcon';
 export const ProfileNotification = ({
     isMenuOpen = true,
     variant = 'default',
+    totalBookmarks,
+    totalLikes,
+    totalSubscribers,
 }: {
     isMenuOpen?: boolean;
     variant?: 'default' | 'mobile';
+    totalBookmarks?: number;
+    totalLikes?: number;
+    totalSubscribers?: number;
 }) => {
-    const token = useSelector(accessToken);
-    const isVisible = (token && variant === 'default') || (token && !isMenuOpen);
+    const isVisible = variant === 'default' || !isMenuOpen;
 
     return (
         <Flex
@@ -33,50 +35,58 @@ export const ProfileNotification = ({
                 md: '16px',
             }}
         >
-            <Flex
-                justifyContent='center'
-                padding={{
-                    base: '4px 8px',
-                    md: '8px 16px',
-                }}
-                gap={{
-                    base: 1.5,
-                    lg: 2,
-                }}
-                alignItems='center'
-                fontWeight='600'
-                color='primary.400'
-            >
-                <BookmarkHeartIcon />
-                <div>185</div>
-            </Flex>
-            <Flex
-                justifyContent='center'
-                padding={{
-                    base: '4px 8px',
-                    md: '8px 16px',
-                }}
-                gap='10px'
-                alignItems='center'
-                fontWeight='600'
-                color='primary.400'
-            >
-                <PeopleIcon />
-                <div>589</div>
-            </Flex>
-            <Flex
-                justifyContent='center'
-                padding={{
-                    base: '4px 8px',
-                    md: '8px 16px',
-                }}
-                gap='10px'
-                alignItems='center'
-                fontWeight='600'
-                color='primary.400'
-            >
-                <EmojiHeartEyesIcon /> <div>587</div>
-            </Flex>
+            {totalBookmarks !== 0 && (
+                <Flex
+                    justifyContent='center'
+                    padding={{
+                        base: '4px 8px',
+                        md: '8px 16px',
+                    }}
+                    gap={{
+                        base: 1.5,
+                        lg: 2,
+                    }}
+                    alignItems='center'
+                    fontWeight='600'
+                    color='primary.400'
+                >
+                    <BookmarkHeartIcon />
+                    <div>{totalBookmarks}</div>
+                </Flex>
+            )}
+
+            {totalSubscribers !== 0 && (
+                <Flex
+                    justifyContent='center'
+                    padding={{
+                        base: '4px 8px',
+                        md: '8px 16px',
+                    }}
+                    gap='10px'
+                    alignItems='center'
+                    fontWeight='600'
+                    color='primary.400'
+                >
+                    <PeopleIcon />
+                    <div>{totalSubscribers}</div>
+                </Flex>
+            )}
+
+            {totalLikes !== 0 && (
+                <Flex
+                    justifyContent='center'
+                    padding={{
+                        base: '4px 8px',
+                        md: '8px 16px',
+                    }}
+                    gap='10px'
+                    alignItems='center'
+                    fontWeight='600'
+                    color='primary.400'
+                >
+                    <EmojiHeartEyesIcon /> <div>{totalLikes}</div>
+                </Flex>
+            )}
         </Flex>
     );
 };

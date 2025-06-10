@@ -6,7 +6,6 @@ import { UiCardBadge } from './UiCardBadge';
 import { UiCardStats } from './UiCardStats';
 
 type Props = {
-    _id: string;
     likes: number;
     bookmarks: number;
     categoryBgColor: 'secondary.100' | 'primary.100';
@@ -15,7 +14,6 @@ type Props = {
 };
 
 export const UiCardInfo = ({
-    _id,
     categories = [],
     likes,
     bookmarks,
@@ -27,6 +25,7 @@ export const UiCardInfo = ({
     return (
         <Flex w='100%' justifyContent='space-between' alignItems={alignItems}>
             <Flex
+                maxW='144px'
                 direction='column'
                 gap={3}
                 position={{
@@ -52,9 +51,7 @@ export const UiCardInfo = ({
                               <UiCardBadge color={categoryBgColor} categoryId={categories[0]} />
                           ))}
             </Flex>
-            {bookmarks || likes ? (
-                <UiCardStats _id={_id} bookmarks={bookmarks} likes={likes} />
-            ) : null}
+            <UiCardStats bookmarks={bookmarks} likes={likes} />
         </Flex>
     );
 };

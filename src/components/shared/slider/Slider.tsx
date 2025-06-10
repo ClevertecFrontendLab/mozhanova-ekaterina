@@ -4,6 +4,7 @@ import { Box, Flex, Heading } from '@chakra-ui/react';
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import { BREAKPOINTS_VALUES } from '~/constants/breakpoints-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { Limit } from '~/query/constants/limits';
@@ -18,7 +19,7 @@ export const Slider = () => {
         limit: Limit.CAROUSEL,
         sortBy: 'createdAt',
     });
-    if (!data) return null;
+    if (!data?.data) return null;
 
     return (
         <Flex
@@ -55,9 +56,9 @@ export const Slider = () => {
                     slidesPerView={4}
                     breakpoints={{
                         0: { slidesPerView: 2.1 },
-                        361: { slidesPerView: 4.5 },
-                        1440: { slidesPerView: 3.1 },
-                        1920: { slidesPerView: 4 },
+                        [BREAKPOINTS_VALUES.sm]: { slidesPerView: 4.5 },
+                        [BREAKPOINTS_VALUES.md]: { slidesPerView: 3.1 },
+                        [BREAKPOINTS_VALUES.lg]: { slidesPerView: 4 },
                     }}
                     loop
                     freeMode

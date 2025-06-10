@@ -11,14 +11,14 @@ import { UiPasswordInput } from '~/components/ui/UiPasswordInput';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useErrors } from '~/hooks/use-errors';
-import { useSignInMutation } from '~/query/user-api';
-import { isAuthenticated } from '~/store/selectors';
+import { useSignInMutation } from '~/query/auth-api';
+import { accessToken } from '~/store/user-slice';
 import { ErrorResponse } from '~/types';
 import { LoginSchema } from '~/validation';
 
 export const SignIn = () => {
     const navigate = useNavigate();
-    const isAuth = useSelector(isAuthenticated);
+    const isAuth = useSelector(accessToken);
 
     const {
         register,

@@ -23,4 +23,3 @@ export const userLoadingSelector = (state: ApplicationState) => state.app.isLoad
 export const userErrorSelector = (state: ApplicationState) => state.app.error;
 
 export const { setAppError, setAppLoader } = appSlice.actions;
-export default appSlice.reducer;

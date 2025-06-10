@@ -2,6 +2,8 @@ import { Flex } from '@chakra-ui/react';
 
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
+import { useAppSelector } from '~/store/hooks';
+import { accessToken } from '~/store/user-slice';
 
 import { ProfileInfo } from '../shared/ProfileInfo';
 import { ProfileNotification } from '../shared/ProfileNotification';
@@ -19,7 +21,7 @@ export const Header = ({
     isMenuOpen: boolean;
 }) => {
     const [isLargerThanMD] = useBreakpoint('md');
-
+    const token = useAppSelector(accessToken);
     const toggleMenu = () => setMenuOpen(!isMenuOpen);
 
     return (
@@ -50,7 +52,8 @@ export const Header = ({
             <Logo />
 
             <Breadcrumbs setMenuOpen={setMenuOpen} />
-            <ProfileInfo />
+            {token && <ProfileInfo login='mozhKa' firstName='Екатерина' lastName='Можанова' />}
+
             {isLargerThanMD && <LogInButton />}
             <Flex
                 display={!isLargerThanMD ? 'flex' : 'none'}
@@ -58,7 +61,15 @@ export const Header = ({
                 align='center'
                 flexGrow={1}
             >
-                <ProfileNotification variant='mobile' isMenuOpen={isMenuOpen} />
+                {token && (
+                    <ProfileNotification
+                        totalBookmarks={12}
+                        totalSubscribers={500}
+                        totalLikes={1000}
+                        variant='mobile'
+                        isMenuOpen={isMenuOpen}
+                    />
+                )}
                 <Flex gap={6} alignItems='center' justifyContent='center'>
                     <LogInButton />
 

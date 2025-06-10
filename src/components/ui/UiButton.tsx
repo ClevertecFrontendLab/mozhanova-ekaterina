@@ -37,6 +37,12 @@ const variants = {
         borderWidth: '1px',
         color: 'neutral.0',
     },
+    solidAccent: {
+        bg: 'primary.300',
+        borderColor: 'primary.300',
+        borderWidth: '1px',
+        color: 'neutral.400',
+    },
     ghost: {
         bg: 'transparent',
         borderColor: 'transparent',
@@ -57,21 +63,16 @@ type Props = {
     isDisabled?: boolean;
     type?: 'button' | 'submit' | 'reset';
     zIndex?: number;
+    ref?: React.Ref<HTMLButtonElement>;
     'data-test-id'?: string;
     onClick?: () => void;
 };
 
 export const UiButton = ({
-    text,
-    rightIcon,
-    leftIcon,
     size = 'sm',
     variant = 'outline',
     iconButton = false,
-    icon,
-    fontSize,
     type = 'button',
-    zIndex,
     ...props
 }: Props) =>
     iconButton ? (
@@ -82,21 +83,23 @@ export const UiButton = ({
             borderWidth={variants[variant].borderWidth}
             color={variants[variant].color}
             aria-label='button'
-            icon={icon}
+            icon={props.icon}
             type={type}
             {...props}
         />
     ) : (
         <Button
-            zIndex={zIndex}
+            ref={props.ref}
+            data-test-id={props['data-test-id']}
+            zIndex={props.zIndex}
             size={size}
             bg={variants[variant].bg}
             borderColor={variants[variant].borderColor}
             borderWidth={variants[variant].borderWidth}
-            rightIcon={rightIcon}
-            leftIcon={leftIcon}
+            rightIcon={props.rightIcon}
+            leftIcon={props.leftIcon}
             color={variants[variant].color}
-            fontSize={fontSize}
+            fontSize={props.fontSize}
             _hover={{
                 bg: variants[variant].bg,
                 opacity: 0.8,
@@ -108,6 +111,6 @@ export const UiButton = ({
             type={type}
             {...props}
         >
-            {text}
+            {props.text}
         </Button>
     );

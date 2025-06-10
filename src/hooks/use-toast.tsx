@@ -14,7 +14,7 @@ import { ToastParams } from '~/types';
 export enum NotificationDuration {
     Short = 3000,
     Medium = 5000,
-    Long = 150000,
+    Long = 15000,
 }
 
 export const useToast = () => {
@@ -41,8 +41,21 @@ export const useToast = () => {
                 >
                     <AlertIcon />
                     <Box flexGrow={1}>
-                        <AlertTitle>{params.title}</AlertTitle>
-                        <AlertDescription>{params.description || ''}</AlertDescription>
+                        <AlertTitle
+                            data-test-id={
+                                params.type === 'error' && DATA_TEST_IDS.ERROR_NOTIFICATION_TITLE
+                            }
+                        >
+                            {params.title}
+                        </AlertTitle>
+                        <AlertDescription
+                            data-test-id={
+                                params.type === 'error' &&
+                                DATA_TEST_IDS.ERROR_NOTIFICATION_DESCRIPTION
+                            }
+                        >
+                            {params.description || ''}
+                        </AlertDescription>
                     </Box>
                     <CloseButton
                         alignSelf='flex-start'

@@ -5,18 +5,20 @@ import { AuthLayout } from '~/components/layouts/AuthLayout';
 import { MainLayout } from '~/components/layouts/MainLayout';
 import { RecipesTabs } from '~/components/RecipesTabs';
 import { AppRoutes } from '~/constants/routes-config';
-import { EditRecipePage } from '~/pages/auth/EditRecipePage';
+import { RecoveryPage } from '~/pages/auth/RecoveryPage';
 import { SignIn } from '~/pages/auth/SignIn';
 import { SignUp } from '~/pages/auth/SignUp';
 import { VerificationPage } from '~/pages/auth/VerificationPage';
-import { CategoryPage } from '~/pages/CategoryPage';
-import { CreateRecipePage } from '~/pages/CreateRecipePage';
+import { BloggerPage } from '~/pages/bloggers/BloggerPage';
+import { BlogsPage } from '~/pages/bloggers/BlogsPage';
 import { Home } from '~/pages/HomePage';
 import { NotFoundPage } from '~/pages/NotFoundPage';
-import { RecipePage } from '~/pages/RecipePage';
-import { RecoveryPage } from '~/pages/RecoveryPage';
-import { SearchPage } from '~/pages/SearchPage';
-import { TheJuiciestPage } from '~/pages/TheJuiciestPage';
+import { CategoryPage } from '~/pages/recipes/CategoryPage';
+import { CreateRecipePage } from '~/pages/recipes/CreateRecipePage';
+import { EditRecipePage } from '~/pages/recipes/EditRecipePage';
+import { RecipePage } from '~/pages/recipes/RecipePage';
+import { SearchPage } from '~/pages/recipes/SearchPage';
+import { TheJuiciestPage } from '~/pages/recipes/TheJuiciestPage';
 
 export const Router = () => (
     <Routes>
@@ -35,6 +37,9 @@ export const Router = () => (
             <Route path={AppRoutes.CATEGORY_WILDCARD} element={<CategoryPage />}>
                 <Route path={AppRoutes.SUB_CATEGORY} element={<RecipesTabs />} />
             </Route>
+
+            <Route path={AppRoutes.BLOGS} element={<BlogsPage />} />
+            <Route path={AppRoutes.BLOGS_USER} element={<BloggerPage />} />
 
             <Route path={AppRoutes.CREATE_RECIPE} element={<CreateRecipePage />} />
             <Route path={AppRoutes.EDIT_RECIPE} element={<EditRecipePage />} />

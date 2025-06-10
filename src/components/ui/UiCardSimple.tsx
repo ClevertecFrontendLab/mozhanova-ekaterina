@@ -78,38 +78,36 @@ export const UiCardSimple = ({
                             />
                         ))}
 
-                        {bookmarks || likes ? (
-                            <Flex
-                                right={{
-                                    base: '12px',
-                                    lg: '24px',
-                                }}
-                                bottom={{
-                                    base: '12px',
-                                    lg: '20px',
-                                }}
-                                position='absolute'
-                                alignItems='center'
-                                fontSize='12px'
-                                gap='8px'
-                                color='primary.400'
-                                fontWeight='600'
-                                bgColor='neutral.0'
-                            >
-                                {bookmarks ? (
-                                    <Flex p='4px' gap='6px'>
-                                        <BookmarkHeartIcon />
-                                        {bookmarks}
-                                    </Flex>
-                                ) : null}
-                                {likes ? (
-                                    <Flex p='4px' gap='6px'>
-                                        <EmojiHeartEyesIcon />
-                                        {likes}
-                                    </Flex>
-                                ) : null}
-                            </Flex>
-                        ) : null}
+                        <Flex
+                            right={{
+                                base: '12px',
+                                lg: '24px',
+                            }}
+                            bottom={{
+                                base: '12px',
+                                lg: '20px',
+                            }}
+                            position='absolute'
+                            alignItems='center'
+                            fontSize='12px'
+                            gap='8px'
+                            color='primary.400'
+                            fontWeight='600'
+                            bgColor='neutral.0'
+                        >
+                            {bookmarks !== 0 && (
+                                <Flex p='4px' gap='6px'>
+                                    <BookmarkHeartIcon />
+                                    {bookmarks}
+                                </Flex>
+                            )}
+                            {likes !== 0 && (
+                                <Flex p='4px' gap='6px'>
+                                    <EmojiHeartEyesIcon />
+                                    {likes}
+                                </Flex>
+                            )}
+                        </Flex>
                     </Flex>
                 </CardBody>
             </Link>

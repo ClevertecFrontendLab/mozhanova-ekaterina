@@ -3,7 +3,6 @@ import { Flex } from '@chakra-ui/react';
 import { ErrorResponse, useNavigate, useParams } from 'react-router';
 
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
-import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useErrors } from '~/hooks/use-errors';
 import { useToast } from '~/hooks/use-toast';
@@ -39,7 +38,6 @@ export const Controls = ({ _id, authorId }: { _id: string; authorId: string }) =
         try {
             await deleteRecipe(_id).unwrap();
             showSuccess(NOTIFICATION_MESSAGES.DELETE_RECIPE_SUCCESS);
-            navigate(AppRoutes.HOME);
         } catch (error) {
             deleteRecipeErrorHandler(error as ErrorResponse);
         }

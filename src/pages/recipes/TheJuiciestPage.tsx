@@ -9,8 +9,8 @@ import { UiCardGrid } from '~/components/ui/UiCardGrid';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { Limit } from '~/query/constants/limits';
 import { useGetPopularRecipesQuery } from '~/query/recipe-api';
-import { setCurrentPage } from '~/store/recipe-slice';
-import { paginationSelector, selectFilters } from '~/store/selectors';
+import { paginationSelector, setCurrentPage } from '~/store/recipe-slice';
+import { selectFilters } from '~/store/selectors';
 import { Recipe } from '~/types';
 
 export const TheJuiciestPage = () => {

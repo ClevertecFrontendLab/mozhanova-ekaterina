@@ -9,13 +9,9 @@ import {
 } from '~/utils/get-categories';
 import { decodeToken } from '~/utils/jwt-utils';
 
+import { selectAllCategories } from './category-slice';
 import { ApplicationState } from './configure-store';
-
-export const accessToken = (state: ApplicationState) => state.user.accessToken || null;
-export const isAuthenticated = (state: ApplicationState) => !!state.user.accessToken;
-export const selectAllCategories = (state: ApplicationState) => state.category.categories || [];
-export const currentRecipeSelector = (state: ApplicationState) => state.recipe.current || null;
-export const paginationSelector = (state: ApplicationState) => state.recipe.pagination || null;
+import { accessToken } from './user-slice';
 
 export const selectCategories = createSelector([selectAllCategories], (categories) =>
     Array.isArray(categories) ? categories?.filter((category) => !category.rootCategoryId) : [],
@@ -25,7 +21,10 @@ export const selectSubcategories = createSelector([selectAllCategories], (catego
     Array.isArray(categories) ? categories.filter((category) => category.rootCategoryId) : [],
 );
 
-export const selectCurrentUserId = (state: ApplicationState) => decodeToken(state.user.accessToken);
+export const selectCurrentUserId = createSelector(
+    [accessToken],
+    (token) => decodeToken(token) || '',
+);
 
 export const selectFilters = createSelector(
     (state: ApplicationState) => state.recipe.filters,
@@ -108,20 +107,33 @@ export const selectCurrentRootCategory = createSelector(
 export const selectGlobalLoading = createSelector(
     (state: ApplicationState) => state,
     (state) => {
-        const apiStates = [
-            state.recipeApi?.queries || {},
-            state.recipeApi?.mutations || {},
-            state.recipeApi?.queries || {},
-            state.recipeApi?.mutations || {},
-            state.categoryApi?.queries || {},
-            state.categoryApi?.mutations || {},
-            state.userApi?.queries || {},
-            state.userApi?.mutations || {},
-            state.fileUploadApi?.mutations || {},
-        ];
+        const apiServices = [state['authorized-api'], state['unauthorized-api']];
 
-        return apiStates.some((apiState) =>
-            Object.values(apiState).some((item) => item?.status === 'pending'),
-        );
+        return apiServices.some((apiState) => {
+            if (!apiState) return false;
+
+            const allOperations = [
+                ...Object.values(apiState.queries || {}),
+                ...Object.values(apiState.mutations || {}),
+            ];
+
+            return allOperations.some((operation) => {
+                if (
+                    operation?.endpointName === 'toggleSubscription' ||
+                    operation?.endpointName === 'searchRecipes'
+                ) {
+                    return false;
+                }
+
+                if (
+                    operation?.endpointName === 'getBloggers' ||
+                    operation?.endpointName === 'getBloggerById'
+                ) {
+                    return operation?.status === 'pending' && operation?.data === undefined;
+                }
+
+                return operation?.status === 'pending';
+            });
+        });
     },
 );

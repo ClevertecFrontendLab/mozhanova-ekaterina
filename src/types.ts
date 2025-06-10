@@ -49,7 +49,7 @@ export type Meta = {
     limit: number;
 };
 
-export type Params = {
+export type RecipeParams = {
     page?: number;
     limit?: number;
     sortBy?: string;
@@ -61,6 +61,61 @@ export type Params = {
     garnish?: string[];
     subcategoriesIds?: string[];
 };
+
+export type ToggleSubsParams = {
+    fromUserId: string;
+    toUserId: string;
+};
+export type GetBloggerByIdParams = {
+    bloggerId: string;
+    currentUserId: string;
+};
+export type GetBloggersParams = {
+    currentUserId: string;
+    limit: number | 'all' | '';
+};
+export type Note = {
+    date: string;
+    text: string;
+};
+export interface BloggerInfo {
+    _id: string;
+    email: string;
+    login: string;
+    firstName: string;
+    lastName: string;
+    recipesIds: string[];
+    drafts: RecipeDraft[];
+    subscriptions: string[];
+    subscribers: string[];
+    notes: Note[];
+}
+export type Blogger = Pick<BloggerInfo, '_id' | 'login' | 'firstName' | 'lastName' | 'notes'> & {
+    bookmarksCount: number;
+    isFavorite: boolean;
+    newRecipesCount: number;
+    subscribersCount: number;
+};
+export type AllBloggersResponse = {
+    favorites: Blogger[];
+    others: Blogger[];
+};
+
+export type BloggerResponse = {
+    bloggerInfo: BloggerInfo;
+    totalSubscribers: number;
+    totalBookmarks: number;
+    isFavorite: boolean;
+};
+
+export type RecipesByUserResponse = {
+    recipes: Recipe[];
+    totalBookmarks: number;
+    totalSubscribers: number;
+    userId: string;
+    notes: Note[];
+};
+
 export type Category = {
     _id: string;
     title: string;

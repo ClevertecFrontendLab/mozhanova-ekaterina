@@ -7,7 +7,7 @@ import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useToast } from '~/hooks/use-toast';
 import { Limit } from '~/query/constants/limits';
 import { useGetRecipesByCategoryQuery } from '~/query/recipe-api';
-import { ApplicationState } from '~/store/configure-store';
+import { useAppSelector } from '~/store/hooks';
 import { selectCurrentRootCategory, selectFilters } from '~/store/selectors';
 import { Category } from '~/types';
 import { getCategoryByName } from '~/utils/get-categories';
@@ -15,19 +15,17 @@ import { getCategoryByName } from '~/utils/get-categories';
 import { UiCardGrid } from './ui/UiCardGrid';
 
 export const RecipesTabs = () => {
-    const [isLargerThanLG] = useBreakpoint('lg');
+    const [isLargerThanMD] = useBreakpoint('md');
     const [tabIndex, setTabIndex] = useState(0);
     const navigate = useNavigate();
-    const { category, subCategory } = useParams();
+    const { category = '', subCategory = '' } = useParams();
     const { showError } = useToast();
     const filters = useSelector(selectFilters);
 
-    const currentCategory = useSelector((state: ApplicationState) =>
-        selectCurrentRootCategory(state, category as string),
-    );
+    const currentCategory = useAppSelector((state) => selectCurrentRootCategory(state, category));
     const currentSubCategory = getCategoryByName(
         currentCategory?.subCategories as Category[],
-        subCategory as string,
+        subCategory,
     );
 
     const handleTabChange = (index: number) => {
@@ -66,12 +64,11 @@ export const RecipesTabs = () => {
     return (
         <Tabs
             variant='line'
-            align={isLargerThanLG ? 'center' : 'start'}
+            align={isLargerThanMD ? 'center' : 'start'}
             index={tabIndex}
             onChange={handleTabChange}
         >
             <TabList
-                w='fit-content'
                 maxW='100%'
                 overflowX={{
                     base: 'auto',

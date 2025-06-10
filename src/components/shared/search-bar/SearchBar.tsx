@@ -1,8 +1,8 @@
-import { Box, Flex, Heading, Spinner, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, useDisclosure } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import loader from '~/assets/ui/loader_bg.png';
+import { UiLoader } from '~/components/ui/UiLoader';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useLazyRecipesSearch } from '~/store/hooks';
@@ -36,7 +36,7 @@ export const SearchBar = ({ title, description }: Props) => {
     return (
         <Flex
             shadow={
-                searchOnFocus
+                searchOnFocus || isFetching
                     ? '0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 20px 25px -5px rgba(0, 0, 0, 0.1)'
                     : 'unset'
             }
@@ -76,54 +76,38 @@ export const SearchBar = ({ title, description }: Props) => {
                     {title}
                 </Heading>
             )}
-            {isFetching && <Loader />}
 
-            <Box display={isFetching ? 'none' : 'block'}>
-                {description && (
-                    <Text
-                        fontSize={{
-                            base: 'sm',
-                            lg: 'md',
-                        }}
-                        textAlign='center'
-                        color='neutral.200'
-                        mt={{
-                            base: 4,
-                            lg: 3,
-                        }}
-                        maxW='696px'
-                    >
-                        {description}
-                    </Text>
-                )}
-
-                <SearchForm
-                    isError={isError}
-                    data={data}
-                    onOpen={onOpen}
-                    initiateSearch={setIsSearchInitiated}
-                    setSearchOnFocus={setSearchOnFocus}
-                />
-
-                <FiltersDrawer isOpen={isOpen} onClose={onClose} />
+            <Box w='100%' minH={{ base: '32px', md: '136px' }} position='relative'>
+                <Box display={isFetching ? 'none' : 'block'}>
+                    {description && (
+                        <Text
+                            mx='auto'
+                            fontSize={{
+                                base: 'sm',
+                                lg: 'md',
+                            }}
+                            textAlign='center'
+                            color='neutral.200'
+                            mt={{
+                                base: 4,
+                                lg: 3,
+                            }}
+                            maxW='696px'
+                        >
+                            {description}
+                        </Text>
+                    )}
+                    <SearchForm
+                        isError={isError}
+                        data={data}
+                        onOpen={onOpen}
+                        initiateSearch={setIsSearchInitiated}
+                        setSearchOnFocus={setSearchOnFocus}
+                    />
+                    <FiltersDrawer isOpen={isOpen} onClose={onClose} />
+                </Box>
+                {isFetching && <UiLoader testId={DATA_TEST_IDS.LOADER_SEARCH_BLOCK} />}
             </Box>
         </Flex>
     );
 };
-
-function Loader() {
-    return (
-        <Flex
-            data-test-id={DATA_TEST_IDS.LOADER_SEARCH_BLOCK}
-            minW='134px'
-            h='134px'
-            bgImage={loader}
-            bgSize='cover'
-            alignItems='center'
-            justifyContent='center'
-            borderRadius='50%'
-        >
-            <Spinner size='lg' color='black' />
-        </Flex>
-    );
-}

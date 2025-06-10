@@ -1,19 +1,40 @@
-import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { Flex, Heading, SimpleGrid } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { Link } from 'react-router';
 
-import avatar_1 from '~/assets/blog_avatar_1.png';
-import avatar_2 from '~/assets/blog_avatar_2.png';
-import avatar_3 from '~/assets/blog_avatar_3.png';
+import { UiAllAuthorsButton } from '~/components/ui/UiAllAuthorsButton';
+import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
+import { AppRoutes } from '~/constants/routes-config';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
+import { useToast } from '~/hooks/use-toast';
+import { useLazyGetBloggersQuery } from '~/query/blogs-api';
+import { useAppSelector } from '~/store/hooks';
+import { selectCurrentUserId } from '~/store/selectors';
 
-import { UiButton } from '../../ui/UiButton';
 import { BlogCard } from './BlogCard';
 
 export const BlogsSection = () => {
+    const userId = useAppSelector(selectCurrentUserId);
+    const { showError } = useToast();
     const [isLargerThanMD] = useBreakpoint('md');
+
+    const [getBloggers, { data: bloggers, isError }] = useLazyGetBloggersQuery();
+
+    useEffect(() => {
+        if (!userId) return;
+        getBloggers({ currentUserId: userId, limit: '' });
+    }, [userId]);
+
+    useEffect(() => {
+        if (isError) showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+    }, [isError]);
+
+    if (!bloggers?.others) return null;
 
     return (
         <Flex
+            data-test-id={DATA_TEST_IDS.MAIN_PAGE_BLOGS_BOX}
             direction='column'
             bg='primary.200'
             p={{
@@ -37,16 +58,15 @@ export const BlogsSection = () => {
                 >
                     Кулинарные блоги
                 </Heading>
+
                 {isLargerThanMD && (
-                    <UiButton
-                        text='Все авторы'
-                        variant='primaryGhost'
-                        rightIcon={<ArrowForwardIcon />}
-                        size='lg'
-                    />
+                    <Link data-test-id={DATA_TEST_IDS.MAIN_PAGE_BLOGS_BUTTON} to={AppRoutes.BLOGS}>
+                        <UiAllAuthorsButton />
+                    </Link>
                 )}
             </Flex>
             <SimpleGrid
+                data-test-id={DATA_TEST_IDS.MAIN_PAGE_BLOGS_GRID}
                 columns={{
                     base: 1,
                     sm: 3,
@@ -56,32 +76,24 @@ export const BlogsSection = () => {
                     md: 4,
                 }}
             >
-                <BlogCard
-                    avatarSrc={avatar_1}
-                    title='Елена Высоцкая'
-                    subtitle='@elenapovar'
-                    text='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
-                />
-                <BlogCard
-                    avatarSrc={avatar_2}
-                    title='Alex Cook'
-                    subtitle='@funtasticooking'
-                    text='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
-                />
-                <BlogCard
-                    avatarSrc={avatar_3}
-                    title='Екатерина Константинопольская'
-                    subtitle='@bake_and_pie'
-                    text='Как раз после праздников, когда мясные продукты еще остались, но никто их уже не хочет, время варить солянку.'
-                />
+                {bloggers.others.map((blogger) => (
+                    <BlogCard
+                        bloggerId={blogger._id}
+                        key={blogger._id}
+                        name={[blogger.firstName, blogger.lastName]}
+                        note={blogger.notes[0]?.text}
+                        login={blogger.login}
+                        newRecipesCount={blogger.newRecipesCount}
+                        showFooter={false}
+                    />
+                ))}
             </SimpleGrid>
             {!isLargerThanMD && (
-                <UiButton
-                    text='Все авторы'
-                    variant='primaryGhost'
-                    rightIcon={<ArrowForwardIcon />}
-                    size='md'
-                />
+                <Flex justify='center'>
+                    <Link to={AppRoutes.BLOGS}>
+                        <UiAllAuthorsButton />
+                    </Link>
+                </Flex>
             )}
         </Flex>
     );

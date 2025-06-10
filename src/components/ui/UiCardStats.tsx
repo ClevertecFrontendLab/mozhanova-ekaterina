@@ -1,12 +1,16 @@
 import { Flex } from '@chakra-ui/react';
 
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { EmojiHeartEyesIcon } from './icons/EmojiHeartEyesIcon';
+import { PeopleOutlineIcon } from './icons/PeopleOutlineIcon';
 
 type Props = {
-    bookmarks?: number;
-    likes?: number;
-    size?: keyof typeof sizes;
+    bookmarks: number;
+    likes: number;
+    subscribersCount: number;
+    size: keyof typeof sizes;
 };
 
 const sizes = {
@@ -20,7 +24,12 @@ const sizes = {
     },
 };
 
-export const UiCardStats = ({ bookmarks, likes, size = 'sm' }: Props) => (
+export const UiCardStats = ({
+    bookmarks = 0,
+    likes = 0,
+    subscribersCount = 0,
+    size = 'sm',
+}: Partial<Props>) => (
     <Flex
         h='fit-content'
         fontSize={sizes[size].fontSize}
@@ -28,17 +37,33 @@ export const UiCardStats = ({ bookmarks, likes, size = 'sm' }: Props) => (
         color='primary.400'
         fontWeight='600'
     >
-        {bookmarks ? (
-            <Flex p='4px' gap='6px' align='center'>
+        {bookmarks !== 0 && (
+            <Flex
+                data-test-id={DATA_TEST_IDS.BLOGGER_FOLLOWERS_BOOKMARKS}
+                p='4px'
+                gap='6px'
+                align='center'
+            >
                 <BookmarkHeartIcon size={sizes[size].iconSize} />
                 {bookmarks}
             </Flex>
-        ) : null}
-        {likes ? (
+        )}
+        {likes !== 0 && (
             <Flex p='4px' gap='6px' align='center'>
                 <EmojiHeartEyesIcon size={sizes[size].iconSize} />
                 {likes}
             </Flex>
-        ) : null}
+        )}
+        {subscribersCount !== 0 && (
+            <Flex
+                data-test-id={DATA_TEST_IDS.BLOGGER_FOLLOWERS_COUNT}
+                p='4px'
+                gap='6px'
+                align='center'
+            >
+                <PeopleOutlineIcon />
+                {subscribersCount}
+            </Flex>
+        )}
     </Flex>
 );

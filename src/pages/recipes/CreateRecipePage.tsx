@@ -22,8 +22,6 @@ export const CreateRecipePage = () => {
     const [isDraftValid, setIsDraftValid] = useState(true);
 
     const handleSubmit = async (data: NewRecipe) => {
-        console.log(data);
-
         try {
             const response = await createRecipe(data).unwrap();
             showSuccess(NOTIFICATION_MESSAGES.CREATE_RECIPE_SUCCESS);
