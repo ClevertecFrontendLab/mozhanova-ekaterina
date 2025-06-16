@@ -5,7 +5,7 @@ import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { AppRoutes } from '~/constants/routes-config';
 import { useModalContext } from '~/contexts/modal-context';
 import { NotificationDuration, useToast } from '~/hooks/use-toast';
-import { AuthUser, ErrorResponse, FormInputs } from '~/types';
+import { Auth, ErrorResponse, FormInputs } from '~/types';
 
 export const useErrors = () => {
     const { showError } = useToast();
@@ -31,7 +31,7 @@ export const useErrors = () => {
     const signInErrorHandler = (
         error: ErrorResponse,
         setError: UseFormSetError<FormInputs>,
-        userData: AuthUser,
+        userData: Auth,
     ) => {
         switch (error.status) {
             case 401:
@@ -50,7 +50,7 @@ export const useErrors = () => {
         }
     };
 
-    const signInErrorModalHandler = (error: ErrorResponse, userData: AuthUser) => {
+    const signInErrorModalHandler = (error: ErrorResponse, userData: Auth) => {
         switch (error.status) {
             case 401:
                 showError(NOTIFICATION_MESSAGES.INVALID_CREDENTIALS);

@@ -3,7 +3,7 @@ import React from 'react';
 import { useState } from 'react';
 
 import { modalConfig } from '~/constants/modal-config';
-import { AuthUser, ModalParams, ModalState, ModalType } from '~/types';
+import { Auth, ModalParams, ModalState, ModalType } from '~/types';
 
 export const useModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -24,7 +24,7 @@ export const useModal = () => {
 
     const showResetCredentials = (email: string) => showModal('resetCredentials', { email });
 
-    const showSignInError = (userData: AuthUser) => showModal('signInError', { userData });
+    const showSignInError = (userData: Auth) => showModal('signInError', { userData });
 
     const showUploadImage = (params: ModalParams<'uploadImage'>) =>
         showModal('uploadImage', { ...params });

@@ -22,7 +22,7 @@ import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
 import { useErrors } from '~/hooks/use-errors';
 import { useSignUpMutation } from '~/query/auth-api';
-import { ErrorResponse, FormInputs, NewUser } from '~/types';
+import { ErrorResponse, FormInputs, NewAuth } from '~/types';
 import { RegistrationSchema } from '~/validation';
 
 export const SignUp = () => {
@@ -79,7 +79,7 @@ export const SignUp = () => {
     const [signIn] = useSignUpMutation();
     const { signUpErrorHandler } = useErrors();
 
-    const onSubmit = async (userData: NewUser) => {
+    const onSubmit = async (userData: NewAuth) => {
         if (!isValid) return;
         try {
             await signIn(userData).unwrap();

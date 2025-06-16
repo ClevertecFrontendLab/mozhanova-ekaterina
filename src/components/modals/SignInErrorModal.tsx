@@ -7,7 +7,7 @@ import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
 import { useErrors } from '~/hooks/use-errors';
 import { useSignInMutation } from '~/query/auth-api';
-import { AuthUser, ErrorResponse, ModalParams } from '~/types';
+import { Auth, ErrorResponse, ModalParams } from '~/types';
 
 import { UiButton } from '../ui/UiButton';
 import { UiModal } from '../ui/UiModal';
@@ -18,7 +18,7 @@ export const SignInErrorModal = ({ params }: { params?: ModalParams<'signInError
     const { signInErrorModalHandler } = useErrors();
     const { isOpen, onClose } = useModalContext();
 
-    const onSubmit = async (userData: AuthUser) => {
+    const onSubmit = async (userData: Auth) => {
         try {
             const result = await signIn(userData).unwrap();
             if (result) {

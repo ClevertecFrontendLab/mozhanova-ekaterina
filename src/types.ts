@@ -160,10 +160,10 @@ export type FormInputs = {
     code: string;
 };
 
-export type NewUser = Omit<FormInputs, 'confirmPassword' | 'code'>;
-export type ResetUser = Pick<FormInputs, 'email' | 'login' | 'password' | 'passwordConfirm'>;
-export type VerifyUser = { email: string; otpToken: string };
-export type AuthUser = Pick<FormInputs, 'login' | 'password'>;
+export type NewAuth = Omit<FormInputs, 'confirmPassword' | 'code'>;
+export type ResetAuth = Pick<FormInputs, 'email' | 'login' | 'password' | 'passwordConfirm'>;
+export type VerifyAuth = { email: string; otpToken: string };
+export type Auth = Pick<FormInputs, 'login' | 'password'>;
 
 export type AuthResponse = {
     message: string;
@@ -223,7 +223,7 @@ export type ModalParams<T extends ModalType> = {
     sendEmail: undefined;
     verificationCode: { email: string };
     resetCredentials: { email: string };
-    signInError: { userData: AuthUser };
+    signInError: { userData: Auth };
     uploadImage: {
         preview: string;
         testId: string;
