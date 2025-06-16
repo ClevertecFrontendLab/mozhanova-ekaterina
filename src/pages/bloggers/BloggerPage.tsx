@@ -12,9 +12,9 @@ import { useErrors } from '~/hooks/use-errors';
 import { useLazyGetBloggerByIdQuery } from '~/query/blogs-api';
 import { Limit } from '~/query/constants/limits';
 import { useLazyGetRecipesByUserIdQuery } from '~/query/recipe-api';
+import { setBlogger } from '~/store/blogs-slice';
 import { useAppDispatch, useAppSelector } from '~/store/hooks';
 import { selectCurrentUserId } from '~/store/selectors';
-import { setBlogger } from '~/store/user-slice';
 import { ErrorResponse, Recipe } from '~/types';
 
 export const BloggerPage = () => {
