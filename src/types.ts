@@ -78,18 +78,29 @@ export type Note = {
     date: string;
     text: string;
 };
-export interface BloggerInfo {
-    _id: string;
+export type ObjectId = {
+    buffer: {
+        type: 'Buffer';
+        data: number[];
+    };
+};
+export type BloggerInfo = {
+    _id: string | ObjectId;
+    createdAt: string;
+    updatedAt: string;
     email: string;
+    emailVerifiedAt: string;
+    isEmailVerified: boolean;
+    password: string;
+    photoLink: string;
+    refreshToken: string;
     login: string;
     firstName: string;
     lastName: string;
-    recipesIds: string[];
-    drafts: RecipeDraft[];
-    subscriptions: string[];
-    subscribers: string[];
+    recipesIds: ObjectId[];
+    subscribers: ObjectId[];
     notes: Note[];
-}
+};
 export type Blogger = Pick<BloggerInfo, '_id' | 'login' | 'firstName' | 'lastName' | 'notes'> & {
     bookmarksCount: number;
     isFavorite: boolean;
@@ -161,12 +172,12 @@ export type MediaResponse = {
 
 export type BookmarkResponse = {
     message: string;
-    bookmarks: number;
+    count: number;
 };
 
 export type LikeResponse = {
     message: string;
-    bookmarks: number;
+    count: number;
 };
 
 export type ErrorResponse = {
