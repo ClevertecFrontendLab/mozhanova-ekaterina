@@ -25,4 +25,13 @@ export enum EndpointNames {
     GET_BLOGGER_BY_ID = 'getBloggerById',
     GET_BLOGGERS = 'getBloggers',
     TOGGLE_SUBSCRIPTION = 'toggleSubscription',
+    DELETE_PROFILE = 'deleteProfile',
+    GET_STATISTICS = 'getStatistics',
+    UPLOAD_USER_PHOTO = 'uploadUserPhoto',
+    UPDATE_PASSWORD = 'updatePassword',
+    UPDATE_INFO = 'updateInfo',
+    DELETE_NOTE = 'deleteNote',
+    CREATE_NOTES = 'createNotes',
+    GET_PROFILE = 'getProfile',
+    GET_ALL_USERS = 'getAllUsers',
 }
