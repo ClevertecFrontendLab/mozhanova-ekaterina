@@ -12,7 +12,7 @@ import { Auth, ErrorResponse, ModalParams } from '~/types';
 import { UiButton } from '../ui/UiButton';
 import { UiModal } from '../ui/UiModal';
 
-export const SignInErrorModal = ({ params }: { params?: ModalParams<'signInError'> }) => {
+export const SignInErrorModal = ({ userData }: ModalParams<'signInError'>) => {
     const navigate = useNavigate();
     const [signIn] = useSignInMutation();
     const { signInErrorModalHandler } = useErrors();
@@ -45,7 +45,7 @@ export const SignInErrorModal = ({ params }: { params?: ModalParams<'signInError
             footer={
                 <Grid w='100%'>
                     <UiButton
-                        onClick={() => onSubmit(params!.userData)}
+                        onClick={() => onSubmit(userData)}
                         data-test-id={DATA_TEST_IDS.REPEAT_BUTTON}
                         type='submit'
                         variant='solid'

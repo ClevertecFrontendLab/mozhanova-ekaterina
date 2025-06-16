@@ -22,7 +22,7 @@ import { VerificationCodeSchema } from '~/validation';
 
 import { UiModal } from '../ui/UiModal';
 
-export const VerificationCodeModal = ({ params }: { params?: ModalParams<'verificationCode'> }) => {
+export const VerificationCodeModal = ({ email }: ModalParams<'verificationCode'>) => {
     const navigate = useNavigate();
     const { isOpen, onClose, showResetCredentials } = useModalContext();
     const [headerText, setHeaderText] = useState('');
@@ -47,8 +47,8 @@ export const VerificationCodeModal = ({ params }: { params?: ModalParams<'verifi
     const onSubmit = async (data: { code: string }) => {
         setHeaderText('');
         try {
-            const result = await verifyCode({ email: params!.email, otpToken: data.code }).unwrap();
-            if (result) showResetCredentials(params!.email);
+            const result = await verifyCode({ email: email, otpToken: data.code }).unwrap();
+            if (result) showResetCredentials(email);
         } catch (error) {
             resetField('code');
             verificationCodeErrorHandler(error as ErrorResponse, setError, setHeaderText);
@@ -71,7 +71,7 @@ export const VerificationCodeModal = ({ params }: { params?: ModalParams<'verifi
             body={
                 <>
                     <p>
-                        Мы отправили вам на e-mail <br /> <b>{params!.email} </b> <br />
+                        Мы отправили вам на e-mail <br /> <b>{email} </b> <br />
                         шестизначный код. Введите его ниже.
                     </p>
                     <form onSubmit={handleSubmit(onSubmit)}>

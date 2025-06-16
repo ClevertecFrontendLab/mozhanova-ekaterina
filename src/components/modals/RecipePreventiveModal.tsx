@@ -16,7 +16,11 @@ import { RecipeDraftSchema } from '~/validation';
 import { UiButton } from '../ui/UiButton';
 import { UiModal } from '../ui/UiModal';
 
-export const RecipePreventiveModal = ({ params }: { params?: ModalParams<'recipePreventive'> }) => {
+export const RecipePreventiveModal = ({
+    draft,
+    setError,
+    link,
+}: ModalParams<'recipePreventive'>) => {
     const { isOpen, onClose } = useModalContext();
     const [saveDraft] = useCreateRecipeDraftMutation();
     const { createDraftRecipeErrorHandler } = useErrors();
@@ -24,28 +28,31 @@ export const RecipePreventiveModal = ({ params }: { params?: ModalParams<'recipe
     const navigate = useNavigate();
 
     const handleSave = async () => {
-        const isValid = await RecipeDraftSchema.isValid(params?.draft);
+        const isValid = await RecipeDraftSchema.isValid(draft);
         if (!isValid) {
-            params?.setError();
+            setError();
             showError(NOTIFICATION_MESSAGES.SAVE_DRAFT_ERROR);
             onClose();
             return;
         }
         try {
-            const data = (await RecipeDraftSchema.validate(params?.draft)) as RecipeDraft;
+            const data = (await RecipeDraftSchema.validate(draft)) as RecipeDraft;
             await saveDraft(data).unwrap();
             showSuccess(NOTIFICATION_MESSAGES.CREATE_RECIPE_DRAFT_SUCCESS);
             onClose();
-            navigate(params?.link || AppRoutes.HOME);
+            navigate(link || AppRoutes.HOME);
         } catch (error) {
             createDraftRecipeErrorHandler(error as ErrorResponse);
             onClose();
         }
     };
     const handleReset = () => {
-        navigate(params?.link || AppRoutes.HOME);
+        navigate(link || AppRoutes.HOME);
         onClose();
     };
+
+    console.log(setError, link, draft);
+
     return (
         <UiModal
             maxW={{ base: '316px', md: '396px' }}

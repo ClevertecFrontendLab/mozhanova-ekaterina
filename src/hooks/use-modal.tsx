@@ -27,10 +27,10 @@ export const useModal = () => {
     const showSignInError = (userData: Auth) => showModal('signInError', { userData });
 
     const showUploadImage = (params: ModalParams<'uploadImage'>) =>
-        showModal('uploadImage', { ...params });
+        showModal('uploadImage', params);
 
     const showRecipePreventive = (params: ModalParams<'recipePreventive'>) =>
-        showModal('recipePreventive', { ...params });
+        showModal('recipePreventive', params);
 
     const handleClose = () => {
         setModalState(null);
@@ -44,9 +44,7 @@ export const useModal = () => {
 
         if (!modalConfigItem) return null;
 
-        return React.cloneElement(modalConfigItem.component, {
-            params: modalState.params,
-        });
+        return React.cloneElement(modalConfigItem.component, modalState.params);
     };
 
     return {

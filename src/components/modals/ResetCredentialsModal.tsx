@@ -18,7 +18,7 @@ import { UiLoginInput } from '../ui/UiLoginInput';
 import { UiModal } from '../ui/UiModal';
 import { UiPasswordInput } from '../ui/UiPasswordInput';
 
-export const ResetCredentialsModal = ({ params }: { params?: ModalParams<'resetCredentials'> }) => {
+export const ResetCredentialsModal = ({ email }: ModalParams<'resetCredentials'>) => {
     const { showSuccess } = useToast();
     const { resetCredentialsErrorHandler } = useErrors();
     const navigate = useNavigate();
@@ -44,7 +44,7 @@ export const ResetCredentialsModal = ({ params }: { params?: ModalParams<'resetC
     const onSubmit = async (data: { login: string; password: string; passwordConfirm: string }) => {
         if (!isValid) return;
         try {
-            const result = await resetPassword({ ...data, email: params!.email }).unwrap();
+            const result = await resetPassword({ ...data, email: email }).unwrap();
             if (result) {
                 showSuccess(NOTIFICATION_MESSAGES.RESET_CREDENTIALS_SUCCESS);
                 navigate(AppRoutes.SIGN_IN);

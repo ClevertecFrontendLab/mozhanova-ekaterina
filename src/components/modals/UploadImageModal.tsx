@@ -10,11 +10,11 @@ import { ModalParams } from '~/types';
 import { UiButton } from '../ui/UiButton';
 import { UiModal } from '../ui/UiModal';
 
-export const UploadImageModal = ({ params }: { params?: ModalParams<'uploadImage'> }) => {
+export const UploadImageModal = ({ preview, testId, onSave }: ModalParams<'uploadImage'>) => {
     const { isOpen, onClose } = useModalContext();
     const uploadInputRef = useRef<HTMLInputElement>(null);
     const [localFile, setLocalFile] = useState<File | null>(null);
-    const [localPreview, setLocalPreview] = useState(params?.preview);
+    const [localPreview, setLocalPreview] = useState(preview);
     const [uploadFile] = useFileUploadMutation();
 
     const handleUpload = async () => {
@@ -25,7 +25,7 @@ export const UploadImageModal = ({ params }: { params?: ModalParams<'uploadImage
 
         try {
             const data = await uploadFile(formData).unwrap();
-            params?.onSave(data.url);
+            onSave(data.url);
             onClose();
         } catch (error) {
             console.error('Upload failed', error);
@@ -47,7 +47,7 @@ export const UploadImageModal = ({ params }: { params?: ModalParams<'uploadImage
     };
 
     const handleCancel = () => {
-        params?.onSave('');
+        onSave('');
         onClose();
     };
 
@@ -60,8 +60,6 @@ export const UploadImageModal = ({ params }: { params?: ModalParams<'uploadImage
 
         return () => clearTimeout(timer);
     }, []);
-
-    if (!params) return null;
 
     return (
         <UiModal
@@ -79,7 +77,7 @@ export const UploadImageModal = ({ params }: { params?: ModalParams<'uploadImage
                     pt={4}
                 >
                     <input
-                        data-test-id={params.testId}
+                        data-test-id={testId}
                         style={{ display: 'none' }}
                         type='file'
                         ref={uploadInputRef}

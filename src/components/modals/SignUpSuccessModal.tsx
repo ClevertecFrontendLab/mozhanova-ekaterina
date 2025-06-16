@@ -7,7 +7,7 @@ import { ModalParams } from '~/types';
 
 import { UiModal } from '../ui/UiModal';
 
-export const SignUpSuccessModal = ({ params }: { params?: ModalParams<'signUpSuccess'> }) => {
+export const SignUpSuccessModal = ({ email }: ModalParams<'signUpSuccess'>) => {
     const { isOpen, onClose } = useModalContext();
     return (
         <UiModal
@@ -21,7 +21,7 @@ export const SignUpSuccessModal = ({ params }: { params?: ModalParams<'signUpSuc
                 <>
                     <p>Мы отправили вам на почту</p>
                     <p>
-                        <b>{params!.email}</b>
+                        <b>{email}</b>
                     </p>
                     <p>ссылку для верификации.</p>
                 </>
