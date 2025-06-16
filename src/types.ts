@@ -84,8 +84,8 @@ export type ObjectId = {
         data: number[];
     };
 };
-export type BloggerInfo = {
-    _id: string | ObjectId;
+export type BloggerInfoDto = {
+    _id: ObjectId;
     createdAt: string;
     updatedAt: string;
     email: string;
@@ -101,6 +101,9 @@ export type BloggerInfo = {
     subscribers: ObjectId[];
     notes: Note[];
 };
+export type BloggerInfo = Omit<BloggerInfoDto, '_id'> & {
+    _id: string;
+};
 export type Blogger = Pick<BloggerInfo, '_id' | 'login' | 'firstName' | 'lastName' | 'notes'> & {
     bookmarksCount: number;
     isFavorite: boolean;
@@ -112,11 +115,14 @@ export type AllBloggersResponse = {
     others: Blogger[];
 };
 
-export type BloggerResponse = {
-    bloggerInfo: BloggerInfo;
+export type BloggerResponseDto = {
+    bloggerInfo: BloggerInfoDto;
     totalSubscribers: number;
     totalBookmarks: number;
     isFavorite: boolean;
+};
+export type BloggerResponse = Omit<BloggerResponseDto, 'bloggerInfo'> & {
+    bloggerInfo: BloggerInfo;
 };
 
 export type RecipesByUserResponse = {

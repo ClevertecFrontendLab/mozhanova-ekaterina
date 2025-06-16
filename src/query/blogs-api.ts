@@ -1,9 +1,9 @@
 import {
     AllBloggersResponse,
     BloggerResponse,
+    BloggerResponseDto,
     GetBloggerByIdParams,
     GetBloggersParams,
-    ObjectId,
     ToggleSubsParams,
 } from '~/types';
 
@@ -33,11 +33,11 @@ export const BlogsApi = authorizedApi.injectEndpoints({
                     currentUserId: params.currentUserId,
                 },
             }),
-            transformResponse: (response: BloggerResponse) => ({
+            transformResponse: (response: BloggerResponseDto) => ({
                 ...response,
                 bloggerInfo: {
                     ...response.bloggerInfo,
-                    _id: transformId(response.bloggerInfo._id as ObjectId),
+                    _id: transformId(response.bloggerInfo._id),
                 },
             }),
             providesTags: [Tags.BLOGGERS],
