@@ -13,6 +13,7 @@ import { BloggerPage } from '~/pages/bloggers/BloggerPage';
 import { BlogsPage } from '~/pages/bloggers/BlogsPage';
 import { Home } from '~/pages/HomePage';
 import { NotFoundPage } from '~/pages/NotFoundPage';
+import { ProfilePage } from '~/pages/ProfilePage';
 import { CategoryPage } from '~/pages/recipes/CategoryPage';
 import { CreateRecipePage } from '~/pages/recipes/CreateRecipePage';
 import { EditRecipePage } from '~/pages/recipes/EditRecipePage';
@@ -43,6 +44,8 @@ export const Router = () => (
 
             <Route path={AppRoutes.CREATE_RECIPE} element={<CreateRecipePage />} />
             <Route path={AppRoutes.EDIT_RECIPE} element={<EditRecipePage />} />
+
+            <Route path={AppRoutes.PROFILE} element={<ProfilePage />} />
 
             <Route path={AppRoutes.NOT_FOUND} element={<NotFoundPage />} />
         </Route>

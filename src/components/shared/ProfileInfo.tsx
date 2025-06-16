@@ -1,5 +1,7 @@
 import { Avatar, Box, Flex } from '@chakra-ui/react';
+import { Link } from 'react-router';
 
+import { AppRoutes } from '~/constants/routes-config';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 
 export const ProfileInfo = ({
@@ -14,17 +16,21 @@ export const ProfileInfo = ({
     const [isLargerThanMD] = useBreakpoint('md');
 
     return (
-        <Flex display={isLargerThanMD ? 'flex' : 'none'} gap='12px'>
-            <Avatar name='Можанова Екатерина' size='md' />
+        <Flex display={isLargerThanMD ? 'flex' : 'none'}>
+            <Link to={AppRoutes.PROFILE}>
+                <Flex gap={3}>
+                    <Avatar name='Можанова Екатерина' size='md' />
 
-            <div>
-                <Box fontSize='18px' fontWeight='500'>
-                    {`${firstName} ${lastName}`}
-                </Box>
-                <Box fontSize='14px' color='neutral.400'>
-                    {`@${login}`}
-                </Box>
-            </div>
+                    <Box>
+                        <Box fontSize='18px' fontWeight='500'>
+                            {`${firstName} ${lastName}`}
+                        </Box>
+                        <Box fontSize='14px' color='neutral.400'>
+                            {`@${login}`}
+                        </Box>
+                    </Box>
+                </Flex>
+            </Link>
         </Flex>
     );
 };
