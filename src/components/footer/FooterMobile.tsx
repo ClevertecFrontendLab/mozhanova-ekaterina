@@ -7,14 +7,13 @@ import { UiIconButton } from '~/components/ui/UiIconButton';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useAppSelector } from '~/store/hooks';
-import { selectCurrentUserId } from '~/store/selectors';
-import { routeHelpers } from '~/utils/get-routes';
+import { selectCurrentUser } from '~/store/user-slice';
 
 import { SearchIcon } from '../ui/icons/SearchIcon';
 
 export const FooterMobile = () => {
     const location = useLocation();
-    const currentUserId = useAppSelector(selectCurrentUserId);
+    const currentUser = useAppSelector(selectCurrentUser);
 
     return (
         <Grid
@@ -47,9 +46,14 @@ export const FooterMobile = () => {
             <Link to={AppRoutes.CREATE_RECIPE}>
                 <UiIconButton text='Записать' icon={<EditIcon w='24px' h='24px' />} />
             </Link>
-            <Link to={routeHelpers.getBlogPath(currentUserId)}>
+            <Link to={AppRoutes.PROFILE}>
                 <UiIconButton
-                    icon={<Avatar size='md' name='Можанова Екатерина' />}
+                    icon={
+                        <Avatar
+                            size='md'
+                            name={`${currentUser?.firstName || ''} ${currentUser?.lastName || ''}`}
+                        />
+                    }
                     text='Мой профиль'
                 />
             </Link>

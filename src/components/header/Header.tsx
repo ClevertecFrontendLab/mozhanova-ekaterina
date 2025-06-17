@@ -52,7 +52,7 @@ export const Header = ({
             <Logo />
 
             <Breadcrumbs setMenuOpen={setMenuOpen} />
-            {token && <ProfileInfo login='mozhKa' firstName='Екатерина' lastName='Можанова' />}
+            {token && <ProfileInfo />}
 
             {isLargerThanMD && <LogInButton />}
             <Flex

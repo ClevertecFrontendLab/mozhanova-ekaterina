@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { BloggerInfo } from '~/types';
+import { UserDto } from '~/types';
 
 import { ApplicationState } from './configure-store';
 
 export type UserState = {
-    currentUser: BloggerInfo | null;
+    currentUser: UserDto | null;
     accessToken: string | null;
 };
 
