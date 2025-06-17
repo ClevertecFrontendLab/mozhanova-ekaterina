@@ -20,6 +20,9 @@ export const defineBreadcrumbLabel = (
         case 'blogs':
             return 'Блоги';
 
+        case 'profile':
+            return 'Мой профиль';
+
         case categories.find((c) => c.category === path)?.category:
             return categories.find((c) => c.category === path)?.title;
 
