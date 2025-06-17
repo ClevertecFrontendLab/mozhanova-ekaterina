@@ -6,6 +6,7 @@ import {
     NewRecipe,
     Recipe,
     RecipeDraft,
+    RecipeDraftDto,
     RecipeParams,
     RecipesByUserResponse,
 } from '~/types';
@@ -113,6 +114,14 @@ export const recipeApi = authorizedApi.injectEndpoints({
             }),
             invalidatesTags: [Tags.RECIPE],
         }),
+        [EndpointNames.UPDATE_DRAFT]: builder.mutation<Recipe, RecipeDraftDto>({
+            query: (recipe) => ({
+                url: `${ApiEndpoints.CREATE_RECIPE_DRAFT}/${recipe._id}`,
+                method: 'PATCH',
+                body: recipe,
+            }),
+            invalidatesTags: [Tags.USER, Tags.RECIPE],
+        }),
         [EndpointNames.DELETE_RECIPE]: builder.mutation<void, string>({
             query: (id) => ({
                 url: `${ApiEndpoints.RECIPE_BY_ID}${id}`,
@@ -158,4 +167,5 @@ export const {
     useSaveRemoveFromBookmarksMutation,
     useGetRecipesByUserIdQuery,
     useLazyGetRecipesByUserIdQuery,
+    useUpdateDraftMutation,
 } = recipeApi;
