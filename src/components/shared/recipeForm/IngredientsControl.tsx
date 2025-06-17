@@ -1,10 +1,10 @@
 import { Flex, Grid, Table, TableContainer, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
 import { Control, useFieldArray, UseFormRegister } from 'react-hook-form';
 
+import { RoundedPlusIcon } from '~/components/ui/icons/RoundedPlusIcon';
 import { useMeasureUnitsQuery } from '~/query/recipe-api';
 import { NewRecipe } from '~/types';
 
-import { RoundedPlusIcon } from '../ui/icons/RoundedPlusIcon';
 import { IngredientsItem } from './IngredientsItem';
 
 type Props = {

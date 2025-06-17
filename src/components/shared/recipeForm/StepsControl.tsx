@@ -1,10 +1,10 @@
 import { Flex, Grid } from '@chakra-ui/react';
 import { Control, useFieldArray } from 'react-hook-form';
 
+import { PlusIconRoundedFill } from '~/components/ui/icons/PlusIconRoundedFill';
+import { UiButton } from '~/components/ui/UiButton';
 import { NewRecipe, Step } from '~/types';
 
-import { PlusIconRoundedFill } from '../ui/icons/PlusIconRoundedFill';
-import { UiButton } from '../ui/UiButton';
 import { StepCard } from './StepCard';
 
 type Props = {

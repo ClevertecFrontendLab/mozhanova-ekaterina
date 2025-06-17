@@ -12,7 +12,7 @@ import {
 } from '~/store/selectors';
 import { NewRecipe } from '~/types';
 
-import { SelectOptions } from '../shared/SelectOptions';
+import { SelectOptions } from '../SelectOptions';
 
 type Props = {
     error: boolean;

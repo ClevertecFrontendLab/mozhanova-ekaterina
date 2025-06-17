@@ -1,12 +1,11 @@
 import { Flex, Input, Td, Tr } from '@chakra-ui/react';
 import { Control, Controller, UseFormRegister } from 'react-hook-form';
 
+import { PlusIconRoundedFill } from '~/components/ui/icons/PlusIconRoundedFill';
+import { TrashIcon } from '~/components/ui/icons/TrashIcon';
+import { UiSelect } from '~/components/ui/UiSelect';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { Ingredient, MeasureUnit, NewRecipe } from '~/types';
-
-import { PlusIconRoundedFill } from '../ui/icons/PlusIconRoundedFill';
-import { TrashIcon } from '../ui/icons/TrashIcon';
-import { UiSelect } from '../ui/UiSelect';
 
 type Props = {
     index: number;

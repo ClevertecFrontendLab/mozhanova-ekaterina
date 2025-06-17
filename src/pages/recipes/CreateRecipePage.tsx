@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ErrorResponse, useNavigate } from 'react-router';
 
-import { Form } from '~/components/recipeForm/Form';
+import { Form } from '~/components/shared/recipeForm/Form';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { AppRoutes } from '~/constants/routes-config';
 import { useErrors } from '~/hooks/use-errors';

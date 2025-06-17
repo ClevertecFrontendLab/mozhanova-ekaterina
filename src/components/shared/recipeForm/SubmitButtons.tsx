@@ -1,9 +1,8 @@
 import { EditIcon } from '@chakra-ui/icons';
 import { Flex } from '@chakra-ui/react';
 
+import { UiButton } from '~/components/ui/UiButton';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-
-import { UiButton } from '../ui/UiButton';
 
 export const SubmitButtons = ({ saveDraft }: { saveDraft: () => void }) => (
     <Flex gap={5} direction={{ base: 'column', sm: 'row' }} justify='center'>

@@ -1,12 +1,11 @@
 import { Flex, Text } from '@chakra-ui/react';
 import { Control, useController } from 'react-hook-form';
 
+import { UiNumberInput } from '~/components/ui/UiNumberInput';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { NewRecipe } from '~/types';
 
-import { UiNumberInput } from '../ui/UiNumberInput';
-
-export const TimeControl = ({
+export const PortionsControl = ({
     error,
     control,
 }: {
@@ -15,7 +14,7 @@ export const TimeControl = ({
 }) => {
     const {
         field: { onChange, value },
-    } = useController({ control, name: 'time' });
+    } = useController({ control, name: 'portions' });
 
     const handleChange = (valueString: string) => {
         const num = Number(valueString);
@@ -28,14 +27,13 @@ export const TimeControl = ({
 
     return (
         <Flex w='100%' align='center' gap={6} justify={{ base: 'space-between', sm: 'flex-start' }}>
-            <Text fontWeight={600}>Сколько времени готовить в минутах?</Text>
+            <Text fontWeight={600}>На сколько человек ваш рецепт?</Text>
 
             <UiNumberInput
-                dataInputId={DATA_TEST_IDS.RECIPE_TIME}
+                dataInputId={DATA_TEST_IDS.RECIPE_PORTIONS}
                 error={error}
                 onChange={handleChange}
                 value={value}
-                defaultValue={value}
             />
         </Flex>
     );

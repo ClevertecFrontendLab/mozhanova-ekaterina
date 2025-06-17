@@ -1,9 +1,9 @@
 import { Box, Card, CardBody, Flex, Tag, Textarea } from '@chakra-ui/react';
 import { Control, Controller } from 'react-hook-form';
 
+import { TrashIcon } from '~/components/ui/icons/TrashIcon';
 import { NewRecipe, Step } from '~/types';
 
-import { TrashIcon } from '../ui/icons/TrashIcon';
 import { StepImageControl } from './StepImageControl';
 
 type Props = {

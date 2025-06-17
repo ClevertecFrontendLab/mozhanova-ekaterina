@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ErrorResponse, useNavigate, useParams } from 'react-router';
 
-import { Form } from '~/components/recipeForm/Form';
+import { Form } from '~/components/shared/recipeForm/Form';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { AppRoutes } from '~/constants/routes-config';
 import { useErrors } from '~/hooks/use-errors';
