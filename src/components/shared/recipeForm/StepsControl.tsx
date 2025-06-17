@@ -3,13 +3,13 @@ import { Control, useFieldArray } from 'react-hook-form';
 
 import { PlusIconRoundedFill } from '~/components/ui/icons/PlusIconRoundedFill';
 import { UiButton } from '~/components/ui/UiButton';
-import { NewRecipe, Step } from '~/types';
+import { Recipe, Step } from '~/types';
 
 import { StepCard } from './StepCard';
 
 type Props = {
     error: boolean;
-    control: Control<NewRecipe>;
+    control: Control<Recipe>;
 };
 
 export const StepsControl = ({ control, error }: Props) => {
@@ -20,7 +20,7 @@ export const StepsControl = ({ control, error }: Props) => {
     const generateStep = (stepNumber: number): Step => ({
         stepNumber,
         description: '',
-        image: '',
+        image: null,
     });
 
     const addNewStep = () => {

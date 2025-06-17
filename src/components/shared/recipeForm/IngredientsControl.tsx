@@ -3,14 +3,14 @@ import { Control, useFieldArray, UseFormRegister } from 'react-hook-form';
 
 import { RoundedPlusIcon } from '~/components/ui/icons/RoundedPlusIcon';
 import { useMeasureUnitsQuery } from '~/query/recipe-api';
-import { NewRecipe } from '~/types';
+import { Recipe } from '~/types';
 
 import { IngredientsItem } from './IngredientsItem';
 
 type Props = {
     error: boolean;
-    control: Control<NewRecipe>;
-    register: UseFormRegister<NewRecipe>;
+    control: Control<Recipe>;
+    register: UseFormRegister<Recipe>;
 };
 
 export const IngredientsControl = ({ control, error, register }: Props) => {

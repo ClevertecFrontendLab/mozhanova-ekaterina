@@ -5,11 +5,11 @@ import default_image from '~/assets/ui/image_default.png';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
 import { API_IMAGE_URL } from '~/query/constants/api-config';
-import { NewRecipe } from '~/types';
+import { Recipe } from '~/types';
 
 type Props = {
     error: boolean;
-    control: Control<NewRecipe>;
+    control: Control<Recipe>;
 };
 
 export const ImageControl = ({ control, error }: Props) => {

@@ -1,13 +1,11 @@
 import { Container, Flex, Grid, VStack } from '@chakra-ui/react';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect } from 'react';
 import { Control, useForm } from 'react-hook-form';
 
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
 import { useClickOutside } from '~/hooks/use-click-outside';
-import { NewRecipe, Recipe, RecipeDraft } from '~/types';
-import { RecipePublishSchema } from '~/validation';
+import { Recipe, RecipeDraft } from '~/types';
 
 import { DescriptionControl } from './DescriptionControl';
 import { ImageControl } from './ImageControl';
@@ -23,23 +21,22 @@ export const Form = ({
     data,
     onSubmit,
     onSave,
-    isDraftValid,
+    isFormValid,
+    setIsFormValid,
 }: {
-    onSubmit: (data: NewRecipe) => void;
+    onSubmit: (data: Recipe) => void;
     onSave: (data: RecipeDraft) => void;
-    isDraftValid: boolean;
+    isFormValid: boolean;
+    setIsFormValid: (value: boolean) => void;
     data?: Recipe;
 }) => {
     const {
         register,
         control,
-        handleSubmit,
         getValues,
-        setError,
-        formState: { isDirty, errors },
+        formState: { isDirty },
     } = useForm({
         mode: 'onChange',
-        resolver: yupResolver(RecipePublishSchema),
         defaultValues: data || {
             title: '',
             description: '',
@@ -66,7 +63,6 @@ export const Form = ({
 
     const { showRecipePreventive } = useModalContext();
     const { clickedLink, setClickedLink } = useClickOutside(isDirty);
-    const isValid = Object.keys(errors).length === 0;
 
     useEffect(() => {
         if (isDirty && clickedLink) {
@@ -74,7 +70,7 @@ export const Form = ({
                 draft: getValues(),
                 link: clickedLink,
                 setError: () => {
-                    setError('title', { message: '' });
+                    setIsFormValid(false);
                 },
             });
             setClickedLink('');
@@ -84,52 +80,31 @@ export const Form = ({
     const handleSave = () => {
         onSave(getValues());
     };
+    const handleSubmit = () => {
+        onSubmit(getValues());
+    };
     return (
-        <Grid
-            data-test-id={DATA_TEST_IDS.RECIPE_FORM}
-            gap={10}
-            flex={1}
-            as='form'
-            onSubmit={handleSubmit(onSubmit)}
-        >
+        <Grid data-test-id={DATA_TEST_IDS.RECIPE_FORM} gap={10} flex={1} as='form'>
             <Flex gap={6} direction={{ base: 'column', sm: 'row' }}>
-                <ImageControl
-                    error={!isValid || !isDraftValid}
-                    control={control as Control<NewRecipe>}
-                />
+                <ImageControl error={!isFormValid} control={control as Control<Recipe>} />
                 <VStack gap={6} flexGrow={1} maxW={{ base: '100%', sm: '575px' }}>
-                    <TagsControl
-                        error={!isValid || !isDraftValid}
-                        control={control as Control<NewRecipe>}
-                    />
-                    <TitleControl error={!isValid || !isDraftValid} {...register('title')} />
-                    <DescriptionControl
-                        error={!isValid || !isDraftValid}
-                        {...register('description')}
-                    />
-                    <PortionsControl
-                        error={!isValid || !isDraftValid}
-                        control={control as Control<NewRecipe>}
-                    />
-                    <TimeControl
-                        error={!isValid || !isDraftValid}
-                        control={control as Control<NewRecipe>}
-                    />
+                    <TagsControl error={!isFormValid} control={control as Control<Recipe>} />
+                    <TitleControl error={!isFormValid} {...register('title')} />
+                    <DescriptionControl error={!isFormValid} {...register('description')} />
+                    <PortionsControl error={!isFormValid} control={control as Control<Recipe>} />
+                    <TimeControl error={!isFormValid} control={control as Control<Recipe>} />
                 </VStack>
             </Flex>
             <Container p={0} display='grid' gap={10} maxW='668px'>
                 <IngredientsControl
-                    error={!isValid || !isDraftValid}
-                    control={control as Control<NewRecipe>}
+                    error={!isFormValid}
+                    control={control as Control<Recipe>}
                     register={register}
                 />
-                <StepsControl
-                    error={!isValid || !isDraftValid}
-                    control={control as Control<NewRecipe>}
-                />
+                <StepsControl error={!isFormValid} control={control as Control<Recipe>} />
             </Container>
 
-            <SubmitButtons saveDraft={handleSave} />
+            <SubmitButtons onSubmit={handleSubmit} saveDraft={handleSave} />
         </Grid>
     );
 };

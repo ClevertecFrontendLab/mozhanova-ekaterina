@@ -3,15 +3,9 @@ import { Control, useController } from 'react-hook-form';
 
 import { UiNumberInput } from '~/components/ui/UiNumberInput';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { NewRecipe } from '~/types';
+import { Recipe } from '~/types';
 
-export const TimeControl = ({
-    error,
-    control,
-}: {
-    error: boolean;
-    control: Control<NewRecipe>;
-}) => {
+export const TimeControl = ({ error, control }: { error: boolean; control: Control<Recipe> }) => {
     const {
         field: { onChange, value },
     } = useController({ control, name: 'time' });

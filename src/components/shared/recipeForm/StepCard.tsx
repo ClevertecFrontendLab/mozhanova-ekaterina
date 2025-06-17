@@ -2,7 +2,7 @@ import { Box, Card, CardBody, Flex, Tag, Textarea } from '@chakra-ui/react';
 import { Control, Controller } from 'react-hook-form';
 
 import { TrashIcon } from '~/components/ui/icons/TrashIcon';
-import { NewRecipe, Step } from '~/types';
+import { Recipe, Step } from '~/types';
 
 import { StepImageControl } from './StepImageControl';
 
@@ -10,7 +10,7 @@ type Props = {
     index: number;
     step: Step;
     error: boolean;
-    control: Control<NewRecipe>;
+    control: Control<Recipe>;
     removeStep: VoidFunction;
 };
 

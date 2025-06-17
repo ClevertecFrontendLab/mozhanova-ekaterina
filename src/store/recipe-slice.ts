@@ -7,6 +7,7 @@ import { ApplicationState } from './configure-store';
 
 export type RecipesState = {
     current: Recipe | null;
+    draft: Recipe | null;
     filters: {
         categoryName: string[];
         subcategoryIds: string[];
@@ -25,9 +26,11 @@ export type RecipesState = {
 
 export const currentRecipeSelector = (state: ApplicationState) => state.recipe.current || null;
 export const paginationSelector = (state: ApplicationState) => state.recipe.pagination || null;
+export const draftSelector = (state: ApplicationState) => state.recipe.draft || null;
 
 const initialState: RecipesState = {
     current: null,
+    draft: null,
     filters: {
         categoryName: [],
         subcategoryIds: [],
@@ -80,6 +83,9 @@ export const recipesSlice = createSlice({
         setCurrentRecipe: (state, action: PayloadAction<Recipe>) => {
             state.current = action.payload;
         },
+        setDraft: (state, action: PayloadAction<Recipe>) => {
+            state.draft = action.payload;
+        },
     },
 });
 
@@ -95,4 +101,5 @@ export const {
     setCurrentPage,
     setPaginationMeta,
     setCurrentRecipe,
+    setDraft,
 } = recipesSlice.actions;
