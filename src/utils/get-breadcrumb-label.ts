@@ -6,6 +6,7 @@ export const defineBreadcrumbLabel = (
     subCategories: Category[] = [],
     currentRecipe: Recipe | null,
     currentUser: BloggerInfo | null,
+    currentDraft: Recipe | null,
 ) => {
     switch (path) {
         case 'the-juiciest':
@@ -34,6 +35,9 @@ export const defineBreadcrumbLabel = (
 
         case currentUser?._id:
             return `${currentUser?.firstName} ${currentUser?.lastName} (@${currentUser?.login})`;
+
+        case currentDraft?._id:
+            return currentDraft?.title;
 
         default:
             return '';
