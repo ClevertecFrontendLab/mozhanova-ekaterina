@@ -1,10 +1,8 @@
 import { Grid, Heading, SimpleGrid, Text } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
 
 import { UiButton } from '~/components/ui/UiButton';
-import { BREAKPOINTS_VALUES } from '~/constants/breakpoints-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { useWindowSize } from '~/hooks/use-window-size';
+import { useToggleNotes } from '~/hooks/use-toggle-notes';
 import { Note } from '~/types';
 
 import { NoteCard } from './NoteCard';
@@ -14,21 +12,9 @@ export const NotesList = ({
     ref,
 }: {
     notes: Note[];
-    ref: (node: HTMLDivElement) => void;
+    ref?: (node: HTMLDivElement) => void;
 }) => {
-    const { width } = useWindowSize();
-    const slicedNotes = width < BREAKPOINTS_VALUES.sm ? notes.slice(0, 2) : notes.slice(0, 3);
-    const [notesToShow, setShowNotes] = useState(slicedNotes);
-    const notesToHide = notes.slice(slicedNotes.length);
-    const showToggleButton = notes.length !== slicedNotes.length;
-
-    const toggleNotes = () => {
-        setShowNotes(notesToShow.length === notes.length ? slicedNotes : notes);
-    };
-
-    useEffect(() => {
-        setShowNotes(slicedNotes);
-    }, [notes]);
+    const { notesToHide, notesToShow, showToggleButton, toggleNotes } = useToggleNotes(notes);
 
     return (
         <Grid
