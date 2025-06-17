@@ -44,6 +44,7 @@ export const Router = () => (
 
             <Route path={AppRoutes.CREATE_RECIPE} element={<CreateRecipePage />} />
             <Route path={AppRoutes.EDIT_RECIPE} element={<EditRecipePage />} />
+            <Route path={AppRoutes.EDIT_DRAFT} element={<EditRecipePage />} />
 
             <Route path={AppRoutes.PROFILE} element={<ProfilePage />} />
 

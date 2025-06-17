@@ -1,10 +1,6 @@
-export const AppRoutes = {
+export const AppBaseRoutes = {
     HOME: '/',
     SEARCH: '/search',
-    CATEGORY: '/:category',
-    CATEGORY_WILDCARD: '/:category/*',
-    SUB_CATEGORY: ':subCategory',
-    RECIPE: '/:category/:subCategory/:id',
     THE_JUICIEST: '/the-juiciest',
     NOT_FOUND: '/not-found',
     SIGN_IN: '/signin',
@@ -12,9 +8,31 @@ export const AppRoutes = {
     VERIFICATION: '/verification',
     RECOVERY: '/signin/recovery',
     CREATE_RECIPE: '/new-recipe',
-    EDIT: '/edit-recipe',
-    EDIT_RECIPE: '/edit-recipe/:category/:subCategory/:id',
+    EDIT_RECIPE: '/edit-recipe',
+    EDIT_DRAFT: '/edit-draft',
     BLOGS: '/blogs',
-    BLOGS_USER: '/blogs/:bloggerId',
     PROFILE: '/profile',
+} as const;
+
+export const RouteParams = {
+    CATEGORY: 'category',
+    SUB_CATEGORY: 'subCategory',
+    RECIPE_ID: 'recipeId',
+    BLOGGER_ID: 'bloggerId',
+    DRAFT_ID: 'draftId',
+} as const;
+
+export const AppDynamicRoutes = {
+    CATEGORY: `/:${RouteParams.CATEGORY}`,
+    CATEGORY_WILDCARD: `/:${RouteParams.CATEGORY}/*`,
+    SUB_CATEGORY: `:${RouteParams.SUB_CATEGORY}`,
+    RECIPE: `/:${RouteParams.CATEGORY}/:${RouteParams.SUB_CATEGORY}/:${RouteParams.RECIPE_ID}`,
+    EDIT_RECIPE: `/edit-recipe/:${RouteParams.CATEGORY}/:${RouteParams.SUB_CATEGORY}/:${RouteParams.RECIPE_ID}`,
+    EDIT_DRAFT: `/edit-draft/:${RouteParams.DRAFT_ID}`,
+    BLOGS_USER: `/blogs/:${RouteParams.BLOGGER_ID}`,
+} as const;
+
+export const AppRoutes = {
+    ...AppBaseRoutes,
+    ...AppDynamicRoutes,
 } as const;
