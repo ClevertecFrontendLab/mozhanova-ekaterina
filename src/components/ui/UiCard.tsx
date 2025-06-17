@@ -8,17 +8,19 @@ import {
     Heading,
     Image,
     Stack,
+    Tag,
     Text,
 } from '@chakra-ui/react';
-import { useSelector } from 'react-redux';
-import { ErrorResponse, Link, useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { ErrorResponse, Link, useNavigate, useParams } from 'react-router';
 
+import default_image from '~/assets/ui/image_default.png';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useErrors } from '~/hooks/use-errors';
 import { API_IMAGE_URL } from '~/query/constants/api-config';
 import { useSaveRemoveFromBookmarksMutation } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
-import { RecipesState } from '~/store/recipe-slice';
+import { RecipesState, setDraft } from '~/store/recipe-slice';
 import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
 import { Recipe } from '~/types';
 import { routeHelpers } from '~/utils/get-routes';
@@ -29,16 +31,20 @@ import { UiButton } from './UiButton';
 import { UiCardInfo } from './UiCardInfo';
 
 type Props = {
-    data: Recipe;
+    data: Partial<Recipe>;
     size?: 'sm' | 'md' | 'lg';
     recommendation?: string;
     categoryBgColor?: 'secondary.100' | 'primary.100';
     index?: number;
+    isDraft?: boolean;
+    editable?: boolean;
     'data-test-id'?: string;
 };
 
 export const UiCard = ({
-    data: { title, description, image, categoriesIds, likes, bookmarks, _id },
+    data,
+    isDraft,
+    editable,
     recommendation,
     size = 'lg',
     index,
@@ -48,27 +54,36 @@ export const UiCard = ({
     const [isLargerThanMD] = useBreakpoint('md');
     const [saveRecipe] = useSaveRemoveFromBookmarksMutation();
     const { saveLikeRecipeErrorHandler } = useErrors();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const searchString = useSelector(
         (state: { recipe: RecipesState }) => state.recipe.filters.searchString,
     );
 
     const subCategories = useSelector((state: ApplicationState) =>
-        selectRecipeSubCategories(state, categoriesIds),
+        selectRecipeSubCategories(state, data?.categoriesIds),
     );
 
     const rootCategories = useSelector((state: ApplicationState) =>
-        selectRecipeCategories(state, categoriesIds),
+        selectRecipeCategories(state, data?.categoriesIds),
     );
     const categoryRoute = category || (rootCategories[0]?.category ?? '');
     const subCategoryRoute = subCategory || (subCategories[0]?.category ?? '');
 
     const handleSave = async () => {
+        if (!data?._id) return;
         try {
-            await saveRecipe(_id).unwrap();
+            await saveRecipe(data._id).unwrap();
         } catch (error) {
             saveLikeRecipeErrorHandler(error as ErrorResponse);
         }
+    };
+
+    const handleEdit = () => {
+        if (!data) return;
+        dispatch(setDraft(data as Recipe));
+        navigate(routeHelpers.getEditDraftPath(data._id!));
     };
 
     return (
@@ -87,11 +102,11 @@ export const UiCard = ({
                     md: '346px',
                 }}
                 maxH='100%'
-                src={`${API_IMAGE_URL}${image}`}
+                src={data?.image ? `${API_IMAGE_URL}${data.image}` : default_image}
                 alt='card image'
             />
 
-            {recommendation && isLargerThanMD && (
+            {!isDraft && recommendation && isLargerThanMD && (
                 <Flex
                     position='absolute'
                     bottom='20px'
@@ -110,20 +125,26 @@ export const UiCard = ({
 
             <Stack spacing={0} flexGrow={1}>
                 <CardBody>
-                    <Box
-                        pb={{
-                            base: 0,
-                            md: 6,
-                        }}
-                    >
-                        <UiCardInfo
-                            categoryBgColor='secondary.100'
-                            categories={rootCategories?.map((category) => category?._id)}
-                            likes={likes}
-                            bookmarks={bookmarks}
-                            alignItems='flex-start'
-                        />
-                    </Box>
+                    {isDraft ? (
+                        <Box textAlign='right'>
+                            <Tag>Черновик</Tag>
+                        </Box>
+                    ) : (
+                        <Box
+                            pb={{
+                                base: 0,
+                                md: 6,
+                            }}
+                        >
+                            <UiCardInfo
+                                categoryBgColor='secondary.100'
+                                categories={rootCategories?.map((category) => category?._id)}
+                                likes={data?.likes}
+                                bookmarks={data?.bookmarks}
+                                alignItems='flex-start'
+                            />
+                        </Box>
+                    )}
 
                     <Flex
                         gap={{
@@ -145,41 +166,56 @@ export const UiCard = ({
                                 md: 1,
                             }}
                         >
-                            {searchString ? highlightMatches(title, searchString) : title}
+                            {searchString
+                                ? highlightMatches(data?.title, searchString)
+                                : data?.title}
                         </Heading>
                         <Text fontSize='sm' noOfLines={3}>
-                            {isLargerThanMD && description}
+                            {isLargerThanMD && (data.description || '...')}
                         </Text>
                     </Flex>
                 </CardBody>
 
                 <CardFooter>
-                    <Flex gap='8px' justify='flex-end' align='flex-end' w='100%'>
-                        <UiButton
-                            onClick={handleSave}
-                            size={{ base: 'xs', md: 'sm' }}
-                            text='Сохранить'
-                            leftIcon={isLargerThanMD ? <BookmarkHeartIcon /> : undefined}
-                            icon={<BookmarkHeartIcon size={!isLargerThanMD ? '12px' : '16px'} />}
-                            iconButton={!isLargerThanMD}
-                        />
-                        {((category && subCategories) || (rootCategories && subCategories)) && (
-                            <Link
-                                to={routeHelpers.getRecipePath(
-                                    categoryRoute,
-                                    subCategoryRoute,
-                                    _id,
-                                )}
-                            >
-                                <UiButton
-                                    data-test-id={`card-link-${index}`}
-                                    size={isLargerThanMD ? 'sm' : 'xs'}
-                                    text='Готовить'
-                                    variant='solid'
-                                />
-                            </Link>
-                        )}
-                    </Flex>
+                    {editable ? (
+                        <Flex justify='flex-end' grow={1}>
+                            <UiButton
+                                variant={isDraft ? 'solid' : 'outline'}
+                                size={{ base: 'xs', md: 'sm' }}
+                                text='Редактировать'
+                                onClick={handleEdit}
+                            />
+                        </Flex>
+                    ) : (
+                        <Flex gap='8px' justify='flex-end' align='flex-end' w='100%'>
+                            <UiButton
+                                onClick={handleSave}
+                                size={{ base: 'xs', md: 'sm' }}
+                                text='Сохранить'
+                                leftIcon={isLargerThanMD ? <BookmarkHeartIcon /> : undefined}
+                                icon={
+                                    <BookmarkHeartIcon size={!isLargerThanMD ? '12px' : '16px'} />
+                                }
+                                iconButton={!isLargerThanMD}
+                            />
+                            {((category && subCategories) || (rootCategories && subCategories)) && (
+                                <Link
+                                    to={routeHelpers.getRecipePath(
+                                        categoryRoute,
+                                        subCategoryRoute,
+                                        data!._id!,
+                                    )}
+                                >
+                                    <UiButton
+                                        data-test-id={`card-link-${index}`}
+                                        size={isLargerThanMD ? 'sm' : 'xs'}
+                                        text='Готовить'
+                                        variant='solid'
+                                    />
+                                </Link>
+                            )}
+                        </Flex>
+                    )}
                 </CardFooter>
             </Stack>
         </Card>

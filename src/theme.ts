@@ -339,6 +339,11 @@ const theme = extendTheme({
             },
         },
         Tag: {
+            baseStyle: {
+                container: {
+                    bg: 'neutral.20',
+                },
+            },
             variants: {
                 outline: {
                     container: {
