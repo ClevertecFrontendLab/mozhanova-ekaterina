@@ -84,6 +84,22 @@ export type ObjectId = {
         data: number[];
     };
 };
+export type UserDto = {
+    _id: string;
+    drafts: RecipeDraft[];
+    recipesIds: string[];
+    subscribers: string[];
+    subscriptions: string[];
+    email: string;
+    login: string;
+    lastName: string;
+    firstName: string;
+};
+export type StatisticDto = {
+    likes: { data: string; count: number }[];
+    bookmarks: { data: string; count: number }[];
+    recommendationsCount: number;
+};
 export type BloggerInfoDto = {
     _id: ObjectId;
     createdAt: string;
@@ -99,6 +115,7 @@ export type BloggerInfoDto = {
     lastName: string;
     recipesIds: ObjectId[];
     subscribers: ObjectId[];
+    subscriptions: ObjectId[];
     notes: Note[];
 };
 export type BloggerInfo = Omit<BloggerInfoDto, '_id'> & {
