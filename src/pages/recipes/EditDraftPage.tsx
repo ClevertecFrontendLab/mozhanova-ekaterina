@@ -7,7 +7,7 @@ import { draftSelector } from '~/store/recipe-slice';
 
 export const EditDraftPage = () => {
     const draft = useAppSelector(draftSelector);
-    const { isFormValid, setIsFormValid, handleSaveDraft, handleSubmit } = useRecipeSubmit();
+    const { isFormValid, setIsFormValid, handlePublish, handleDraftUpdate } = useRecipeSubmit();
 
     if (!draft) return null;
     return (
@@ -15,8 +15,8 @@ export const EditDraftPage = () => {
             <Form
                 isFormValid={isFormValid}
                 setIsFormValid={setIsFormValid}
-                onSave={handleSaveDraft}
-                onSubmit={handleSubmit}
+                onSave={handleDraftUpdate}
+                onSubmit={handlePublish}
                 data={draft}
             />
         </Box>

@@ -16,6 +16,7 @@ import { NotFoundPage } from '~/pages/NotFoundPage';
 import { ProfilePage } from '~/pages/ProfilePage';
 import { CategoryPage } from '~/pages/recipes/CategoryPage';
 import { CreateRecipePage } from '~/pages/recipes/CreateRecipePage';
+import { EditDraftPage } from '~/pages/recipes/EditDraftPage';
 import { EditRecipePage } from '~/pages/recipes/EditRecipePage';
 import { RecipePage } from '~/pages/recipes/RecipePage';
 import { SearchPage } from '~/pages/recipes/SearchPage';
@@ -44,7 +45,7 @@ export const Router = () => (
 
             <Route path={AppRoutes.CREATE_RECIPE} element={<CreateRecipePage />} />
             <Route path={AppRoutes.EDIT_RECIPE} element={<EditRecipePage />} />
-            <Route path={AppRoutes.EDIT_DRAFT} element={<EditRecipePage />} />
+            <Route path={AppRoutes.EDIT_DRAFT} element={<EditDraftPage />} />
 
             <Route path={AppRoutes.PROFILE} element={<ProfilePage />} />
 

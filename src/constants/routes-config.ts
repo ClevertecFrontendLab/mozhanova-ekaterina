@@ -19,7 +19,6 @@ export const RouteParams = {
     SUB_CATEGORY: 'subCategory',
     RECIPE_ID: 'recipeId',
     BLOGGER_ID: 'bloggerId',
-    DRAFT_ID: 'draftId',
 } as const;
 
 export const AppDynamicRoutes = {
@@ -28,7 +27,7 @@ export const AppDynamicRoutes = {
     SUB_CATEGORY: `:${RouteParams.SUB_CATEGORY}`,
     RECIPE: `/:${RouteParams.CATEGORY}/:${RouteParams.SUB_CATEGORY}/:${RouteParams.RECIPE_ID}`,
     EDIT_RECIPE: `/edit-recipe/:${RouteParams.CATEGORY}/:${RouteParams.SUB_CATEGORY}/:${RouteParams.RECIPE_ID}`,
-    EDIT_DRAFT: `/edit-draft/:${RouteParams.DRAFT_ID}`,
+    EDIT_DRAFT: `/edit-draft/:${RouteParams.RECIPE_ID}`,
     BLOGS_USER: `/blogs/:${RouteParams.BLOGGER_ID}`,
 } as const;
 

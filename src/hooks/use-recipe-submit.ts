@@ -9,27 +9,30 @@ import { useToast } from '~/hooks/use-toast';
 import {
     useCreateRecipeDraftMutation,
     useCreateRecipeMutation,
+    useUpdateDraftMutation,
     useUpdateRecipeMutation,
 } from '~/query/recipe-api';
-import { NewRecipe, Recipe, RecipeDraft } from '~/types';
+import { NewRecipe, Recipe, RecipeDraft, RecipeDraftDto } from '~/types';
 import { RecipeDraftSchema, RecipePublishSchema } from '~/validation';
 
 export const useRecipeSubmit = () => {
     const [createRecipe] = useCreateRecipeMutation();
     const [saveDraft] = useCreateRecipeDraftMutation();
     const [updateRecipe] = useUpdateRecipeMutation();
+    const [updateDraft] = useUpdateDraftMutation();
     const { getRecipePath } = useRoutes();
     const navigate = useNavigate();
     const [isFormValid, setIsFormValid] = useState(true);
     const { showSuccess } = useToast();
     const { createRecipeErrorHandler, createDraftRecipeErrorHandler } = useErrors();
 
-    const handleSubmit = async (recipe: NewRecipe) => {
+    const handlePublish = async (recipe: NewRecipe) => {
         const isValid = await RecipePublishSchema.isValid(recipe);
         setIsFormValid(isValid);
         if (!isValid) return;
         try {
-            const response = await createRecipe(recipe).unwrap();
+            const data = await RecipePublishSchema.validate(recipe);
+            const response = await createRecipe(data).unwrap();
             showSuccess(NOTIFICATION_MESSAGES.CREATE_RECIPE_SUCCESS);
             navigate(getRecipePath(response.categoriesIds, response._id));
         } catch (error) {
@@ -42,11 +45,26 @@ export const useRecipeSubmit = () => {
         setIsFormValid(isValid);
         if (!isValid) return;
         try {
-            const response = await updateRecipe(recipe as Recipe).unwrap();
+            const data = await RecipePublishSchema.validate(recipe);
+            const response = await updateRecipe(data as Recipe).unwrap();
             showSuccess(NOTIFICATION_MESSAGES.CREATE_RECIPE_SUCCESS);
             navigate(getRecipePath(response.categoriesIds, response._id));
         } catch (error) {
             createRecipeErrorHandler(error as ErrorResponse);
+        }
+    };
+
+    const handleDraftUpdate = async (recipe: RecipeDraft) => {
+        const isValid = await RecipeDraftSchema.isValid(recipe);
+        setIsFormValid(isValid);
+        if (!isValid) return;
+        try {
+            const data = await RecipeDraftSchema.validate(recipe);
+            await updateDraft(data as RecipeDraftDto).unwrap();
+            showSuccess(NOTIFICATION_MESSAGES.CREATE_RECIPE_DRAFT_SUCCESS);
+            navigate(AppRoutes.PROFILE);
+        } catch (error) {
+            createDraftRecipeErrorHandler(error as ErrorResponse);
         }
     };
 
@@ -65,5 +83,12 @@ export const useRecipeSubmit = () => {
         }
     };
 
-    return { handleSubmit, handleSaveDraft, handleRecipeUpdate, isFormValid, setIsFormValid };
+    return {
+        handlePublish,
+        handleSaveDraft,
+        handleRecipeUpdate,
+        handleDraftUpdate,
+        isFormValid,
+        setIsFormValid,
+    };
 };
