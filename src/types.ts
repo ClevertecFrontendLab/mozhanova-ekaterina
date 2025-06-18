@@ -29,6 +29,9 @@ export type MeasureUnit = {
     name: string;
 };
 export type RecipeDraft = Partial<Omit<NewRecipe, 'title'>> & Pick<NewRecipe, 'title'>;
+export type RecipeDraftDto = RecipeDraft & {
+    _id: string;
+};
 
 export type NewRecipe = Pick<
     Recipe,
@@ -86,7 +89,7 @@ export type ObjectId = {
 };
 export type UserDto = {
     _id: string;
-    drafts: RecipeDraft[];
+    drafts: RecipeDraftDto[];
     recipesIds: string[];
     subscribers: string[];
     subscriptions: string[];
@@ -144,10 +147,11 @@ export type BloggerResponse = Omit<BloggerResponseDto, 'bloggerInfo'> & {
 
 export type RecipesByUserResponse = {
     recipes: Recipe[];
+    myBookmarks: Recipe[];
+    notes: Note[];
     totalBookmarks: number;
     totalSubscribers: number;
     userId: string;
-    notes: Note[];
 };
 
 export type Category = {

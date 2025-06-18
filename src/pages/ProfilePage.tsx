@@ -1,12 +1,23 @@
 import { Grid } from '@chakra-ui/react';
+import { useEffect } from 'react';
 
+import { BookmarksList } from '~/components/shared/profile/BookmarksList';
 import { Hero } from '~/components/shared/profile/Hero';
+import { NotesList } from '~/components/shared/profile/NotesList';
+import { RecipesList } from '~/components/shared/profile/RecipesList';
+import { useLazyGetRecipesByUserIdQuery } from '~/query/recipe-api';
 import { useGetProfileQuery } from '~/query/user-api';
 
 export const ProfilePage = () => {
     const { data: profile } = useGetProfileQuery();
+    const [getRecipes, { data: recipes }] = useLazyGetRecipesByUserIdQuery();
 
-    if (!profile) return null;
+    useEffect(() => {
+        if (!profile) return;
+        getRecipes(profile._id);
+    }, [profile]);
+
+    if (!profile || !recipes) return null;
     return (
         <Grid as='main' px={{ base: 4, sm: 5, md: 6 }}>
             <Hero
@@ -14,10 +25,10 @@ export const ProfilePage = () => {
                 lastName={profile?.lastName}
                 login={profile?.login}
             />
-            <Grid gap={40}>
-                {/* <RecipesList /> */}
-                {/* <NotesList /> */}
-                {/* <BookmarksList /> */}
+            <Grid gap={{ base: 8, md: 10 }}>
+                <RecipesList drafts={profile.drafts} recipes={recipes.recipes} />
+                <NotesList notes={recipes.notes} />
+                <BookmarksList bookmarks={recipes.myBookmarks} />
             </Grid>
         </Grid>
     );
