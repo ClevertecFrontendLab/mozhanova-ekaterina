@@ -32,7 +32,7 @@ export const Hero = ({ firstName = '', lastName = '', login = '' }: Props) => (
     </Flex>
 );
 
-function IconBox() {
+function IconBox({ onClick }: { onClick?: VoidFunction }) {
     return (
         <Flex
             align='center'
@@ -43,6 +43,7 @@ function IconBox() {
             w='48px'
             h='48px'
             cursor='pointer'
+            onClick={onClick}
         >
             <SettingsIcon boxSize='24px' />
         </Flex>

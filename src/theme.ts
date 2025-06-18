@@ -483,9 +483,11 @@ const theme = extendTheme({
                 },
             },
             variants: {
-                filter: {
+                custom: {
                     overlay: {
                         zIndex: 50,
+                        backdropFilter: 'blur(4px)',
+                        bg: 'rgba(0, 0, 0, 0.16)',
                     },
                     dialogContainer: {
                         zIndex: 50,

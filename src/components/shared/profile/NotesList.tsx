@@ -1,4 +1,4 @@
-import { Box, Grid, Heading, SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, Grid, Heading, SimpleGrid, Text, useDisclosure } from '@chakra-ui/react';
 
 import { PencilIcon } from '~/components/ui/icons/PencilIcon';
 import { UiButton } from '~/components/ui/UiButton';
@@ -6,9 +6,11 @@ import { useToggleNotes } from '~/hooks/use-toggle-notes';
 import { Note } from '~/types';
 
 import { NoteCard } from '../blogs/NoteCard';
+import { NotesDrawer } from './NotesDrawer';
 
 export const NotesList = ({ notes }: { notes: Note[] }) => {
     const { notesToHide, notesToShow, showToggleButton, toggleNotes } = useToggleNotes(notes);
+    const { onClose, onOpen, isOpen } = useDisclosure();
 
     return (
         <Grid p={{ base: 4, md: 6 }} bg='neutral.10' borderRadius='16px' gap={4}>
@@ -25,7 +27,12 @@ export const NotesList = ({ notes }: { notes: Note[] }) => {
                         ({notes.length})
                     </Text>
                 </Box>
-                <UiButton variant='outline' leftIcon={<PencilIcon />} text='Новая заметка' />
+                <UiButton
+                    onClick={onOpen}
+                    variant='outline'
+                    leftIcon={<PencilIcon />}
+                    text='Новая заметка'
+                />
             </Heading>
             {notes.length > 0 && (
                 <>
@@ -61,6 +68,7 @@ export const NotesList = ({ notes }: { notes: Note[] }) => {
                     onClick={toggleNotes}
                 />
             )}
+            <NotesDrawer isOpen={isOpen} onClose={onClose} />
         </Grid>
     );
 };

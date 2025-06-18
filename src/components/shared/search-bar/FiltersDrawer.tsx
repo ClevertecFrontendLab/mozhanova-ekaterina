@@ -124,14 +124,14 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
                 base: 'xs',
                 md: 'custom',
             }}
-            variant='filter'
+            variant='custom'
             isOpen={isOpen}
             placement='right'
             onClose={onClose}
         >
             <DrawerOverlay />
             <DrawerContent data-test-id={DATA_TEST_IDS.FILTER_DRAWER}>
-                <DrawerCloseButton data-test-id={DATA_TEST_IDS.CLOSE_FILTER_DRAWER} />
+                <DrawerCloseButton size='sm' data-test-id={DATA_TEST_IDS.CLOSE_FILTER_DRAWER} />
                 <DrawerHeader>Фильтр</DrawerHeader>
                 <DrawerBody>
                     <VStack spacing={{ base: 4, md: 6 }} align='start'>
