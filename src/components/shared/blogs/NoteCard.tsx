@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { Note } from '~/types';
+import { NoteDto } from '~/types';
 import { shouldUseTwoColumns } from '~/utils/should-use-two-columns';
 
 export const NoteCard = ({
@@ -12,7 +12,7 @@ export const NoteCard = ({
     notesLength,
     isVisible = true,
 }: {
-    note: Note;
+    note: NoteDto;
     index: number;
     notesLength: number;
     isVisible?: boolean;

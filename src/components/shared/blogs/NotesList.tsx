@@ -3,7 +3,7 @@ import { Grid, Heading, SimpleGrid, Text } from '@chakra-ui/react';
 import { UiButton } from '~/components/ui/UiButton';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useToggleNotes } from '~/hooks/use-toggle-notes';
-import { Note } from '~/types';
+import { NoteDto } from '~/types';
 
 import { NoteCard } from './NoteCard';
 
@@ -11,10 +11,10 @@ export const NotesList = ({
     notes,
     ref,
 }: {
-    notes: Note[];
+    notes: NoteDto[];
     ref?: (node: HTMLDivElement) => void;
 }) => {
-    const { notesToHide, notesToShow, showToggleButton, toggleNotes } = useToggleNotes(notes);
+    const { notesToHide, notesToShow, hasMore, toggleNotes } = useToggleNotes(notes);
 
     return (
         <Grid
@@ -61,7 +61,7 @@ export const NotesList = ({
                             />
                         ))}
                     </SimpleGrid>
-                    {showToggleButton && (
+                    {hasMore && (
                         <UiButton
                             data-test-id={DATA_TEST_IDS.BLOGGER_USER_NOTES_BUTTON}
                             text={

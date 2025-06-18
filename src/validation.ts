@@ -54,6 +54,8 @@ export const LoginSchema = yup.object({
     password: passwordSchema,
 });
 
+export const NoteSchema = yup.object().shape({ text: yup.string().required().min(10).max(160) });
+
 export const RecoverySchema = yup.object({
     login: loginSchema.required(VALIDATION_MESSAGES.REQUIRED.LOGIN),
     password: passwordSchema.required(VALIDATION_MESSAGES.REQUIRED.PASSWORD),

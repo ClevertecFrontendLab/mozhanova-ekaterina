@@ -3,13 +3,13 @@ import { Box, Grid, Heading, SimpleGrid, Text, useDisclosure } from '@chakra-ui/
 import { PencilIcon } from '~/components/ui/icons/PencilIcon';
 import { UiButton } from '~/components/ui/UiButton';
 import { useToggleNotes } from '~/hooks/use-toggle-notes';
-import { Note } from '~/types';
+import { NoteDto } from '~/types';
 
 import { NoteCard } from '../blogs/NoteCard';
 import { NotesDrawer } from './NotesDrawer';
 
-export const NotesList = ({ notes }: { notes: Note[] }) => {
-    const { notesToHide, notesToShow, showToggleButton, toggleNotes } = useToggleNotes(notes);
+export const NotesList = ({ notes }: { notes: NoteDto[] }) => {
+    const { notesToHide, notesToShow, hasMore, toggleNotes } = useToggleNotes(notes);
     const { onClose, onOpen, isOpen } = useDisclosure();
 
     return (
@@ -60,7 +60,7 @@ export const NotesList = ({ notes }: { notes: Note[] }) => {
                     </SimpleGrid>
                 </>
             )}
-            {showToggleButton && (
+            {hasMore && (
                 <UiButton
                     text={notesToShow.length === notes.length ? 'Свернуть' : 'Показать больше'}
                     variant='ghost'

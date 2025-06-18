@@ -77,8 +77,11 @@ export type GetBloggersParams = {
     currentUserId: string;
     limit: number | 'all' | '';
 };
-export type Note = {
+export type NoteDto = {
     date: string;
+    text: string;
+};
+export type Note = {
     text: string;
 };
 export type ObjectId = {
@@ -119,7 +122,7 @@ export type BloggerInfoDto = {
     recipesIds: ObjectId[];
     subscribers: ObjectId[];
     subscriptions: ObjectId[];
-    notes: Note[];
+    notes: NoteDto[];
 };
 export type BloggerInfo = Omit<BloggerInfoDto, '_id'> & {
     _id: string;
@@ -130,10 +133,6 @@ export type Blogger = Pick<BloggerInfo, '_id' | 'login' | 'firstName' | 'lastNam
     newRecipesCount: number;
     subscribersCount: number;
 };
-export type AllBloggersResponse = {
-    favorites: Blogger[];
-    others: Blogger[];
-};
 
 export type BloggerResponseDto = {
     bloggerInfo: BloggerInfoDto;
@@ -141,14 +140,23 @@ export type BloggerResponseDto = {
     totalBookmarks: number;
     isFavorite: boolean;
 };
+export type AllBloggersResponse = {
+    favorites: Blogger[];
+    others: Blogger[];
+};
 export type BloggerResponse = Omit<BloggerResponseDto, 'bloggerInfo'> & {
     bloggerInfo: BloggerInfo;
+};
+
+export type RecipesResponse = {
+    data: Recipe[];
+    meta: Meta;
 };
 
 export type RecipesByUserResponse = {
     recipes: Recipe[];
     myBookmarks: Recipe[];
-    notes: Note[];
+    notes: NoteDto[];
     totalBookmarks: number;
     totalSubscribers: number;
     userId: string;
