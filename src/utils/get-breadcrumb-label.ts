@@ -24,6 +24,9 @@ export const defineBreadcrumbLabel = (
         case 'profile':
             return 'Мой профиль';
 
+        case 'settings':
+            return 'Настройки';
+
         case categories.find((c) => c.category === path)?.category:
             return categories.find((c) => c.category === path)?.title;
 
