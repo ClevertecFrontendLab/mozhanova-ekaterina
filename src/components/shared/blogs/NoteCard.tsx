@@ -3,7 +3,9 @@ import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
 import { TrashIcon } from '~/components/ui/icons/TrashIcon';
+import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { useToast } from '~/hooks/use-toast';
 import { useDeleteNoteMutation } from '~/query/user-api';
 import { NoteDto } from '~/types';
 import { shouldUseTwoColumns } from '~/utils/should-use-two-columns';
@@ -22,8 +24,15 @@ export const NoteCard = ({
     editable?: boolean;
 }) => {
     const [deleteNote] = useDeleteNoteMutation();
-    const handleDeleteNote = () => {
-        deleteNote(note._id);
+    const { showError, showSuccess } = useToast();
+
+    const handleDeleteNote = async () => {
+        try {
+            await deleteNote(note._id).unwrap();
+            showSuccess(NOTIFICATION_MESSAGES.CREATE_NOTE_SUCCESS);
+        } catch {
+            showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+        }
     };
     return (
         <Card

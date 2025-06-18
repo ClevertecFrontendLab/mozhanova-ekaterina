@@ -13,6 +13,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
 import { UiButton } from '~/components/ui/UiButton';
+import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
+import { useToast } from '~/hooks/use-toast';
 import { useCreateNotesMutation } from '~/query/user-api';
 import { NoteSchema } from '~/validation';
 
@@ -33,11 +35,18 @@ export const NotesDrawer = ({ isOpen, onClose }: Props) => {
         resolver: yupResolver(NoteSchema),
     });
     const [createNote] = useCreateNotesMutation();
+    const { showError, showSuccess } = useToast();
 
     const handleCreate = handleSubmit(async (data) => {
-        await createNote(data);
-        setValue('text', '');
-        onClose();
+        try {
+            await createNote(data).unwrap();
+            showSuccess(NOTIFICATION_MESSAGES.CREATE_NOTE_SUCCESS);
+            setValue('text', '');
+            onClose();
+        } catch {
+            showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+            onClose();
+        }
     });
 
     return (

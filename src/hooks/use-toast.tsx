@@ -26,7 +26,7 @@ export const useToast = () => {
             return;
         }
         toast({
-            duration: params.duration || NotificationDuration.Short,
+            duration: params.duration || NotificationDuration.Long,
             position: params.position || 'bottom',
             id: toastId,
             containerStyle: { transition: 'none' },
