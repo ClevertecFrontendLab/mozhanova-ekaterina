@@ -13,6 +13,7 @@ import { Category } from '~/types';
 import { getCategoryByName } from '~/utils/get-categories';
 
 import { UiCardGrid } from './ui/UiCardGrid';
+import { UiShowMoreButton } from './ui/UiShowMoreButton';
 
 export const RecipesTabs = () => {
     const [isLargerThanMD] = useBreakpoint('md');
@@ -99,7 +100,10 @@ export const RecipesTabs = () => {
                     currentCategory.subCategories?.map((category) => (
                         <TabPanel key={category._id}>
                             {category.category === subCategory && (
-                                <UiCardGrid data={currentData?.data} />
+                                <>
+                                    <UiCardGrid data={currentData?.data} />
+                                    <UiShowMoreButton onShowMore={() => {}} />
+                                </>
                             )}
                         </TabPanel>
                     ))}

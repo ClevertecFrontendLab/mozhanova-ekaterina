@@ -1,11 +1,11 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Grid } from '@chakra-ui/react';
 import { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
-import { UiButton } from '~/components/ui/UiButton';
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
+import { UiShowMoreButton } from '~/components/ui/UiShowMoreButton';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { useToast } from '~/hooks/use-toast';
 import { useRecipesSearch } from '~/store/hooks';
@@ -59,30 +59,13 @@ export const SearchPage = memo(() => {
         }
     };
     return (
-        <main>
+        <Grid as='main' gap={{ base: 4, md: 6 }}>
             <SearchBar title='Приятного аппетита!' />
 
-            <Box
-                padding={{
-                    base: '0 16px',
-                    md: '0 20px',
-                    lg: '0 24px',
-                }}
-            >
-                <Box mb={10}>
-                    <UiCardGrid data={allRecipes} />
-                    {hasMore && (
-                        <Flex justifyContent='center' mt={4} mb={10}>
-                            <UiButton
-                                onClick={loadMore}
-                                size='md'
-                                text='Загрузить еще'
-                                variant='primary'
-                            />
-                        </Flex>
-                    )}
-                </Box>
+            <Box px={{ base: 4, md: 5, lg: 6 }} pb={{ base: 4, md: 0 }}>
+                <UiCardGrid data={allRecipes} />
+                {hasMore && <UiShowMoreButton onShowMore={loadMore} />}
             </Box>
-        </main>
+        </Grid>
     );
 });
