@@ -6,7 +6,7 @@ import { useToggleRecipes } from '~/hooks/use-toggle-recipes';
 import { Recipe } from '~/types';
 
 export const BookmarksList = ({ bookmarks }: { bookmarks: Recipe[] }) => {
-    const { handleShowMore, recipesToShow, showMoreRef } = useToggleRecipes(bookmarks);
+    const { handleShowMore, recipesToShow, showMoreRef, hasMore } = useToggleRecipes(bookmarks);
 
     return (
         <Grid gap={4}>
@@ -18,8 +18,8 @@ export const BookmarksList = ({ bookmarks }: { bookmarks: Recipe[] }) => {
                     </Text>
                 </span>
             </Heading>
-            <UiCardGrid data={recipesToShow} />
-            <UiShowMoreButton onShowMore={handleShowMore} ref={showMoreRef} />
+            <UiCardGrid isBookmark data={recipesToShow} />
+            {hasMore && <UiShowMoreButton onShowMore={handleShowMore} ref={showMoreRef} />}
         </Grid>
     );
 };

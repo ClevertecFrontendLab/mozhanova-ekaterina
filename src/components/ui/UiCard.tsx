@@ -26,6 +26,7 @@ import { Recipe } from '~/types';
 import { routeHelpers } from '~/utils/get-routes';
 import { highlightMatches } from '~/utils/highlight-mathces';
 
+import { BookmarkDeleteIcon } from './icons/BookmarkDeleteIcon';
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { UiButton } from './UiButton';
 import { UiCardInfo } from './UiCardInfo';
@@ -38,6 +39,7 @@ type Props = {
     index?: number;
     isDraft?: boolean;
     editable?: boolean;
+    isBookmark?: boolean;
     'data-test-id'?: string;
 };
 
@@ -45,6 +47,7 @@ export const UiCard = ({
     data,
     isDraft,
     editable,
+    isBookmark,
     recommendation,
     size = 'lg',
     index,
@@ -52,7 +55,7 @@ export const UiCard = ({
 }: Props) => {
     const { category, subCategory } = useParams();
     const [isLargerThanMD] = useBreakpoint('md');
-    const [saveRecipe] = useSaveRemoveFromBookmarksMutation();
+    const [toggleSave] = useSaveRemoveFromBookmarksMutation();
     const { saveLikeRecipeErrorHandler } = useErrors();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -74,7 +77,7 @@ export const UiCard = ({
     const handleSave = async () => {
         if (!data?._id) return;
         try {
-            await saveRecipe(data._id).unwrap();
+            await toggleSave(data._id).unwrap();
         } catch (error) {
             saveLikeRecipeErrorHandler(error as ErrorResponse);
         }
@@ -97,6 +100,7 @@ export const UiCard = ({
         >
             <Image
                 objectFit='cover'
+                minW={{ md: '346px' }}
                 maxW={{
                     base: '158px',
                     md: '346px',
@@ -177,7 +181,7 @@ export const UiCard = ({
                 </CardBody>
 
                 <CardFooter>
-                    {editable ? (
+                    {editable && (
                         <Flex justify='flex-end' grow={1}>
                             <UiButton
                                 variant={isDraft ? 'solid' : 'outline'}
@@ -186,7 +190,19 @@ export const UiCard = ({
                                 onClick={handleEdit}
                             />
                         </Flex>
-                    ) : (
+                    )}
+                    {isBookmark && (
+                        <Flex justify='flex-end' grow={1}>
+                            <UiButton
+                                variant={isDraft ? 'solid' : 'outline'}
+                                size={{ base: 'xs', md: 'sm' }}
+                                text='Убрать из сохраненных'
+                                leftIcon={<BookmarkDeleteIcon />}
+                                onClick={handleSave}
+                            />
+                        </Flex>
+                    )}
+                    {!isBookmark && !editable && (
                         <Flex gap='8px' justify='flex-end' align='flex-end' w='100%'>
                             <UiButton
                                 onClick={handleSave}

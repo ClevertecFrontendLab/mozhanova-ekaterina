@@ -46,6 +46,7 @@ export const NotesList = ({ notes }: { notes: NoteDto[] }) => {
                                 key={note.date}
                                 note={note}
                                 notesLength={notesToShow.length}
+                                editable
                             />
                         ))}
                         {notesToHide.map((note, index) => (

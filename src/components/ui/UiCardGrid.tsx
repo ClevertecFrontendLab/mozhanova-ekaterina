@@ -11,37 +11,41 @@ type Props = {
     dataTest: string;
     isDraft: boolean;
     editable: boolean;
+    isBookmark: boolean;
 };
 
-export const UiCardGrid = memo(({ data = [], dataTest, isDraft, editable }: Partial<Props>) => {
-    const [isLargerThanMD] = useBreakpoint('md');
+export const UiCardGrid = memo(
+    ({ data = [], dataTest, isDraft, editable, isBookmark }: Partial<Props>) => {
+        const [isLargerThanMD] = useBreakpoint('md');
 
-    if (!data) return null;
+        if (!data) return null;
 
-    return (
-        <SimpleGrid
-            data-test-id={dataTest}
-            rowGap={4}
-            columnGap={6}
-            columns={{
-                base: 1,
-                sm: 2,
-                md: 1,
-                lg: 2,
-            }}
-        >
-            {data.map((recipe, i) => (
-                <UiCard
-                    data-test-id={`food-card-${i}`}
-                    key={i}
-                    data={recipe}
-                    index={i}
-                    categoryBgColor='secondary.100'
-                    size={isLargerThanMD ? 'lg' : 'sm'}
-                    isDraft={isDraft}
-                    editable={editable}
-                />
-            ))}
-        </SimpleGrid>
-    );
-});
+        return (
+            <SimpleGrid
+                data-test-id={dataTest}
+                rowGap={4}
+                columnGap={6}
+                columns={{
+                    base: 1,
+                    sm: 2,
+                    md: 1,
+                    lg: 2,
+                }}
+            >
+                {data.map((recipe, i) => (
+                    <UiCard
+                        data-test-id={`food-card-${i}`}
+                        key={i}
+                        data={recipe}
+                        index={i}
+                        categoryBgColor='secondary.100'
+                        size={isLargerThanMD ? 'lg' : 'sm'}
+                        isDraft={isDraft}
+                        editable={editable}
+                        isBookmark={isBookmark}
+                    />
+                ))}
+            </SimpleGrid>
+        );
+    },
+);

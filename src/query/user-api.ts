@@ -1,4 +1,4 @@
-import { StatisticDto, UserDto } from '~/types';
+import { Note, NoteDto, StatisticDto, UserDto } from '~/types';
 
 import { authorizedApi } from './authorized-api';
 import { ApiEndpoints } from './constants/api';
@@ -15,7 +15,27 @@ export const UserApi = authorizedApi.injectEndpoints({
             query: () => ApiEndpoints.STATISTIC,
             providesTags: [Tags.USER],
         }),
+        [EndpointNames.CREATE_NOTES]: builder.mutation<NoteDto, Note>({
+            query: (note) => ({
+                url: ApiEndpoints.USER_NOTES,
+                method: 'POST',
+                body: note,
+            }),
+            invalidatesTags: [Tags.USER_RECIPES],
+        }),
+        [EndpointNames.DELETE_NOTE]: builder.mutation<void, string>({
+            query: (id) => ({
+                url: `${ApiEndpoints.USER_NOTES}/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: [Tags.USER_RECIPES],
+        }),
     }),
 });
 
-export const { useGetProfileQuery, useGetStatisticsQuery } = UserApi;
+export const {
+    useGetProfileQuery,
+    useGetStatisticsQuery,
+    useCreateNotesMutation,
+    useDeleteNoteMutation,
+} = UserApi;

@@ -2,13 +2,13 @@ import {
     BookmarkResponse,
     LikeResponse,
     MeasureUnit,
-    Meta,
     NewRecipe,
     Recipe,
     RecipeDraft,
     RecipeDraftDto,
     RecipeParams,
     RecipesByUserResponse,
+    RecipesResponse,
 } from '~/types';
 
 import { authorizedApi } from './authorized-api';
@@ -18,10 +18,7 @@ import { Tags } from './constants/tags';
 
 export const recipeApi = authorizedApi.injectEndpoints({
     endpoints: (builder) => ({
-        [EndpointNames.GET_LATEST_RECIPES]: builder.query<
-            { data: Recipe[]; meta: Meta },
-            RecipeParams
-        >({
+        [EndpointNames.GET_LATEST_RECIPES]: builder.query<RecipesResponse, RecipeParams>({
             query: (params) => ({
                 url: ApiEndpoints.RECIPES,
                 params: {
@@ -33,10 +30,7 @@ export const recipeApi = authorizedApi.injectEndpoints({
             providesTags: [Tags.RECIPES],
         }),
 
-        [EndpointNames.GET_POPULAR_RECIPES]: builder.query<
-            { data: Recipe[]; meta: Meta },
-            RecipeParams
-        >({
+        [EndpointNames.GET_POPULAR_RECIPES]: builder.query<RecipesResponse, RecipeParams>({
             query: (params) => ({
                 url: ApiEndpoints.RECIPES,
                 params: {
@@ -55,10 +49,7 @@ export const recipeApi = authorizedApi.injectEndpoints({
                 result ? [{ type: Tags.RECIPE, id: result._id }] : [Tags.RECIPE],
         }),
 
-        [EndpointNames.GET_RECIPES_BY_CATEGORY]: builder.query<
-            { data: Recipe[]; meta: Meta },
-            RecipeParams
-        >({
+        [EndpointNames.GET_RECIPES_BY_CATEGORY]: builder.query<RecipesResponse, RecipeParams>({
             query: ({ categoryId, ...params }) => ({
                 url: `${ApiEndpoints.RECIPE_CATEGORY}${categoryId}`,
                 params: {
@@ -68,21 +59,19 @@ export const recipeApi = authorizedApi.injectEndpoints({
             providesTags: [Tags.RECIPES],
         }),
 
-        [EndpointNames.SEARCH_RECIPES]: builder.query<{ data: Recipe[]; meta: Meta }, RecipeParams>(
-            {
-                query: (params) => ({
-                    url: ApiEndpoints.RECIPES,
-                    params: {
-                        ...params,
-                        allergens: params.allergens?.join(','),
-                        meat: params.meat?.join(','),
-                        garnish: params.garnish?.join(','),
-                        subcategoriesIds: params.subcategoriesIds?.join(','),
-                    },
-                }),
-                providesTags: [Tags.RECIPES],
-            },
-        ),
+        [EndpointNames.SEARCH_RECIPES]: builder.query<RecipesResponse, RecipeParams>({
+            query: (params) => ({
+                url: ApiEndpoints.RECIPES,
+                params: {
+                    ...params,
+                    allergens: params.allergens?.join(','),
+                    meat: params.meat?.join(','),
+                    garnish: params.garnish?.join(','),
+                    subcategoriesIds: params.subcategoriesIds?.join(','),
+                },
+            }),
+            providesTags: [Tags.RECIPES],
+        }),
 
         [EndpointNames.MEASURE_UNITS]: builder.query<MeasureUnit[], void>({
             query: () => ({
@@ -134,18 +123,18 @@ export const recipeApi = authorizedApi.injectEndpoints({
                 url: `${ApiEndpoints.RECIPE_BY_ID}${id}${ApiEndpoints.LIKE_UNLIKE_RECIPE}`,
                 method: 'POST',
             }),
-            invalidatesTags: [Tags.RECIPE],
+            invalidatesTags: [Tags.RECIPES],
         }),
         [EndpointNames.SAVE_REMOVE_FROM_BOOKMARKS]: builder.mutation<BookmarkResponse, string>({
             query: (id) => ({
                 url: `${ApiEndpoints.RECIPE_BY_ID}${id}${ApiEndpoints.SAVE_REMOVE_FROM_BOOKMARKS}`,
                 method: 'POST',
             }),
-            invalidatesTags: [Tags.RECIPE],
+            invalidatesTags: [Tags.USER_RECIPES],
         }),
         [EndpointNames.GET_RECIPES_BY_USER_ID]: builder.query<RecipesByUserResponse, string>({
             query: (bloggerId) => `${ApiEndpoints.GET_RECIPES_BY_USER_ID}${bloggerId}`,
-            providesTags: [Tags.RECIPES],
+            providesTags: [Tags.USER_RECIPES],
         }),
     }),
 });
