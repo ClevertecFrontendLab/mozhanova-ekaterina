@@ -42,10 +42,6 @@ export const SearchBar = ({ title, description }: Props) => {
             }
             transition='box-shadow 0.3s ease-in-out'
             borderRadius={{ base: '0 0 8px 8px', lg: '24px' }}
-            mb={{
-                base: 4,
-                lg: 6,
-            }}
             direction='column'
             alignItems='center'
             maxW={{

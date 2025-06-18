@@ -51,8 +51,6 @@ export const RecipePreventiveModal = ({
         onClose();
     };
 
-    console.log(setError, link, draft);
-
     return (
         <UiModal
             maxW={{ base: '316px', md: '396px' }}

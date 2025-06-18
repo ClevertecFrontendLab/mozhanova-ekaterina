@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
+import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useToast } from '~/hooks/use-toast';
 import { Limit } from '~/query/constants/limits';
@@ -57,7 +58,7 @@ export const RecipesTabs = () => {
 
     useEffect(() => {
         if (isError) {
-            showError({ title: 'Ошибка сервера', description: 'Попробуйте попозже' });
+            showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
             navigate(-1);
         }
     }, [isError, showError, navigate]);

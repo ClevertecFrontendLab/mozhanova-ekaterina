@@ -123,7 +123,7 @@ export const UiCard = ({
                 </Flex>
             )}
 
-            <Stack spacing={0} flexGrow={1}>
+            <Stack spacing={0} flexGrow={1} minW={0}>
                 <CardBody>
                     {isDraft ? (
                         <Box textAlign='right'>

@@ -17,7 +17,7 @@ import { setCurrentRecipe } from '~/store/recipe-slice';
 import { selectCurrentUserId } from '~/store/selectors';
 
 export const RecipePage = () => {
-    const { id } = useParams();
+    const { recipeId: id } = useParams();
     const { showError } = useToast();
     const navigate = useNavigate();
     const dispatch = useDispatch();

@@ -27,13 +27,13 @@ export const NotesList = ({
             borderRadius='16px'
         >
             <Heading fontSize={{ base: '20px', md: '36px' }} fontWeight={400}>
-                Заметки {` `}
+                Заметки <wbr />
                 <Text
+                    as='span'
                     data-test-id={DATA_TEST_IDS.BLOGGER_USER_NOTES_COUNT}
-                    display='inline-block'
                     color='text.secondary'
                 >
-                    {`(${notes.length})`}
+                    ({notes.length})
                 </Text>
             </Heading>
             {notes.length > 0 && (
