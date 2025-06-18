@@ -9,8 +9,8 @@ type Props = {
     categoryBgColor: 'secondary.100' | 'primary.100';
     likes: number;
     bookmarks: number;
-    categories: (string | undefined)[];
     alignItems: string;
+    categories?: string[];
 };
 
 export const UiCardInfo = ({

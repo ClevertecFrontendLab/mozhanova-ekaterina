@@ -129,11 +129,7 @@ export const UiCard = ({
 
             <Stack spacing={0} flexGrow={1} minW={0}>
                 <CardBody>
-                    {isDraft ? (
-                        <Box textAlign='right'>
-                            <Tag>Черновик</Tag>
-                        </Box>
-                    ) : (
+                    <Flex justify='space-between'>
                         <Box
                             pb={{
                                 base: 0,
@@ -148,7 +144,12 @@ export const UiCard = ({
                                 alignItems='flex-start'
                             />
                         </Box>
-                    )}
+                        {isDraft && (
+                            <Box textAlign='right'>
+                                <Tag>Черновик</Tag>
+                            </Box>
+                        )}
+                    </Flex>
 
                     <Flex
                         gap={{
