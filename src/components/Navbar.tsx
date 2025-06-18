@@ -27,7 +27,7 @@ export const Navbar = ({
                 <Box
                     pb='185px'
                     display={isMenuOpen ? 'block' : 'none'}
-                    zIndex={Z_INDEX_CONFIG.NAVBAR}
+                    zIndex={Z_INDEX_CONFIG.NAVBAR_OVERLAY}
                     position='fixed'
                     top={0}
                     bottom={0}
@@ -82,7 +82,7 @@ export const Navbar = ({
                         md: 6,
                     }}
                     bg='background.base'
-                    zIndex={Z_INDEX_CONFIG.NAVBAR}
+                    zIndex={Z_INDEX_CONFIG.NAVBAR_MENU}
                     borderRadius={{
                         base: '0 0 12px 12px',
                         md: 0,
