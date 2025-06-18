@@ -17,6 +17,7 @@ const NOTIFICATION_TITLES = {
     CREATE_RECIPE_DRAFT_SUCCESS: 'Черновик успешно сохранен.',
     DELETE_RECIPE_SUCCESS: 'Рецепт успешно удален.',
     DELETE_NOTE_SUCCESS: 'Заметка удалена.',
+    CHANGES_INFO_SUCCESS: 'Изменения сохранены.',
 };
 
 const NOTIFICATION_DESCRIPTIONS = {
@@ -112,5 +113,8 @@ export const NOTIFICATION_MESSAGES = {
     },
     RECIPE_NOT_FOUND_ERROR: {
         title: NOTIFICATION_TITLES.RECIPE_NOT_FOUND_ERROR,
+    },
+    CHANGES_INFO_SUCCESS: {
+        title: NOTIFICATION_TITLES.CHANGES_INFO_SUCCESS,
     },
 } as const satisfies Record<string, NotificationMessage>;

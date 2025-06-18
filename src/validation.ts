@@ -25,21 +25,25 @@ export const emailSchema = yup
     .email(VALIDATION_MESSAGES.FORMAT.EMAIL)
     .matches(REGEXP_PATTERNS.EMAIL, VALIDATION_MESSAGES.FORMAT.EMAIL);
 
+export const nameSchema = yup
+    .string()
+    .trim()
+    .required(VALIDATION_MESSAGES.REQUIRED.NAME)
+    .matches(/^[А-ЯЁ]/, VALIDATION_MESSAGES.FORMAT.CYRILLIC_START)
+    .matches(REGEXP_PATTERNS.CYRILLIC, VALIDATION_MESSAGES.FORMAT.CYRILLIC_ONLY)
+    .max(50, VALIDATION_MESSAGES.LENGTH.MAX_50);
+
+export const lastNameSchema = yup
+    .string()
+    .trim()
+    .required(VALIDATION_MESSAGES.REQUIRED.LAST_NAME)
+    .matches(/^[А-ЯЁ]/, VALIDATION_MESSAGES.FORMAT.CYRILLIC_START)
+    .matches(REGEXP_PATTERNS.CYRILLIC, VALIDATION_MESSAGES.FORMAT.CYRILLIC_ONLY)
+    .max(50, VALIDATION_MESSAGES.LENGTH.MAX_50);
+
 export const RegistrationSchema = yup.object({
-    name: yup
-        .string()
-        .trim()
-        .required(VALIDATION_MESSAGES.REQUIRED.NAME)
-        .matches(/^[А-ЯЁ]/, VALIDATION_MESSAGES.FORMAT.CYRILLIC_START)
-        .matches(REGEXP_PATTERNS.CYRILLIC, VALIDATION_MESSAGES.FORMAT.CYRILLIC_ONLY)
-        .max(50, VALIDATION_MESSAGES.LENGTH.MAX_50),
-    lastName: yup
-        .string()
-        .trim()
-        .required(VALIDATION_MESSAGES.REQUIRED.LAST_NAME)
-        .matches(/^[А-ЯЁ]/, VALIDATION_MESSAGES.FORMAT.CYRILLIC_START)
-        .matches(REGEXP_PATTERNS.CYRILLIC, VALIDATION_MESSAGES.FORMAT.CYRILLIC_ONLY)
-        .max(50, VALIDATION_MESSAGES.LENGTH.MAX_50),
+    name: nameSchema,
+    lastName: lastNameSchema,
     login: loginSchema,
     email: emailSchema,
     password: passwordSchema,
@@ -155,3 +159,8 @@ export const RecipePublishSchema = yup.object().shape({
 });
 
 export const RecipeDraftSchema = yup.object().shape(baseRecipeSchema);
+
+export const ProfileSchema = yup.object().shape({
+    firstName: nameSchema,
+    lastName: lastNameSchema,
+});

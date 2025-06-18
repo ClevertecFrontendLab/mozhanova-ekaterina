@@ -102,6 +102,10 @@ export type UserDto = {
     lastName: string;
     firstName: string;
 };
+export type UserUpdateInfo = {
+    firstName: string;
+    lastName: string;
+};
 export type StatisticDto = {
     likes: { data: string; count: number }[];
     bookmarks: { data: string; count: number }[];

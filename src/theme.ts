@@ -26,6 +26,7 @@ const theme = extendTheme({
     colors: {
         // Основные цвета бренда
         primary: {
+            10: 'rgba(19, 75, 0, 0.5)', // темный полупрозрачный
             50: '#eaffc7', // Самый светлый
             100: '#d7ff94',
             200: '#c4ff61',
@@ -408,9 +409,12 @@ const theme = extendTheme({
                     _focus: {
                         boxShadow: 'none',
                     },
-                },
-                _placeholder: {
-                    fontWeight: '400',
+                    _disabled: {
+                        borderColor: 'transparent',
+                    },
+                    _placeholder: {
+                        fontWeight: '400',
+                    },
                 },
             },
             sizes: {
@@ -444,7 +448,7 @@ const theme = extendTheme({
                         },
                     },
                 },
-                login: {
+                accent: {
                     field: {
                         borderColor: 'primary.100',
                         color: 'primary.700',
