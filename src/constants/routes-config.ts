@@ -12,6 +12,7 @@ export const AppBaseRoutes = {
     EDIT_DRAFT: '/edit-draft',
     BLOGS: '/blogs',
     PROFILE: '/profile',
+    SETTINGS: '/profile/settings',
 } as const;
 
 export const RouteParams = {

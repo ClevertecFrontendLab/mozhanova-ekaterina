@@ -13,7 +13,8 @@ import { BloggerPage } from '~/pages/bloggers/BloggerPage';
 import { BlogsPage } from '~/pages/bloggers/BlogsPage';
 import { Home } from '~/pages/HomePage';
 import { NotFoundPage } from '~/pages/NotFoundPage';
-import { ProfilePage } from '~/pages/ProfilePage';
+import { ProfilePage } from '~/pages/profile/ProfilePage';
+import { SettingsPage } from '~/pages/profile/SettingsPage';
 import { CategoryPage } from '~/pages/recipes/CategoryPage';
 import { CreateRecipePage } from '~/pages/recipes/CreateRecipePage';
 import { EditDraftPage } from '~/pages/recipes/EditDraftPage';
@@ -48,6 +49,7 @@ export const Router = () => (
             <Route path={AppRoutes.EDIT_DRAFT} element={<EditDraftPage />} />
 
             <Route path={AppRoutes.PROFILE} element={<ProfilePage />} />
+            <Route path={AppRoutes.SETTINGS} element={<SettingsPage />} />
 
             <Route path={AppRoutes.NOT_FOUND} element={<NotFoundPage />} />
         </Route>
