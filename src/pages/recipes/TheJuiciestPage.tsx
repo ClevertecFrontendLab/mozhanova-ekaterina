@@ -1,24 +1,23 @@
 import { Box, Grid } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
 import { UiShowMoreButton } from '~/components/ui/UiShowMoreButton';
+import { usePagination } from '~/hooks/use-pagination';
 import { Limit } from '~/query/constants/limits';
 import { useGetPopularRecipesQuery } from '~/query/recipe-api';
-import { paginationSelector, setCurrentPage } from '~/store/recipe-slice';
+import { paginationSelector, setPaginationMeta } from '~/store/recipe-slice';
 import { selectFilters } from '~/store/selectors';
-import { Recipe } from '~/types';
 
 export const TheJuiciestPage = () => {
-    const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
     const pagination = useSelector(paginationSelector);
     const filters = useSelector(selectFilters);
     const dispatch = useDispatch();
 
-    const { data, isLoading, isError, currentData } = useGetPopularRecipesQuery(
+    const { data, isLoading, isError } = useGetPopularRecipesQuery(
         {
             limit: Limit.DEFAULT,
             page: pagination.currentPage,
@@ -29,27 +28,14 @@ export const TheJuiciestPage = () => {
             refetchOnMountOrArgChange: true,
         },
     );
-    const hasMore = data?.meta ? pagination.currentPage < data.meta.totalPages : false;
 
     useEffect(() => {
-        if (currentData?.data) {
-            if (pagination.currentPage === 1) {
-                setAllRecipes(currentData.data);
-            } else {
-                setAllRecipes((prev) => [...prev, ...currentData.data]);
-            }
+        if (data?.meta) {
+            dispatch(setPaginationMeta({ totalPages: data.meta.totalPages }));
         }
-    }, [currentData?.data, pagination.currentPage]);
+    }, [data]);
 
-    useEffect(() => {
-        dispatch(setCurrentPage(1));
-    }, [filters, dispatch]);
-
-    const loadMore = () => {
-        if (hasMore) {
-            dispatch(setCurrentPage(pagination.currentPage + 1));
-        }
-    };
+    const { hasMore, loadMore, recipesToShow } = usePagination(data?.data);
 
     if (isError || isLoading) return null;
 
@@ -65,8 +51,8 @@ export const TheJuiciestPage = () => {
                 }}
             >
                 <Box>
-                    <UiCardGrid data={allRecipes} />
-                    {hasMore && <UiShowMoreButton onShowMore={loadMore} />}
+                    <UiCardGrid data={recipesToShow} />
+                    {hasMore && <UiShowMoreButton text='Загрузка' onShowMore={loadMore} />}
                 </Box>
                 <RelevantKitchenBlock />
             </Grid>
