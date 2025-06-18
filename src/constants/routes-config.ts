@@ -1,4 +1,4 @@
-export const AppBaseRoutes = {
+export const AppStaticRoutes = {
     HOME: '/',
     SEARCH: '/search',
     THE_JUICIEST: '/the-juiciest',
@@ -33,6 +33,6 @@ export const AppDynamicRoutes = {
 } as const;
 
 export const AppRoutes = {
-    ...AppBaseRoutes,
+    ...AppStaticRoutes,
     ...AppDynamicRoutes,
 } as const;

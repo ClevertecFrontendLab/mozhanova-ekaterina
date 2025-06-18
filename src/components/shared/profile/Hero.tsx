@@ -1,7 +1,9 @@
 import { SettingsIcon } from '@chakra-ui/icons';
 import { Avatar, Box, Flex, Grid, Heading } from '@chakra-ui/react';
+import { Link } from 'react-router';
 
 import { UiCardStats } from '~/components/ui/UiCardStats';
+import { AppRoutes } from '~/constants/routes-config';
 
 type Props = {
     firstName: string;
@@ -40,20 +42,21 @@ export const Hero = ({
     </Flex>
 );
 
-function IconBox({ onClick }: { onClick?: VoidFunction }) {
+function IconBox() {
     return (
-        <Flex
-            align='center'
-            justify='center'
-            position={{ base: 'absolute' }}
-            right={0}
-            top={0}
-            w='48px'
-            h='48px'
-            cursor='pointer'
-            onClick={onClick}
-        >
-            <SettingsIcon boxSize='24px' />
-        </Flex>
+        <Link to={AppRoutes.SETTINGS}>
+            <Flex
+                align='center'
+                justify='center'
+                position={{ base: 'absolute' }}
+                right={0}
+                top={0}
+                w='48px'
+                h='48px'
+                cursor='pointer'
+            >
+                <SettingsIcon boxSize='24px' />
+            </Flex>
+        </Link>
     );
 }
