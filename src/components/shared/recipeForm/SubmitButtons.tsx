@@ -3,6 +3,7 @@ import { Flex } from '@chakra-ui/react';
 
 import { UiButton } from '~/components/ui/UiButton';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { Z_INDEX_CONFIG } from '~/constants/z-index-config';
 
 export const SubmitButtons = ({
     saveDraft,
@@ -13,7 +14,7 @@ export const SubmitButtons = ({
 }) => (
     <Flex gap={5} direction={{ base: 'column', sm: 'row' }} justify='center'>
         <UiButton
-            zIndex={32}
+            zIndex={Z_INDEX_CONFIG.FORM_SUBMIT_BTNS}
             size='lg'
             leftIcon={<EditIcon />}
             variant='outline'
@@ -22,7 +23,7 @@ export const SubmitButtons = ({
             data-test-id={DATA_TEST_IDS.RECIPE_SAVE_DRAFT_BUTTON}
         />
         <UiButton
-            zIndex={32}
+            zIndex={Z_INDEX_CONFIG.FORM_SUBMIT_BTNS}
             size='lg'
             variant='solid'
             text='Опубликовать рецепт'

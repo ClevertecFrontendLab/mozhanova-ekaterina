@@ -1,6 +1,7 @@
 import { extendTheme } from '@chakra-ui/react';
 
 import { BREAKPOINTS_VALUES } from './constants/breakpoints-config';
+import { Z_INDEX_CONFIG } from './constants/z-index-config';
 
 const theme = extendTheme({
     styles: {
@@ -485,12 +486,12 @@ const theme = extendTheme({
             variants: {
                 custom: {
                     overlay: {
-                        zIndex: 50,
+                        zIndex: Z_INDEX_CONFIG.DRAWER,
                         backdropFilter: 'blur(4px)',
                         bg: 'rgba(0, 0, 0, 0.16)',
                     },
                     dialogContainer: {
-                        zIndex: 50,
+                        zIndex: Z_INDEX_CONFIG.DRAWER,
                     },
                     header: {
                         fontSize: '2xl',
@@ -529,16 +530,16 @@ const theme = extendTheme({
         Modal: {
             baseStyle: {
                 overlay: {
-                    zIndex: 30,
+                    zIndex: Z_INDEX_CONFIG.MODAL,
                 },
                 dialog: {
                     p: 8,
                     borderRadius: '16px',
                     textAlign: 'center',
-                    zIndex: 30,
+                    zIndex: Z_INDEX_CONFIG.MODAL,
                 },
                 dialogContainer: {
-                    zIndex: 30,
+                    zIndex: Z_INDEX_CONFIG.MODAL,
                 },
                 closeButton: {
                     borderRadius: '50%',

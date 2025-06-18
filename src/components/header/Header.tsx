@@ -1,6 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 
 import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { Z_INDEX_CONFIG } from '~/constants/z-index-config';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useAppSelector } from '~/store/hooks';
 import { accessToken } from '~/store/user-slice';
@@ -30,7 +31,7 @@ export const Header = ({
             position='fixed'
             top='0'
             left='0'
-            zIndex={60}
+            zIndex={Z_INDEX_CONFIG.HEADER}
             w='100%'
             h={{
                 base: '64px',

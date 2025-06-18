@@ -6,6 +6,7 @@ import { HomeIcon } from '~/components/ui/icons/HomeIcon';
 import { UiIconButton } from '~/components/ui/UiIconButton';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { Z_INDEX_CONFIG } from '~/constants/z-index-config';
 import { useAppSelector } from '~/store/hooks';
 import { selectCurrentUser } from '~/store/user-slice';
 
@@ -26,7 +27,7 @@ export const FooterMobile = () => {
             templateColumns='repeat(4, 1fr)'
             pt={2.5}
             pb={2.5}
-            zIndex={20}
+            zIndex={Z_INDEX_CONFIG.FOOTER}
         >
             <Link to={AppRoutes.HOME}>
                 <UiIconButton

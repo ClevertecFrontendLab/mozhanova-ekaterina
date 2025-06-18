@@ -2,6 +2,7 @@ import { Box, Flex, Spinner } from '@chakra-ui/react';
 
 import bg from '~/assets/ui/loader_bg.png';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { Z_INDEX_CONFIG } from '~/constants/z-index-config';
 import { useAppSelector } from '~/store/hooks';
 import { selectGlobalLoading } from '~/store/selectors';
 
@@ -21,7 +22,7 @@ export const GlobalLoader = () => {
             display='flex'
             alignItems='center'
             justifyContent='center'
-            zIndex={40}
+            zIndex={Z_INDEX_CONFIG.GLOBAL_LOADER}
             bg='rgba(0, 0, 0, 0.16)'
             css={{
                 backdropFilter: 'blur(4px)',

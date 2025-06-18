@@ -13,6 +13,7 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 
+import { Z_INDEX_CONFIG } from '~/constants/z-index-config';
 import { getOptionTestId } from '~/utils/test-utils';
 
 import { UiTag } from '../ui/UiTag';
@@ -100,14 +101,22 @@ export const SelectOptions = ({
                                 label={value}
                             />
                         ))}
-                        {tagsOverflow > 0 && <Tag variant='outline'>+{tagsOverflow}</Tag>}
+                        {tagsOverflow > 0 && (
+                            <Tag bg='transparent' variant='outline'>
+                                +{tagsOverflow}
+                            </Tag>
+                        )}
                     </Flex>
                 ) : (
                     placeholder
                 )}
             </MenuButton>
 
-            <MenuList zIndex={10} overflowY='scroll' data-test-id={dataList}>
+            <MenuList
+                zIndex={Z_INDEX_CONFIG.SELECT_MENU}
+                overflowY='scroll'
+                data-test-id={dataList}
+            >
                 <CheckboxGroup
                     value={selected}
                     onChange={(value: string[]) => {
