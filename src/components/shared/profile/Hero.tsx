@@ -7,9 +7,17 @@ type Props = {
     firstName: string;
     lastName: string;
     login: string;
+    subscribersCount?: number;
+    bookmarks?: number;
 };
 
-export const Hero = ({ firstName = '', lastName = '', login = '' }: Props) => (
+export const Hero = ({
+    firstName = '',
+    lastName = '',
+    login = '',
+    subscribersCount,
+    bookmarks,
+}: Props) => (
     <Flex
         gap={6}
         direction={{ base: 'column', sm: 'row' }}
@@ -25,7 +33,7 @@ export const Hero = ({ firstName = '', lastName = '', login = '' }: Props) => (
                 @{login}
             </Box>
             <Flex justify={{ base: 'center', sm: 'flex-start' }}>
-                <UiCardStats subscribersCount={12} bookmarks={165} />
+                <UiCardStats subscribersCount={subscribersCount} bookmarks={bookmarks} />
             </Flex>
             <IconBox />
         </Grid>

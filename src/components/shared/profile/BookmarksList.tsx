@@ -5,7 +5,7 @@ import { UiShowMoreButton } from '~/components/ui/UiShowMoreButton';
 import { useToggleRecipes } from '~/hooks/use-toggle-recipes';
 import { Recipe } from '~/types';
 
-export const BookmarksList = ({ bookmarks }: { bookmarks: Recipe[] }) => {
+export const BookmarksList = ({ bookmarks = [] }: { bookmarks?: Recipe[] }) => {
     const { handleShowMore, recipesToShow, showMoreRef, hasMore } = useToggleRecipes(bookmarks);
 
     return (

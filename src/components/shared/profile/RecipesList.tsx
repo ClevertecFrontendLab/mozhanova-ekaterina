@@ -9,8 +9,8 @@ export const RecipesList = ({
     recipes = [],
     drafts = [],
 }: {
-    recipes: Recipe[];
-    drafts: RecipeDraftDto[];
+    recipes?: Recipe[];
+    drafts?: RecipeDraftDto[];
 }) => {
     const { draftsToShow, recipesToShow, handleShowMore, showMoreRef } = useToggleMyRecipes(
         recipes,
@@ -26,12 +26,14 @@ export const RecipesList = ({
                         ({recipes.length})
                     </Text>
                 </span>
-                <span>
-                    Черновики <wbr />
-                    <Text as='span' color='text.secondary' fontWeight={400}>
-                        ({drafts.length})
-                    </Text>
-                </span>
+                {drafts.length > 0 && (
+                    <span>
+                        Черновики <wbr />
+                        <Text as='span' color='text.secondary' fontWeight={400}>
+                            ({drafts.length})
+                        </Text>
+                    </span>
+                )}
             </Heading>
             <Box>
                 <UiCardGrid editable isDraft data={draftsToShow} />

@@ -8,7 +8,7 @@ import { NoteDto } from '~/types';
 import { NoteCard } from '../blogs/NoteCard';
 import { NotesDrawer } from './NotesDrawer';
 
-export const NotesList = ({ notes }: { notes: NoteDto[] }) => {
+export const NotesList = ({ notes = [] }: { notes?: NoteDto[] }) => {
     const { notesToHide, notesToShow, hasMore, toggleNotes } = useToggleNotes(notes);
     const { onClose, onOpen, isOpen } = useDisclosure();
 
