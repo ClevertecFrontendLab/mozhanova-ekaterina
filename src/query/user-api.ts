@@ -1,4 +1,4 @@
-import { Note, NoteDto, StatisticDto, UserDto } from '~/types';
+import { Note, NoteDto, StatisticDto, UserDto, UserUpdateInfo } from '~/types';
 
 import { authorizedApi } from './authorized-api';
 import { ApiEndpoints } from './constants/api';
@@ -9,7 +9,7 @@ export const UserApi = authorizedApi.injectEndpoints({
     endpoints: (builder) => ({
         [EndpointNames.GET_PROFILE]: builder.query<UserDto, void>({
             query: () => ApiEndpoints.USER,
-            providesTags: [Tags.USER],
+            providesTags: [Tags.USER, Tags.USER_INFO],
         }),
         [EndpointNames.GET_STATISTICS]: builder.query<StatisticDto, void>({
             query: () => ApiEndpoints.STATISTIC,
@@ -30,6 +30,14 @@ export const UserApi = authorizedApi.injectEndpoints({
             }),
             invalidatesTags: [Tags.USER_RECIPES],
         }),
+        [EndpointNames.UPDATE_INFO]: builder.mutation<UserUpdateInfo, UserUpdateInfo>({
+            query: (userInfo) => ({
+                url: ApiEndpoints.UPDATE_USER_INFO,
+                method: 'PATCH',
+                body: userInfo,
+            }),
+            invalidatesTags: [Tags.USER_INFO],
+        }),
     }),
 });
 
@@ -38,4 +46,5 @@ export const {
     useGetStatisticsQuery,
     useCreateNotesMutation,
     useDeleteNoteMutation,
+    useUpdateInfoMutation,
 } = UserApi;
