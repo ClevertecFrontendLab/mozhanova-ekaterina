@@ -11,7 +11,7 @@ import { decodeToken } from '~/utils/jwt-utils';
 
 import { selectAllCategories } from './category-slice';
 import { ApplicationState } from './configure-store';
-import { accessToken } from './user-slice';
+import { accessToken, selectCurrentUser, selectStatistics } from './user-slice';
 
 export const selectCategories = createSelector([selectAllCategories], (categories) =>
     Array.isArray(categories) ? categories?.filter((category) => !category.rootCategoryId) : [],
@@ -102,6 +102,17 @@ export const selectCategoryById = createSelector(
 export const selectCurrentRootCategory = createSelector(
     [selectCategories, (_: ApplicationState, name: string) => name],
     (categories, name) => (Array.isArray(categories) ? getCategoryByName(categories, name) : null),
+);
+
+export const selectStatisticsCounts = createSelector(
+    [selectStatistics, selectCurrentUser],
+    (statistics, user) => {
+        const likes = statistics?.likes.reduce((acc, like) => acc + like.count, 0) || 0;
+        const bookmarks =
+            statistics?.bookmarks.reduce((acc, bookmark) => acc + bookmark.count, 0) || 0;
+        const subscribersCount = user?.subscribers.length || 0;
+        return { likes, bookmarks, subscribersCount };
+    },
 );
 
 export const selectGlobalLoading = createSelector(

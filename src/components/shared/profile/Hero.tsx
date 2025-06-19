@@ -4,43 +4,45 @@ import { Link } from 'react-router';
 
 import { UiCardStats } from '~/components/ui/UiCardStats';
 import { AppRoutes } from '~/constants/routes-config';
+import { useAppSelector } from '~/store/hooks';
+import { selectStatisticsCounts } from '~/store/selectors';
 
 type Props = {
     firstName: string;
     lastName: string;
     login: string;
-    subscribersCount?: number;
-    bookmarks?: number;
 };
 
-export const Hero = ({
-    firstName = '',
-    lastName = '',
-    login = '',
-    subscribersCount,
-    bookmarks,
-}: Props) => (
-    <Flex
-        gap={6}
-        direction={{ base: 'column', sm: 'row' }}
-        align='center'
-        textAlign={{ base: 'center', sm: 'left' }}
-        position='relative'
-        my={4}
-    >
-        <Avatar name={`${firstName} ${lastName}`} size={{ base: 'xl', md: '2xl' }} />
-        <Grid gap={3}>
-            <Heading fontSize={{ base: '24px', md: '48px' }}>{`${firstName} ${lastName}`}</Heading>
-            <Box fontSize={{ base: '14px' }} color='text.secondary'>
-                @{login}
-            </Box>
-            <Flex justify={{ base: 'center', sm: 'flex-start' }}>
-                <UiCardStats subscribersCount={subscribersCount} bookmarks={bookmarks} />
-            </Flex>
-            <IconBox />
-        </Grid>
-    </Flex>
-);
+export const Hero = ({ firstName = '', lastName = '', login = '' }: Props) => {
+    const statistics = useAppSelector(selectStatisticsCounts);
+    return (
+        <Flex
+            gap={6}
+            direction={{ base: 'column', sm: 'row' }}
+            align='center'
+            textAlign={{ base: 'center', sm: 'left' }}
+            position='relative'
+            my={4}
+        >
+            <Avatar name={`${firstName} ${lastName}`} size={{ base: 'xl', md: '2xl' }} />
+            <Grid gap={3}>
+                <Heading
+                    fontSize={{ base: '24px', md: '48px' }}
+                >{`${firstName} ${lastName}`}</Heading>
+                <Box fontSize={{ base: '14px' }} color='text.secondary'>
+                    @{login}
+                </Box>
+                <Flex justify={{ base: 'center', sm: 'flex-start' }}>
+                    <UiCardStats
+                        subscribersCount={statistics.subscribersCount}
+                        bookmarks={statistics.bookmarks}
+                    />
+                </Flex>
+                <IconBox />
+            </Grid>
+        </Flex>
+    );
+};
 
 function IconBox() {
     return (

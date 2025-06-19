@@ -62,15 +62,7 @@ export const Header = ({
                 align='center'
                 flexGrow={1}
             >
-                {token && (
-                    <ProfileNotification
-                        totalBookmarks={12}
-                        totalSubscribers={500}
-                        totalLikes={1000}
-                        variant='mobile'
-                        isMenuOpen={isMenuOpen}
-                    />
-                )}
+                {token && <ProfileNotification variant='mobile' isMenuOpen={isMenuOpen} />}
                 <Flex gap={6} alignItems='center' justifyContent='center'>
                     <LogInButton />
 

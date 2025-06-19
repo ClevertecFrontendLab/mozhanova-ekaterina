@@ -5,18 +5,20 @@ import { Link } from 'react-router';
 
 import { AppRoutes } from '~/constants/routes-config';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
-import { useGetProfileQuery } from '~/query/user-api';
-import { setUser } from '~/store/user-slice';
+import { useGetProfileQuery, useGetStatisticsQuery } from '~/query/user-api';
+import { setStatistics, setUser } from '~/store/user-slice';
 
 export const ProfileInfo = () => {
     const [isLargerThanMD] = useBreakpoint('md');
     const dispatch = useDispatch();
     const { data: profile } = useGetProfileQuery();
+    const { data: statistics } = useGetStatisticsQuery();
 
     useEffect(() => {
-        if (!profile) return;
+        if (!profile || !statistics) return;
         dispatch(setUser(profile));
-    }, [profile]);
+        dispatch(setStatistics(statistics));
+    }, [profile, statistics]);
 
     if (!profile) return null;
     return (

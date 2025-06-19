@@ -1,5 +1,8 @@
 import { Flex } from '@chakra-ui/react';
 
+import { useAppSelector } from '~/store/hooks';
+import { selectStatisticsCounts } from '~/store/selectors';
+
 import { BookmarkHeartIcon } from '../ui/icons/BookmarkHeartIcon';
 import { EmojiHeartEyesIcon } from '../ui/icons/EmojiHeartEyesIcon';
 import { PeopleIcon } from '../ui/icons/PeopleIcon';
@@ -7,17 +10,12 @@ import { PeopleIcon } from '../ui/icons/PeopleIcon';
 export const ProfileNotification = ({
     isMenuOpen = true,
     variant = 'default',
-    totalBookmarks,
-    totalLikes,
-    totalSubscribers,
 }: {
     isMenuOpen?: boolean;
     variant?: 'default' | 'mobile';
-    totalBookmarks?: number;
-    totalLikes?: number;
-    totalSubscribers?: number;
 }) => {
     const isVisible = variant === 'default' || !isMenuOpen;
+    const statistic = useAppSelector(selectStatisticsCounts);
 
     return (
         <Flex
@@ -35,7 +33,7 @@ export const ProfileNotification = ({
                 md: '16px',
             }}
         >
-            {totalBookmarks !== 0 && (
+            {statistic.bookmarks !== 0 && (
                 <Flex
                     justifyContent='center'
                     padding={{
@@ -51,11 +49,11 @@ export const ProfileNotification = ({
                     color='primary.400'
                 >
                     <BookmarkHeartIcon />
-                    <div>{totalBookmarks}</div>
+                    <div>{statistic.bookmarks}</div>
                 </Flex>
             )}
 
-            {totalSubscribers !== 0 && (
+            {statistic.subscribersCount !== 0 && (
                 <Flex
                     justifyContent='center'
                     padding={{
@@ -68,11 +66,11 @@ export const ProfileNotification = ({
                     color='primary.400'
                 >
                     <PeopleIcon />
-                    <div>{totalSubscribers}</div>
+                    <div>{statistic.subscribersCount}</div>
                 </Flex>
             )}
 
-            {totalLikes !== 0 && (
+            {statistic.likes !== 0 && (
                 <Flex
                     justifyContent='center'
                     padding={{
@@ -84,7 +82,7 @@ export const ProfileNotification = ({
                     fontWeight='600'
                     color='primary.400'
                 >
-                    <EmojiHeartEyesIcon /> <div>{totalLikes}</div>
+                    <EmojiHeartEyesIcon /> <div>{statistic.likes}</div>
                 </Flex>
             )}
         </Flex>
