@@ -14,15 +14,18 @@ export const useModal = () => {
         onOpen();
     };
 
-    const showSignUpSuccess = (email: string) => showModal('signUpSuccess', { email });
+    const showSignUpSuccess = (params: ModalParams<'signUpSuccess'>) =>
+        showModal('signUpSuccess', params);
 
     const showVerificationFailed = () => showModal('verificationFailed', undefined);
 
     const showSendEmail = () => showModal('sendEmail', undefined);
 
-    const showVerificationCode = (email: string) => showModal('verificationCode', { email });
+    const showVerificationCode = (params: ModalParams<'verificationCode'>) =>
+        showModal('verificationCode', params);
 
-    const showResetCredentials = (email: string) => showModal('resetCredentials', { email });
+    const showResetCredentials = (params: ModalParams<'resetCredentials'>) =>
+        showModal('resetCredentials', params);
 
     const showSignInError = (userData: Auth) => showModal('signInError', { userData });
 
@@ -31,6 +34,8 @@ export const useModal = () => {
 
     const showRecipePreventive = (params: ModalParams<'recipePreventive'>) =>
         showModal('recipePreventive', params);
+
+    const showUpdatePassword = () => showModal('updatePassword', undefined);
 
     const handleClose = () => {
         setModalState(null);
@@ -59,5 +64,6 @@ export const useModal = () => {
         showResetCredentials,
         showUploadImage,
         showRecipePreventive,
+        showUpdatePassword,
     };
 };

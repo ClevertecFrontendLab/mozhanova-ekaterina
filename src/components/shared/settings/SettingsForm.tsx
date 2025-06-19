@@ -6,6 +6,7 @@ import { UiButton } from '~/components/ui/UiButton';
 import { UiInput } from '~/components/ui/UiInput';
 import { UiLoginInput } from '~/components/ui/UiLoginInput';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
+import { useModalContext } from '~/contexts/modal-context';
 import { useToast } from '~/hooks/use-toast';
 import { useUpdateInfoMutation } from '~/query/user-api';
 import { UserDto, UserUpdateInfo } from '~/types';
@@ -28,6 +29,7 @@ export const SettingsForm = ({ profile }: { profile: UserDto }) => {
     });
     const [updateInfo] = useUpdateInfoMutation();
     const { showSuccess, showError } = useToast();
+    const { showUpdatePassword } = useModalContext();
 
     const handleSave = async (data: UserUpdateInfo) => {
         try {
@@ -36,6 +38,10 @@ export const SettingsForm = ({ profile }: { profile: UserDto }) => {
         } catch {
             showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
         }
+    };
+
+    const handleUpdatePassword = () => {
+        showUpdatePassword();
     };
 
     return (
@@ -65,7 +71,12 @@ export const SettingsForm = ({ profile }: { profile: UserDto }) => {
                 />
             </SimpleGrid>
             <VStack spacing={4} align={{ base: 'center', sm: 'flex-start' }}>
-                <UiButton variant='ghost' text='Сменить пароль' size={{ base: 'md', md: 'lg' }} />
+                <UiButton
+                    onClick={handleUpdatePassword}
+                    variant='ghost'
+                    text='Сменить пароль'
+                    size={{ base: 'md', md: 'lg' }}
+                />
                 <UiButton
                     variant='solid'
                     text='Сохранить изменения'

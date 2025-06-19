@@ -9,6 +9,12 @@ export const passwordSchema = yup
     .max(50, VALIDATION_MESSAGES.LENGTH.MAX_50)
     .matches(REGEXP_PATTERNS.PASSWORD, VALIDATION_MESSAGES.FORMAT.PASSWORD);
 
+export const passwordConfirmSchema = (ref = 'password') =>
+    yup
+        .string()
+        .required(VALIDATION_MESSAGES.REQUIRED.PASSWORD_CONFIRM)
+        .oneOf([yup.ref(ref)], VALIDATION_MESSAGES.FORMAT.PASSWORD_MATCH);
+
 export const loginSchema = yup
     .string()
     .trim()
@@ -47,10 +53,7 @@ export const RegistrationSchema = yup.object({
     login: loginSchema,
     email: emailSchema,
     password: passwordSchema,
-    passwordConfirm: yup
-        .string()
-        .required(VALIDATION_MESSAGES.REQUIRED.PASSWORD_CONFIRM)
-        .oneOf([yup.ref('password')], VALIDATION_MESSAGES.FORMAT.PASSWORD_MATCH),
+    passwordConfirm: passwordConfirmSchema(),
 });
 
 export const LoginSchema = yup.object({
@@ -58,15 +61,18 @@ export const LoginSchema = yup.object({
     password: passwordSchema,
 });
 
+export const UpdatePasswordSchema = yup.object({
+    password: passwordSchema,
+    newPassword: passwordSchema,
+    passwordConfirm: passwordConfirmSchema('newPassword'),
+});
+
 export const NoteSchema = yup.object().shape({ text: yup.string().required().min(10).max(160) });
 
 export const RecoverySchema = yup.object({
     login: loginSchema.required(VALIDATION_MESSAGES.REQUIRED.LOGIN),
     password: passwordSchema.required(VALIDATION_MESSAGES.REQUIRED.PASSWORD),
-    passwordConfirm: yup
-        .string()
-        .required(VALIDATION_MESSAGES.REQUIRED.PASSWORD_CONFIRM)
-        .oneOf([yup.ref('password')], VALIDATION_MESSAGES.FORMAT.PASSWORD_MATCH),
+    passwordConfirm: passwordConfirmSchema(),
 });
 
 export const VerificationCodeSchema = yup.object({

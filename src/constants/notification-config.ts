@@ -18,6 +18,7 @@ const NOTIFICATION_TITLES = {
     DELETE_RECIPE_SUCCESS: 'Рецепт успешно удален.',
     DELETE_NOTE_SUCCESS: 'Заметка удалена.',
     CHANGES_INFO_SUCCESS: 'Изменения сохранены.',
+    UPDATE_PASSWORD_SUCCESS: 'Пароль успешно изменен.',
 };
 
 const NOTIFICATION_DESCRIPTIONS = {
@@ -116,5 +117,8 @@ export const NOTIFICATION_MESSAGES = {
     },
     CHANGES_INFO_SUCCESS: {
         title: NOTIFICATION_TITLES.CHANGES_INFO_SUCCESS,
+    },
+    UPDATE_PASSWORD_SUCCESS: {
+        title: NOTIFICATION_TITLES.UPDATE_PASSWORD_SUCCESS,
     },
 } as const satisfies Record<string, NotificationMessage>;

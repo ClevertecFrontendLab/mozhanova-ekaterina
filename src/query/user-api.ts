@@ -1,4 +1,4 @@
-import { Note, NoteDto, StatisticDto, UserDto, UserUpdateInfo } from '~/types';
+import { Note, NoteDto, StatisticDto, UpdatePassword, UserDto, UserUpdateInfo } from '~/types';
 
 import { authorizedApi } from './authorized-api';
 import { ApiEndpoints } from './constants/api';
@@ -38,6 +38,13 @@ export const UserApi = authorizedApi.injectEndpoints({
             }),
             invalidatesTags: [Tags.USER_INFO],
         }),
+        [EndpointNames.UPDATE_PASSWORD]: builder.mutation<void, UpdatePassword>({
+            query: (password) => ({
+                url: ApiEndpoints.UPDATE_PASSWORD,
+                method: 'PATCH',
+                body: password,
+            }),
+        }),
     }),
 });
 
@@ -47,4 +54,5 @@ export const {
     useCreateNotesMutation,
     useDeleteNoteMutation,
     useUpdateInfoMutation,
+    useUpdatePasswordMutation,
 } = UserApi;

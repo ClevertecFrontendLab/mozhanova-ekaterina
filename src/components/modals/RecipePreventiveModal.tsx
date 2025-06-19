@@ -30,7 +30,7 @@ export const RecipePreventiveModal = ({
     const handleSave = async () => {
         const isValid = await RecipeDraftSchema.isValid(draft);
         if (!isValid) {
-            setError();
+            setError!();
             showError(NOTIFICATION_MESSAGES.SAVE_DRAFT_ERROR);
             onClose();
             return;

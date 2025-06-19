@@ -45,7 +45,7 @@ export const SignInErrorModal = ({ userData }: ModalParams<'signInError'>) => {
             footer={
                 <Grid w='100%'>
                     <UiButton
-                        onClick={() => onSubmit(userData)}
+                        onClick={() => onSubmit(userData!)}
                         data-test-id={DATA_TEST_IDS.REPEAT_BUTTON}
                         type='submit'
                         variant='solid'

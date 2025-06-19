@@ -45,7 +45,7 @@ export const SendEmailModal = () => {
         if (!isValid) return;
         try {
             const result = await forgotPassword(data.email).unwrap();
-            if (result) showVerificationCode(data.email);
+            if (result) showVerificationCode({ email: data.email });
         } catch (error) {
             sendEmailErrorHandler(error as ErrorResponse, setError, reset);
         }

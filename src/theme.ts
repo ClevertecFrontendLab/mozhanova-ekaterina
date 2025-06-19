@@ -406,6 +406,7 @@ const theme = extendTheme({
             baseStyle: {
                 field: {
                     borderWidth: '1px',
+                    borderColor: 'border.light',
                     _focus: {
                         boxShadow: 'none',
                     },
@@ -442,7 +443,7 @@ const theme = extendTheme({
                 select: {
                     field: {
                         borderColor: 'border.light',
-                        color: 'neutral.300',
+                        color: 'text.secondary',
                         _placeholder: {
                             color: 'primary.700',
                         },
@@ -461,7 +462,7 @@ const theme = extendTheme({
                     field: {
                         borderColor: 'primary.300',
                         _placeholder: {
-                            color: 'neutral.300',
+                            color: 'text.secondary',
                         },
                         _focus: {
                             borderColor: 'primary.300',
@@ -470,7 +471,7 @@ const theme = extendTheme({
                 },
                 tableInput: {
                     field: {
-                        borderColor: 'primary.300',
+                        borderColor: 'border.light',
                         _placeholder: {
                             color: 'text.secondary',
                         },
@@ -535,6 +536,7 @@ const theme = extendTheme({
             baseStyle: {
                 overlay: {
                     zIndex: Z_INDEX_CONFIG.MODAL,
+                    backdropFilter: 'blur(4px)',
                 },
                 dialog: {
                     p: 8,

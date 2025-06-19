@@ -106,6 +106,10 @@ export type UserUpdateInfo = {
     firstName: string;
     lastName: string;
 };
+export type UpdatePassword = {
+    password: string;
+    newPassword: string;
+};
 export type StatisticDto = {
     likes: { data: string; count: number }[];
     bookmarks: { data: string; count: number }[];
@@ -252,18 +256,19 @@ export type NotificationMessage = {
 export type ModalType = (typeof modalConfig)[number]['type'];
 
 export type ModalParams<T extends ModalType> = {
-    signUpSuccess: { email: string };
+    signUpSuccess: { email?: string };
     verificationFailed: undefined;
     sendEmail: undefined;
-    verificationCode: { email: string };
-    resetCredentials: { email: string };
-    signInError: { userData: Auth };
+    verificationCode: { email?: string };
+    resetCredentials: { email?: string };
+    signInError: { userData?: Auth };
     uploadImage: {
-        preview: string;
-        testId: string;
-        onSave: (url: string) => void;
+        preview?: string;
+        testId?: string;
+        onSave?: (url: string) => void;
     };
-    recipePreventive: { draft: RecipeDraft; setError: VoidFunction; link: string };
+    recipePreventive: { draft?: RecipeDraft; setError?: VoidFunction; link?: string };
+    updatePassword: undefined;
 }[T];
 
 export type ModalState<T extends ModalType = ModalType> = {

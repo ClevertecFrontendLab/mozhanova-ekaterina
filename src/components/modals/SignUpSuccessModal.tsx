@@ -7,7 +7,7 @@ import { ModalParams } from '~/types';
 
 import { UiModal } from '../ui/UiModal';
 
-export const SignUpSuccessModal = ({ email }: ModalParams<'signUpSuccess'>) => {
+export const SignUpSuccessModal = ({ email = '' }: ModalParams<'signUpSuccess'>) => {
     const { isOpen, onClose } = useModalContext();
     return (
         <UiModal

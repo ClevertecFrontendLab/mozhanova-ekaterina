@@ -25,7 +25,7 @@ export const UploadImageModal = ({ preview, testId, onSave }: ModalParams<'uploa
 
         try {
             const data = await uploadFile(formData).unwrap();
-            onSave(data.url);
+            onSave!(data.url);
             onClose();
         } catch (error) {
             console.error('Upload failed', error);
@@ -47,7 +47,7 @@ export const UploadImageModal = ({ preview, testId, onSave }: ModalParams<'uploa
     };
 
     const handleCancel = () => {
-        onSave('');
+        onSave!('');
         onClose();
     };
 

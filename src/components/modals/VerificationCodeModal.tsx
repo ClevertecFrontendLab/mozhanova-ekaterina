@@ -22,7 +22,7 @@ import { VerificationCodeSchema } from '~/validation';
 
 import { UiModal } from '../ui/UiModal';
 
-export const VerificationCodeModal = ({ email }: ModalParams<'verificationCode'>) => {
+export const VerificationCodeModal = ({ email = '' }: ModalParams<'verificationCode'>) => {
     const navigate = useNavigate();
     const { isOpen, onClose, showResetCredentials } = useModalContext();
     const [headerText, setHeaderText] = useState('');
@@ -48,7 +48,7 @@ export const VerificationCodeModal = ({ email }: ModalParams<'verificationCode'>
         setHeaderText('');
         try {
             const result = await verifyCode({ email: email, otpToken: data.code }).unwrap();
-            if (result) showResetCredentials(email);
+            if (result) showResetCredentials({ email: email });
         } catch (error) {
             resetField('code');
             verificationCodeErrorHandler(error as ErrorResponse, setError, setHeaderText);
