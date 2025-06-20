@@ -1,9 +1,10 @@
 import { Box, Grid, Heading, Image } from '@chakra-ui/react';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import default_image from '~/assets/ui/image_default.png';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
+import { useFileUpload } from '~/hooks/use-file-upload';
 import { ModalParams } from '~/types';
 
 import { UiButton } from '../ui/UiButton';
@@ -17,34 +18,11 @@ export const UploadImageModal = ({
     title = 'Изображение',
     uploadButton = 'Сохранить',
     cancelButton = 'Удалить',
+    // enableCrop,
 }: ModalParams<'uploadImage'>) => {
     const { isOpen, onClose } = useModalContext();
     const uploadInputRef = useRef<HTMLInputElement>(null);
-    const [localFile, setLocalFile] = useState<File | null>(null);
-    const [localPreview, setLocalPreview] = useState(preview);
-
-    const onSubmit = () => {
-        if (!localFile) return;
-
-        const formData = new FormData();
-        formData.append('file', localFile);
-
-        handleUpload?.(formData);
-    };
-
-    const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-
-        if (!file) return;
-
-        setLocalFile(file);
-        const reader = new FileReader();
-        reader.onload = () => {
-            const newPreview = reader.result as string;
-            setLocalPreview(newPreview);
-        };
-        reader.readAsDataURL(file);
-    };
+    const { handleFileChange, localPreview, onSubmit } = useFileUpload(handleUpload, preview);
 
     const handleCancel = () => {
         onChange!('');
