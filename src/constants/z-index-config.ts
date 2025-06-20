@@ -5,9 +5,9 @@ export const Z_INDEX_CONFIG = {
     GLOBAL_LOADER: 50,
     NAVBAR_MENU: 40,
     NAVBAR_OVERLAY: 30,
-    FOOTER: 40,
+    FOOTER: 20,
     SELECT_MENU: 10,
     FORM_SUBMIT_BTNS: 32,
     SLIDER_BTNS: 10,
-    TOAST: 10,
+    TOAST: 51,
 } as const;

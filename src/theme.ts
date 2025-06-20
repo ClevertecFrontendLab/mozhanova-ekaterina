@@ -21,6 +21,46 @@ const theme = extendTheme({
                     background: 'primary.300',
                 },
             },
+            '#chakra-toast-manager-bottom-left': {
+                bottom: '80px !important',
+                left: '25% !important',
+                transform: 'translateX(-50%)',
+                'z-index': `${Z_INDEX_CONFIG.TOAST} !important`,
+            },
+            '#chakra-toast-manager-bottom': {
+                bottom: '80px !important',
+                'z-index': `${Z_INDEX_CONFIG.TOAST} !important`,
+            },
+            '.chakra-tooltip__arrow': {
+                'background-color': 'black !important',
+            },
+            '.body-no-scroll': {
+                overflow: 'hidden !important',
+                position: 'fixed',
+                width: '100%',
+                height: '100%',
+            },
+
+            '.swiper-slide': {
+                height: 'auto !important',
+            },
+            '.swiper': {
+                padding: '6px 0 !important',
+            },
+
+            '.chakra-toast': {
+                transition: 'none !important',
+                opacity: '1 !important',
+            },
+
+            '[data-popper-placement]': {
+                'min-width': 'unset !important',
+            },
+            '@media (max-width: 1001px)': {
+                '#chakra-toast-manager-bottom-left': {
+                    left: '50% !important',
+                },
+            },
         },
     },
     colors: {

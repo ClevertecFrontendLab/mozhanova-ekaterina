@@ -4,9 +4,10 @@ import { useForm } from 'react-hook-form';
 
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { useModalContext } from '~/contexts/modal-context';
+import { useErrors } from '~/hooks/use-errors';
 import { useToast } from '~/hooks/use-toast';
 import { useUpdatePasswordMutation } from '~/query/user-api';
-import { UpdatePassword } from '~/types';
+import { ErrorResponse, UpdatePassword } from '~/types';
 import { UpdatePasswordSchema } from '~/validation';
 
 import { UiButton } from '../ui/UiButton';
@@ -17,10 +18,12 @@ export const UpdatePasswordModal = () => {
     const { isOpen, onClose } = useModalContext();
     const [updatePassword] = useUpdatePasswordMutation();
     const { showSuccess } = useToast();
+    const { updatePasswordErrorHandler } = useErrors();
 
     const {
         register,
         handleSubmit,
+        setError,
         formState: { errors, isValid },
     } = useForm({
         resolver: yupResolver(UpdatePasswordSchema),
@@ -33,8 +36,10 @@ export const UpdatePasswordModal = () => {
             await updatePassword(data).unwrap();
             showSuccess(NOTIFICATION_MESSAGES.UPDATE_PASSWORD_SUCCESS);
             onClose();
-        } catch {
-            // TODO
+        } catch (error) {
+            updatePasswordErrorHandler(error as ErrorResponse, () =>
+                setError('password', { message: '' }),
+            );
         }
     };
 

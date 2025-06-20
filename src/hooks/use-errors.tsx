@@ -163,6 +163,17 @@ export const useErrors = () => {
         }
     };
 
+    const updatePasswordErrorHandler = (error: ErrorResponse, setError: VoidFunction) => {
+        switch (error.status) {
+            case 400:
+                showError(NOTIFICATION_MESSAGES.UPDATE_PASSWORD_ERROR);
+                setError();
+                break;
+            default:
+                showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+        }
+    };
+
     return {
         signUpErrorHandler,
         signInErrorHandler,
@@ -176,5 +187,6 @@ export const useErrors = () => {
         saveLikeRecipeErrorHandler,
         toggleSubscribeErrorHandler,
         loadBloggerAndRecipesErrorHandler,
+        updatePasswordErrorHandler,
     };
 };
