@@ -1,9 +1,11 @@
 import { SettingsIcon } from '@chakra-ui/icons';
-import { Avatar, Box, Flex, Grid, Heading } from '@chakra-ui/react';
+import { Box, Flex, Grid, Heading } from '@chakra-ui/react';
 import { Link } from 'react-router';
 
+import { UiAvatar } from '~/components/ui/UiAvatar';
 import { UiCardStats } from '~/components/ui/UiCardStats';
 import { AppRoutes } from '~/constants/routes-config';
+import { API_IMAGE_URL } from '~/query/constants/api-config';
 import { useAppSelector } from '~/store/hooks';
 import { selectStatisticsCounts } from '~/store/selectors';
 
@@ -11,9 +13,10 @@ type Props = {
     firstName: string;
     lastName: string;
     login: string;
+    avatar?: string;
 };
 
-export const Hero = ({ firstName = '', lastName = '', login = '' }: Props) => {
+export const Hero = ({ firstName = '', lastName = '', login = '', avatar }: Props) => {
     const statistics = useAppSelector(selectStatisticsCounts);
     return (
         <Flex
@@ -24,7 +27,7 @@ export const Hero = ({ firstName = '', lastName = '', login = '' }: Props) => {
             position='relative'
             my={4}
         >
-            <Avatar name={`${firstName} ${lastName}`} size={{ base: 'xl', md: '2xl' }} />
+            <UiAvatar src={API_IMAGE_URL + avatar} firstName={firstName} lastName={lastName} />
             <Grid gap={3}>
                 <Heading
                     fontSize={{ base: '24px', md: '48px' }}

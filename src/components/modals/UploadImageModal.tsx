@@ -4,32 +4,32 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import default_image from '~/assets/ui/image_default.png';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
-import { useFileUploadMutation } from '~/query/file-upload-api';
 import { ModalParams } from '~/types';
 
 import { UiButton } from '../ui/UiButton';
 import { UiModal } from '../ui/UiModal';
 
-export const UploadImageModal = ({ preview, testId, onSave }: ModalParams<'uploadImage'>) => {
+export const UploadImageModal = ({
+    preview,
+    testId,
+    onChange,
+    handleUpload,
+    title = 'Изображение',
+    uploadButton = 'Сохранить',
+    cancelButton = 'Удалить',
+}: ModalParams<'uploadImage'>) => {
     const { isOpen, onClose } = useModalContext();
     const uploadInputRef = useRef<HTMLInputElement>(null);
     const [localFile, setLocalFile] = useState<File | null>(null);
     const [localPreview, setLocalPreview] = useState(preview);
-    const [uploadFile] = useFileUploadMutation();
 
-    const handleUpload = async () => {
+    const onSubmit = () => {
         if (!localFile) return;
 
         const formData = new FormData();
         formData.append('file', localFile);
 
-        try {
-            const data = await uploadFile(formData).unwrap();
-            onSave!(data.url);
-            onClose();
-        } catch (error) {
-            console.error('Upload failed', error);
-        }
+        handleUpload?.(formData);
     };
 
     const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +47,7 @@ export const UploadImageModal = ({ preview, testId, onSave }: ModalParams<'uploa
     };
 
     const handleCancel = () => {
-        onSave!('');
+        onChange!('');
         onClose();
     };
 
@@ -66,7 +66,7 @@ export const UploadImageModal = ({ preview, testId, onSave }: ModalParams<'uploa
             data-test-id={DATA_TEST_IDS.RECIPE_IMAGE_MODAL}
             isOpen={isOpen}
             onClose={onClose}
-            header='Изображение'
+            header={title}
             maxW='396px'
             body={
                 <Box
@@ -101,12 +101,19 @@ export const UploadImageModal = ({ preview, testId, onSave }: ModalParams<'uploa
                 localPreview !== default_image && (
                     <Grid w='100%' gap={4}>
                         <UiButton
-                            onClick={handleUpload}
+                            onClick={onSubmit}
                             size='lg'
                             variant='solid'
-                            text='Сохранить'
+                            text={uploadButton}
                         />
-                        <UiButton onClick={handleCancel} size='lg' variant='ghost' text='Удалить' />
+                        {cancelButton && onChange && (
+                            <UiButton
+                                onClick={handleCancel}
+                                size='lg'
+                                variant='ghost'
+                                text={cancelButton}
+                            />
+                        )}
                     </Grid>
                 )
             }

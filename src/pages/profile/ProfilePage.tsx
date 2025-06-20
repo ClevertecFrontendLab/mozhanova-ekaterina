@@ -24,6 +24,7 @@ export const ProfilePage = () => {
                 firstName={profile?.firstName}
                 lastName={profile?.lastName}
                 login={profile?.login}
+                avatar={profile?.photoLink}
             />
             <Grid gap={{ base: 8, md: 10 }}>
                 <RecipesList drafts={profile.drafts} recipes={recipes.recipes} />

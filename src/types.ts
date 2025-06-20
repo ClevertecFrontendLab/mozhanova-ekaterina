@@ -101,6 +101,7 @@ export type UserDto = {
     login: string;
     lastName: string;
     firstName: string;
+    photoLink?: string;
 };
 export type UserUpdateInfo = {
     firstName: string;
@@ -263,9 +264,13 @@ export type ModalParams<T extends ModalType> = {
     resetCredentials: { email?: string };
     signInError: { userData?: Auth };
     uploadImage: {
+        title?: string;
+        uploadButton?: string;
+        cancelButton?: string;
         preview?: string;
         testId?: string;
-        onSave?: (url: string) => void;
+        onChange?: (url: string) => void;
+        handleUpload?: (formData: FormData) => void;
     };
     recipePreventive: { draft?: RecipeDraft; setError?: VoidFunction; link?: string };
     updatePassword: undefined;

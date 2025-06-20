@@ -3,6 +3,7 @@ import { Box, Image } from '@chakra-ui/react';
 import default_image from '~/assets/ui/image_default.png';
 import { useModalContext } from '~/contexts/modal-context';
 import { API_IMAGE_URL } from '~/query/constants/api-config';
+import { useFileUploadMutation } from '~/query/file-upload-api';
 
 type Props = {
     index: number;
@@ -12,14 +13,26 @@ type Props = {
 };
 
 export const StepImageControl = ({ index, error, value, onChange }: Props) => {
-    const { showUploadImage } = useModalContext();
+    const { showUploadImage, onClose } = useModalContext();
     const preview = value ? `${API_IMAGE_URL}${value}` : default_image;
+    const [uploadFile] = useFileUploadMutation();
+
+    const handleUpload = async (formData: FormData) => {
+        try {
+            const data = await uploadFile(formData).unwrap();
+            onChange!(data.url);
+            onClose();
+        } catch (error) {
+            console.error('Upload failed', error);
+        }
+    };
 
     const showUploadImageModal = () => {
         showUploadImage({
             preview,
-            onSave: onChange,
+            onChange: onChange,
             testId: `recipe-steps-image-block-${index}-input-file`,
+            handleUpload: handleUpload,
         });
     };
 

@@ -5,6 +5,7 @@ import default_image from '~/assets/ui/image_default.png';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
 import { API_IMAGE_URL } from '~/query/constants/api-config';
+import { useFileUploadMutation } from '~/query/file-upload-api';
 import { Recipe } from '~/types';
 
 type Props = {
@@ -13,7 +14,8 @@ type Props = {
 };
 
 export const ImageControl = ({ control, error }: Props) => {
-    const { showUploadImage } = useModalContext();
+    const { showUploadImage, onClose } = useModalContext();
+    const [uploadFile] = useFileUploadMutation();
 
     const {
         field: { value, onChange },
@@ -24,11 +26,22 @@ export const ImageControl = ({ control, error }: Props) => {
 
     const preview = value ? `${API_IMAGE_URL}${value}` : default_image;
 
-    const showUploadImageModal = () => {
+    const handleUpload = async (formData: FormData) => {
+        try {
+            const data = await uploadFile(formData).unwrap();
+            onChange!(data.url);
+            onClose();
+        } catch (error) {
+            console.error('Upload failed', error);
+        }
+    };
+
+    const showModal = () => {
         showUploadImage({
             preview,
-            onSave: onChange,
+            onChange: onChange,
             testId: DATA_TEST_IDS.RECIPE_IMAGE_INPUT,
+            handleUpload: handleUpload,
         });
     };
 
@@ -47,7 +60,7 @@ export const ImageControl = ({ control, error }: Props) => {
                 w={{ base: '100%', sm: '232px', md: '353px', lg: '553px' }}
                 cursor='pointer'
                 src={preview}
-                onClick={showUploadImageModal}
+                onClick={showModal}
                 objectFit='cover'
                 alt='Загруженное изображение'
             />

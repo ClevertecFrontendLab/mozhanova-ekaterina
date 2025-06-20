@@ -45,6 +45,13 @@ export const UserApi = authorizedApi.injectEndpoints({
                 body: password,
             }),
         }),
+        [EndpointNames.UPLOAD_USER_PHOTO]: builder.mutation<{ photoLink: string }, FormData>({
+            query: (file) => ({
+                url: ApiEndpoints.USER_PHOTO,
+                method: 'POST',
+                body: file,
+            }),
+        }),
     }),
 });
 
@@ -55,4 +62,5 @@ export const {
     useDeleteNoteMutation,
     useUpdateInfoMutation,
     useUpdatePasswordMutation,
+    useUploadUserPhotoMutation,
 } = UserApi;

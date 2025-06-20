@@ -1,5 +1,5 @@
 import { EditIcon } from '@chakra-ui/icons';
-import { Avatar, Grid } from '@chakra-ui/react';
+import { Grid } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router';
 
 import { HomeIcon } from '~/components/ui/icons/HomeIcon';
@@ -7,10 +7,12 @@ import { UiIconButton } from '~/components/ui/UiIconButton';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { Z_INDEX_CONFIG } from '~/constants/z-index-config';
+import { API_IMAGE_URL } from '~/query/constants/api-config';
 import { useAppSelector } from '~/store/hooks';
 import { selectCurrentUser } from '~/store/user-slice';
 
 import { SearchIcon } from '../ui/icons/SearchIcon';
+import { UiAvatar } from '../ui/UiAvatar';
 
 export const FooterMobile = () => {
     const location = useLocation();
@@ -50,9 +52,11 @@ export const FooterMobile = () => {
             <Link to={AppRoutes.PROFILE}>
                 <UiIconButton
                     icon={
-                        <Avatar
+                        <UiAvatar
                             size='md'
-                            name={`${currentUser?.firstName || ''} ${currentUser?.lastName || ''}`}
+                            firstName={currentUser?.firstName}
+                            lastName={currentUser?.lastName}
+                            src={API_IMAGE_URL + currentUser?.photoLink}
                         />
                     }
                     text='Мой профиль'
