@@ -31,7 +31,12 @@ export const Hero = ({ avatar }: Props) => {
             preview,
             testId: '',
             handleUpload: handleUpload,
-            title: 'Изменить изображение профиля',
+            title: (
+                <>
+                    <p>Изменить</p>
+                    <p>изображение профиля</p>
+                </>
+            ),
             uploadButton: 'Кадрировать и сохранить',
         });
     };

@@ -1,4 +1,4 @@
-import { Box, Grid, Image } from '@chakra-ui/react';
+import { Box, Grid, Heading, Image } from '@chakra-ui/react';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import default_image from '~/assets/ui/image_default.png';
@@ -66,7 +66,11 @@ export const UploadImageModal = ({
             data-test-id={DATA_TEST_IDS.RECIPE_IMAGE_MODAL}
             isOpen={isOpen}
             onClose={onClose}
-            header={title}
+            header={
+                <Heading fontSize='inherit' fontWeight={700}>
+                    {title}
+                </Heading>
+            }
             maxW='396px'
             body={
                 <Box

@@ -264,7 +264,7 @@ export type ModalParams<T extends ModalType> = {
     resetCredentials: { email?: string };
     signInError: { userData?: Auth };
     uploadImage: {
-        title?: string;
+        title?: React.ReactNode;
         uploadButton?: string;
         cancelButton?: string;
         preview?: string;

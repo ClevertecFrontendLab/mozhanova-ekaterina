@@ -15,13 +15,13 @@ import { DATA_TEST_IDS } from '~/constants/test-ids';
 
 type Props = {
     isOpen: boolean;
+    onClose: () => void;
     image?: string;
     header?: React.ReactNode;
     body?: React.ReactNode;
     footer?: React.ReactNode;
     maxW?: ResponsiveValue<string>;
     'data-test-id'?: string;
-    onClose: () => void;
 };
 export const UiModal = ({ isOpen, onClose, header, body, footer, image, ...props }: Props) => (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>

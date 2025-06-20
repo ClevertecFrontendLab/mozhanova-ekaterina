@@ -26,9 +26,11 @@ export const UiAvatar = ({
             <AvatarBadge
                 onClick={onBadgeClick}
                 cursor='pointer'
-                borderWidth='4px'
+                borderWidth='3px'
                 boxSize='35px'
                 bg='neutral.400'
+                bottom='6px'
+                right='14px'
             >
                 <PictureIcon />
             </AvatarBadge>
