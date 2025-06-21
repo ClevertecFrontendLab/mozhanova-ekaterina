@@ -56,7 +56,7 @@ const theme = extendTheme({
             '[data-popper-placement]': {
                 'min-width': 'unset !important',
             },
-            '@media (max-width: 1001px)': {
+            [`@media (max-width: ${BREAKPOINTS_VALUES.md}px)`]: {
                 '#chakra-toast-manager-bottom-left': {
                     left: '50% !important',
                 },
