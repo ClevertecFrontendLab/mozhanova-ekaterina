@@ -11,8 +11,8 @@ import { useAppSelector } from '~/store/hooks';
 import { selectCategoryById, selectSubcategories } from '~/store/selectors';
 import { Category, SubCategory } from '~/types';
 
-import { UiCardMini } from '../ui/UiCardMini';
-import { UiCardSimple } from '../ui/UiCardSimple';
+import { UiCardMini } from '../../ui/UiCardMini';
+import { UiCardSimple } from '../../ui/UiCardSimple';
 
 export const RelevantKitchenBlock = () => {
     const { category } = useParams();

@@ -1,6 +1,6 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
@@ -9,12 +9,12 @@ import { useToast } from '~/hooks/use-toast';
 import { Limit } from '~/query/constants/limits';
 import { useGetRecipesByCategoryQuery } from '~/query/recipe-api';
 import { useAppSelector } from '~/store/hooks';
+import { paginationSelector, setPaginationMeta } from '~/store/recipe-slice';
 import { selectCurrentRootCategory, selectFilters } from '~/store/selectors';
 import { Category } from '~/types';
 import { getCategoryByName } from '~/utils/get-categories';
 
-import { UiCardGrid } from './ui/UiCardGrid';
-import { UiShowMoreButton } from './ui/UiShowMoreButton';
+import { RecipesList } from './RecipesList';
 
 export const RecipesTabs = () => {
     const [isLargerThanMD] = useBreakpoint('md');
@@ -23,6 +23,8 @@ export const RecipesTabs = () => {
     const { category = '', subCategory = '' } = useParams();
     const { showError } = useToast();
     const filters = useSelector(selectFilters);
+    const pagination = useSelector(paginationSelector);
+    const dispatch = useDispatch();
 
     const currentCategory = useAppSelector((state) => selectCurrentRootCategory(state, category));
     const currentSubCategory = getCategoryByName(
@@ -36,9 +38,10 @@ export const RecipesTabs = () => {
         navigate(`/${category}/${selectedCategory.category}`);
     };
 
-    const { currentData, isError } = useGetRecipesByCategoryQuery(
+    const { data, isError } = useGetRecipesByCategoryQuery(
         {
             categoryId: currentSubCategory?._id || '',
+            page: pagination.currentPage,
             limit: Limit.DEFAULT,
             ...(filters.searchString && { searchString: filters.searchString }),
             ...(filters.allergens.length > 0 && { allergens: filters.allergens }),
@@ -62,6 +65,12 @@ export const RecipesTabs = () => {
             navigate(-1);
         }
     }, [isError, showError, navigate]);
+
+    useEffect(() => {
+        if (data?.meta) {
+            dispatch(setPaginationMeta({ totalPages: data.meta.totalPages }));
+        }
+    }, [data]);
 
     return (
         <Tabs
@@ -101,10 +110,7 @@ export const RecipesTabs = () => {
                     currentCategory.subCategories?.map((category) => (
                         <TabPanel key={category._id}>
                             {category.category === subCategory && (
-                                <>
-                                    <UiCardGrid data={currentData?.data} />
-                                    <UiShowMoreButton onShowMore={() => {}} />
-                                </>
+                                <RecipesList recipes={data?.data} />
                             )}
                         </TabPanel>
                     ))}

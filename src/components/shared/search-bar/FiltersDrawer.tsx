@@ -42,7 +42,7 @@ import {
 } from '~/store/recipe-slice';
 import { selectCategories, selectCategoriesByTitles, selectFilters } from '~/store/selectors';
 
-import { SelectOptions } from '../SelectOptions';
+import { SelectOptions } from '../../ui/SelectOptions';
 
 export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
     const dispatch = useDispatch();

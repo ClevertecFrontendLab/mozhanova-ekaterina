@@ -2,7 +2,7 @@ import { Box, Grid } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
+import { RelevantKitchenBlock } from '~/components/shared/recipes/RelevantKitchenBlock';
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
 import { UiShowMoreButton } from '~/components/ui/UiShowMoreButton';

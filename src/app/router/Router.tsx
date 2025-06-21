@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router';
 import { AuthGuard } from '~/components/AuthGuard';
 import { AuthLayout } from '~/components/layouts/AuthLayout';
 import { MainLayout } from '~/components/layouts/MainLayout';
-import { RecipesTabs } from '~/components/RecipesTabs';
+import { RecipesTabs } from '~/components/shared/recipes/RecipesTabs';
 import { AppRoutes } from '~/constants/routes-config';
 import { RecoveryPage } from '~/pages/auth/RecoveryPage';
 import { SignIn } from '~/pages/auth/SignIn';

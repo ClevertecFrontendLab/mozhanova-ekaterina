@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 
-import { ProfileStatistics } from './shared/ProfileStatistics';
+import { ProfileStatistics } from './shared/profile/ProfileStatistics';
 import { UiIconButton } from './ui/UiIconButton';
 
 export const Sidebar = () => {

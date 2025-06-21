@@ -5,7 +5,7 @@ import { AppRoutes } from '~/constants/routes-config';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { API_IMAGE_URL } from '~/query/constants/api-config';
 
-import { UiAvatar } from '../ui/UiAvatar';
+import { UiAvatar } from '../../ui/UiAvatar';
 
 type Props = {
     firstName: string;

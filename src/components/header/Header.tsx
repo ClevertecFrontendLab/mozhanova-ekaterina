@@ -8,8 +8,8 @@ import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useGetProfileQuery, useGetStatisticsQuery } from '~/query/user-api';
 import { setStatistics, setUser } from '~/store/user-slice';
 
-import { ProfileInfo } from '../shared/ProfileInfo';
-import { ProfileStatistics } from '../shared/ProfileStatistics';
+import { ProfileInfo } from '../shared/profile/ProfileInfo';
+import { ProfileStatistics } from '../shared/profile/ProfileStatistics';
 import { Breadcrumbs } from './Breadcrumbs';
 import { CloseMenuButton } from './CloseMenuButton';
 import { HamburgerButton } from './HamburgerButton';

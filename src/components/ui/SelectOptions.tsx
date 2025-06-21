@@ -16,7 +16,7 @@ import {
 import { Z_INDEX_CONFIG } from '~/constants/z-index-config';
 import { getOptionTestId } from '~/utils/test-utils';
 
-import { UiTag } from '../ui/UiTag';
+import { UiTag } from './UiTag';
 
 type Props = {
     options: string[];
