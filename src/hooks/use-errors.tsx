@@ -1,7 +1,7 @@
 import { UseFormSetError } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
-import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
+import { NOTIFICATION_DESCRIPTIONS, NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { AppRoutes } from '~/constants/routes-config';
 import { useModalContext } from '~/contexts/modal-context';
 import { NotificationDuration, useToast } from '~/hooks/use-toast';
@@ -166,7 +166,10 @@ export const useErrors = () => {
     const updatePasswordErrorHandler = (error: ErrorResponse, setError: VoidFunction) => {
         switch (error.status) {
             case 400:
-                showError(NOTIFICATION_MESSAGES.UPDATE_PASSWORD_ERROR);
+                showError({
+                    title: error.data?.message,
+                    description: NOTIFICATION_DESCRIPTIONS.TRY_AGAIN,
+                });
                 setError();
                 break;
             default:
