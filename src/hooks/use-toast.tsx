@@ -9,7 +9,6 @@ import {
 } from '@chakra-ui/react';
 
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { Z_INDEX_CONFIG } from '~/constants/z-index-config';
 import { ToastParams } from '~/types';
 
 export enum NotificationDuration {
@@ -34,7 +33,6 @@ export const useToast = () => {
 
             render: ({ onClose }) => (
                 <Alert
-                    zIndex={Z_INDEX_CONFIG.TOAST}
                     w={{ base: '328px', md: '400px' }}
                     data-test-id={DATA_TEST_IDS.ERROR_NOTIFICATION}
                     variant='solid'
