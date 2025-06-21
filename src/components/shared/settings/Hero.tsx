@@ -3,7 +3,9 @@ import { useState } from 'react';
 
 import avatar_default from '~/assets/ui/avatar_default.png';
 import { UiAvatar } from '~/components/ui/UiAvatar';
+import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { useModalContext } from '~/contexts/modal-context';
+import { useToast } from '~/hooks/use-toast';
 import { API_IMAGE_URL } from '~/query/constants/api-config';
 import { useUploadUserPhotoMutation } from '~/query/user-api';
 
@@ -15,14 +17,15 @@ export const Hero = ({ avatar }: Props) => {
     const [preview, setPreview] = useState(avatar ? `${API_IMAGE_URL}${avatar}` : avatar_default);
     const { showUploadImage, onClose } = useModalContext();
     const [uploadUserPhoto] = useUploadUserPhotoMutation();
+    const { showError } = useToast();
 
     const handleUpload = async (formData: FormData) => {
         try {
             const data = await uploadUserPhoto(formData).unwrap();
             setPreview(`${API_IMAGE_URL}${data.photoLink}`);
             onClose();
-        } catch (error) {
-            console.error('Upload failed', error);
+        } catch {
+            showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
         }
     };
 
@@ -38,6 +41,7 @@ export const Hero = ({ avatar }: Props) => {
                 </>
             ),
             uploadButton: 'Кадрировать и сохранить',
+            enableCrop: true,
         });
     };
 

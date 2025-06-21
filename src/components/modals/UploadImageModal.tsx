@@ -1,10 +1,12 @@
 import { Box, Grid, Heading, Image } from '@chakra-ui/react';
 import { useEffect, useRef } from 'react';
+import Cropper from 'react-easy-crop';
 
 import default_image from '~/assets/ui/image_default.png';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
 import { useFileUpload } from '~/hooks/use-file-upload';
+import { useImgCropper } from '~/hooks/use-img-cropper';
 import { ModalParams } from '~/types';
 
 import { UiButton } from '../ui/UiButton';
@@ -18,11 +20,32 @@ export const UploadImageModal = ({
     title = 'Изображение',
     uploadButton = 'Сохранить',
     cancelButton = 'Удалить',
-    // enableCrop,
+    enableCrop,
 }: ModalParams<'uploadImage'>) => {
     const { isOpen, onClose } = useModalContext();
     const uploadInputRef = useRef<HTMLInputElement>(null);
-    const { handleFileChange, localPreview, onSubmit } = useFileUpload(handleUpload, preview);
+    const { handleFileChange, newPreview, file } = useFileUpload(preview);
+    const { getCroppedImage, crop, setCrop, zoom, setZoom, onCropComplete } =
+        useImgCropper(newPreview);
+
+    const onSubmit = async () => {
+        if (!file) return;
+
+        let fileToUpload = file;
+
+        if (enableCrop) {
+            const croppedFile = await getCroppedImage();
+            if (croppedFile) {
+                fileToUpload = croppedFile;
+            }
+        }
+
+        const formData = new FormData();
+
+        formData.append('file', fileToUpload);
+
+        handleUpload?.(formData);
+    };
 
     const handleCancel = () => {
         onChange!('');
@@ -65,22 +88,45 @@ export const UploadImageModal = ({
                         ref={uploadInputRef}
                         onChange={(e) => handleFileChange(e)}
                     />
-                    <Image
-                        borderRadius='8px'
-                        onClick={() => uploadInputRef.current?.click()}
-                        data-test-id={DATA_TEST_IDS.RECIPE_IMAGE_MODAL_PREVIEW_IMAGE}
-                        mx='auto'
-                        h='206px'
-                        w='206px'
-                        src={localPreview}
-                        cursor='pointer'
-                        objectFit='cover'
-                        alt='Загруженное изображение'
-                    />
+                    {enableCrop && preview !== default_image ? (
+                        <Box
+                            position='relative'
+                            width='206px'
+                            height='206px'
+                            mx='auto'
+                            borderRadius='8px'
+                            overflow='hidden'
+                        >
+                            <Cropper
+                                image={newPreview}
+                                crop={crop}
+                                zoom={zoom}
+                                aspect={1}
+                                onCropChange={setCrop}
+                                onZoomChange={setZoom}
+                                onCropComplete={onCropComplete}
+                                cropShape='round'
+                                showGrid={false}
+                            />
+                        </Box>
+                    ) : (
+                        <Image
+                            borderRadius='8px'
+                            onClick={() => uploadInputRef.current?.click()}
+                            data-test-id={DATA_TEST_IDS.RECIPE_IMAGE_MODAL_PREVIEW_IMAGE}
+                            mx='auto'
+                            h='206px'
+                            w='206px'
+                            src={newPreview}
+                            cursor='pointer'
+                            objectFit='cover'
+                            alt='Загруженное изображение'
+                        />
+                    )}
                 </Box>
             }
             footer={
-                localPreview !== default_image && (
+                newPreview !== default_image && (
                     <Grid w='100%' gap={4}>
                         <UiButton
                             onClick={onSubmit}

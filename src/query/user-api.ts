@@ -51,6 +51,7 @@ export const UserApi = authorizedApi.injectEndpoints({
                 method: 'POST',
                 body: file,
             }),
+            invalidatesTags: [Tags.USER_INFO],
         }),
     }),
 });

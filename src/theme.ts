@@ -61,6 +61,9 @@ const theme = extendTheme({
                     left: '50% !important',
                 },
             },
+            '.reactEasyCrop_CropArea': {
+                color: 'rgba(45, 177, 0, 0.5) !important',
+            },
         },
     },
     colors: {

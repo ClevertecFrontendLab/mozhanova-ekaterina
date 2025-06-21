@@ -269,6 +269,7 @@ export type ModalParams<T extends ModalType> = {
         cancelButton?: string;
         preview?: string;
         testId?: string;
+        enableCrop?: boolean;
         onChange?: (url: string) => void;
         handleUpload?: (formData: FormData) => void;
     };
