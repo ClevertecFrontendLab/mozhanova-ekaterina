@@ -1,6 +1,6 @@
 import { NotificationMessage } from '~/types';
 
-const NOTIFICATION_TITLES = {
+export const NOTIFICATION_TITLES = {
     ERROR: 'Ошибка',
     SERVER_ERROR: 'Ошибка сервера',
     VERIFICATION_SUCCESS: 'Верификация прошла успешно',
@@ -22,7 +22,7 @@ const NOTIFICATION_TITLES = {
     UPDATE_PASSWORD_ERROR: 'Неверный старый пароль',
 };
 
-const NOTIFICATION_DESCRIPTIONS = {
+export const NOTIFICATION_DESCRIPTIONS = {
     RECIPE_EXISTS_ERROR: 'Рецепт с таким названием уже существует.',
     UPLOAD_IMAGE_ERROR: 'Попробуйте сохранить фото позже.',
     GET_RECIPES_ERROR: 'Попробуйте поискать снова попозже',
