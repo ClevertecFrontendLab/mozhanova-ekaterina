@@ -3,11 +3,11 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
-import { AuthorInfo } from '~/components/recipe/AuthorInfo';
-import { Hero } from '~/components/recipe/Hero';
-import { IngredientsTable } from '~/components/recipe/IngredientsTable';
-import { NutritionValue } from '~/components/recipe/NutritionValue';
-import { Steps } from '~/components/recipe/Steps';
+import { AuthorInfo } from '~/components/shared/recipes/AuthorInfo';
+import { Hero } from '~/components/shared/recipes/Hero';
+import { IngredientsTable } from '~/components/shared/recipes/IngredientsTable';
+import { NutritionValue } from '~/components/shared/recipes/NutritionValue';
+import { Steps } from '~/components/shared/recipes/Steps';
 import { Slider } from '~/components/shared/slider/Slider';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { useToast } from '~/hooks/use-toast';

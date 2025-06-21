@@ -2,6 +2,10 @@ import { EditIcon } from '@chakra-ui/icons';
 import { Flex } from '@chakra-ui/react';
 import { ErrorResponse, useNavigate, useParams } from 'react-router';
 
+import { BookmarkHeartIcon } from '~/components/ui/icons/BookmarkHeartIcon';
+import { EmojiHeartEyesIcon } from '~/components/ui/icons/EmojiHeartEyesIcon';
+import { TrashIcon } from '~/components/ui/icons/TrashIcon';
+import { UiButton } from '~/components/ui/UiButton';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useErrors } from '~/hooks/use-errors';
@@ -14,11 +18,6 @@ import {
 import { useAppSelector } from '~/store/hooks';
 import { selectCurrentUserId } from '~/store/selectors';
 import { routeHelpers } from '~/utils/get-routes';
-
-import { BookmarkHeartIcon } from '../ui/icons/BookmarkHeartIcon';
-import { EmojiHeartEyesIcon } from '../ui/icons/EmojiHeartEyesIcon';
-import { TrashIcon } from '../ui/icons/TrashIcon';
-import { UiButton } from '../ui/UiButton';
 
 export const Controls = ({ _id, authorId }: { _id: string; authorId: string }) => {
     const navigate = useNavigate();

@@ -1,15 +1,14 @@
 import { Avatar, Flex, Heading, Text } from '@chakra-ui/react';
 import { Link } from 'react-router';
 
+import { ManIcon } from '~/components/ui/icons/ManIcon';
+import { PeopleOutlineIcon } from '~/components/ui/icons/PeopleOutlineIcon';
+import { PeoplePlusIcon } from '~/components/ui/icons/PeoplePlusIcon';
+import { UiButton } from '~/components/ui/UiButton';
 import { useErrors } from '~/hooks/use-errors';
 import { useGetBloggerByIdQuery, useToggleSubscriptionMutation } from '~/query/blogs-api';
 import { ErrorResponse } from '~/types';
 import { routeHelpers } from '~/utils/get-routes';
-
-import { ManIcon } from '../ui/icons/ManIcon';
-import { PeopleOutlineIcon } from '../ui/icons/PeopleOutlineIcon';
-import { PeoplePlusIcon } from '../ui/icons/PeoplePlusIcon';
-import { UiButton } from '../ui/UiButton';
 
 export const AuthorInfo = ({
     authorId,

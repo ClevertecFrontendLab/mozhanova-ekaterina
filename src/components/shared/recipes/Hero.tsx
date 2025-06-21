@@ -1,15 +1,15 @@
 import { Card, CardBody, Flex, Heading, Image, Text } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 
+import { ClockIcon } from '~/components/ui/icons/ClockIcon';
+import { UiCardBadge } from '~/components/ui/UiCardBadge';
+import { UiCardStats } from '~/components/ui/UiCardStats';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { API_IMAGE_URL } from '~/query/constants/api-config';
 import { ApplicationState } from '~/store/configure-store';
 import { selectRecipeCategoriesIds } from '~/store/selectors';
 import { Recipe } from '~/types';
 
-import { ClockIcon } from '../ui/icons/ClockIcon';
-import { UiCardBadge } from '../ui/UiCardBadge';
-import { UiCardStats } from '../ui/UiCardStats';
 import { Controls } from './Controls';
 
 export const Hero = ({ recipe }: { recipe: Recipe }) => {

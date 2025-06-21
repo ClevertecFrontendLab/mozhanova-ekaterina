@@ -1,7 +1,7 @@
 import { Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { useState } from 'react';
 
-import { UiNumberInput } from '../ui/UiNumberInput';
+import { UiNumberInput } from '~/components/ui/UiNumberInput';
 
 export const IngredientsTable = ({
     ingredients = [],

@@ -1,11 +1,10 @@
 import { Flex } from '@chakra-ui/react';
 
+import { BookmarkHeartIcon } from '~/components/ui/icons/BookmarkHeartIcon';
+import { EmojiHeartEyesIcon } from '~/components/ui/icons/EmojiHeartEyesIcon';
+import { PeopleIcon } from '~/components/ui/icons/PeopleIcon';
 import { useAppSelector } from '~/store/hooks';
 import { selectStatisticsCounts } from '~/store/selectors';
-
-import { BookmarkHeartIcon } from '../ui/icons/BookmarkHeartIcon';
-import { EmojiHeartEyesIcon } from '../ui/icons/EmojiHeartEyesIcon';
-import { PeopleIcon } from '../ui/icons/PeopleIcon';
 
 export const ProfileStatistics = ({
     isMenuOpen = true,
@@ -17,6 +16,7 @@ export const ProfileStatistics = ({
     const isVisible = variant === 'default' || !isMenuOpen;
     const statistic = useAppSelector(selectStatisticsCounts);
 
+    if (!statistic) return null;
     return (
         <Flex
             display={isVisible ? 'flex' : 'none'}
