@@ -1,4 +1,4 @@
-import { Flex, Heading } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { useState } from 'react';
 
 import avatar_default from '~/assets/ui/avatar_default.png';
@@ -8,6 +8,8 @@ import { useModalContext } from '~/contexts/modal-context';
 import { useToast } from '~/hooks/use-toast';
 import { API_IMAGE_URL } from '~/query/constants/api-config';
 import { useUploadUserPhotoMutation } from '~/query/user-api';
+
+import { SectionTitle } from './SectionTitle';
 
 type Props = {
     avatar?: string;
@@ -47,7 +49,7 @@ export const Hero = ({ avatar }: Props) => {
 
     return (
         <Flex direction={{ base: 'column' }} gap={4}>
-            <Heading fontSize={{ base: '18px', md: '20px' }}>Авторизация и персонализация</Heading>
+            <SectionTitle>Авторизация и персонализация</SectionTitle>
             <UiAvatar
                 src={preview}
                 alignSelf={{ base: 'center', md: 'flex-start' }}
