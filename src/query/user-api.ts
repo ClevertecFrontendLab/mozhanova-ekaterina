@@ -53,6 +53,10 @@ export const UserApi = authorizedApi.injectEndpoints({
             }),
             invalidatesTags: [Tags.USER_INFO],
         }),
+        [EndpointNames.GET_ALL_USERS]: builder.query<UserDto[], void>({
+            query: () => ApiEndpoints.ALL_USERS,
+            providesTags: [Tags.USER],
+        }),
     }),
 });
 
@@ -64,4 +68,5 @@ export const {
     useUpdateInfoMutation,
     useUpdatePasswordMutation,
     useUploadUserPhotoMutation,
+    useGetAllUsersQuery,
 } = UserApi;
