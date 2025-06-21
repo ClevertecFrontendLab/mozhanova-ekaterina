@@ -7,7 +7,7 @@ import { BookmarkHeartIcon } from '../ui/icons/BookmarkHeartIcon';
 import { EmojiHeartEyesIcon } from '../ui/icons/EmojiHeartEyesIcon';
 import { PeopleIcon } from '../ui/icons/PeopleIcon';
 
-export const ProfileNotification = ({
+export const ProfileStatistics = ({
     isMenuOpen = true,
     variant = 'default',
 }: {

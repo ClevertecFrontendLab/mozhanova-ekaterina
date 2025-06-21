@@ -1,13 +1,15 @@
 import { Flex } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { Z_INDEX_CONFIG } from '~/constants/z-index-config';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
-import { useAppSelector } from '~/store/hooks';
-import { accessToken } from '~/store/user-slice';
+import { useGetProfileQuery, useGetStatisticsQuery } from '~/query/user-api';
+import { setStatistics, setUser } from '~/store/user-slice';
 
 import { ProfileInfo } from '../shared/ProfileInfo';
-import { ProfileNotification } from '../shared/ProfileNotification';
+import { ProfileStatistics } from '../shared/ProfileStatistics';
 import { Breadcrumbs } from './Breadcrumbs';
 import { CloseMenuButton } from './CloseMenuButton';
 import { HamburgerButton } from './HamburgerButton';
@@ -22,8 +24,16 @@ export const Header = ({
     isMenuOpen: boolean;
 }) => {
     const [isLargerThanMD] = useBreakpoint('md');
-    const token = useAppSelector(accessToken);
     const toggleMenu = () => setMenuOpen(!isMenuOpen);
+    const dispatch = useDispatch();
+    const { data: profile } = useGetProfileQuery();
+    const { data: statistics } = useGetStatisticsQuery();
+
+    useEffect(() => {
+        if (!profile || !statistics) return;
+        dispatch(setUser(profile));
+        dispatch(setStatistics(statistics));
+    }, [profile, statistics]);
 
     return (
         <Flex
@@ -53,7 +63,14 @@ export const Header = ({
             <Logo />
 
             <Breadcrumbs setMenuOpen={setMenuOpen} />
-            {token && <ProfileInfo />}
+            {profile && (
+                <ProfileInfo
+                    firstName={profile.firstName}
+                    lastName={profile.lastName}
+                    login={profile.login}
+                    photoLink={profile.photoLink}
+                />
+            )}
 
             {isLargerThanMD && <LogInButton />}
             <Flex
@@ -62,7 +79,7 @@ export const Header = ({
                 align='center'
                 flexGrow={1}
             >
-                {token && <ProfileNotification variant='mobile' isMenuOpen={isMenuOpen} />}
+                {statistics && <ProfileStatistics variant='mobile' isMenuOpen={isMenuOpen} />}
                 <Flex gap={6} alignItems='center' justifyContent='center'>
                     <LogInButton />
 
