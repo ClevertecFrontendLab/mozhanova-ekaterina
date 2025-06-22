@@ -1,12 +1,12 @@
-import { Flex } from '@chakra-ui/react';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { Box, Flex } from '@chakra-ui/react';
+import { Link } from 'react-router';
 
+import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { Z_INDEX_CONFIG } from '~/constants/z-index-config';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
-import { useGetProfileQuery, useGetStatisticsQuery } from '~/query/user-api';
-import { setStatistics, setUser } from '~/store/user-slice';
+import { useAppSelector } from '~/store/hooks';
+import { selectCurrentUser } from '~/store/user-slice';
 
 import { ProfileInfo } from '../shared/profile/ProfileInfo';
 import { ProfileStatistics } from '../shared/profile/ProfileStatistics';
@@ -25,15 +25,7 @@ export const Header = ({
 }) => {
     const [isLargerThanMD] = useBreakpoint('md');
     const toggleMenu = () => setMenuOpen(!isMenuOpen);
-    const dispatch = useDispatch();
-    const { data: profile } = useGetProfileQuery();
-    const { data: statistics } = useGetStatisticsQuery();
-
-    useEffect(() => {
-        if (!profile || !statistics) return;
-        dispatch(setUser(profile));
-        dispatch(setStatistics(statistics));
-    }, [profile, statistics]);
+    const user = useAppSelector(selectCurrentUser);
 
     return (
         <Flex
@@ -63,13 +55,17 @@ export const Header = ({
             <Logo />
 
             <Breadcrumbs setMenuOpen={setMenuOpen} />
-            {profile && (
-                <ProfileInfo
-                    firstName={profile.firstName}
-                    lastName={profile.lastName}
-                    login={profile.login}
-                    photoLink={profile.photoLink}
-                />
+            {user && (
+                <Box display={isLargerThanMD ? 'block' : 'none'}>
+                    <Link to={AppRoutes.PROFILE}>
+                        <ProfileInfo
+                            firstName={user.firstName}
+                            lastName={user.lastName}
+                            login={user.login}
+                            photoLink={user.photoLink}
+                        />
+                    </Link>
+                </Box>
             )}
 
             {isLargerThanMD && <LogInButton />}
@@ -79,7 +75,7 @@ export const Header = ({
                 align='center'
                 flexGrow={1}
             >
-                {statistics && <ProfileStatistics variant='mobile' isMenuOpen={isMenuOpen} />}
+                <ProfileStatistics variant='mobile' isMenuOpen={isMenuOpen} />
                 <Flex gap={6} alignItems='center' justifyContent='center'>
                     <LogInButton />
 
