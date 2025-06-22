@@ -91,7 +91,7 @@ export type ObjectId = {
         data: number[];
     };
 };
-export type UserDto = {
+export type ProfileDto = {
     _id: string;
     drafts: RecipeDraftDto[];
     recipesIds: string[];
@@ -102,6 +102,13 @@ export type UserDto = {
     lastName: string;
     firstName: string;
     photoLink?: string;
+};
+export type UserDto = {
+    id: string;
+    login: string;
+    firstName: string;
+    lastName: string;
+    photo: string;
 };
 export type UserUpdateInfo = {
     firstName: string;
