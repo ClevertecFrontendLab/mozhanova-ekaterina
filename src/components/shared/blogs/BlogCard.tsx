@@ -25,7 +25,7 @@ import { useErrors } from '~/hooks/use-errors';
 import { useToggleSubscriptionMutation } from '~/query/blogs-api';
 import { useAppSelector } from '~/store/hooks';
 import { selectCurrentUserId } from '~/store/selectors';
-import { getRecipesWord } from '~/utils/get-recipes-word';
+import { getRecipesWord } from '~/utils/get-declension';
 import { routeHelpers } from '~/utils/get-routes';
 
 type Props = {
