@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router';
 
 import { AuthGuard } from '~/components/AuthGuard';
+import { GetUsersData } from '~/components/GetUsersData';
 import { AuthLayout } from '~/components/layouts/AuthLayout';
 import { MainLayout } from '~/components/layouts/MainLayout';
 import { RecipesTabs } from '~/components/shared/recipes/RecipesTabs';
@@ -28,7 +29,9 @@ export const Router = () => (
         <Route
             element={
                 <AuthGuard>
-                    <MainLayout />
+                    <GetUsersData>
+                        <MainLayout />
+                    </GetUsersData>
                 </AuthGuard>
             }
         >
