@@ -9,10 +9,10 @@ import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { useModalContext } from '~/contexts/modal-context';
 import { useToast } from '~/hooks/use-toast';
 import { useUpdateInfoMutation } from '~/query/user-api';
-import { UserDto, UserUpdateInfo } from '~/types';
+import { ProfileDto, UserUpdateInfo } from '~/types';
 import { ProfileSchema } from '~/validation';
 
-export const SettingsForm = ({ profile }: { profile: UserDto }) => {
+export const SettingsForm = ({ profile }: { profile: ProfileDto }) => {
     const {
         register,
         watch,
