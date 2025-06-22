@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 
+import { UserDto } from '~/types';
 import {
     getAllSubsByRoots,
     getCategoriesByIds,
@@ -11,7 +12,7 @@ import { decodeToken } from '~/utils/jwt-utils';
 
 import { selectAllCategories } from './category-slice';
 import { ApplicationState } from './configure-store';
-import { accessToken, selectCurrentUser, selectStatistics } from './user-slice';
+import { accessToken, selectAllUsers, selectCurrentUser, selectStatistics } from './user-slice';
 
 export const selectCategories = createSelector([selectAllCategories], (categories) =>
     Array.isArray(categories) ? categories?.filter((category) => !category.rootCategoryId) : [],
@@ -112,6 +113,16 @@ export const selectStatisticsCounts = createSelector(
             statistics?.bookmarks.reduce((acc, bookmark) => acc + bookmark.count, 0) || 0;
         const subscribersCount = user?.subscribers.length || 0;
         return { likes, bookmarks, subscribersCount };
+    },
+);
+
+export const selectSubscribers = createSelector(
+    [selectCurrentUser, selectAllUsers],
+    (user, allUsers) => {
+        if (!user) return [];
+        return user.subscribers
+            .map((subscriber) => allUsers.find((user) => user.id === subscriber))
+            .filter((user): user is UserDto => user !== undefined);
     },
 );
 
