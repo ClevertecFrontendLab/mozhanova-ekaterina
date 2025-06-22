@@ -1,4 +1,12 @@
-import { Note, NoteDto, StatisticDto, UpdatePassword, UserDto, UserUpdateInfo } from '~/types';
+import {
+    Note,
+    NoteDto,
+    ProfileDto,
+    StatisticDto,
+    UpdatePassword,
+    UserDto,
+    UserUpdateInfo,
+} from '~/types';
 
 import { authorizedApi } from './authorized-api';
 import { ApiEndpoints } from './constants/api';
@@ -7,7 +15,7 @@ import { Tags } from './constants/tags';
 
 export const UserApi = authorizedApi.injectEndpoints({
     endpoints: (builder) => ({
-        [EndpointNames.GET_PROFILE]: builder.query<UserDto, void>({
+        [EndpointNames.GET_PROFILE]: builder.query<ProfileDto, void>({
             query: () => ApiEndpoints.USER,
             providesTags: [Tags.USER, Tags.USER_INFO],
         }),
