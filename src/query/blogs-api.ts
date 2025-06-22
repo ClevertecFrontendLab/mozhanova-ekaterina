@@ -1,7 +1,6 @@
 import {
     AllBloggersResponse,
     BloggerResponse,
-    BloggerResponseDto,
     GetBloggerByIdParams,
     GetBloggersParams,
     ToggleSubsParams,
@@ -12,7 +11,6 @@ import { ApiEndpoints } from './constants/api';
 import { EndpointNames } from './constants/endpoint-names';
 import { Limit } from './constants/limits';
 import { Tags } from './constants/tags';
-import { transformId } from './helpers/transform-id';
 
 export const BlogsApi = authorizedApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -31,13 +29,6 @@ export const BlogsApi = authorizedApi.injectEndpoints({
                 url: `${ApiEndpoints.BLOGGERS}/${params.bloggerId}`,
                 params: {
                     currentUserId: params.currentUserId,
-                },
-            }),
-            transformResponse: (response: BloggerResponseDto) => ({
-                ...response,
-                bloggerInfo: {
-                    ...response.bloggerInfo,
-                    _id: transformId(response.bloggerInfo._id),
                 },
             }),
             providesTags: [Tags.BLOGGERS],
