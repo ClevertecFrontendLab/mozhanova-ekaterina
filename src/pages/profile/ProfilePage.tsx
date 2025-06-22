@@ -6,10 +6,11 @@ import { Hero } from '~/components/shared/profile/Hero';
 import { NotesList } from '~/components/shared/profile/NotesList';
 import { RecipesList } from '~/components/shared/profile/RecipesList';
 import { useLazyGetRecipesByUserIdQuery } from '~/query/recipe-api';
-import { useGetProfileQuery } from '~/query/user-api';
+import { useAppSelector } from '~/store/hooks';
+import { selectCurrentUser } from '~/store/user-slice';
 
 export const ProfilePage = () => {
-    const { data: profile } = useGetProfileQuery();
+    const profile = useAppSelector(selectCurrentUser);
     const [getRecipes, { data: recipes }] = useLazyGetRecipesByUserIdQuery();
 
     useEffect(() => {
@@ -21,10 +22,10 @@ export const ProfilePage = () => {
     return (
         <Grid as='main' px={{ base: 4, sm: 5, md: 6 }}>
             <Hero
-                firstName={profile?.firstName}
-                lastName={profile?.lastName}
-                login={profile?.login}
-                avatar={profile?.photoLink}
+                firstName={profile.firstName}
+                lastName={profile.lastName}
+                login={profile.login}
+                avatar={profile.photoLink}
             />
             <Grid gap={{ base: 8, md: 10 }}>
                 <RecipesList drafts={profile.drafts} recipes={recipes.recipes} />
