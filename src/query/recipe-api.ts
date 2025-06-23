@@ -93,7 +93,7 @@ export const recipeApi = authorizedApi.injectEndpoints({
                 method: 'POST',
                 body: recipe,
             }),
-            invalidatesTags: [Tags.RECIPE],
+            invalidatesTags: [Tags.RECIPE, Tags.USER_INFO],
         }),
         [EndpointNames.UPDATE_RECIPE]: builder.mutation<Recipe, Recipe>({
             query: (recipe) => ({
