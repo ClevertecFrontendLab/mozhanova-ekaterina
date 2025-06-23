@@ -37,3 +37,43 @@ export const getSubscribersText = (count: number): string => {
             return `${count} подписчиков`;
     }
 };
+
+export const getLikesText = (count: number): string => {
+    const lastDigit = count % 10;
+    const lastTwoDigits = count % 100;
+
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+        return `${count} лайков`;
+    }
+
+    switch (lastDigit) {
+        case 1:
+            return `${count} лайк`;
+        case 2:
+        case 3:
+        case 4:
+            return `${count} лайка`;
+        default:
+            return `${count} лайков`;
+    }
+};
+
+export const getBookmarksText = (count: number): string => {
+    const lastDigit = count % 10;
+    const lastTwoDigits = count % 100;
+
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+        return `${count} сохранений`;
+    }
+
+    switch (lastDigit) {
+        case 1:
+            return `${count} сохранение`;
+        case 2:
+        case 3:
+        case 4:
+            return `${count} сохранения`;
+        default:
+            return `${count} сохранений`;
+    }
+};
