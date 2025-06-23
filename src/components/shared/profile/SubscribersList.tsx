@@ -16,11 +16,13 @@ export const SubscribersList = () => {
             <StatisticsTitle icon={<PeopleIcon />}>
                 {getSubscribersText(subscribers.length)}
             </StatisticsTitle>
-            <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={3}>
-                {subscribers.map((subscriber) => (
-                    <ProfileCard key={subscriber.id} {...subscriber} />
-                ))}
-            </SimpleGrid>
+            {subscribers.length > 0 && (
+                <SimpleGrid columns={{ base: 1, sm: 2, lg: 3 }} spacing={3}>
+                    {subscribers.map((subscriber) => (
+                        <ProfileCard key={subscriber.id} {...subscriber} />
+                    ))}
+                </SimpleGrid>
+            )}
         </Grid>
     );
 };
