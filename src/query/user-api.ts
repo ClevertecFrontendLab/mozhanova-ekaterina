@@ -1,3 +1,4 @@
+import { setAllUsers, setStatistics, setUser } from '~/store/user-slice';
 import {
     Note,
     NoteDto,
@@ -18,10 +19,18 @@ export const UserApi = authorizedApi.injectEndpoints({
         [EndpointNames.GET_PROFILE]: builder.query<ProfileDto, void>({
             query: () => ApiEndpoints.USER,
             providesTags: [Tags.USER, Tags.USER_INFO],
+            onQueryStarted: async (_args, { queryFulfilled, dispatch }) => {
+                const { data } = await queryFulfilled;
+                dispatch(setUser(data));
+            },
         }),
         [EndpointNames.GET_STATISTICS]: builder.query<StatisticDto, void>({
             query: () => ApiEndpoints.STATISTIC,
             providesTags: [Tags.USER],
+            onQueryStarted: async (_args, { queryFulfilled, dispatch }) => {
+                const { data } = await queryFulfilled;
+                dispatch(setStatistics(data));
+            },
         }),
         [EndpointNames.CREATE_NOTES]: builder.mutation<NoteDto, Note>({
             query: (note) => ({
@@ -64,6 +73,10 @@ export const UserApi = authorizedApi.injectEndpoints({
         [EndpointNames.GET_ALL_USERS]: builder.query<UserDto[], void>({
             query: () => ApiEndpoints.ALL_USERS,
             providesTags: [Tags.USER],
+            onQueryStarted: async (_args, { queryFulfilled, dispatch }) => {
+                const { data } = await queryFulfilled;
+                dispatch(setAllUsers(data));
+            },
         }),
         [EndpointNames.DELETE_PROFILE]: builder.mutation<void, void>({
             query: () => ({
