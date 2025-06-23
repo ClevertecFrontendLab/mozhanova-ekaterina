@@ -9,7 +9,7 @@ import { useToast } from '~/hooks/use-toast';
 import { API_IMAGE_URL } from '~/query/constants/api-config';
 import { useUploadUserPhotoMutation } from '~/query/user-api';
 
-import { SectionTitle } from './SectionTitle';
+import { SectionTitle } from '../profile/SectionTitle';
 
 type Props = {
     avatar?: string;

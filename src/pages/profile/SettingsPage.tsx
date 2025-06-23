@@ -1,10 +1,10 @@
 import { Grid } from '@chakra-ui/react';
 
 import { About } from '~/components/shared/profile/About';
-import { DeleteAccount } from '~/components/shared/profile/DeleteAccount';
-import { Statistics } from '~/components/shared/profile/Statistics';
+import { DeleteAccount } from '~/components/shared/settings/DeleteAccount';
 import { Hero } from '~/components/shared/settings/Hero';
 import { SettingsForm } from '~/components/shared/settings/SettingsForm';
+import { Statistics } from '~/components/shared/settings/Statistics';
 import { useAppSelector } from '~/store/hooks';
 import { selectCurrentUser } from '~/store/user-slice';
 

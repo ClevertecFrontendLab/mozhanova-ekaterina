@@ -5,7 +5,7 @@ import { useAppSelector } from '~/store/hooks';
 import { selectSubscribers } from '~/store/selectors';
 import { getSubscribersText } from '~/utils/get-declension';
 
-import { ProfileCard } from './ProfileCard';
+import { ProfileCard } from '../profile/ProfileCard';
 import { StatisticsTitle } from './StatisticsTitle';
 
 export const SubscribersList = () => {

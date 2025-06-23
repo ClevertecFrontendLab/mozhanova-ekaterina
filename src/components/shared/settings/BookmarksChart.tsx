@@ -8,7 +8,7 @@ import { selectStatistics } from '~/store/user-slice';
 import { getChartData } from '~/utils/get-chart-data';
 import { getBookmarksText } from '~/utils/get-declension';
 
-import { StatisticsTitle } from './StatisticsTitle';
+import { StatisticsTitle } from '../settings/StatisticsTitle';
 
 export const BookmarksChart = () => {
     const statistics = useAppSelector(selectStatistics);

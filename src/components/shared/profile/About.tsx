@@ -2,7 +2,7 @@ import { ArrowForwardIcon } from '@chakra-ui/icons';
 import { Grid, Text } from '@chakra-ui/react';
 import { Link } from 'react-router';
 
-import { SectionTitle } from '../settings/SectionTitle';
+import { SectionTitle } from './SectionTitle';
 
 export const About = () => (
     <Grid gap={4}>

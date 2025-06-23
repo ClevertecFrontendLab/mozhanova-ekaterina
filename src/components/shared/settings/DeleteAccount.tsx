@@ -10,7 +10,7 @@ import { useToast } from '~/hooks/use-toast';
 import { useDeleteProfileMutation } from '~/query/user-api';
 import { resetUser } from '~/store/user-slice';
 
-import { SectionTitle } from '../settings/SectionTitle';
+import { SectionTitle } from '../profile/SectionTitle';
 
 export const DeleteAccount = () => {
     const { showDeleteProfile, onClose } = useModalContext();
