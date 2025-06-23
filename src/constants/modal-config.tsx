@@ -1,3 +1,4 @@
+import { DeleteProfileModal } from '~/components/modals/DeleteProfileModal';
 import { RecipePreventiveModal } from '~/components/modals/RecipePreventiveModal';
 import { ResetCredentialsModal } from '~/components/modals/ResetCredentialsModal';
 import { SendEmailModal } from '~/components/modals/SendEmailModal';
@@ -44,5 +45,9 @@ export const modalConfig = [
     {
         type: 'updatePassword',
         component: <UpdatePasswordModal />,
+    },
+    {
+        type: 'deleteProfile',
+        component: <DeleteProfileModal />,
     },
 ] as const;

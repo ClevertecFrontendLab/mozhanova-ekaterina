@@ -20,6 +20,7 @@ export const NOTIFICATION_TITLES = {
     CHANGES_INFO_SUCCESS: 'Изменения сохранены.',
     UPDATE_PASSWORD_SUCCESS: 'Пароль успешно изменен.',
     UPDATE_PASSWORD_ERROR: 'Неверный старый пароль',
+    DELETE_PROFILE_SUCCESS: 'Аккаунт успешно удален.',
 };
 
 export const NOTIFICATION_DESCRIPTIONS = {
@@ -125,5 +126,8 @@ export const NOTIFICATION_MESSAGES = {
     UPDATE_PASSWORD_ERROR: {
         title: NOTIFICATION_TITLES.UPDATE_PASSWORD_ERROR,
         description: NOTIFICATION_DESCRIPTIONS.TRY_AGAIN,
+    },
+    DELETE_PROFILE_SUCCESS: {
+        title: NOTIFICATION_TITLES.DELETE_PROFILE_SUCCESS,
     },
 } as const satisfies Record<string, NotificationMessage>;

@@ -283,6 +283,7 @@ export type ModalParams<T extends ModalType> = {
     };
     recipePreventive: { draft?: RecipeDraft; setError?: VoidFunction; link?: string };
     updatePassword: undefined;
+    deleteProfile: { onDelete?: VoidFunction };
 }[T];
 
 export type ModalState<T extends ModalType = ModalType> = {

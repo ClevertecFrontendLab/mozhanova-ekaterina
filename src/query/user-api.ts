@@ -65,6 +65,12 @@ export const UserApi = authorizedApi.injectEndpoints({
             query: () => ApiEndpoints.ALL_USERS,
             providesTags: [Tags.USER],
         }),
+        [EndpointNames.DELETE_PROFILE]: builder.mutation<void, void>({
+            query: () => ({
+                url: ApiEndpoints.PROFILE,
+                method: 'DELETE',
+            }),
+        }),
     }),
 });
 
@@ -77,4 +83,5 @@ export const {
     useUpdatePasswordMutation,
     useUploadUserPhotoMutation,
     useGetAllUsersQuery,
+    useDeleteProfileMutation,
 } = UserApi;

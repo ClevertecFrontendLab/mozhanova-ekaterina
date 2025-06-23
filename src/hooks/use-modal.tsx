@@ -37,6 +37,9 @@ export const useModal = () => {
 
     const showUpdatePassword = () => showModal('updatePassword', undefined);
 
+    const showDeleteProfile = (params: ModalParams<'deleteProfile'>) =>
+        showModal('deleteProfile', params);
+
     const handleClose = () => {
         setModalState(null);
         onClose();
@@ -65,5 +68,6 @@ export const useModal = () => {
         showUploadImage,
         showRecipePreventive,
         showUpdatePassword,
+        showDeleteProfile,
     };
 };
