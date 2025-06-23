@@ -1,19 +1,15 @@
 import { Grid } from '@chakra-ui/react';
 
-import { StatisticDto } from '~/types';
-
 import { SectionTitle } from '../settings/SectionTitle';
+import { BookmarksChart } from './BookmarksChart';
+import { LikesChart } from './LikesChart';
 import { SubscribersList } from './SubscribersList';
 
-export const Statistics = ({ statistics }: { statistics?: StatisticDto }) => {
-    console.log('statistics', statistics);
-
-    return (
-        <Grid gap={4}>
-            <SectionTitle>Статистика</SectionTitle>
-            <SubscribersList />
-            {/* <BookmarksChart/> */}
-            {/* <LikesChart/> */}
-        </Grid>
-    );
-};
+export const Statistics = () => (
+    <Grid gap={4}>
+        <SectionTitle>Статистика</SectionTitle>
+        <SubscribersList />
+        <BookmarksChart />
+        <LikesChart />
+    </Grid>
+);

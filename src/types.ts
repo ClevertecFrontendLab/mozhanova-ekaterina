@@ -118,9 +118,10 @@ export type UpdatePassword = {
     password: string;
     newPassword: string;
 };
+export type StatisticData = { count: number; date: string };
 export type StatisticDto = {
-    likes: { date: string; count: number }[];
-    bookmarks: { date: string; count: number }[];
+    likes: StatisticData[];
+    bookmarks: StatisticData[];
     recommendationsCount: number;
 };
 export type BloggerInfoDto = {

@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react';
-import { format } from 'date-fns/format';
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+
+import { StatisticData } from '~/types';
 
 const colorSchemes = {
     green: {
@@ -44,7 +45,7 @@ const colorSchemes = {
 };
 
 type Props = {
-    data: { date: string; count: number }[];
+    data: StatisticData[];
     colorScheme?: keyof typeof colorSchemes;
 };
 
@@ -69,7 +70,6 @@ export const UiChart = ({ data, colorScheme = 'green' }: Props) => (
                 dataKey='date'
                 fontSize='14px'
                 tickMargin={8}
-                tickFormatter={(value) => format(new Date(value), 'MMM dd')}
             />
             <YAxis
                 axisLine={{ stroke: '#ffffd3' }}

@@ -5,21 +5,22 @@ import { UiChart } from '~/components/ui/UiChart';
 import { useAppSelector } from '~/store/hooks';
 import { selectStatisticsCounts } from '~/store/selectors';
 import { selectStatistics } from '~/store/user-slice';
+import { getChartData } from '~/utils/get-chart-data';
 import { getBookmarksText } from '~/utils/get-declension';
 
 import { StatisticsTitle } from './StatisticsTitle';
 
 export const BookmarksChart = () => {
     const statistics = useAppSelector(selectStatistics);
-    const bookmarks = useAppSelector(selectStatisticsCounts).bookmarks;
+    const bookmarksCount = useAppSelector(selectStatisticsCounts).bookmarks;
 
     if (!statistics) return null;
     return (
         <Grid gap={3}>
             <StatisticsTitle icon={<BookmarkSolidIcon />}>
-                {getBookmarksText(bookmarks)}
+                {getBookmarksText(bookmarksCount)}
             </StatisticsTitle>
-            {bookmarks ? <UiChart data={statistics.bookmarks} /> : null}
+            {bookmarksCount ? <UiChart data={getChartData(statistics.bookmarks)} /> : null}
         </Grid>
     );
 };
