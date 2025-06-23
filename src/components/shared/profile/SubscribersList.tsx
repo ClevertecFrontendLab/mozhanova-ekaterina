@@ -11,10 +11,6 @@ import { StatisticsTitle } from './StatisticsTitle';
 export const SubscribersList = () => {
     const subscribers = useAppSelector(selectSubscribers);
 
-    console.log('subscribers', subscribers);
-
-    if (subscribers.length === 0) return null;
-
     return (
         <Grid gap={3}>
             <StatisticsTitle icon={<PeopleIcon />}>

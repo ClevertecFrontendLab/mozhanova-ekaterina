@@ -10,8 +10,8 @@ import { getLikesText } from '~/utils/get-declension';
 import { StatisticsTitle } from './StatisticsTitle';
 
 export const LikesChart = () => {
-    const likes = useAppSelector(selectStatisticsCounts).likes;
     const statistics = useAppSelector(selectStatistics);
+    const likes = useAppSelector(selectStatisticsCounts).likes;
 
     if (!statistics) return null;
     return (
@@ -19,7 +19,7 @@ export const LikesChart = () => {
             <StatisticsTitle icon={<EmojiHeartEyesSolidIcon />}>
                 {getLikesText(likes)}
             </StatisticsTitle>
-            <UiChart colorScheme='purple' data={statistics.likes} />
+            {likes ? <UiChart colorScheme='purple' data={statistics.likes} /> : null}
         </Grid>
     );
 };

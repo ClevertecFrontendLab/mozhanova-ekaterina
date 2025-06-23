@@ -19,7 +19,7 @@ export const BookmarksChart = () => {
             <StatisticsTitle icon={<BookmarkSolidIcon />}>
                 {getBookmarksText(bookmarks)}
             </StatisticsTitle>
-            <UiChart data={statistics.bookmarks} />
+            {bookmarks ? <UiChart data={statistics.bookmarks} /> : null}
         </Grid>
     );
 };
