@@ -39,7 +39,8 @@ export const userSlice = createSlice({
         setAllUsers: (state, { payload }: { payload: UserDto[] }) => {
             state.allUsers = payload;
         },
+        resetUser: () => initialState,
     },
 });
 
-export const { setUser, setCredentials, setStatistics, setAllUsers } = userSlice.actions;
+export const { setUser, setCredentials, setStatistics, setAllUsers, resetUser } = userSlice.actions;
