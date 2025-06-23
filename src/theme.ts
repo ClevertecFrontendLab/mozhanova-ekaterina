@@ -6,6 +6,9 @@ import { Z_INDEX_CONFIG } from './constants/z-index-config';
 const theme = extendTheme({
     styles: {
         global: {
+            body: {
+                color: 'neutral.400 !important',
+            },
             '::-webkit-scrollbar': {
                 width: '8px',
                 height: '8px',
