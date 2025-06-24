@@ -11,7 +11,7 @@ export const RecipesList = ({ recipes }: { recipes?: Recipe[] }) => {
 
     return (
         <Box>
-            <UiCardGrid data={recipesToShow} />
+            <UiCardGrid data={recipesToShow.length ? recipesToShow : recipes} />
             {hasMore && <UiShowMoreButton onShowMore={loadMore} />}
         </Box>
     );
