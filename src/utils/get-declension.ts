@@ -77,3 +77,23 @@ export const getBookmarksText = (count: number): string => {
             return `${count} сохранений`;
     }
 };
+
+export const getRecommendationsText = (count: number) => {
+    const lastDigit = count % 10;
+    const lastTwoDigits = count % 100;
+
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+        return `${count} рекомендованных рецептов`;
+    }
+
+    switch (lastDigit) {
+        case 1:
+            return `${count} рекомендованный рецепт`;
+        case 2:
+        case 3:
+        case 4:
+            return `${count} рекомендованных рецепта`;
+        default:
+            return `${count} рекомендованных рецептов`;
+    }
+};

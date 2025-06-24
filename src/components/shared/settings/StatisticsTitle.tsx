@@ -1,4 +1,4 @@
-import { Heading } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 
 export const StatisticsTitle = ({
     icon,
@@ -15,7 +15,7 @@ export const StatisticsTitle = ({
         fontSize='12px'
         fontWeight={600}
     >
-        {icon}
+        <Box color='neutral.400'>{icon}</Box>
         {children}
     </Heading>
 );

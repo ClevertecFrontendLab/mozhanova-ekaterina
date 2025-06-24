@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 
 import { BookmarkHeartIcon } from '~/components/ui/icons/BookmarkHeartIcon';
 import { EmojiHeartEyesIcon } from '~/components/ui/icons/EmojiHeartEyesIcon';
@@ -37,7 +37,9 @@ export const ProfileStatistics = ({
         >
             {isRecommenderProfile && (
                 <ItemBox>
-                    <ThumbUpIcon />
+                    <Box color='neutral.400'>
+                        <ThumbUpIcon />
+                    </Box>
                     <div>{statistic.recommendationsCount}</div>
                 </ItemBox>
             )}
