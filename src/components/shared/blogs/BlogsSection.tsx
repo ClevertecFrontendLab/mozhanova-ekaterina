@@ -85,6 +85,7 @@ export const BlogsSection = () => {
                         login={blogger.login}
                         newRecipesCount={blogger.newRecipesCount}
                         showFooter={false}
+                        photoLink={blogger.photoLink}
                     />
                 ))}
             </SimpleGrid>

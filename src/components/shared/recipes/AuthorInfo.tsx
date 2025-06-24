@@ -1,11 +1,13 @@
-import { Avatar, Flex, Heading, Text } from '@chakra-ui/react';
+import { Flex, Heading, Text } from '@chakra-ui/react';
 import { Link } from 'react-router';
 
 import { ManIcon } from '~/components/ui/icons/ManIcon';
 import { PeopleOutlineIcon } from '~/components/ui/icons/PeopleOutlineIcon';
 import { PeoplePlusIcon } from '~/components/ui/icons/PeoplePlusIcon';
+import { UiAvatar } from '~/components/ui/UiAvatar';
 import { UiButton } from '~/components/ui/UiButton';
 import { useGetBloggerByIdQuery, useToggleSubscriptionMutation } from '~/query/blogs-api';
+import { API_IMAGE_URL } from '~/query/constants/api-config';
 import { useErrors } from '~/query/hooks/use-errors';
 import { ErrorResponse } from '~/types';
 import { routeHelpers } from '~/utils/get-routes';
@@ -44,10 +46,13 @@ export const AuthorInfo = ({
             gap={{ base: 2, sm: 4 }}
             position='relative'
         >
-            <Avatar
-                name={`${author.bloggerInfo.firstName} ${author.bloggerInfo.lastName}`}
+            <UiAvatar
+                src={API_IMAGE_URL + author.bloggerInfo.photoLink}
                 size='xl'
+                firstName={author.bloggerInfo.firstName}
+                lastName={author.bloggerInfo.lastName}
             />
+
             <Flex direction='column' grow={1}>
                 <Link to={routeHelpers.getBlogPath(author.bloggerInfo._id)}>
                     <Heading mt={2} fontSize='lg' fontWeight={600}>

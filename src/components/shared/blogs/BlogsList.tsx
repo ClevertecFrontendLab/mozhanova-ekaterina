@@ -61,6 +61,7 @@ export const BlogsList = ({
                         note={blogger.notes[0]?.text}
                         subscribersCount={blogger.subscribersCount}
                         bookmarksCount={blogger.bookmarksCount}
+                        photoLink={blogger.photoLink}
                     />
                 ))}
             </SimpleGrid>

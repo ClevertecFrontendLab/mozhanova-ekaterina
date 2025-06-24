@@ -1,13 +1,15 @@
-import { Avatar, Box, Flex, Heading, Text, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, Tooltip } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 import { ManIcon } from '~/components/ui/icons/ManIcon';
 import { SubscribeIcon } from '~/components/ui/icons/SubscribeIcon';
+import { UiAvatar } from '~/components/ui/UiAvatar';
 import { UiButton } from '~/components/ui/UiButton';
 import { UiCardStats } from '~/components/ui/UiCardStats';
 import { UiLoader } from '~/components/ui/UiLoader';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useToggleSubscriptionMutation } from '~/query/blogs-api';
+import { API_IMAGE_URL } from '~/query/constants/api-config';
 import { useErrors } from '~/query/hooks/use-errors';
 import { useAppSelector } from '~/store/hooks';
 import { selectCurrentUserId } from '~/store/selectors';
@@ -39,11 +41,13 @@ export const Hero = ({ blogger }: { blogger: BloggerResponse }) => {
         <Box data-test-id={DATA_TEST_IDS.BLOGGER_USER_INFO_BOX} position='relative'>
             <Flex align='center' direction={{ base: 'column', sm: 'row' }} gap={6}>
                 <Flex flexBasis='65%'>
-                    <Avatar
-                        size={{ base: 'xl', md: '2xl' }}
-                        name={`${blogger.bloggerInfo.firstName} ${blogger.bloggerInfo.lastName}`}
-                        ml={{ sm: 'auto' }}
-                    />
+                    <Box ml={{ sm: 'auto' }}>
+                        <UiAvatar
+                            firstName={blogger.bloggerInfo.firstName}
+                            lastName={blogger.bloggerInfo.lastName}
+                            src={API_IMAGE_URL + blogger.bloggerInfo.photoLink}
+                        />
+                    </Box>
                 </Flex>
                 <Box w='100%'>
                     <Box textAlign={{ base: 'center', sm: 'left' }} mb={4}>

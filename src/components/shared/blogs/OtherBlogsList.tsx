@@ -59,6 +59,7 @@ export const OtherBlogsList = ({ currentUserId }: { currentUserId: string }) => 
                         subscribersCount={blogger.subscribersCount}
                         newRecipesCount={blogger.newRecipesCount}
                         colsInGrid={3}
+                        photoLink={blogger.photoLink}
                     />
                 ))}
             </SimpleGrid>

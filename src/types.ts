@@ -146,7 +146,10 @@ export type BloggerInfoDto = {
 export type BloggerInfo = Omit<BloggerInfoDto, '_id'> & {
     _id: string;
 };
-export type Blogger = Pick<BloggerInfo, '_id' | 'login' | 'firstName' | 'lastName' | 'notes'> & {
+export type Blogger = Pick<
+    BloggerInfo,
+    '_id' | 'login' | 'firstName' | 'lastName' | 'notes' | 'photoLink'
+> & {
     bookmarksCount: number;
     isFavorite: boolean;
     newRecipesCount: number;
