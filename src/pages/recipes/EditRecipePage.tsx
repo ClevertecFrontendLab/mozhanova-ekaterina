@@ -5,8 +5,8 @@ import { useNavigate, useParams } from 'react-router';
 
 import { Form } from '~/components/shared/recipeForm/Form';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
-import { useRecipeSubmit } from '~/hooks/use-recipe-submit';
 import { useToast } from '~/hooks/use-toast';
+import { useRecipeSubmit } from '~/query/hooks/use-recipe-submit';
 import { useGetRecipeByIdQuery } from '~/query/recipe-api';
 import { setCurrentRecipe } from '~/store/recipe-slice';
 

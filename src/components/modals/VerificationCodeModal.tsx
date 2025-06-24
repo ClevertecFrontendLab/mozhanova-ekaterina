@@ -15,8 +15,8 @@ import image from '~/assets/modals/4.png';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
-import { useErrors } from '~/hooks/use-errors';
 import { useVerifyCodeMutation } from '~/query/auth-api';
+import { useErrors } from '~/query/hooks/use-errors';
 import { ErrorResponse, ModalParams } from '~/types';
 import { VerificationCodeSchema } from '~/validation';
 

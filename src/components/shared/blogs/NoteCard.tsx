@@ -42,7 +42,7 @@ export const NoteCard = ({
                 sm: shouldUseTwoColumns(notesLength, index) ? 'span 3' : 'span 2',
             }}
         >
-            <CardBody display='grid' gap={4} fontSize='14px' flexGrow={1}>
+            <CardBody overflow='hidden' display='grid' gap={4} fontSize='14px' flexGrow={1}>
                 <Flex justify='space-between' align='center'>
                     <Text data-test-id={DATA_TEST_IDS.NOTES_CARD_DATE} color='text.primary'>
                         {format(new Date(note.date), 'dd MMMM HH:mm', { locale: ru })}
@@ -54,7 +54,9 @@ export const NoteCard = ({
                         </Box>
                     )}
                 </Flex>
-                <Text data-test-id={DATA_TEST_IDS.NOTES_CARD_TEXT}>{note.text}</Text>
+                <Text minW={0} data-test-id={DATA_TEST_IDS.NOTES_CARD_TEXT}>
+                    {note.text}
+                </Text>
             </CardBody>
         </Card>
     );

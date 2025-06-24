@@ -4,8 +4,8 @@ import { useForm } from 'react-hook-form';
 
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { useModalContext } from '~/contexts/modal-context';
-import { useErrors } from '~/hooks/use-errors';
 import { useToast } from '~/hooks/use-toast';
+import { useErrors } from '~/query/hooks/use-errors';
 import { useUpdatePasswordMutation } from '~/query/user-api';
 import { ErrorResponse, UpdatePassword } from '~/types';
 import { UpdatePasswordSchema } from '~/validation';

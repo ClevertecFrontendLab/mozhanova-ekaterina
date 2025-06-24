@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import { UiLoader } from '~/components/ui/UiLoader';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { useLazyRecipesSearch } from '~/hooks/use-recipe-search';
+import { useLazyRecipesSearch } from '~/query/hooks/use-recipe-search';
 
 import { FiltersDrawer } from './FiltersDrawer';
 import { SearchForm } from './SearchForm';

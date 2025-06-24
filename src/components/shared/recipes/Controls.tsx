@@ -8,8 +8,8 @@ import { TrashIcon } from '~/components/ui/icons/TrashIcon';
 import { UiButton } from '~/components/ui/UiButton';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { useErrors } from '~/hooks/use-errors';
 import { useToast } from '~/hooks/use-toast';
+import { useErrors } from '~/query/hooks/use-errors';
 import {
     useDeleteRecipeMutation,
     useLikeUnlikeRecipeMutation,

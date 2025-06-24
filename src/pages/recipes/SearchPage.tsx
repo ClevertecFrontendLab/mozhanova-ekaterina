@@ -5,7 +5,7 @@ import { SearchBar } from '~/components/shared/search-bar/SearchBar';
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
 import { UiShowMoreButton } from '~/components/ui/UiShowMoreButton';
 import { usePagination } from '~/hooks/use-pagination';
-import { useRecipesSearch } from '~/hooks/use-recipe-search';
+import { useRecipesSearch } from '~/query/hooks/use-recipe-search';
 
 export const SearchPage = memo(() => {
     const { data } = useRecipesSearch();

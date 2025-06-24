@@ -1,5 +1,4 @@
 import {
-    Avatar,
     Box,
     Card,
     CardBody,
@@ -16,18 +15,24 @@ import { ErrorResponse, Link, useNavigate, useParams } from 'react-router';
 
 import default_image from '~/assets/ui/image_default.png';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
-import { useErrors } from '~/hooks/use-errors';
 import { API_IMAGE_URL } from '~/query/constants/api-config';
+import { useErrors } from '~/query/hooks/use-errors';
 import { useSaveRemoveFromBookmarksMutation } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
+import { useAppSelector } from '~/store/hooks';
 import { RecipesState, setDraft } from '~/store/recipe-slice';
-import { selectRecipeCategories, selectRecipeSubCategories } from '~/store/selectors';
+import {
+    selectRecipeCategories,
+    selectRecipeSubCategories,
+    selectRecommendedBy,
+} from '~/store/selectors';
 import { Recipe } from '~/types';
 import { routeHelpers } from '~/utils/get-routes';
 import { highlightMatches } from '~/utils/highlight-mathces';
 
 import { BookmarkDeleteIcon } from './icons/BookmarkDeleteIcon';
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
+import { UiAvatar } from './UiAvatar';
 import { UiButton } from './UiButton';
 import { UiCardInfo } from './UiCardInfo';
 
@@ -48,7 +53,6 @@ export const UiCard = ({
     isDraft,
     editable,
     isBookmark,
-    recommendation,
     size = 'lg',
     index,
     ...props
@@ -59,6 +63,9 @@ export const UiCard = ({
     const { saveLikeRecipeErrorHandler } = useErrors();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const recommendedBy = useAppSelector((state) =>
+        selectRecommendedBy(state, data.recommendedByUserId?.[0]),
+    );
 
     const searchString = useSelector(
         (state: { recipe: RecipesState }) => state.recipe.filters.searchString,
@@ -110,7 +117,7 @@ export const UiCard = ({
                 alt='card image'
             />
 
-            {!isDraft && recommendation && isLargerThanMD && (
+            {!isDraft && recommendedBy && isLargerThanMD && (
                 <Flex
                     position='absolute'
                     bottom='20px'
@@ -122,8 +129,13 @@ export const UiCard = ({
                     borderRadius='4px'
                     align='center'
                 >
-                    <Avatar name='Можанова Екатерина' size='xs' />
-                    {recommendation} рекомендует
+                    <UiAvatar
+                        size='xs'
+                        firstName={recommendedBy.firstName}
+                        lastName={recommendedBy.lastName}
+                        src={recommendedBy.photo}
+                    />
+                    {recommendedBy.firstName + ' ' + recommendedBy.lastName} рекомендует
                 </Flex>
             )}
 

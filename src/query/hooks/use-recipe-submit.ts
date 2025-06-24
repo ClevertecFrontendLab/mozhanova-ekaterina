@@ -3,9 +3,9 @@ import { ErrorResponse, useNavigate } from 'react-router';
 
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { AppRoutes } from '~/constants/routes-config';
-import { useErrors } from '~/hooks/use-errors';
 import { useRoutes } from '~/hooks/use-routes';
 import { useToast } from '~/hooks/use-toast';
+import { useErrors } from '~/query/hooks/use-errors';
 import {
     useCreateRecipeDraftMutation,
     useCreateRecipeMutation,

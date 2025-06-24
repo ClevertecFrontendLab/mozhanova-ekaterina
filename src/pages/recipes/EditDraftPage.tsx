@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 
 import { Form } from '~/components/shared/recipeForm/Form';
-import { useRecipeSubmit } from '~/hooks/use-recipe-submit';
+import { useRecipeSubmit } from '~/query/hooks/use-recipe-submit';
 import { useAppSelector } from '~/store/hooks';
 import { draftSelector } from '~/store/recipe-slice';
 

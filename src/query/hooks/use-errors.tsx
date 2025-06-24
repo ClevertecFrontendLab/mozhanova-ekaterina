@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import { NOTIFICATION_DESCRIPTIONS, NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { AppRoutes } from '~/constants/routes-config';
 import { useModalContext } from '~/contexts/modal-context';
-import { NotificationDuration, useToast } from '~/hooks/use-toast';
+import { useToast } from '~/hooks/use-toast';
 import { Auth, ErrorResponse, FormInputs } from '~/types';
 
 export const useErrors = () => {
@@ -17,7 +17,6 @@ export const useErrors = () => {
             case 400:
                 showError({
                     title: error.data?.message,
-                    duration: NotificationDuration.Long,
                     position: 'bottom-left',
                 });
                 break;
@@ -160,6 +159,7 @@ export const useErrors = () => {
             default:
                 showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
                 navigate(AppRoutes.HOME);
+                break;
         }
     };
 
@@ -174,6 +174,7 @@ export const useErrors = () => {
                 break;
             default:
                 showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
+                break;
         }
     };
 

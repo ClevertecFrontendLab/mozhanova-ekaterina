@@ -5,8 +5,8 @@ import image from '~/assets/modals/3.png';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
-import { useErrors } from '~/hooks/use-errors';
 import { useSignInMutation } from '~/query/auth-api';
+import { useErrors } from '~/query/hooks/use-errors';
 import { Auth, ErrorResponse, ModalParams } from '~/types';
 
 import { UiButton } from '../ui/UiButton';

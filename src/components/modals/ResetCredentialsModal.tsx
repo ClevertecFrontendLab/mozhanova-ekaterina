@@ -7,9 +7,9 @@ import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
-import { useErrors } from '~/hooks/use-errors';
 import { useToast } from '~/hooks/use-toast';
 import { useResetPasswordMutation } from '~/query/auth-api';
+import { useErrors } from '~/query/hooks/use-errors';
 import { ModalParams } from '~/types';
 import { RecoverySchema } from '~/validation';
 

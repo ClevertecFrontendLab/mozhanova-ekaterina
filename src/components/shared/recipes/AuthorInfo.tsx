@@ -5,8 +5,8 @@ import { ManIcon } from '~/components/ui/icons/ManIcon';
 import { PeopleOutlineIcon } from '~/components/ui/icons/PeopleOutlineIcon';
 import { PeoplePlusIcon } from '~/components/ui/icons/PeoplePlusIcon';
 import { UiButton } from '~/components/ui/UiButton';
-import { useErrors } from '~/hooks/use-errors';
 import { useGetBloggerByIdQuery, useToggleSubscriptionMutation } from '~/query/blogs-api';
+import { useErrors } from '~/query/hooks/use-errors';
 import { ErrorResponse } from '~/types';
 import { routeHelpers } from '~/utils/get-routes';
 
@@ -43,7 +43,6 @@ export const AuthorInfo = ({
             bgColor='primary.200'
             gap={{ base: 2, sm: 4 }}
             position='relative'
-            mb={{ base: 10, md: 8 }}
         >
             <Avatar
                 name={`${author.bloggerInfo.firstName} ${author.bloggerInfo.lastName}`}
