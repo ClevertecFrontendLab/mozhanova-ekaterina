@@ -64,8 +64,8 @@ export const UiCard = ({
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const recommendedBy = useAppSelector((state) =>
-        selectRecommendedBy(state, data.recommendedByUserId?.[0]),
-    );
+        selectRecommendedBy(state, data.recommendedByUserId),
+    )?.[0];
 
     const searchString = useSelector(
         (state: { recipe: RecipesState }) => state.recipe.filters.searchString,
@@ -133,7 +133,7 @@ export const UiCard = ({
                         size='xs'
                         firstName={recommendedBy.firstName}
                         lastName={recommendedBy.lastName}
-                        src={recommendedBy.photo}
+                        src={API_IMAGE_URL + recommendedBy.photo}
                     />
                     {recommendedBy.firstName + ' ' + recommendedBy.lastName} рекомендует
                 </Flex>

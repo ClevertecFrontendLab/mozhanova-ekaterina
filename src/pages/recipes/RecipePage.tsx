@@ -1,7 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 
 import { AuthorInfo } from '~/components/shared/recipes/AuthorInfo';
 import { Hero } from '~/components/shared/recipes/Hero';
@@ -11,34 +9,20 @@ import { Steps } from '~/components/shared/recipes/Steps';
 import { Slider } from '~/components/shared/slider/Slider';
 import { ThumbUpIcon } from '~/components/ui/icons/ThumbUpIcon';
 import { UiButton } from '~/components/ui/UiButton';
-import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
-import { useToast } from '~/hooks/use-toast';
-import { useGetRecipeByIdQuery } from '~/query/recipe-api';
+import { useGetRecipe } from '~/query/hooks/use-get-recipe';
+import { useRecommendRecipe } from '~/query/hooks/use-recommend-recipe';
 import { useAppSelector } from '~/store/hooks';
-import { setCurrentRecipe } from '~/store/recipe-slice';
-import { selectCurrentUserId } from '~/store/selectors';
+import { selectCurrentUserId, selectRecommenderProfile } from '~/store/selectors';
 
 export const RecipePage = () => {
     const { recipeId: id } = useParams();
-    const { showError } = useToast();
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
     const currentUserId = useAppSelector(selectCurrentUserId);
-    const { data, isLoading, isError } = useGetRecipeByIdQuery(id || '', { skip: !id });
+    const isRecommenderProfile = useAppSelector(selectRecommenderProfile);
+    const { handleRecommendRecipe } = useRecommendRecipe();
+    const { data } = useGetRecipe(id);
+    const isRecommended = data?.recommendedByUserId?.includes(currentUserId);
 
-    const recommendRecipe = async () => {};
-
-    useEffect(() => {
-        if (data) dispatch(setCurrentRecipe(data));
-    });
-    useEffect(() => {
-        if (isError) {
-            showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
-            navigate(-1);
-        }
-    }, [isError, showError, navigate]);
-
-    if (isLoading || isError || !data) return null;
+    if (!data) return null;
     return (
         <Box
             as='main'
@@ -78,13 +62,26 @@ export const RecipePage = () => {
                 {currentUserId !== data.authorId && (
                     <AuthorInfo currentUserId={currentUserId} authorId={data.authorId} />
                 )}
-                <UiButton
-                    variant='solid'
-                    text='Рекомендовать рецепт'
-                    leftIcon={<ThumbUpIcon />}
-                    size='lg'
-                    onClick={recommendRecipe}
-                />
+                {isRecommenderProfile && (
+                    <>
+                        {isRecommended ? (
+                            <UiButton
+                                text='Вы порекомендовали'
+                                leftIcon={<ThumbUpIcon />}
+                                size='lg'
+                                onClick={() => handleRecommendRecipe(id)}
+                            />
+                        ) : (
+                            <UiButton
+                                variant='solid'
+                                text='Рекомендовать рецепт'
+                                leftIcon={<ThumbUpIcon />}
+                                size='lg'
+                                onClick={() => handleRecommendRecipe(id)}
+                            />
+                        )}
+                    </>
+                )}
             </Flex>
             <Box mt={{ base: 10, md: 14 }}>
                 <Slider />

@@ -35,4 +35,5 @@ export enum EndpointNames {
     CREATE_NOTES = 'createNotes',
     GET_PROFILE = 'getProfile',
     GET_ALL_USERS = 'getAllUsers',
+    RECOMMEND_RECIPE = 'recommendRecipe',
 }

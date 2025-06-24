@@ -136,6 +136,13 @@ export const recipeApi = authorizedApi.injectEndpoints({
             query: (bloggerId) => `${ApiEndpoints.GET_RECIPES_BY_USER_ID}${bloggerId}`,
             providesTags: [Tags.USER_RECIPES],
         }),
+        [EndpointNames.RECOMMEND_RECIPE]: builder.mutation<void, string>({
+            query: (id) => ({
+                url: `${ApiEndpoints.RECOMMEND_RECIPE}${id}`,
+                method: 'POST',
+            }),
+            invalidatesTags: [Tags.RECIPE],
+        }),
     }),
 });
 
@@ -157,4 +164,5 @@ export const {
     useGetRecipesByUserIdQuery,
     useLazyGetRecipesByUserIdQuery,
     useUpdateDraftMutation,
+    useRecommendRecipeMutation,
 } = recipeApi;

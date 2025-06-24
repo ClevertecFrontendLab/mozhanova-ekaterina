@@ -7,6 +7,7 @@ import {
     getCategoriesByTitles,
     getCategoryById,
     getCategoryByName,
+    getUsersByIds,
 } from '~/utils/get-categories';
 import { decodeToken } from '~/utils/jwt-utils';
 
@@ -137,8 +138,8 @@ export const selectRecommenderProfile = createSelector(
 );
 
 export const selectRecommendedBy = createSelector(
-    [selectAllUsers, (_: ApplicationState, id: string | undefined) => id],
-    (users, id) => (Array.isArray(users) && id ? users.find((user) => user.id === id) : null),
+    [selectAllUsers, (_: ApplicationState, ids?: string[]) => ids],
+    (users, ids) => (ids ? getUsersByIds(users, ids) : null),
 );
 
 export const selectGlobalLoading = createSelector(

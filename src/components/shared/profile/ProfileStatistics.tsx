@@ -5,7 +5,7 @@ import { EmojiHeartEyesIcon } from '~/components/ui/icons/EmojiHeartEyesIcon';
 import { PeopleIcon } from '~/components/ui/icons/PeopleIcon';
 import { ThumbUpIcon } from '~/components/ui/icons/ThumbUpIcon';
 import { useAppSelector } from '~/store/hooks';
-import { selectStatisticsCounts } from '~/store/selectors';
+import { selectRecommenderProfile, selectStatisticsCounts } from '~/store/selectors';
 
 export const ProfileStatistics = ({
     isMenuOpen = true,
@@ -16,6 +16,7 @@ export const ProfileStatistics = ({
 }) => {
     const isVisible = variant === 'default' || !isMenuOpen;
     const statistic = useAppSelector(selectStatisticsCounts);
+    const isRecommenderProfile = useAppSelector(selectRecommenderProfile);
 
     if (!statistic) return null;
     return (
@@ -34,7 +35,7 @@ export const ProfileStatistics = ({
                 md: '16px',
             }}
         >
-            {statistic.recommendationsCount !== 0 && (
+            {isRecommenderProfile && (
                 <ItemBox>
                     <ThumbUpIcon />
                     <div>{statistic.recommendationsCount}</div>

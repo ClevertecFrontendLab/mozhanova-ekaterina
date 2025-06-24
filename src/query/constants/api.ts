@@ -14,6 +14,7 @@ export enum ApiEndpoints {
     MEASURE_UNITS = '/measure-units',
     CREATE_RECIPE_DRAFT = '/recipe/draft',
     GET_RECIPES_BY_USER_ID = '/recipe/user/',
+    RECOMMEND_RECIPE = '/recipe/recommend/',
     LIKE_UNLIKE_RECIPE = '/like',
     SAVE_REMOVE_FROM_BOOKMARKS = '/bookmark',
     FILE_UPLOAD = '/file/upload',
