@@ -26,12 +26,7 @@ export const usePagination = (data?: Recipe[]) => {
     useEffect(() => {
         if (!data) return;
 
-        const newIds = new Set(data.map((item) => item._id));
-
-        setRecipesToShow((prev) => {
-            const filteredPrev = prev.filter((item) => !newIds.has(item._id));
-            return [...filteredPrev, ...data];
-        });
+        setRecipesToShow((prev) => [...prev, ...data]);
     }, [data]);
 
     return { hasMore, loadMore, recipesToShow, setRecipesToShow };

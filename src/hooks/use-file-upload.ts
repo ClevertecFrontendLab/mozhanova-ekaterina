@@ -1,4 +1,3 @@
-import Compressor from 'compressorjs';
 import { ChangeEvent, useState } from 'react';
 
 export const useFileUpload = (preview?: string) => {
@@ -10,12 +9,7 @@ export const useFileUpload = (preview?: string) => {
 
         if (!file) return;
 
-        new Compressor(file, {
-            quality: 0.6,
-            success(result) {
-                setFile(result as File);
-            },
-        });
+        setFile(file);
         const reader = new FileReader();
         reader.onload = () => {
             setNewPreview(reader.result as string);
