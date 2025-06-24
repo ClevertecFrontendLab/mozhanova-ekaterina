@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 
 import { BookmarksList } from '~/components/shared/profile/BookmarksList';
 import { Hero } from '~/components/shared/profile/Hero';
-import { NotesList } from '~/components/shared/profile/NotesList';
 import { RecipesList } from '~/components/shared/profile/RecipesList';
+import { UiNotesBox } from '~/components/ui/UiNotesBox';
 import { useLazyGetRecipesByUserIdQuery } from '~/query/recipe-api';
 import { useAppSelector } from '~/store/hooks';
 import { selectCurrentUser } from '~/store/user-slice';
@@ -29,7 +29,7 @@ export const ProfilePage = () => {
             />
             <Grid gap={{ base: 8, md: 10 }}>
                 <RecipesList drafts={profile.drafts} recipes={recipes.recipes} />
-                <NotesList notes={recipes.notes} />
+                <UiNotesBox notes={recipes.notes} editable />
                 <BookmarksList bookmarks={recipes.myBookmarks} />
             </Grid>
         </Grid>

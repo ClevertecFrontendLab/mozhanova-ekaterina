@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router';
 
 import { Hero } from '~/components/shared/blogs/Hero';
-import { NotesList } from '~/components/shared/blogs/NotesList';
 import { OtherBlogsList } from '~/components/shared/blogs/OtherBlogsList';
+import { UiNotesBox } from '~/components/ui/UiNotesBox';
 import { useLazyGetBloggerByIdQuery } from '~/query/blogs-api';
 import { useErrors } from '~/query/hooks/use-errors';
 import { useLazyGetRecipesByUserIdQuery } from '~/query/recipe-api';
@@ -78,7 +78,7 @@ export const BloggerPage = () => {
             </Box>
             <Grid gap={{ base: 8, md: 10 }}>
                 <RecipesList recipes={recipes.recipes} />
-                <NotesList ref={notesRef} notes={blogger.bloggerInfo.notes || []} />
+                <UiNotesBox ref={notesRef} notes={blogger.bloggerInfo.notes} />
                 <OtherBlogsList currentUserId={currentUserId} />
             </Grid>
         </Grid>
