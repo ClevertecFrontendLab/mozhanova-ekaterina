@@ -112,7 +112,12 @@ export const selectStatisticsCounts = createSelector(
         const bookmarks =
             statistics?.bookmarks.reduce((acc, bookmark) => acc + bookmark.count, 0) || 0;
         const subscribersCount = user?.subscribers.length || 0;
-        return { likes, bookmarks, subscribersCount };
+        return {
+            likes,
+            bookmarks,
+            subscribersCount,
+            recommendationsCount: statistics?.recommendationsCount || 0,
+        };
     },
 );
 
@@ -124,6 +129,16 @@ export const selectSubscribers = createSelector(
             .map((subscriber) => allUsers.find((user) => user.id === subscriber))
             .filter((user): user is UserDto => user !== undefined);
     },
+);
+
+export const selectRecommenderProfile = createSelector(
+    [selectStatisticsCounts],
+    (statistics) => statistics.subscribersCount > 100 && statistics.bookmarks > 200,
+);
+
+export const selectRecommendedBy = createSelector(
+    [selectAllUsers, (_: ApplicationState, id: string | undefined) => id],
+    (users, id) => (Array.isArray(users) && id ? users.find((user) => user.id === id) : null),
 );
 
 export const selectGlobalLoading = createSelector(

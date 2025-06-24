@@ -3,13 +3,16 @@ import { Grid } from '@chakra-ui/react';
 import { About } from '~/components/shared/profile/About';
 import { DeleteAccount } from '~/components/shared/settings/DeleteAccount';
 import { Hero } from '~/components/shared/settings/Hero';
+import { RecommendationAnnouncement } from '~/components/shared/settings/RecommendationAnnouncement';
 import { SettingsForm } from '~/components/shared/settings/SettingsForm';
 import { Statistics } from '~/components/shared/settings/Statistics';
 import { useAppSelector } from '~/store/hooks';
+import { selectRecommenderProfile } from '~/store/selectors';
 import { selectCurrentUser } from '~/store/user-slice';
 
 export const SettingsPage = () => {
     const profile = useAppSelector(selectCurrentUser);
+    const recommenderProfile = useAppSelector(selectRecommenderProfile);
 
     if (!profile) return null;
     return (
@@ -19,6 +22,7 @@ export const SettingsPage = () => {
                 <SettingsForm profile={profile} />
             </Grid>
             <Statistics />
+            {recommenderProfile && <RecommendationAnnouncement />}
             <About />
             <DeleteAccount />
         </Grid>

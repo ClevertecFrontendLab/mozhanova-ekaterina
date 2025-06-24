@@ -6,7 +6,7 @@ type Props = {
     src: string;
     firstName: string;
     lastName: string;
-    size: ResponsiveValue<'md' | 'xl' | '2xl'>;
+    size: ResponsiveValue<'xs' | 'sm' | 'md' | 'xl' | '2xl'>;
     alignSelf: ResponsiveValue<string>;
     badge: boolean;
     onBadgeClick: VoidFunction;

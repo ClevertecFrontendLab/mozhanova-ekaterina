@@ -18,6 +18,7 @@ export type Recipe = {
     nutritionValue: { calories: number; protein: number; fats: number; carbohydrates: number };
     ingredients: Ingredient[];
     steps: Step[];
+    recommendedByUserId?: string[];
     meat?: string;
     side?: string;
 };

@@ -9,6 +9,8 @@ import { IngredientsTable } from '~/components/shared/recipes/IngredientsTable';
 import { NutritionValue } from '~/components/shared/recipes/NutritionValue';
 import { Steps } from '~/components/shared/recipes/Steps';
 import { Slider } from '~/components/shared/slider/Slider';
+import { ThumbUpIcon } from '~/components/ui/icons/ThumbUpIcon';
+import { UiButton } from '~/components/ui/UiButton';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { useToast } from '~/hooks/use-toast';
 import { useGetRecipeByIdQuery } from '~/query/recipe-api';
@@ -23,6 +25,8 @@ export const RecipePage = () => {
     const dispatch = useDispatch();
     const currentUserId = useAppSelector(selectCurrentUserId);
     const { data, isLoading, isError } = useGetRecipeByIdQuery(id || '', { skip: !id });
+
+    const recommendRecipe = async () => {};
 
     useEffect(() => {
         if (data) dispatch(setCurrentRecipe(data));
@@ -74,8 +78,15 @@ export const RecipePage = () => {
                 {currentUserId !== data.authorId && (
                     <AuthorInfo currentUserId={currentUserId} authorId={data.authorId} />
                 )}
+                <UiButton
+                    variant='solid'
+                    text='Рекомендовать рецепт'
+                    leftIcon={<ThumbUpIcon />}
+                    size='lg'
+                    onClick={recommendRecipe}
+                />
             </Flex>
-            <Box mt={{ base: 10, lg: 14 }}>
+            <Box mt={{ base: 10, md: 14 }}>
                 <Slider />
             </Box>
         </Box>
