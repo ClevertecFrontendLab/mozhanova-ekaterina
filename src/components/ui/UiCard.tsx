@@ -213,22 +213,20 @@ export const UiCard = ({
                                 }
                                 iconButton={!isLargerThanMD}
                             />
-                            {((category && subCategories) || (rootCategories && subCategories)) && (
-                                <Link
-                                    to={routeHelpers.getRecipePath(
-                                        categoryRoute,
-                                        subCategoryRoute,
-                                        data!._id!,
-                                    )}
-                                >
-                                    <UiButton
-                                        data-test-id={`card-link-${index}`}
-                                        size={isLargerThanMD ? 'sm' : 'xs'}
-                                        text='Готовить'
-                                        variant='solid'
-                                    />
-                                </Link>
-                            )}
+                            <Link
+                                to={routeHelpers.getRecipePath(
+                                    categoryRoute,
+                                    subCategoryRoute,
+                                    data!._id!,
+                                )}
+                            >
+                                <UiButton
+                                    data-test-id={`card-link-${index}`}
+                                    size={isLargerThanMD ? 'sm' : 'xs'}
+                                    text='Готовить'
+                                    variant='solid'
+                                />
+                            </Link>
                         </Flex>
                     )}
                 </CardFooter>

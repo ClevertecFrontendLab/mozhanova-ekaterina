@@ -50,7 +50,9 @@ export const UiNotesBox = ({
         }
     };
 
-    useEffect(() => setNotes(data), [data]);
+    useEffect(() => {
+        if (data.length) setNotes(data);
+    }, [data.length, data]);
 
     return (
         <Grid
@@ -72,7 +74,12 @@ export const UiNotesBox = ({
             >
                 <Box>
                     Заметки <wbr />
-                    <Text as='span' fontWeight={400} color='text.secondary'>
+                    <Text
+                        data-test-id={DATA_TEST_IDS.BLOGGER_USER_NOTES_COUNT}
+                        as='span'
+                        fontWeight={400}
+                        color='text.secondary'
+                    >
                         ({notes.length})
                     </Text>
                 </Box>

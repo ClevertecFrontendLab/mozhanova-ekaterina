@@ -78,7 +78,7 @@ export const BloggerPage = () => {
             </Box>
             <Grid gap={{ base: 8, md: 10 }}>
                 <RecipesList recipes={recipes.recipes} />
-                <UiNotesBox ref={notesRef} notes={blogger.bloggerInfo.notes} />
+                <UiNotesBox ref={notesRef} data={blogger.bloggerInfo.notes} />
                 <OtherBlogsList currentUserId={currentUserId} />
             </Grid>
         </Grid>
