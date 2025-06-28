@@ -67,10 +67,6 @@ export const CategoryPage = () => {
         subCategory,
     ]);
 
-    // useEffect(() => {
-    //     dispatch(setSearchString(''))
-    // }, []);
-
     return (
         <main>
             {currentCategory && (
