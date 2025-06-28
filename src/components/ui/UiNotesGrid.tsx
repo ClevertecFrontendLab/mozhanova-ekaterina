@@ -27,7 +27,7 @@ export const UiNotesGrid = ({
             >
                 {notesToShow.map((note, index) => (
                     <NoteCard
-                        key={note.data}
+                        key={note.date}
                         index={index}
                         notesLength={notesToShow.length}
                         note={note}
@@ -37,7 +37,7 @@ export const UiNotesGrid = ({
                 ))}
                 {notesToHide.map((note, index) => (
                     <NoteCard
-                        key={note.id}
+                        key={note._id}
                         index={index}
                         notesLength={notesToShow.length}
                         isVisible={false}

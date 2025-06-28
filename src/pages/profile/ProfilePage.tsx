@@ -29,7 +29,7 @@ export const ProfilePage = () => {
             />
             <Grid gap={{ base: 8, md: 10 }}>
                 <RecipesList drafts={profile.drafts} recipes={recipes.recipes} />
-                <UiNotesBox data={recipes.notes} editable />
+                <UiNotesBox notes={recipes.notes} editable />
                 <BookmarksList bookmarks={recipes.myBookmarks} />
             </Grid>
         </Grid>

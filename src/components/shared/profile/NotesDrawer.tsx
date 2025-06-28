@@ -20,7 +20,7 @@ import { NoteSchema } from '~/validation';
 type Props = {
     isOpen: boolean;
     onClose: VoidFunction;
-    onCreate: (note: Note) => void;
+    onCreate: (note: Note, clearForm: VoidFunction) => void;
 };
 
 export const NotesDrawer = ({ isOpen, onClose, onCreate }: Props) => {
@@ -34,6 +34,10 @@ export const NotesDrawer = ({ isOpen, onClose, onCreate }: Props) => {
         mode: 'onChange',
         resolver: yupResolver(NoteSchema),
     });
+
+    const clearForm = () => {
+        setValue('text', '');
+    };
 
     return (
         <Drawer
@@ -77,7 +81,7 @@ export const NotesDrawer = ({ isOpen, onClose, onCreate }: Props) => {
                         size={{ base: 'sm', md: 'lg' }}
                         variant='solid'
                         text='Опубликовать'
-                        onClick={handleSubmit(onCreate)}
+                        onClick={handleSubmit((data) => onCreate(data, clearForm))}
                     />
                 </DrawerFooter>
             </DrawerContent>

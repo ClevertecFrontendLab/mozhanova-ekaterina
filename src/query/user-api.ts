@@ -38,14 +38,14 @@ export const UserApi = authorizedApi.injectEndpoints({
                 method: 'POST',
                 body: note,
             }),
-            // invalidatesTags: [Tags.USER_RECIPES],
+            invalidatesTags: [Tags.USER_RECIPES],
         }),
         [EndpointNames.DELETE_NOTE]: builder.mutation<void, string>({
             query: (id) => ({
                 url: `${ApiEndpoints.USER_NOTES}/${id}`,
                 method: 'DELETE',
             }),
-            // invalidatesTags: [Tags.USER_RECIPES],
+            invalidatesTags: [Tags.USER_RECIPES],
         }),
         [EndpointNames.UPDATE_INFO]: builder.mutation<UserUpdateInfo, UserUpdateInfo>({
             query: (userInfo) => ({

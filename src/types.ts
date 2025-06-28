@@ -79,10 +79,8 @@ export type GetBloggersParams = {
     limit: number | 'all' | '';
 };
 export type NoteDto = {
-    id: string;
     _id: string;
     date: string;
-    data: string;
     text: string;
 };
 export type Note = {

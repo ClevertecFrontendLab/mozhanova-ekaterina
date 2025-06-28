@@ -1,5 +1,4 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
 import { AuthorInfo } from '~/components/shared/recipes/AuthorInfo';
@@ -21,24 +20,15 @@ import { selectCurrentUserId, selectRecommenderProfile } from '~/store/selectors
 
 export const RecipePage = () => {
     const { category, subCategory, recipeId } = useParams();
-    const [isRecommended, setIsRecommended] = useState(false);
     const currentUserId = useAppSelector(selectCurrentUserId);
     const isRecommenderProfile = useAppSelector(selectRecommenderProfile);
     const { data } = useGetRecipe(recipeId);
+    const isRecommended = data?.recommendedByUserId?.includes(currentUserId);
     const { handleRecommendRecipe } = useRecommendRecipe();
     const { handleEdit } = useEditRecipe();
     const { handleSave } = useSaveRecipe();
     const { handleLike } = useLikeRecipe();
     const { handleDelete } = useDeleteRecipe();
-
-    const toggleRecommend = () => {
-        handleRecommendRecipe(recipeId);
-        setIsRecommended(!isRecommended);
-    };
-
-    useEffect(() => {
-        if (data?.recommendedByUserId?.includes(currentUserId)) setIsRecommended(true);
-    }, [data]);
 
     if (!data) return null;
     return (
@@ -93,7 +83,7 @@ export const RecipePage = () => {
                                 text='Вы порекомендовали'
                                 leftIcon={<ThumbUpIcon />}
                                 size='lg'
-                                onClick={toggleRecommend}
+                                onClick={() => handleRecommendRecipe(recipeId)}
                             />
                         ) : (
                             <UiButton
@@ -101,7 +91,7 @@ export const RecipePage = () => {
                                 text='Рекомендовать рецепт'
                                 leftIcon={<ThumbUpIcon />}
                                 size='lg'
-                                onClick={toggleRecommend}
+                                onClick={() => handleRecommendRecipe(recipeId)}
                             />
                         )}
                     </>

@@ -1,5 +1,4 @@
 import { Box, Grid, Heading, Text, useDisclosure } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
 
 import { UiNotesGrid } from '~/components/ui/UiNotesGrid';
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
@@ -13,26 +12,25 @@ import { PencilIcon } from './icons/PencilIcon';
 import { UiButton } from './UiButton';
 
 export const UiNotesBox = ({
-    data = [],
+    notes = [],
     editable,
     ref,
 }: {
-    data: NoteDto[];
+    notes: NoteDto[];
     editable?: boolean;
     ref?: (node: HTMLDivElement) => void;
 }) => {
     const { onClose, onOpen, isOpen } = useDisclosure();
     const [createNote] = useCreateNotesMutation();
     const { showError, showSuccess } = useToast();
-    const [notes, setNotes] = useState<NoteDto[]>([]);
     const [deleteNote] = useDeleteNoteMutation();
 
-    const handleCreate = async (note: Note) => {
+    const handleCreate = async (note: Note, clearForm: VoidFunction) => {
         try {
-            const response = await createNote(note).unwrap();
-            setNotes((prev) => [...prev, response]);
+            await createNote(note).unwrap();
             showSuccess(NOTIFICATION_MESSAGES.CREATE_NOTE_SUCCESS);
             onClose();
+            clearForm();
         } catch {
             showError(NOTIFICATION_MESSAGES.SERVER_ERROR_1);
             onClose();
@@ -43,14 +41,11 @@ export const UiNotesBox = ({
         if (!id) return;
         try {
             await deleteNote(id).unwrap();
-            setNotes(notes.filter((note) => note._id !== id));
             showSuccess(NOTIFICATION_MESSAGES.DELETE_NOTE_SUCCESS);
         } catch {
             showError(NOTIFICATION_MESSAGES.SERVER_ERROR_1);
         }
     };
-
-    useEffect(() => setNotes(data), [data]);
 
     return (
         <Grid
