@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import { UiLoader } from '~/components/ui/UiLoader';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { useLazyRecipesSearch } from '~/query/hooks/use-recipe-search';
+import { useRecipesSearch } from '~/query/hooks/use-recipe-search';
 
 import { FiltersDrawer } from './FiltersDrawer';
 import { SearchForm } from './SearchForm';
@@ -20,18 +20,18 @@ export const SearchBar = ({ title, description }: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const navigate = useNavigate();
 
-    const { data, isError, isFetching, runSearch } = useLazyRecipesSearch();
+    const { data, isError, isFetching } = useRecipesSearch();
     const [isSearchInitiated, setIsSearchInitiated] = useState(false);
 
     useEffect(() => {
         if (isSearchInitiated) {
-            runSearch();
-            if (data) {
+            // runSearch();
+            if (data && data.length > 0) {
                 navigate(AppRoutes.SEARCH);
                 setIsSearchInitiated(false);
             }
         }
-    }, [runSearch, isSearchInitiated, data, navigate]);
+    }, [isSearchInitiated, data, navigate]);
 
     return (
         <Flex
@@ -55,6 +55,7 @@ export const SearchBar = ({ title, description }: Props) => {
                 md: '32px 0',
             }}
         >
+            {data && data.length}
             {data && data.length === 0 ? (
                 <Text textAlign='center' fontWeight={600}>
                     По вашему запросу ничего не найдено. <br />

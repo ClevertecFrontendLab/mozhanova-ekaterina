@@ -46,8 +46,8 @@ export const SearchForm = ({
 
     const isEmptyResult = Boolean(data && data.length === 0);
     const isValidInput = value.trim().length > 2;
-    const showErrorBorder =
-        ((!isValidInput && isSubmitted) || isEmptyResult) && location.pathname != '/';
+    const showErrorBorder = (!isValidInput && isSubmitted) || isEmptyResult;
+    // && location.pathname != '/';
     const showSuccessBorder = isValidInput && !isEmptyResult && !isError;
 
     const handleSearch = () => {

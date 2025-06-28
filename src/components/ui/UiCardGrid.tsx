@@ -32,7 +32,7 @@ export const UiCardGrid = memo(
             setRecipes(data);
         }, [data]);
 
-        if (!data) return null;
+        if (data.length === 0) return null;
 
         return (
             <SimpleGrid
