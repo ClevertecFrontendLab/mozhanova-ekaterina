@@ -1,7 +1,7 @@
 export const Z_INDEX_CONFIG = {
     HEADER: 52,
     MODAL: 50,
-    DRAWER: 50,
+    DRAWER: 52,
     GLOBAL_LOADER: 51,
     NAVBAR_MENU: 52,
     NAVBAR_OVERLAY: 51,

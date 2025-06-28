@@ -10,13 +10,13 @@ import {
     selectSubCategoriesByTitles,
     selectSubCategoriesTitlesByIds,
 } from '~/store/selectors';
-import { Recipe } from '~/types';
+import { NewRecipe } from '~/types';
 
 import { SelectOptions } from '../../ui/SelectOptions';
 
 type Props = {
     error: boolean;
-    control: Control<Recipe>;
+    control: Control<Partial<NewRecipe>>;
 };
 
 export const TagsControl = ({ error, control }: Props) => {

@@ -10,8 +10,10 @@ import { UiButton } from './UiButton';
 export const UiNotesGrid = ({
     notes,
     editable = false,
+    onDelete,
 }: {
     notes: NoteDto[];
+    onDelete?: (id?: string) => void;
     editable?: boolean;
 }) => {
     const { notesToHide, notesToShow, hasMore, toggleNotes } = useToggleNotes(notes);
@@ -25,16 +27,17 @@ export const UiNotesGrid = ({
             >
                 {notesToShow.map((note, index) => (
                     <NoteCard
-                        key={note.date}
+                        key={note.data}
                         index={index}
                         notesLength={notesToShow.length}
                         note={note}
                         editable={editable}
+                        onDelete={onDelete}
                     />
                 ))}
                 {notesToHide.map((note, index) => (
                     <NoteCard
-                        key={note.date}
+                        key={note.id}
                         index={index}
                         notesLength={notesToShow.length}
                         isVisible={false}

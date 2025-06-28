@@ -4,12 +4,10 @@ import { DATA_TEST_IDS } from '~/constants/test-ids';
 
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
 import { EmojiHeartEyesIcon } from './icons/EmojiHeartEyesIcon';
-import { PeopleOutlineIcon } from './icons/PeopleOutlineIcon';
 
 type Props = {
     bookmarks: number;
     likes: number;
-    subscribersCount: number;
     size: keyof typeof sizes;
 };
 
@@ -24,12 +22,7 @@ const sizes = {
     },
 };
 
-export const UiCardStats = ({
-    bookmarks = 0,
-    likes = 0,
-    subscribersCount = 0,
-    size = 'sm',
-}: Partial<Props>) => (
+export const UiCardStats = ({ bookmarks = 0, likes = 0, size = 'sm' }: Partial<Props>) => (
     <Flex
         h='fit-content'
         fontSize={sizes[size].fontSize}
@@ -52,17 +45,6 @@ export const UiCardStats = ({
             <Flex p='4px' gap='6px' align='center'>
                 <EmojiHeartEyesIcon size={sizes[size].iconSize} />
                 {likes}
-            </Flex>
-        )}
-        {subscribersCount !== 0 && (
-            <Flex
-                data-test-id={DATA_TEST_IDS.BLOGGER_FOLLOWERS_COUNT}
-                p='4px'
-                gap='6px'
-                align='center'
-            >
-                <PeopleOutlineIcon />
-                {subscribersCount}
             </Flex>
         )}
     </Flex>

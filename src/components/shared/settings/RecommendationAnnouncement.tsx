@@ -30,10 +30,11 @@ export const RecommendationAnnouncement = () => {
             />
             <Grid gap={{ base: 4, sm: 6 }} maxW='579px'>
                 <Heading fontWeight={600} fontSize={{ base: '20px', md: '36px' }}>
-                    Теперь вы можете рекомендовать рецепты
-                    <p>других авторов</p>
+                    Теперь вы можете рекомендовать рецепты <wbr />
+                    <div>других авторов</div>
                 </Heading>
                 <Text
+                    as='div'
                     fontWeight={500}
                     display='flex'
                     gap={2}

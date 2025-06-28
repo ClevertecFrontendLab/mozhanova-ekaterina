@@ -79,8 +79,10 @@ export type GetBloggersParams = {
     limit: number | 'all' | '';
 };
 export type NoteDto = {
+    id: string;
     _id: string;
     date: string;
+    data: string;
     text: string;
 };
 export type Note = {
@@ -285,7 +287,7 @@ export type ModalParams<T extends ModalType> = {
         onChange?: (url: string) => void;
         handleUpload?: (formData: FormData) => void;
     };
-    recipePreventive: { draft?: RecipeDraft; setError?: VoidFunction; link?: string };
+    recipePreventive: { draft?: Partial<NewRecipe>; setError?: VoidFunction; link?: string };
     updatePassword: undefined;
     deleteProfile: { onDelete?: VoidFunction };
 }[T];

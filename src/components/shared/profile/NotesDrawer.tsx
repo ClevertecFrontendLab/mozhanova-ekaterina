@@ -13,17 +13,17 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
 import { UiButton } from '~/components/ui/UiButton';
-import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
-import { useToast } from '~/hooks/use-toast';
-import { useCreateNotesMutation } from '~/query/user-api';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { Note } from '~/types';
 import { NoteSchema } from '~/validation';
 
 type Props = {
     isOpen: boolean;
     onClose: VoidFunction;
+    onCreate: (note: Note) => void;
 };
 
-export const NotesDrawer = ({ isOpen, onClose }: Props) => {
+export const NotesDrawer = ({ isOpen, onClose, onCreate }: Props) => {
     const {
         register,
         handleSubmit,
@@ -33,20 +33,6 @@ export const NotesDrawer = ({ isOpen, onClose }: Props) => {
     } = useForm({
         mode: 'onChange',
         resolver: yupResolver(NoteSchema),
-    });
-    const [createNote] = useCreateNotesMutation();
-    const { showError, showSuccess } = useToast();
-
-    const handleCreate = handleSubmit(async (data) => {
-        try {
-            await createNote(data).unwrap();
-            showSuccess(NOTIFICATION_MESSAGES.CREATE_NOTE_SUCCESS);
-            setValue('text', '');
-            onClose();
-        } catch {
-            showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
-            onClose();
-        }
     });
 
     return (
@@ -61,7 +47,7 @@ export const NotesDrawer = ({ isOpen, onClose }: Props) => {
             variant='custom'
         >
             <DrawerOverlay />
-            <DrawerContent>
+            <DrawerContent data-test-id={DATA_TEST_IDS.FILTER_DRAWER}>
                 <DrawerCloseButton size='sm' />
                 <DrawerHeader>Новая заметка</DrawerHeader>
 
@@ -76,7 +62,7 @@ export const NotesDrawer = ({ isOpen, onClose }: Props) => {
                                 '&[aria-invalid=true]': { boxShadow: 'none' },
                             }}
                             borderColor='border.light'
-                            placeholder='максимально 160 символов'
+                            placeholder='Максимально 160 символов'
                             _focus={
                                 errors.text
                                     ? { borderColor: 'error.400', boxShadow: 'none' }
@@ -91,7 +77,7 @@ export const NotesDrawer = ({ isOpen, onClose }: Props) => {
                         size={{ base: 'sm', md: 'lg' }}
                         variant='solid'
                         text='Опубликовать'
-                        onClick={handleCreate}
+                        onClick={handleSubmit(onCreate)}
                     />
                 </DrawerFooter>
             </DrawerContent>

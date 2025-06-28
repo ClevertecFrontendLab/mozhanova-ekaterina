@@ -4,24 +4,18 @@ import { BookmarkHeartIcon } from '~/components/ui/icons/BookmarkHeartIcon';
 import { EmojiHeartEyesIcon } from '~/components/ui/icons/EmojiHeartEyesIcon';
 import { PeopleIcon } from '~/components/ui/icons/PeopleIcon';
 import { ThumbUpIcon } from '~/components/ui/icons/ThumbUpIcon';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useAppSelector } from '~/store/hooks';
 import { selectRecommenderProfile, selectStatisticsCounts } from '~/store/selectors';
 
-export const ProfileStatistics = ({
-    isMenuOpen = true,
-    variant = 'default',
-}: {
-    isMenuOpen?: boolean;
-    variant?: 'default' | 'mobile';
-}) => {
-    const isVisible = variant === 'default' || !isMenuOpen;
+export const ProfileStatistics = () => {
     const statistic = useAppSelector(selectStatisticsCounts);
     const isRecommenderProfile = useAppSelector(selectRecommenderProfile);
 
     if (!statistic) return null;
     return (
         <Flex
-            display={isVisible ? 'flex' : 'none'}
+            data-test-id={DATA_TEST_IDS.USER_STATS_BLOCK}
             direction={{
                 base: 'row',
                 md: 'column',
@@ -43,25 +37,19 @@ export const ProfileStatistics = ({
                     <div>{statistic.recommendationsCount}</div>
                 </ItemBox>
             )}
-            {statistic.bookmarks !== 0 && (
-                <ItemBox>
-                    <BookmarkHeartIcon />
-                    <div>{statistic.bookmarks}</div>
-                </ItemBox>
-            )}
+            <ItemBox>
+                <BookmarkHeartIcon />
+                <div>{statistic.bookmarks}</div>
+            </ItemBox>
 
-            {statistic.subscribersCount !== 0 && (
-                <ItemBox>
-                    <PeopleIcon />
-                    <div>{statistic.subscribersCount}</div>
-                </ItemBox>
-            )}
+            <ItemBox>
+                <PeopleIcon />
+                <div>{statistic.subscribersCount}</div>
+            </ItemBox>
 
-            {statistic.likes !== 0 && (
-                <ItemBox>
-                    <EmojiHeartEyesIcon /> <div>{statistic.likes}</div>
-                </ItemBox>
-            )}
+            <ItemBox>
+                <EmojiHeartEyesIcon /> <div>{statistic.likes}</div>
+            </ItemBox>
         </Flex>
     );
 };

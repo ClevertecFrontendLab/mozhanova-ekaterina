@@ -3,14 +3,14 @@ import { Control, useController } from 'react-hook-form';
 
 import { UiNumberInput } from '~/components/ui/UiNumberInput';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { Recipe } from '~/types';
+import { NewRecipe } from '~/types';
 
 export const PortionsControl = ({
     error,
     control,
 }: {
     error: boolean;
-    control: Control<Recipe>;
+    control: Control<Partial<NewRecipe>>;
 }) => {
     const {
         field: { onChange, value },

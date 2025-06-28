@@ -5,7 +5,7 @@ import { PlusIconRoundedFill } from '~/components/ui/icons/PlusIconRoundedFill';
 import { TrashIcon } from '~/components/ui/icons/TrashIcon';
 import { UiSelect } from '~/components/ui/UiSelect';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { Ingredient, MeasureUnit, Recipe } from '~/types';
+import { Ingredient, MeasureUnit, NewRecipe } from '~/types';
 
 type Props = {
     index: number;
@@ -14,8 +14,8 @@ type Props = {
     ingredient: Ingredient;
     removeIngredient: VoidFunction;
     isLast: boolean;
-    control: Control<Recipe>;
-    register: UseFormRegister<Recipe>;
+    control: Control<Partial<NewRecipe>>;
+    register: UseFormRegister<Partial<NewRecipe>>;
     onAdd: (ingredient: Ingredient) => void;
 };
 

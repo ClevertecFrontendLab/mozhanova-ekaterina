@@ -7,7 +7,7 @@ import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { selectCurrentBlogger } from '~/store/blogs-slice';
-import { currentRecipeSelector, draftSelector } from '~/store/recipe-slice';
+import { currentRecipeSelector } from '~/store/recipe-slice';
 import { selectCategories, selectSubcategories } from '~/store/selectors';
 import { defineBreadcrumbLabel } from '~/utils/get-breadcrumb-label';
 import { getBreadcrumbTestId } from '~/utils/test-utils';
@@ -25,7 +25,6 @@ export const Breadcrumbs = ({
     const categories = useSelector(selectCategories);
     const subCategories = useSelector(selectSubcategories);
     const currentRecipe = useSelector(currentRecipeSelector);
-    const currentDraft = useSelector(draftSelector);
     const pathnames = location.pathname.split('/').filter((x) => x);
     const isVisible = isLargerThanMD || variant === 'mobile';
 
@@ -64,7 +63,6 @@ export const Breadcrumbs = ({
                         subCategories,
                         currentRecipe,
                         currentBlogger,
-                        currentDraft,
                     );
                     if (!label) return null;
 

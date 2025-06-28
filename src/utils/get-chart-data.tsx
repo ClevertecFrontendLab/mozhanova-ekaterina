@@ -23,6 +23,12 @@ export const getChartData = (data: StatisticData[]): StatisticData[] => {
 
         if (currentDate < weekendDate) {
             count += item.count;
+            if (index === data.length - 1) {
+                result.push({
+                    date: formatDate(item.date),
+                    count,
+                });
+            }
         } else {
             result.push({
                 date: formatDate(startDate.toDateString()),

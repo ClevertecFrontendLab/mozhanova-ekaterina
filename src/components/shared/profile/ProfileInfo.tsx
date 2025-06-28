@@ -1,5 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react';
 
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { API_IMAGE_URL } from '~/query/constants/api-config';
 
 import { UiAvatar } from '../../ui/UiAvatar';
@@ -12,7 +13,7 @@ type Props = {
 };
 
 export const ProfileInfo = ({ firstName, lastName, login, photoLink }: Partial<Props>) => (
-    <Flex gap={3}>
+    <Flex data-test-id={DATA_TEST_IDS.HEADER_PROFILE_BUTTON} gap={3}>
         <UiAvatar
             size='md'
             src={photoLink && `${API_IMAGE_URL}${photoLink}`}

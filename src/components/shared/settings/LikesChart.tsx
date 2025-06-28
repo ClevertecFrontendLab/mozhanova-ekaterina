@@ -15,14 +15,17 @@ export const LikesChart = () => {
     const likesCount = useAppSelector(selectStatisticsCounts).likes;
 
     if (!statistics) return null;
+
+    const sortedLikes = [...statistics.likes].sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+    );
+
     return (
         <Grid gap={3}>
             <StatisticsTitle icon={<EmojiHeartEyesSolidIcon />}>
                 {getLikesText(likesCount)}
             </StatisticsTitle>
-            {likesCount ? (
-                <UiChart colorScheme='purple' data={getChartData(statistics.likes)} />
-            ) : null}
+            {likesCount ? <UiChart colorScheme='purple' data={getChartData(sortedLikes)} /> : null}
         </Grid>
     );
 };

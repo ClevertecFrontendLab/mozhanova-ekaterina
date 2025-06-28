@@ -1,13 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Limit } from '~/query/constants/limits';
-import { Recipe } from '~/types';
+import { Recipe, RecipeDraftDto } from '~/types';
 
 import { ApplicationState } from './configure-store';
 
 export type RecipesState = {
-    current: Recipe | null;
-    draft: Recipe | null;
+    current: Recipe | RecipeDraftDto | null;
     filters: {
         categoryName: string[];
         subcategoryIds: string[];
@@ -26,11 +25,9 @@ export type RecipesState = {
 
 export const currentRecipeSelector = (state: ApplicationState) => state.recipe.current || null;
 export const paginationSelector = (state: ApplicationState) => state.recipe.pagination || null;
-export const draftSelector = (state: ApplicationState) => state.recipe.draft || null;
 
 const initialState: RecipesState = {
     current: null,
-    draft: null,
     filters: {
         categoryName: [],
         subcategoryIds: [],
@@ -80,11 +77,8 @@ export const recipesSlice = createSlice({
         setPaginationMeta: (state, action: PayloadAction<{ totalPages: number }>) => {
             state.pagination.totalPages = action.payload.totalPages;
         },
-        setCurrentRecipe: (state, action: PayloadAction<Recipe>) => {
+        setCurrentRecipe: (state, action: PayloadAction<Recipe | RecipeDraftDto>) => {
             state.current = action.payload;
-        },
-        setDraft: (state, action: PayloadAction<Recipe>) => {
-            state.draft = action.payload;
         },
     },
 });
@@ -101,5 +95,4 @@ export const {
     setCurrentPage,
     setPaginationMeta,
     setCurrentRecipe,
-    setDraft,
 } = recipesSlice.actions;

@@ -80,7 +80,7 @@ export const selectRecipeCategories = createSelector(
     },
 );
 export const selectSubCategoriesTitlesByIds = createSelector(
-    [selectSubcategories, (_: ApplicationState, categoryIds: string[]) => categoryIds],
+    [selectSubcategories, (_: ApplicationState, categoryIds?: string[]) => categoryIds],
     (categories, ids) =>
         Array.isArray(categories) && Array.isArray(ids)
             ? getCategoriesByIds(categories, ids).map((category) => category.title)

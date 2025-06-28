@@ -123,14 +123,14 @@ export const recipeApi = authorizedApi.injectEndpoints({
                 url: `${ApiEndpoints.RECIPE_BY_ID}${id}${ApiEndpoints.LIKE_UNLIKE_RECIPE}`,
                 method: 'POST',
             }),
-            invalidatesTags: [Tags.RECIPES],
+            invalidatesTags: (_, __, id) => [{ type: Tags.RECIPE, id }],
         }),
         [EndpointNames.SAVE_REMOVE_FROM_BOOKMARKS]: builder.mutation<BookmarkResponse, string>({
             query: (id) => ({
                 url: `${ApiEndpoints.RECIPE_BY_ID}${id}${ApiEndpoints.SAVE_REMOVE_FROM_BOOKMARKS}`,
                 method: 'POST',
             }),
-            invalidatesTags: [Tags.USER_RECIPES],
+            invalidatesTags: (_, __, id) => [{ type: Tags.RECIPE, id }, Tags.USER_RECIPES],
         }),
         [EndpointNames.GET_RECIPES_BY_USER_ID]: builder.query<RecipesByUserResponse, string>({
             query: (bloggerId) => `${ApiEndpoints.GET_RECIPES_BY_USER_ID}${bloggerId}`,
@@ -141,7 +141,7 @@ export const recipeApi = authorizedApi.injectEndpoints({
                 url: `${ApiEndpoints.RECOMMEND_RECIPE}${id}`,
                 method: 'POST',
             }),
-            invalidatesTags: [Tags.RECIPE],
+            // invalidatesTags: (_, __, id) => [{ type: Tags.RECIPE, id }],
         }),
     }),
 });

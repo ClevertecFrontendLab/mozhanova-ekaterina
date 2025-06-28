@@ -10,17 +10,16 @@ import {
     Tag,
     Text,
 } from '@chakra-ui/react';
-import { useDispatch, useSelector } from 'react-redux';
-import { ErrorResponse, Link, useNavigate, useParams } from 'react-router';
+import { useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router';
 
 import default_image from '~/assets/ui/image_default.png';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { API_IMAGE_URL } from '~/query/constants/api-config';
-import { useErrors } from '~/query/hooks/use-errors';
-import { useSaveRemoveFromBookmarksMutation } from '~/query/recipe-api';
 import { ApplicationState } from '~/store/configure-store';
 import { useAppSelector } from '~/store/hooks';
-import { RecipesState, setDraft } from '~/store/recipe-slice';
+import { RecipesState } from '~/store/recipe-slice';
 import {
     selectRecipeCategories,
     selectRecipeSubCategories,
@@ -38,6 +37,8 @@ import { UiCardInfo } from './UiCardInfo';
 
 type Props = {
     data: Partial<Recipe>;
+    onSave: (id: string) => void;
+    onEdit: (recipe: Partial<Recipe>, category: string, subCategory: string) => void;
     size?: 'sm' | 'md' | 'lg';
     recommendation?: string;
     categoryBgColor?: 'secondary.100' | 'primary.100';
@@ -55,14 +56,12 @@ export const UiCard = ({
     isBookmark,
     size = 'lg',
     index,
+    onSave,
+    onEdit,
     ...props
 }: Props) => {
     const { category, subCategory } = useParams();
     const [isLargerThanMD] = useBreakpoint('md');
-    const [toggleSave] = useSaveRemoveFromBookmarksMutation();
-    const { saveLikeRecipeErrorHandler } = useErrors();
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
     const recommendedBy = useAppSelector((state) =>
         selectRecommendedBy(state, data.recommendedByUserId),
     )?.[0];
@@ -81,23 +80,9 @@ export const UiCard = ({
     const categoryRoute = category || (rootCategories[0]?.category ?? '');
     const subCategoryRoute = subCategory || (subCategories[0]?.category ?? '');
 
-    const handleSave = async () => {
-        if (!data?._id) return;
-        try {
-            await toggleSave(data._id).unwrap();
-        } catch (error) {
-            saveLikeRecipeErrorHandler(error as ErrorResponse);
-        }
-    };
-
-    const handleEdit = () => {
-        if (!data) return;
-        dispatch(setDraft(data as Recipe));
-        navigate(routeHelpers.getEditDraftPath(data._id!));
-    };
-
     return (
         <Card
+            data-test-id={`food-card-${index}`}
             position='relative'
             direction='row'
             overflow='hidden'
@@ -197,10 +182,11 @@ export const UiCard = ({
                     {editable && (
                         <Flex justify='flex-end' grow={1}>
                             <UiButton
+                                data-test-id={DATA_TEST_IDS.PROFILE_EDIT_BUTTON}
                                 variant={isDraft ? 'solid' : 'outline'}
                                 size={{ base: 'xs', md: 'sm' }}
                                 text='Редактировать'
-                                onClick={handleEdit}
+                                onClick={() => onEdit(data, categoryRoute, subCategoryRoute)}
                             />
                         </Flex>
                     )}
@@ -209,16 +195,16 @@ export const UiCard = ({
                             <UiButton
                                 variant={isDraft ? 'solid' : 'outline'}
                                 size={{ base: 'xs', md: 'sm' }}
-                                text='Убрать из сохраненных'
+                                text='Убрать из сохранённых'
                                 leftIcon={<BookmarkDeleteIcon />}
-                                onClick={handleSave}
+                                onClick={() => onSave(data._id!)}
                             />
                         </Flex>
                     )}
                     {!isBookmark && !editable && (
                         <Flex gap='8px' justify='flex-end' align='flex-end' w='100%'>
                             <UiButton
-                                onClick={handleSave}
+                                onClick={() => onSave(data._id!)}
                                 size={{ base: 'xs', md: 'sm' }}
                                 text='Сохранить'
                                 leftIcon={isLargerThanMD ? <BookmarkHeartIcon /> : undefined}

@@ -8,6 +8,7 @@ export const StatisticsTitle = ({
     children?: React.ReactNode;
 }) => (
     <Heading
+        as='p'
         display='flex'
         gap={1.5}
         alignItems='center'
@@ -15,7 +16,9 @@ export const StatisticsTitle = ({
         fontSize='12px'
         fontWeight={600}
     >
-        <Box color='neutral.400'>{icon}</Box>
+        <Box as='span' color='neutral.400'>
+            {icon}
+        </Box>
         {children}
     </Heading>
 );

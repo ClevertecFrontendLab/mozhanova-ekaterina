@@ -1,7 +1,9 @@
 import { SimpleGrid } from '@chakra-ui/react';
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 
 import { useBreakpoint } from '~/hooks/use-breakpoint';
+import { useEditRecipe } from '~/hooks/use-edit-recipe';
+import { useSaveRecipe } from '~/query/hooks/use-save-recipe';
 import { Recipe, RecipeDraftDto } from '~/types';
 
 import { UiCard } from '../ui/UiCard';
@@ -17,6 +19,18 @@ type Props = {
 export const UiCardGrid = memo(
     ({ data = [], dataTest, isDraft, editable, isBookmark }: Partial<Props>) => {
         const [isLargerThanMD] = useBreakpoint('md');
+        const [recipes, setRecipes] = useState<Recipe[] | RecipeDraftDto[]>([]);
+        const { handleSave } = useSaveRecipe();
+        const { handleEdit } = useEditRecipe(isDraft);
+
+        const onSave = (id: string) => {
+            handleSave(id);
+            setRecipes((prev) => prev.filter((recipe) => recipe._id !== id));
+        };
+
+        useEffect(() => {
+            setRecipes(data);
+        }, [data]);
 
         if (!data) return null;
 
@@ -32,7 +46,7 @@ export const UiCardGrid = memo(
                     lg: 2,
                 }}
             >
-                {data.map((recipe, i) => (
+                {recipes.map((recipe, i) => (
                     <UiCard
                         data-test-id={`food-card-${i}`}
                         key={i}
@@ -43,6 +57,8 @@ export const UiCardGrid = memo(
                         isDraft={isDraft}
                         editable={editable}
                         isBookmark={isBookmark}
+                        onSave={onSave}
+                        onEdit={handleEdit}
                     />
                 ))}
             </SimpleGrid>

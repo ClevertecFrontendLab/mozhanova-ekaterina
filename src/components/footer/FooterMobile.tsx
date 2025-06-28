@@ -49,7 +49,7 @@ export const FooterMobile = () => {
             <Link to={AppRoutes.CREATE_RECIPE}>
                 <UiIconButton text='Записать' icon={<EditIcon w='24px' h='24px' />} />
             </Link>
-            <Link to={AppRoutes.PROFILE}>
+            <Link data-test-id={DATA_TEST_IDS.FOOTER_PROFILE_BUTTON} to={AppRoutes.PROFILE}>
                 <UiIconButton
                     icon={
                         <UiAvatar

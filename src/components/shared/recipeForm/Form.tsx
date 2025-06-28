@@ -5,7 +5,7 @@ import { Control, useForm } from 'react-hook-form';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
 import { useClickOutside } from '~/hooks/use-click-outside';
-import { Recipe, RecipeDraft } from '~/types';
+import { NewRecipe } from '~/types';
 
 import { DescriptionControl } from './DescriptionControl';
 import { ImageControl } from './ImageControl';
@@ -24,11 +24,11 @@ export const Form = ({
     isFormValid,
     setIsFormValid,
 }: {
-    onSubmit: (data: Recipe) => void;
-    onSave: (data: RecipeDraft) => void;
     isFormValid: boolean;
+    onSubmit: (data: Partial<NewRecipe>) => void;
+    onSave: (data: Partial<NewRecipe>) => void;
     setIsFormValid: (value: boolean) => void;
-    data?: Recipe;
+    data?: Partial<NewRecipe>;
 }) => {
     const {
         register,
@@ -83,25 +83,41 @@ export const Form = ({
     const handleSubmit = () => {
         onSubmit(getValues());
     };
+
     return (
         <Grid data-test-id={DATA_TEST_IDS.RECIPE_FORM} gap={10} flex={1} as='form'>
             <Flex gap={6} direction={{ base: 'column', sm: 'row' }}>
-                <ImageControl error={!isFormValid} control={control as Control<Recipe>} />
+                <ImageControl
+                    error={!isFormValid}
+                    control={control as Control<Partial<NewRecipe>>}
+                />
                 <VStack gap={6} flexGrow={1} maxW={{ base: '100%', sm: '575px' }}>
-                    <TagsControl error={!isFormValid} control={control as Control<Recipe>} />
+                    <TagsControl
+                        error={!isFormValid}
+                        control={control as Control<Partial<NewRecipe>>}
+                    />
                     <TitleControl error={!isFormValid} {...register('title')} />
                     <DescriptionControl error={!isFormValid} {...register('description')} />
-                    <PortionsControl error={!isFormValid} control={control as Control<Recipe>} />
-                    <TimeControl error={!isFormValid} control={control as Control<Recipe>} />
+                    <PortionsControl
+                        error={!isFormValid}
+                        control={control as Control<Partial<NewRecipe>>}
+                    />
+                    <TimeControl
+                        error={!isFormValid}
+                        control={control as Control<Partial<NewRecipe>>}
+                    />
                 </VStack>
             </Flex>
             <Container p={0} display='grid' gap={10} maxW='668px'>
                 <IngredientsControl
                     error={!isFormValid}
-                    control={control as Control<Recipe>}
+                    control={control as Control<Partial<NewRecipe>>}
                     register={register}
                 />
-                <StepsControl error={!isFormValid} control={control as Control<Recipe>} />
+                <StepsControl
+                    error={!isFormValid}
+                    control={control as Control<Partial<NewRecipe>>}
+                />
             </Container>
 
             <SubmitButtons onSubmit={handleSubmit} saveDraft={handleSave} />

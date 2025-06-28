@@ -1,4 +1,4 @@
-import { Box, Grid } from '@chakra-ui/react';
+import { Grid } from '@chakra-ui/react';
 
 import { About } from '~/components/shared/profile/About';
 import { DeleteAccount } from '~/components/shared/settings/DeleteAccount';
@@ -28,12 +28,15 @@ export const SettingsPage = () => {
             </Grid>
             <Statistics />
             {recommenderProfile && (
-                <Box data-test-id={DATA_TEST_IDS.SETTINGS_RECOMMENDATION_INFO_BLOCK}>
+                <Grid
+                    data-test-id={DATA_TEST_IDS.SETTINGS_RECOMMENDATION_INFO_BLOCK}
+                    gap={{ base: 4, md: 10 }}
+                >
                     <RecommendationAnnouncement />
                     <StatisticsTitle icon={<ThumbUpIcon />}>
                         {getRecommendationsText(recommendationsCount)}
                     </StatisticsTitle>
-                </Box>
+                </Grid>
             )}
             <About />
             <DeleteAccount />

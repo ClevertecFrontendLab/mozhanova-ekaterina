@@ -6,11 +6,11 @@ import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
 import { API_IMAGE_URL } from '~/query/constants/api-config';
 import { useFileUploadMutation } from '~/query/file-upload-api';
-import { Recipe } from '~/types';
+import { NewRecipe } from '~/types';
 
 type Props = {
     error: boolean;
-    control: Control<Recipe>;
+    control: Control<Partial<NewRecipe>>;
 };
 
 export const ImageControl = ({ control, error }: Props) => {

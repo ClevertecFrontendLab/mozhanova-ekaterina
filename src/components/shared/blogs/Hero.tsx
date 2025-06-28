@@ -5,8 +5,8 @@ import { ManIcon } from '~/components/ui/icons/ManIcon';
 import { SubscribeIcon } from '~/components/ui/icons/SubscribeIcon';
 import { UiAvatar } from '~/components/ui/UiAvatar';
 import { UiButton } from '~/components/ui/UiButton';
-import { UiCardStats } from '~/components/ui/UiCardStats';
 import { UiLoader } from '~/components/ui/UiLoader';
+import { UiUserStats } from '~/components/ui/UiUserStats';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useToggleSubscriptionMutation } from '~/query/blogs-api';
 import { API_IMAGE_URL } from '~/query/constants/api-config';
@@ -102,9 +102,9 @@ export const Hero = ({ blogger }: { blogger: BloggerResponse }) => {
                             />
                         )}
 
-                        <UiCardStats
-                            bookmarks={blogger.totalBookmarks}
+                        <UiUserStats
                             subscribersCount={blogger.totalSubscribers}
+                            bookmarks={blogger.totalBookmarks}
                         />
                     </Flex>
                 </Box>

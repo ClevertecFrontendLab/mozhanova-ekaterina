@@ -12,7 +12,15 @@ import { Recipe } from '~/types';
 
 import { Controls } from './Controls';
 
-export const Hero = ({ recipe }: { recipe: Recipe }) => {
+type Props = {
+    recipe: Recipe;
+    onSave: VoidFunction;
+    onLike: VoidFunction;
+    onEdit: VoidFunction;
+    onDelete: VoidFunction;
+};
+
+export const Hero = ({ recipe, onSave, onLike, onEdit, onDelete }: Props) => {
     const [isLargerThanLG] = useBreakpoint('lg');
 
     const rootCategoriesIds = useSelector((state: ApplicationState) =>
@@ -119,7 +127,13 @@ export const Hero = ({ recipe }: { recipe: Recipe }) => {
                             {recipe.time} минут
                         </Text>
                     </Flex>
-                    <Controls authorId={recipe.authorId} _id={recipe._id} />
+                    <Controls
+                        authorId={recipe.authorId}
+                        onSave={onSave}
+                        onLike={onLike}
+                        onEdit={onEdit}
+                        onDelete={onDelete}
+                    />
                 </Flex>
             </CardBody>
         </Card>

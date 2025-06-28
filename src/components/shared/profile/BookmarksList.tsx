@@ -2,6 +2,7 @@ import { Grid, Heading, Text } from '@chakra-ui/react';
 
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
 import { UiShowMoreButton } from '~/components/ui/UiShowMoreButton';
+import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useToggleRecipes } from '~/hooks/use-toggle-recipes';
 import { Recipe } from '~/types';
 
@@ -9,7 +10,7 @@ export const BookmarksList = ({ bookmarks = [] }: { bookmarks?: Recipe[] }) => {
     const { handleShowMore, recipesToShow, showMoreRef, hasMore } = useToggleRecipes(bookmarks);
 
     return (
-        <Grid gap={4}>
+        <Grid data-test-id={DATA_TEST_IDS.USER_PROFILE_BOOKMARKS} gap={4}>
             <Heading display='flex' gap={8} fontSize={{ base: '18px', md: '20px' }}>
                 <span>
                     Мои закладки <wbr />

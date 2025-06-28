@@ -26,7 +26,7 @@ export const useRecipeSubmit = () => {
     const { showSuccess } = useToast();
     const { createRecipeErrorHandler, createDraftRecipeErrorHandler } = useErrors();
 
-    const handlePublish = async (recipe: NewRecipe) => {
+    const handlePublish = async (recipe: Partial<NewRecipe>) => {
         const isValid = await RecipePublishSchema.isValid(recipe);
         setIsFormValid(isValid);
         if (!isValid) return;
@@ -40,7 +40,7 @@ export const useRecipeSubmit = () => {
         }
     };
 
-    const handleRecipeUpdate = async (recipe: NewRecipe) => {
+    const handleRecipeUpdate = async (recipe: Partial<NewRecipe>) => {
         const isValid = await RecipePublishSchema.isValid(recipe);
         setIsFormValid(isValid);
         if (!isValid) return;
@@ -54,7 +54,7 @@ export const useRecipeSubmit = () => {
         }
     };
 
-    const handleDraftUpdate = async (recipe: RecipeDraft) => {
+    const handleDraftUpdate = async (recipe: Partial<NewRecipe>) => {
         const isValid = await RecipeDraftSchema.isValid(recipe);
         setIsFormValid(isValid);
         if (!isValid) return;
@@ -68,7 +68,7 @@ export const useRecipeSubmit = () => {
         }
     };
 
-    const handleSaveDraft = async (recipe: RecipeDraft) => {
+    const handleSaveDraft = async (recipe: Partial<NewRecipe>) => {
         const isValid = await RecipeDraftSchema.isValid(recipe);
 
         setIsFormValid(isValid);

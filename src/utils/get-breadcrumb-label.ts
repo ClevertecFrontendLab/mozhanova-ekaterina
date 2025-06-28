@@ -1,12 +1,11 @@
-import { BloggerInfo, Category, Recipe } from '~/types';
+import { BloggerInfo, Category, Recipe, RecipeDraftDto } from '~/types';
 
 export const defineBreadcrumbLabel = (
     path: string,
     categories: Category[] = [],
     subCategories: Category[] = [],
-    currentRecipe: Recipe | null,
+    currentRecipe: Recipe | RecipeDraftDto | null,
     currentUser: BloggerInfo | null,
-    currentDraft: Recipe | null,
 ) => {
     switch (path) {
         case 'the-juiciest':
@@ -25,7 +24,7 @@ export const defineBreadcrumbLabel = (
             return 'Мой профиль';
 
         case 'settings':
-            return 'Настройки';
+            return 'Настройки';
 
         case categories.find((c) => c.category === path)?.category:
             return categories.find((c) => c.category === path)?.title;
@@ -38,9 +37,6 @@ export const defineBreadcrumbLabel = (
 
         case currentUser?._id:
             return `${currentUser?.firstName} ${currentUser?.lastName} (@${currentUser?.login})`;
-
-        case currentDraft?._id:
-            return currentDraft?.title;
 
         default:
             return '';

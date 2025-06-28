@@ -1,4 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
 import { AuthorInfo } from '~/components/shared/recipes/AuthorInfo';
@@ -9,18 +10,35 @@ import { Steps } from '~/components/shared/recipes/Steps';
 import { Slider } from '~/components/shared/slider/Slider';
 import { ThumbUpIcon } from '~/components/ui/icons/ThumbUpIcon';
 import { UiButton } from '~/components/ui/UiButton';
+import { useEditRecipe } from '~/hooks/use-edit-recipe';
+import { useDeleteRecipe } from '~/query/hooks/use-delete-recipe';
 import { useGetRecipe } from '~/query/hooks/use-get-recipe';
+import { useLikeRecipe } from '~/query/hooks/use-like-recipe';
 import { useRecommendRecipe } from '~/query/hooks/use-recommend-recipe';
+import { useSaveRecipe } from '~/query/hooks/use-save-recipe';
 import { useAppSelector } from '~/store/hooks';
 import { selectCurrentUserId, selectRecommenderProfile } from '~/store/selectors';
 
 export const RecipePage = () => {
-    const { recipeId: id } = useParams();
+    const { category, subCategory, recipeId } = useParams();
+    const [isRecommended, setIsRecommended] = useState(false);
     const currentUserId = useAppSelector(selectCurrentUserId);
     const isRecommenderProfile = useAppSelector(selectRecommenderProfile);
+    const { data } = useGetRecipe(recipeId);
     const { handleRecommendRecipe } = useRecommendRecipe();
-    const { data } = useGetRecipe(id);
-    const isRecommended = data?.recommendedByUserId?.includes(currentUserId);
+    const { handleEdit } = useEditRecipe();
+    const { handleSave } = useSaveRecipe();
+    const { handleLike } = useLikeRecipe();
+    const { handleDelete } = useDeleteRecipe();
+
+    const toggleRecommend = () => {
+        handleRecommendRecipe(recipeId);
+        setIsRecommended(!isRecommended);
+    };
+
+    useEffect(() => {
+        if (data?.recommendedByUserId?.includes(currentUserId)) setIsRecommended(true);
+    }, [data]);
 
     if (!data) return null;
     return (
@@ -32,7 +50,13 @@ export const RecipePage = () => {
                 lg: '56px 24px 0',
             }}
         >
-            <Hero recipe={data} />
+            <Hero
+                recipe={data}
+                onEdit={() => handleEdit(data, category, subCategory)}
+                onSave={() => handleSave(recipeId)}
+                onLike={() => handleLike(recipeId)}
+                onDelete={() => handleDelete(recipeId)}
+            />
             <Box
                 mx='auto'
                 maxW={{
@@ -69,7 +93,7 @@ export const RecipePage = () => {
                                 text='Вы порекомендовали'
                                 leftIcon={<ThumbUpIcon />}
                                 size='lg'
-                                onClick={() => handleRecommendRecipe(id)}
+                                onClick={toggleRecommend}
                             />
                         ) : (
                             <UiButton
@@ -77,7 +101,7 @@ export const RecipePage = () => {
                                 text='Рекомендовать рецепт'
                                 leftIcon={<ThumbUpIcon />}
                                 size='lg'
-                                onClick={() => handleRecommendRecipe(id)}
+                                onClick={toggleRecommend}
                             />
                         )}
                     </>

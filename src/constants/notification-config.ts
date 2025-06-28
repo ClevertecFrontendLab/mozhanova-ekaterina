@@ -30,7 +30,8 @@ export const NOTIFICATION_DESCRIPTIONS = {
     DELETE_RECIPE_ERROR: 'Не удалось удалить рецепт.',
     CREATE_RECIPE_ERROR: 'Попробуйте пока сохранить в черновик.',
     SAVE_DRAFT_ERROR: 'Не удалось сохранить черновик рецепта.',
-    SERVER_ERROR: 'Попробуйте немного позже.',
+    TRY_LITTLE_LATER: 'Попробуйте немного позже.',
+    TRY_LATER: 'Попробуйте позже.',
     EMAIL_NOT_FOUND: 'Попробуйте другой e-mail или проверьте правильность его написания',
     EMAIL_NOT_VERIFIED: 'Проверьте почту и перейдите по ссылке',
     TRY_AGAIN: 'Попробуйте снова',
@@ -65,7 +66,11 @@ export const NOTIFICATION_MESSAGES = {
     },
     SERVER_ERROR: {
         title: NOTIFICATION_TITLES.SERVER_ERROR,
-        description: NOTIFICATION_DESCRIPTIONS.SERVER_ERROR,
+        description: NOTIFICATION_DESCRIPTIONS.TRY_LITTLE_LATER,
+    },
+    SERVER_ERROR_1: {
+        title: NOTIFICATION_TITLES.SERVER_ERROR,
+        description: NOTIFICATION_DESCRIPTIONS.TRY_LATER,
     },
     UPLOAD_IMAGE_ERROR: {
         title: NOTIFICATION_TITLES.SERVER_ERROR,

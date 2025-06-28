@@ -75,7 +75,7 @@ export const Header = ({
                 align='center'
                 flexGrow={1}
             >
-                <ProfileStatistics variant='mobile' isMenuOpen={isMenuOpen} />
+                {!isMenuOpen && <ProfileStatistics />}
                 <Flex gap={6} alignItems='center' justifyContent='center'>
                     <LogInButton />
 

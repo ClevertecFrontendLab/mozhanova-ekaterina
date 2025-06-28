@@ -15,12 +15,17 @@ export const BookmarksChart = () => {
     const bookmarksCount = useAppSelector(selectStatisticsCounts).bookmarks;
 
     if (!statistics) return null;
+
+    const sortedBookmarks = [...statistics.bookmarks].sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+    );
+
     return (
         <Grid gap={3}>
             <StatisticsTitle icon={<BookmarkSolidIcon />}>
                 {getBookmarksText(bookmarksCount)}
             </StatisticsTitle>
-            {bookmarksCount ? <UiChart data={getChartData(statistics.bookmarks)} /> : null}
+            {bookmarksCount ? <UiChart data={getChartData(sortedBookmarks)} /> : null}
         </Grid>
     );
 };
