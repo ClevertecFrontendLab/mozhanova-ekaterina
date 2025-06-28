@@ -29,10 +29,10 @@ export const UiCardGrid = memo(
         };
 
         useEffect(() => {
-            setRecipes(data);
-        }, [data]);
+            if (data.length) setRecipes(data);
+        }, [data.length, data]);
 
-        if (data.length === 0) return null;
+        if (recipes.length === 0) return null;
 
         return (
             <SimpleGrid
