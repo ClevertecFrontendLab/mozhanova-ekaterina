@@ -18,5 +18,9 @@ export const useToggleRecipes = (recipes: Recipe[]) => {
         setRecipesToShow(recipes.slice(0, Limit.DEFAULT));
     }, [recipes]);
 
+    useEffect(() => {
+        if (showMoreRef.current) showMoreRef.current.style.display = hasMore ? 'block' : 'none';
+    }, [hasMore]);
+
     return { recipesToShow, handleShowMore, showMoreRef, hasMore };
 };

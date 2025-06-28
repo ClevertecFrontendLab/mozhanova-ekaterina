@@ -39,11 +39,7 @@ export const RecipesList = ({
             <Box>
                 <UiCardGrid editable isDraft data={draftsToShow} />
                 <UiCardGrid editable data={recipesToShow} />
-                <UiShowMoreButton
-                    text='/загрузить ещё/i'
-                    onShowMore={handleShowMore}
-                    ref={showMoreRef}
-                />
+                <UiShowMoreButton onShowMore={handleShowMore} ref={showMoreRef} />
             </Box>
         </Grid>
     );

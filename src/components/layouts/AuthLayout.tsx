@@ -28,7 +28,7 @@ export const AuthLayout = () => {
     };
 
     return (
-        <Flex position='relative' w='100vw' h='100vh'>
+        <Flex position='relative' w='100vw' h='100vh' minH='660px'>
             <Grid
                 flexBasis={{ base: '100%', md: '50%' }}
                 bg='linear-gradient(208deg, #eaffc7 0%, #29813f 100%)'

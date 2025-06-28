@@ -52,7 +52,7 @@ export const TheJuiciestPage = () => {
             >
                 <Box>
                     <UiCardGrid data={recipesToShow} />
-                    {hasMore && <UiShowMoreButton text='Загрузка' onShowMore={loadMore} />}
+                    {hasMore && <UiShowMoreButton onShowMore={loadMore} />}
                 </Box>
                 <RelevantKitchenBlock />
             </Grid>
