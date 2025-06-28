@@ -141,7 +141,6 @@ export const recipeApi = authorizedApi.injectEndpoints({
                 url: `${ApiEndpoints.RECOMMEND_RECIPE}${id}`,
                 method: 'POST',
             }),
-            // invalidatesTags: (_, __, id) => [{ type: Tags.RECIPE, id }],
         }),
     }),
 });

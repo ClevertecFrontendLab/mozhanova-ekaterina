@@ -1,6 +1,6 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
 import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
@@ -9,7 +9,7 @@ import { useToast } from '~/hooks/use-toast';
 import { Limit } from '~/query/constants/limits';
 import { useGetRecipesByCategoryQuery } from '~/query/recipe-api';
 import { useAppSelector } from '~/store/hooks';
-import { paginationSelector } from '~/store/recipe-slice';
+import { paginationSelector, setPaginationMeta } from '~/store/recipe-slice';
 import { selectCurrentRootCategory, selectFilters } from '~/store/selectors';
 import { Category } from '~/types';
 import { getCategoryByName } from '~/utils/get-categories';
@@ -24,7 +24,7 @@ export const RecipesTabs = () => {
     const { showError } = useToast();
     const filters = useSelector(selectFilters);
     const pagination = useSelector(paginationSelector);
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     const currentCategory = useAppSelector((state) => selectCurrentRootCategory(state, category));
     const currentSubCategory = getCategoryByName(
@@ -43,7 +43,6 @@ export const RecipesTabs = () => {
             categoryId: currentSubCategory?._id || '',
             page: pagination.currentPage,
             limit: Limit.DEFAULT,
-            // ...(filters.searchString && { searchString: filters.searchString }),
             ...(filters.allergens.length > 0 && { allergens: filters.allergens }),
         },
         {
@@ -66,11 +65,11 @@ export const RecipesTabs = () => {
         }
     }, [isError, showError, navigate]);
 
-    // useEffect(() => {
-    //     if (currentData?.meta) {
-    //         dispatch(setPaginationMeta({ totalPages: currentData.meta.totalPages }));
-    //     }
-    // }, [currentData]);
+    useEffect(() => {
+        if (currentData?.meta) {
+            dispatch(setPaginationMeta({ totalPages: currentData.meta.totalPages }));
+        }
+    }, [currentData]);
 
     return (
         <Tabs

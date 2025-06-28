@@ -1,7 +1,5 @@
 import { Box, Card, CardBody, Flex, Text } from '@chakra-ui/react';
 
-// import { format } from 'date-fns';
-// import { ru } from 'date-fns/locale';
 import { TrashIcon } from '~/components/ui/icons/TrashIcon';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { NoteDto } from '~/types';
@@ -32,8 +30,6 @@ export const NoteCard = ({
         <CardBody overflow='hidden' display='grid' gap={4} fontSize='14px' flexGrow={1}>
             <Flex justify='space-between' align='center'>
                 <Text data-test-id={DATA_TEST_IDS.NOTES_CARD_DATE} color='text.primary'>
-                    {/* {format(new Date(note.date), 'dd MMMM HH:mm', { locale: ru })}
-                     */}
                     {note.data}
                 </Text>
 

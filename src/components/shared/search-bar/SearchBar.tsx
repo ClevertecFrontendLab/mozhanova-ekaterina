@@ -25,7 +25,6 @@ export const SearchBar = ({ title, description }: Props) => {
 
     useEffect(() => {
         if (isSearchInitiated) {
-            // runSearch();
             if (data && data.length > 0) {
                 navigate(AppRoutes.SEARCH);
                 setIsSearchInitiated(false);
@@ -55,7 +54,6 @@ export const SearchBar = ({ title, description }: Props) => {
                 md: '32px 0',
             }}
         >
-            {data && data.length}
             {data && data.length === 0 ? (
                 <Text textAlign='center' fontWeight={600}>
                     По вашему запросу ничего не найдено. <br />
