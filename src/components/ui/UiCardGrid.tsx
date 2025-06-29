@@ -22,8 +22,7 @@ export const UiCardGrid = memo(
         const { handleSave } = useSaveRecipe();
         const { handleEdit } = useEditRecipe(isDraft);
 
-        if (!data) return null;
-
+        if (data.length === 0) return null;
         return (
             <SimpleGrid
                 data-test-id={dataTest}

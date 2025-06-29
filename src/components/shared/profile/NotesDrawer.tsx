@@ -65,9 +65,14 @@ export const NotesDrawer = ({ isOpen, onClose, onCreate }: Props) => {
                             css={{
                                 '&[aria-invalid=true]': { boxShadow: 'none' },
                             }}
-                            borderColor='border.light'
+                            borderColor={errors.text ? 'error.400' : 'border.light'}
                             placeholder='Максимально 160 символов'
                             _focus={
+                                errors.text
+                                    ? { borderColor: 'error.400', boxShadow: 'none' }
+                                    : { borderColor: 'border.light', boxShadow: 'none' }
+                            }
+                            _hover={
                                 errors.text
                                     ? { borderColor: 'error.400', boxShadow: 'none' }
                                     : { borderColor: 'border.light', boxShadow: 'none' }

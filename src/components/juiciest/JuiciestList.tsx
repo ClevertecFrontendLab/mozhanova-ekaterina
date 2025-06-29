@@ -1,10 +1,13 @@
 import { memo } from 'react';
 
+import { useSaveRecipe } from '~/query/hooks/use-save-recipe';
 import { Recipe } from '~/types';
 
 import { UiCard } from '../ui/UiCard';
 
 export const JuiciestList = memo(({ data }: { data?: Recipe[] }) => {
+    const { handleSave } = useSaveRecipe();
+
     if (!data) return null;
     return (
         <>
@@ -15,6 +18,7 @@ export const JuiciestList = memo(({ data }: { data?: Recipe[] }) => {
                     data={recipe}
                     size='lg'
                     recommendation='Елена Высоцкая'
+                    onSave={handleSave}
                 />
             ))}
         </>

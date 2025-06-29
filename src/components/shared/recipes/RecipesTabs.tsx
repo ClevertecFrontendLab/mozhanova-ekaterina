@@ -38,12 +38,11 @@ export const RecipesTabs = () => {
         navigate(`/${category}/${selectedCategory.category}`);
     };
 
-    const { data, isError } = useGetRecipesByCategoryQuery(
+    const { currentData, isError } = useGetRecipesByCategoryQuery(
         {
             categoryId: currentSubCategory?._id || '',
             page: pagination.currentPage,
             limit: Limit.DEFAULT,
-            ...(filters.searchString && { searchString: filters.searchString }),
             ...(filters.allergens.length > 0 && { allergens: filters.allergens }),
         },
         {
@@ -67,10 +66,10 @@ export const RecipesTabs = () => {
     }, [isError, showError, navigate]);
 
     useEffect(() => {
-        if (data?.meta) {
-            dispatch(setPaginationMeta({ totalPages: data.meta.totalPages }));
+        if (currentData?.meta) {
+            dispatch(setPaginationMeta({ totalPages: currentData.meta.totalPages }));
         }
-    }, [data]);
+    }, [currentData]);
 
     return (
         <Tabs
@@ -110,7 +109,7 @@ export const RecipesTabs = () => {
                     currentCategory.subCategories?.map((category) => (
                         <TabPanel key={category._id}>
                             {category.category === subCategory && (
-                                <RecipesList recipes={data?.data} />
+                                <RecipesList recipes={currentData?.data} />
                             )}
                         </TabPanel>
                     ))}

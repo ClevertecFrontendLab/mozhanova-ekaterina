@@ -38,7 +38,7 @@ export const categoryApi = unauthorizedApi.injectEndpoints({
             async onQueryStarted(id, { dispatch, queryFulfilled }) {
                 try {
                     await queryFulfilled;
-                } catch (_) {
+                } catch {
                     const cachedData = localStorage.getItem('navCache');
                     if (cachedData) {
                         const categories: Category[] = JSON.parse(cachedData);

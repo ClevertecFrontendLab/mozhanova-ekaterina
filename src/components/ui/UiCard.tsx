@@ -38,7 +38,7 @@ import { UiCardInfo } from './UiCardInfo';
 type Props = {
     data: Partial<Recipe>;
     onSave: (id: string) => void;
-    onEdit: (recipe: Partial<Recipe>, category: string, subCategory: string) => void;
+    onEdit?: (recipe: Partial<Recipe>, category: string, subCategory: string) => void;
     size?: 'sm' | 'md' | 'lg';
     recommendation?: string;
     categoryBgColor?: 'secondary.100' | 'primary.100';
@@ -179,7 +179,7 @@ export const UiCard = ({
                 </CardBody>
 
                 <CardFooter>
-                    {editable && (
+                    {editable && onEdit && (
                         <Flex justify='flex-end' grow={1}>
                             <UiButton
                                 data-test-id={DATA_TEST_IDS.PROFILE_EDIT_BUTTON}
