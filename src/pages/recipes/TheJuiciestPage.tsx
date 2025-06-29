@@ -1,6 +1,5 @@
 import { Box, Grid } from '@chakra-ui/react';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { RelevantKitchenBlock } from '~/components/shared/recipes/RelevantKitchenBlock';
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
@@ -9,13 +8,12 @@ import { UiShowMoreButton } from '~/components/ui/UiShowMoreButton';
 import { usePagination } from '~/hooks/use-pagination';
 import { Limit } from '~/query/constants/limits';
 import { useGetPopularRecipesQuery } from '~/query/recipe-api';
-import { paginationSelector, setPaginationMeta } from '~/store/recipe-slice';
+import { paginationSelector } from '~/store/recipe-slice';
 import { selectFilters } from '~/store/selectors';
 
 export const TheJuiciestPage = () => {
     const pagination = useSelector(paginationSelector);
     const filters = useSelector(selectFilters);
-    const dispatch = useDispatch();
 
     const { data, isLoading, isError } = useGetPopularRecipesQuery(
         {
@@ -28,12 +26,6 @@ export const TheJuiciestPage = () => {
             refetchOnMountOrArgChange: true,
         },
     );
-
-    useEffect(() => {
-        if (data?.meta) {
-            dispatch(setPaginationMeta({ totalPages: data.meta.totalPages }));
-        }
-    }, [data]);
 
     const { hasMore, loadMore, recipesToShow } = usePagination(data?.data);
 

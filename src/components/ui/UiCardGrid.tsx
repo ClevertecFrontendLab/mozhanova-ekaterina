@@ -22,7 +22,7 @@ export const UiCardGrid = memo(
         const { handleSave } = useSaveRecipe();
         const { handleEdit } = useEditRecipe(isDraft);
 
-        if (!data) return null;
+        if (recipes.length === 0) return null;
 
         return (
             <SimpleGrid
@@ -49,6 +49,7 @@ export const UiCardGrid = memo(
                         isBookmark={isBookmark}
                         onSave={handleSave}
                         onEdit={handleEdit}
+                        removeFromSaved={removeFromSaved}
                     />
                 ))}
             </SimpleGrid>
