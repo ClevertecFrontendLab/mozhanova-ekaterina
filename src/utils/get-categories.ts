@@ -1,4 +1,4 @@
-import { Category } from '~/types';
+import { Category, UserDto } from '~/types';
 
 export const getCategoriesByIds = (categories: Category[] = [], ids: (string | undefined)[]) =>
     categories.filter((category) => ids.includes(category?._id));
@@ -14,3 +14,6 @@ export const getCategoryById = (categories: Category[] = [], id: string) =>
 
 export const getCategoryByName = (categories: Category[] = [], name: string) =>
     categories.find((category) => category?.category === name) || null;
+
+export const getUsersByIds = (users: UserDto[] = [], ids: string[]) =>
+    users.filter((user) => ids.includes(user.id));

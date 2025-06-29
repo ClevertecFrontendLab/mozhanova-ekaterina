@@ -126,4 +126,19 @@ export const DATA_TEST_IDS = {
     // Other
     BLOG_TOOLTIP: 'blog-tooltip',
     MOBILE_LOADER: 'mobile-loader',
+
+    //Profile
+    HEADER_PROFILE_BUTTON: 'header-profile-button',
+    FOOTER_PROFILE_BUTTON: 'footer-profile-button',
+    USER_STATS_BLOCK: 'user-stats-block',
+    USER_PROFILE_BOX: 'user-profile-box',
+    USER_PROFILE_NAME: 'user-profile-name',
+    USER_PROFILE_LOGIN: 'user-profile-login',
+    SETTINGS_BUTTON: 'settings-button',
+    USER_PROFILE_RECIPES: 'user-profile-recipes',
+    USER_PROFILE_BOOKMARKS: 'user-profile-bookmarks',
+    PROFILE_EDIT_BUTTON: 'profile-edit-button',
+    USER_PROFILE_NOTES: 'user-profile-notes',
+    NOTE_DELETE_BUTTON: 'note-delete-button',
+    SETTINGS_RECOMMENDATION_INFO_BLOCK: 'settings-recommendation-info-block',
 };

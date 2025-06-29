@@ -2,7 +2,7 @@ import { Box, Flex } from '@chakra-ui/react';
 
 import { TheJuiciestSection } from '~/components/juiciest/TheJuiciestSection';
 import { BlogsSection } from '~/components/shared/blogs/BlogsSection';
-import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
+import { RelevantKitchenBlock } from '~/components/shared/recipes/RelevantKitchenBlock';
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
 import { Slider } from '~/components/shared/slider/Slider';
 

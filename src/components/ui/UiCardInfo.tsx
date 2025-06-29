@@ -6,20 +6,20 @@ import { UiCardBadge } from './UiCardBadge';
 import { UiCardStats } from './UiCardStats';
 
 type Props = {
+    categoryBgColor: 'secondary.100' | 'primary.100';
     likes: number;
     bookmarks: number;
-    categoryBgColor: 'secondary.100' | 'primary.100';
-    categories?: (string | undefined)[];
-    alignItems?: string;
+    alignItems: string;
+    categories?: string[];
 };
 
 export const UiCardInfo = ({
     categories = [],
-    likes,
-    bookmarks,
-    categoryBgColor,
+    likes = 0,
+    bookmarks = 0,
+    categoryBgColor = 'secondary.100',
     alignItems = 'flex-end',
-}: Props) => {
+}: Partial<Props>) => {
     const [isLargerThanMD] = useBreakpoint('md');
 
     return (

@@ -1,4 +1,4 @@
-import { AuthResponse, AuthUser, NewUser, ResetUser, VerifyUser } from '~/types';
+import { Auth, AuthResponse, NewAuth, ResetAuth, VerifyAuth } from '~/types';
 
 import { authorizedApi } from './authorized-api';
 import { ApiEndpoints } from './constants/api';
@@ -8,7 +8,7 @@ import { handleAuthHeaders } from './helpers/auth-helpers';
 
 export const authApi = authorizedApi.injectEndpoints({
     endpoints: (builder) => ({
-        [EndpointNames.SIGN_IN]: builder.mutation<AuthResponse, AuthUser>({
+        [EndpointNames.SIGN_IN]: builder.mutation<AuthResponse, Auth>({
             query: (credentials) => ({
                 url: ApiEndpoints.AUTH,
                 method: 'POST',
@@ -20,7 +20,7 @@ export const authApi = authorizedApi.injectEndpoints({
             invalidatesTags: [Tags.AUTH],
         }),
 
-        [EndpointNames.SIGN_UP]: builder.mutation<AuthResponse, NewUser>({
+        [EndpointNames.SIGN_UP]: builder.mutation<AuthResponse, NewAuth>({
             query: (newUser) => ({
                 url: ApiEndpoints.SIGN_UP,
                 method: 'POST',
@@ -56,7 +56,7 @@ export const authApi = authorizedApi.injectEndpoints({
             invalidatesTags: [Tags.AUTH],
         }),
 
-        [EndpointNames.VERIFY_CODE]: builder.mutation<AuthResponse, VerifyUser>({
+        [EndpointNames.VERIFY_CODE]: builder.mutation<AuthResponse, VerifyAuth>({
             query: ({ email, otpToken }) => ({
                 url: ApiEndpoints.VERIFY_OTP,
                 method: 'POST',
@@ -65,7 +65,7 @@ export const authApi = authorizedApi.injectEndpoints({
             invalidatesTags: [Tags.AUTH],
         }),
 
-        [EndpointNames.RESET_PASSWORD]: builder.mutation<AuthResponse, ResetUser>({
+        [EndpointNames.RESET_PASSWORD]: builder.mutation<AuthResponse, ResetAuth>({
             query: ({ email, login, password, passwordConfirm }) => ({
                 url: ApiEndpoints.RESET_PASSWORD,
                 method: 'POST',

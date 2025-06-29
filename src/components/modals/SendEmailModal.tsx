@@ -8,8 +8,8 @@ import image from '~/assets/modals/3.png';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
-import { useErrors } from '~/hooks/use-errors';
 import { useForgotPasswordMutation } from '~/query/auth-api';
+import { useErrors } from '~/query/hooks/use-errors';
 import { ErrorResponse } from '~/types';
 import { emailSchema } from '~/validation';
 
@@ -45,7 +45,7 @@ export const SendEmailModal = () => {
         if (!isValid) return;
         try {
             const result = await forgotPassword(data.email).unwrap();
-            if (result) showVerificationCode(data.email);
+            if (result) showVerificationCode({ email: data.email });
         } catch (error) {
             sendEmailErrorHandler(error as ErrorResponse, setError, reset);
         }

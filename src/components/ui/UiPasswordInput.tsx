@@ -17,6 +17,7 @@ type Props = {
     label: string;
     placeholder: string;
     error: FieldError | undefined;
+    variant?: string;
     helperText?: string;
     value?: string;
     setValue?: (value: string) => void;
@@ -27,7 +28,8 @@ export const UiPasswordInput = ({
     label,
     error,
     placeholder,
-    helperText,
+    variant = 'accent',
+    helperText = 'Пароль не менее 8 символов, с заглавной буквой и цифрой',
     setValue,
     value,
     ...props
@@ -40,7 +42,7 @@ export const UiPasswordInput = ({
             <InputGroup size='lg'>
                 <Input
                     size='lg'
-                    variant='login'
+                    variant={variant}
                     type={showPassword ? 'text' : 'password'}
                     placeholder={placeholder}
                     borderColor={error && 'error.400'}

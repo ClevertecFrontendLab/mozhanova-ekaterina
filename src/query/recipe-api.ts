@@ -1,13 +1,15 @@
+import { setPaginationMeta } from '~/store/recipe-slice';
 import {
     BookmarkResponse,
     LikeResponse,
     MeasureUnit,
-    Meta,
     NewRecipe,
     Recipe,
     RecipeDraft,
+    RecipeDraftDto,
     RecipeParams,
     RecipesByUserResponse,
+    RecipesResponse,
 } from '~/types';
 
 import { authorizedApi } from './authorized-api';
@@ -17,10 +19,7 @@ import { Tags } from './constants/tags';
 
 export const recipeApi = authorizedApi.injectEndpoints({
     endpoints: (builder) => ({
-        [EndpointNames.GET_LATEST_RECIPES]: builder.query<
-            { data: Recipe[]; meta: Meta },
-            RecipeParams
-        >({
+        [EndpointNames.GET_LATEST_RECIPES]: builder.query<RecipesResponse, RecipeParams>({
             query: (params) => ({
                 url: ApiEndpoints.RECIPES,
                 params: {
@@ -32,10 +31,7 @@ export const recipeApi = authorizedApi.injectEndpoints({
             providesTags: [Tags.RECIPES],
         }),
 
-        [EndpointNames.GET_POPULAR_RECIPES]: builder.query<
-            { data: Recipe[]; meta: Meta },
-            RecipeParams
-        >({
+        [EndpointNames.GET_POPULAR_RECIPES]: builder.query<RecipesResponse, RecipeParams>({
             query: (params) => ({
                 url: ApiEndpoints.RECIPES,
                 params: {
@@ -46,6 +42,10 @@ export const recipeApi = authorizedApi.injectEndpoints({
                 },
             }),
             providesTags: [Tags.RECIPES],
+            onQueryStarted: async (_args, { queryFulfilled, dispatch }) => {
+                const { data } = await queryFulfilled;
+                dispatch(setPaginationMeta({ totalPages: data.meta.totalPages }));
+            },
         }),
 
         [EndpointNames.GET_RECIPE_BY_ID]: builder.query<Recipe, string>({
@@ -54,10 +54,7 @@ export const recipeApi = authorizedApi.injectEndpoints({
                 result ? [{ type: Tags.RECIPE, id: result._id }] : [Tags.RECIPE],
         }),
 
-        [EndpointNames.GET_RECIPES_BY_CATEGORY]: builder.query<
-            { data: Recipe[]; meta: Meta },
-            RecipeParams
-        >({
+        [EndpointNames.GET_RECIPES_BY_CATEGORY]: builder.query<RecipesResponse, RecipeParams>({
             query: ({ categoryId, ...params }) => ({
                 url: `${ApiEndpoints.RECIPE_CATEGORY}${categoryId}`,
                 params: {
@@ -67,21 +64,23 @@ export const recipeApi = authorizedApi.injectEndpoints({
             providesTags: [Tags.RECIPES],
         }),
 
-        [EndpointNames.SEARCH_RECIPES]: builder.query<{ data: Recipe[]; meta: Meta }, RecipeParams>(
-            {
-                query: (params) => ({
-                    url: ApiEndpoints.RECIPES,
-                    params: {
-                        ...params,
-                        allergens: params.allergens?.join(','),
-                        meat: params.meat?.join(','),
-                        garnish: params.garnish?.join(','),
-                        subcategoriesIds: params.subcategoriesIds?.join(','),
-                    },
-                }),
-                providesTags: [Tags.RECIPES],
+        [EndpointNames.SEARCH_RECIPES]: builder.query<RecipesResponse, RecipeParams>({
+            query: (params) => ({
+                url: ApiEndpoints.RECIPES,
+                params: {
+                    ...params,
+                    allergens: params.allergens?.join(','),
+                    meat: params.meat?.join(','),
+                    garnish: params.garnish?.join(','),
+                    subcategoriesIds: params.subcategoriesIds?.join(','),
+                },
+            }),
+            providesTags: [Tags.RECIPES],
+            onQueryStarted: async (_args, { queryFulfilled, dispatch }) => {
+                const { data } = await queryFulfilled;
+                dispatch(setPaginationMeta({ totalPages: data.meta.totalPages }));
             },
-        ),
+        }),
 
         [EndpointNames.MEASURE_UNITS]: builder.query<MeasureUnit[], void>({
             query: () => ({
@@ -103,7 +102,7 @@ export const recipeApi = authorizedApi.injectEndpoints({
                 method: 'POST',
                 body: recipe,
             }),
-            invalidatesTags: [Tags.RECIPE],
+            invalidatesTags: [Tags.RECIPE, Tags.USER_INFO],
         }),
         [EndpointNames.UPDATE_RECIPE]: builder.mutation<Recipe, Recipe>({
             query: (recipe) => ({
@@ -112,6 +111,14 @@ export const recipeApi = authorizedApi.injectEndpoints({
                 body: recipe,
             }),
             invalidatesTags: [Tags.RECIPE],
+        }),
+        [EndpointNames.UPDATE_DRAFT]: builder.mutation<Recipe, RecipeDraftDto>({
+            query: (recipe) => ({
+                url: `${ApiEndpoints.CREATE_RECIPE_DRAFT}/${recipe._id}`,
+                method: 'PATCH',
+                body: recipe,
+            }),
+            invalidatesTags: [Tags.USER, Tags.RECIPE],
         }),
         [EndpointNames.DELETE_RECIPE]: builder.mutation<void, string>({
             query: (id) => ({
@@ -125,18 +132,24 @@ export const recipeApi = authorizedApi.injectEndpoints({
                 url: `${ApiEndpoints.RECIPE_BY_ID}${id}${ApiEndpoints.LIKE_UNLIKE_RECIPE}`,
                 method: 'POST',
             }),
-            invalidatesTags: [Tags.RECIPE],
+            invalidatesTags: (_, __, id) => [{ type: Tags.RECIPE, id }],
         }),
         [EndpointNames.SAVE_REMOVE_FROM_BOOKMARKS]: builder.mutation<BookmarkResponse, string>({
             query: (id) => ({
                 url: `${ApiEndpoints.RECIPE_BY_ID}${id}${ApiEndpoints.SAVE_REMOVE_FROM_BOOKMARKS}`,
                 method: 'POST',
             }),
-            invalidatesTags: [Tags.RECIPE],
+            invalidatesTags: (_, __, id) => [{ type: Tags.RECIPE, id }, Tags.USER_RECIPES],
         }),
         [EndpointNames.GET_RECIPES_BY_USER_ID]: builder.query<RecipesByUserResponse, string>({
             query: (bloggerId) => `${ApiEndpoints.GET_RECIPES_BY_USER_ID}${bloggerId}`,
-            providesTags: [Tags.RECIPES],
+            providesTags: [Tags.USER_RECIPES],
+        }),
+        [EndpointNames.RECOMMEND_RECIPE]: builder.mutation<void, string>({
+            query: (id) => ({
+                url: `${ApiEndpoints.RECOMMEND_RECIPE}${id}`,
+                method: 'POST',
+            }),
         }),
     }),
 });
@@ -158,4 +171,6 @@ export const {
     useSaveRemoveFromBookmarksMutation,
     useGetRecipesByUserIdQuery,
     useLazyGetRecipesByUserIdQuery,
+    useUpdateDraftMutation,
+    useRecommendRecipeMutation,
 } = recipeApi;

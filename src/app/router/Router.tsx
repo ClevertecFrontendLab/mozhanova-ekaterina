@@ -1,9 +1,10 @@
 import { Route, Routes } from 'react-router';
 
 import { AuthGuard } from '~/components/AuthGuard';
+import { GetUsersData } from '~/components/GetUsersData';
 import { AuthLayout } from '~/components/layouts/AuthLayout';
 import { MainLayout } from '~/components/layouts/MainLayout';
-import { RecipesTabs } from '~/components/RecipesTabs';
+import { RecipesTabs } from '~/components/shared/recipes/RecipesTabs';
 import { AppRoutes } from '~/constants/routes-config';
 import { RecoveryPage } from '~/pages/auth/RecoveryPage';
 import { SignIn } from '~/pages/auth/SignIn';
@@ -13,8 +14,11 @@ import { BloggerPage } from '~/pages/bloggers/BloggerPage';
 import { BlogsPage } from '~/pages/bloggers/BlogsPage';
 import { Home } from '~/pages/HomePage';
 import { NotFoundPage } from '~/pages/NotFoundPage';
+import { ProfilePage } from '~/pages/profile/ProfilePage';
+import { SettingsPage } from '~/pages/profile/SettingsPage';
 import { CategoryPage } from '~/pages/recipes/CategoryPage';
 import { CreateRecipePage } from '~/pages/recipes/CreateRecipePage';
+import { EditDraftPage } from '~/pages/recipes/EditDraftPage';
 import { EditRecipePage } from '~/pages/recipes/EditRecipePage';
 import { RecipePage } from '~/pages/recipes/RecipePage';
 import { SearchPage } from '~/pages/recipes/SearchPage';
@@ -25,7 +29,9 @@ export const Router = () => (
         <Route
             element={
                 <AuthGuard>
-                    <MainLayout />
+                    <GetUsersData>
+                        <MainLayout />
+                    </GetUsersData>
                 </AuthGuard>
             }
         >
@@ -43,6 +49,10 @@ export const Router = () => (
 
             <Route path={AppRoutes.CREATE_RECIPE} element={<CreateRecipePage />} />
             <Route path={AppRoutes.EDIT_RECIPE} element={<EditRecipePage />} />
+            <Route path={AppRoutes.EDIT_DRAFT} element={<EditDraftPage />} />
+
+            <Route path={AppRoutes.PROFILE} element={<ProfilePage />} />
+            <Route path={AppRoutes.SETTINGS} element={<SettingsPage />} />
 
             <Route path={AppRoutes.NOT_FOUND} element={<NotFoundPage />} />
         </Route>

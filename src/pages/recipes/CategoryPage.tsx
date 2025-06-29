@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useNavigate, useParams } from 'react-router';
 
-import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
+import { RelevantKitchenBlock } from '~/components/shared/recipes/RelevantKitchenBlock';
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
 import { AppRoutes } from '~/constants/routes-config';
 import { useGetCategoriesQuery } from '~/query/category-api';

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 import { UiLoader } from '~/components/ui/UiLoader';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { useLazyRecipesSearch } from '~/store/hooks';
+import { useRecipesSearch } from '~/query/hooks/use-recipe-search';
 
 import { FiltersDrawer } from './FiltersDrawer';
 import { SearchForm } from './SearchForm';
@@ -20,18 +20,17 @@ export const SearchBar = ({ title, description }: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const navigate = useNavigate();
 
-    const { data, isError, isFetching, runSearch } = useLazyRecipesSearch();
+    const { data, isError, isFetching } = useRecipesSearch();
     const [isSearchInitiated, setIsSearchInitiated] = useState(false);
 
     useEffect(() => {
         if (isSearchInitiated) {
-            runSearch();
-            if (data) {
+            if (data && data.length > 0) {
                 navigate(AppRoutes.SEARCH);
                 setIsSearchInitiated(false);
             }
         }
-    }, [runSearch, isSearchInitiated, data, navigate]);
+    }, [isSearchInitiated, data, navigate]);
 
     return (
         <Flex
@@ -42,13 +41,9 @@ export const SearchBar = ({ title, description }: Props) => {
             }
             transition='box-shadow 0.3s ease-in-out'
             borderRadius={{ base: '0 0 8px 8px', lg: '24px' }}
-            mb={{
-                base: 4,
-                lg: 6,
-            }}
             direction='column'
             alignItems='center'
-            maxW={{
+            minW={{
                 sm: '480px',
                 md: '578px',
                 lg: '898px',
@@ -66,6 +61,7 @@ export const SearchBar = ({ title, description }: Props) => {
                 </Text>
             ) : (
                 <Heading
+                    textAlign='center'
                     as='h1'
                     fontSize={{
                         base: '24px',

@@ -26,7 +26,10 @@ export const VerificationFailedModal = () => {
                 <p>
                     Остались вопросы? Свяжитесь
                     <Link textDecoration='underline' href='#'>
-                        <wbr /> с поддержкой
+                        <wbr />
+                        <Text as='span' whiteSpace='nowrap'>
+                            с поддержкой
+                        </Text>
                     </Link>
                 </p>
             }

@@ -1,0 +1,13 @@
+export const Z_INDEX_CONFIG = {
+    HEADER: 52,
+    MODAL: 50,
+    DRAWER: 52,
+    GLOBAL_LOADER: 51,
+    NAVBAR_MENU: 52,
+    NAVBAR_OVERLAY: 51,
+    FOOTER: 20,
+    SELECT_MENU: 10,
+    FORM_SUBMIT_BTNS: 32,
+    SLIDER_BTNS: 10,
+    TOAST: 51,
+} as const;

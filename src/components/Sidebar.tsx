@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 
-import { ProfileNotification } from './shared/ProfileNotification';
+import { ProfileStatistics } from './shared/profile/ProfileStatistics';
 import { UiIconButton } from './ui/UiIconButton';
 
 export const Sidebar = () => {
@@ -21,11 +21,7 @@ export const Sidebar = () => {
         >
             {location.pathname !== AppRoutes.CREATE_RECIPE && (
                 <>
-                    <ProfileNotification
-                        totalLikes={1000}
-                        totalBookmarks={200}
-                        totalSubscribers={100}
-                    />
+                    <ProfileStatistics />
                     <Box position='absolute' bottom='52px' left={0} right={0}>
                         <Link
                             to={AppRoutes.CREATE_RECIPE}

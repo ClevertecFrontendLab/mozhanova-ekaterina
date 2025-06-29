@@ -1,6 +1,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 
 import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { Z_INDEX_CONFIG } from '~/constants/z-index-config';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useBodyScrollLock } from '~/hooks/use-scroll';
 import { useGetCategoriesQuery } from '~/query/category-api';
@@ -26,7 +27,7 @@ export const Navbar = ({
                 <Box
                     pb='185px'
                     display={isMenuOpen ? 'block' : 'none'}
-                    zIndex={50}
+                    zIndex={Z_INDEX_CONFIG.NAVBAR_OVERLAY}
                     position='fixed'
                     top={0}
                     bottom={0}
@@ -81,7 +82,7 @@ export const Navbar = ({
                         md: 6,
                     }}
                     bg='background.base'
-                    zIndex={50}
+                    zIndex={Z_INDEX_CONFIG.NAVBAR_MENU}
                     borderRadius={{
                         base: '0 0 12px 12px',
                         md: 0,

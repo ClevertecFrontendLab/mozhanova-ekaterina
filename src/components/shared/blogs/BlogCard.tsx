@@ -1,17 +1,8 @@
-import {
-    Avatar,
-    Box,
-    Card,
-    CardBody,
-    CardFooter,
-    Flex,
-    Heading,
-    Tag,
-    Text,
-} from '@chakra-ui/react';
+import { Box, Card, CardBody, CardFooter, Flex, Heading, Tag, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ErrorResponse, Link } from 'react-router';
 
+import { UiAvatar } from '~/components/ui/UiAvatar';
 import {
     UiReadButton,
     UiRecipesButton,
@@ -21,17 +12,19 @@ import {
 import { UiCardStats } from '~/components/ui/UiCardStats';
 import { UiLoader } from '~/components/ui/UiLoader';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { useErrors } from '~/hooks/use-errors';
 import { useToggleSubscriptionMutation } from '~/query/blogs-api';
+import { API_IMAGE_URL } from '~/query/constants/api-config';
+import { useErrors } from '~/query/hooks/use-errors';
 import { useAppSelector } from '~/store/hooks';
 import { selectCurrentUserId } from '~/store/selectors';
-import { getRecipesWord } from '~/utils/get-recipes-word';
+import { getRecipesWord } from '~/utils/get-declension';
 import { routeHelpers } from '~/utils/get-routes';
 
 type Props = {
     name: string[];
     login: string;
     bloggerId: string;
+    photoLink: string;
     note?: string;
     subscribersCount?: number;
     newRecipesCount?: number;
@@ -47,6 +40,7 @@ export const BlogCard = ({
     subscribersCount,
     bookmarksCount,
     note,
+    photoLink,
     newRecipesCount,
     showFooter = true,
     bloggerId,
@@ -103,7 +97,12 @@ export const BlogCard = ({
                         md: 4,
                     }}
                 >
-                    <Avatar name={`${name[0]} ${name[1]}`} size={{ base: 'sm', md: 'md' }} />
+                    <UiAvatar
+                        firstName={name[0]}
+                        lastName={name[1]}
+                        size={{ base: 'sm', md: 'md' }}
+                        src={API_IMAGE_URL + photoLink}
+                    />
                     <Box minW={0}>
                         <Link to={routeHelpers.getBlogPath(bloggerId)}>
                             <Heading

@@ -18,6 +18,7 @@ export type Recipe = {
     nutritionValue: { calories: number; protein: number; fats: number; carbohydrates: number };
     ingredients: Ingredient[];
     steps: Step[];
+    recommendedByUserId?: string[];
     meat?: string;
     side?: string;
 };
@@ -29,6 +30,9 @@ export type MeasureUnit = {
     name: string;
 };
 export type RecipeDraft = Partial<Omit<NewRecipe, 'title'>> & Pick<NewRecipe, 'title'>;
+export type RecipeDraftDto = RecipeDraft & {
+    _id: string;
+};
 
 export type NewRecipe = Pick<
     Recipe,
@@ -74,46 +78,112 @@ export type GetBloggersParams = {
     currentUserId: string;
     limit: number | 'all' | '';
 };
-export type Note = {
+export type NoteDto = {
+    id: string;
+    _id: string;
     date: string;
+    data: string;
     text: string;
 };
-export interface BloggerInfo {
+export type Note = {
+    text: string;
+};
+export type ObjectId = {
+    buffer: {
+        type: 'Buffer';
+        data: number[];
+    };
+};
+export type ProfileDto = {
     _id: string;
+    drafts: RecipeDraftDto[];
+    recipesIds: string[];
+    subscribers: string[];
+    subscriptions: string[];
     email: string;
+    login: string;
+    lastName: string;
+    firstName: string;
+    photoLink?: string;
+};
+export type UserDto = {
+    id: string;
     login: string;
     firstName: string;
     lastName: string;
-    recipesIds: string[];
-    drafts: RecipeDraft[];
-    subscriptions: string[];
-    subscribers: string[];
-    notes: Note[];
-}
-export type Blogger = Pick<BloggerInfo, '_id' | 'login' | 'firstName' | 'lastName' | 'notes'> & {
+    photo: string;
+};
+export type UserUpdateInfo = {
+    firstName: string;
+    lastName: string;
+};
+export type UpdatePassword = {
+    password: string;
+    newPassword: string;
+};
+export type StatisticData = { count: number; date: string };
+export type StatisticDto = {
+    likes: StatisticData[];
+    bookmarks: StatisticData[];
+    recommendationsCount: number;
+};
+export type BloggerInfoDto = {
+    _id: ObjectId;
+    createdAt: string;
+    updatedAt: string;
+    email: string;
+    emailVerifiedAt: string;
+    isEmailVerified: boolean;
+    password: string;
+    photoLink: string;
+    refreshToken: string;
+    login: string;
+    firstName: string;
+    lastName: string;
+    recipesIds: ObjectId[];
+    subscribers: ObjectId[];
+    subscriptions: ObjectId[];
+    notes: NoteDto[];
+};
+export type BloggerInfo = Omit<BloggerInfoDto, '_id'> & {
+    _id: string;
+};
+export type Blogger = Pick<
+    BloggerInfo,
+    '_id' | 'login' | 'firstName' | 'lastName' | 'notes' | 'photoLink'
+> & {
     bookmarksCount: number;
     isFavorite: boolean;
     newRecipesCount: number;
     subscribersCount: number;
 };
-export type AllBloggersResponse = {
-    favorites: Blogger[];
-    others: Blogger[];
-};
 
-export type BloggerResponse = {
-    bloggerInfo: BloggerInfo;
+export type BloggerResponseDto = {
+    bloggerInfo: BloggerInfoDto;
     totalSubscribers: number;
     totalBookmarks: number;
     isFavorite: boolean;
 };
+export type AllBloggersResponse = {
+    favorites: Blogger[];
+    others: Blogger[];
+};
+export type BloggerResponse = Omit<BloggerResponseDto, 'bloggerInfo'> & {
+    bloggerInfo: BloggerInfo;
+};
+
+export type RecipesResponse = {
+    data: Recipe[];
+    meta: Meta;
+};
 
 export type RecipesByUserResponse = {
     recipes: Recipe[];
+    myBookmarks: Recipe[];
+    notes: NoteDto[];
     totalBookmarks: number;
     totalSubscribers: number;
     userId: string;
-    notes: Note[];
 };
 
 export type Category = {
@@ -143,10 +213,10 @@ export type FormInputs = {
     code: string;
 };
 
-export type NewUser = Omit<FormInputs, 'confirmPassword' | 'code'>;
-export type ResetUser = Pick<FormInputs, 'email' | 'login' | 'password' | 'passwordConfirm'>;
-export type VerifyUser = { email: string; otpToken: string };
-export type AuthUser = Pick<FormInputs, 'login' | 'password'>;
+export type NewAuth = Omit<FormInputs, 'confirmPassword' | 'code'>;
+export type ResetAuth = Pick<FormInputs, 'email' | 'login' | 'password' | 'passwordConfirm'>;
+export type VerifyAuth = { email: string; otpToken: string };
+export type Auth = Pick<FormInputs, 'login' | 'password'>;
 
 export type AuthResponse = {
     message: string;
@@ -161,12 +231,12 @@ export type MediaResponse = {
 
 export type BookmarkResponse = {
     message: string;
-    bookmarks: number;
+    count: number;
 };
 
 export type LikeResponse = {
     message: string;
-    bookmarks: number;
+    count: number;
 };
 
 export type ErrorResponse = {
@@ -201,18 +271,25 @@ export type NotificationMessage = {
 export type ModalType = (typeof modalConfig)[number]['type'];
 
 export type ModalParams<T extends ModalType> = {
-    signUpSuccess: { email: string };
+    signUpSuccess: { email?: string };
     verificationFailed: undefined;
     sendEmail: undefined;
-    verificationCode: { email: string };
-    resetCredentials: { email: string };
-    signInError: { userData: AuthUser };
+    verificationCode: { email?: string };
+    resetCredentials: { email?: string };
+    signInError: { userData?: Auth };
     uploadImage: {
-        preview: string;
-        testId: string;
-        onSave: (url: string) => void;
+        title?: React.ReactNode;
+        uploadButton?: string;
+        cancelButton?: string;
+        preview?: string;
+        testId?: string;
+        enableCrop?: boolean;
+        onChange?: (url: string) => void;
+        handleUpload?: (formData: FormData) => void;
     };
-    recipePreventive: { draft: RecipeDraft; setError: VoidFunction; link: string };
+    recipePreventive: { draft?: Partial<NewRecipe>; setError?: VoidFunction; link?: string };
+    updatePassword: undefined;
+    deleteProfile: { onDelete?: VoidFunction };
 }[T];
 
 export type ModalState<T extends ModalType = ModalType> = {

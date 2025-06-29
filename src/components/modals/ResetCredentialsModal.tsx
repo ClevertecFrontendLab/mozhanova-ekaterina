@@ -7,9 +7,9 @@ import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
-import { useErrors } from '~/hooks/use-errors';
 import { useToast } from '~/hooks/use-toast';
 import { useResetPasswordMutation } from '~/query/auth-api';
+import { useErrors } from '~/query/hooks/use-errors';
 import { ModalParams } from '~/types';
 import { RecoverySchema } from '~/validation';
 
@@ -18,7 +18,7 @@ import { UiLoginInput } from '../ui/UiLoginInput';
 import { UiModal } from '../ui/UiModal';
 import { UiPasswordInput } from '../ui/UiPasswordInput';
 
-export const ResetCredentialsModal = ({ params }: { params?: ModalParams<'resetCredentials'> }) => {
+export const ResetCredentialsModal = ({ email = '' }: ModalParams<'resetCredentials'>) => {
     const { showSuccess } = useToast();
     const { resetCredentialsErrorHandler } = useErrors();
     const navigate = useNavigate();
@@ -44,12 +44,10 @@ export const ResetCredentialsModal = ({ params }: { params?: ModalParams<'resetC
     const onSubmit = async (data: { login: string; password: string; passwordConfirm: string }) => {
         if (!isValid) return;
         try {
-            const result = await resetPassword({ ...data, email: params!.email }).unwrap();
-            if (result) {
-                showSuccess(NOTIFICATION_MESSAGES.RESET_CREDENTIALS_SUCCESS);
-                navigate(AppRoutes.SIGN_IN);
-                onClose();
-            }
+            await resetPassword({ ...data, email: email }).unwrap();
+            showSuccess(NOTIFICATION_MESSAGES.RESET_CREDENTIALS_SUCCESS);
+            navigate(AppRoutes.SIGN_IN);
+            onClose();
         } catch {
             resetCredentialsErrorHandler();
         }
@@ -79,7 +77,6 @@ export const ResetCredentialsModal = ({ params }: { params?: ModalParams<'resetC
                         <UiPasswordInput
                             label='Пароль'
                             placeholder='Пароль для сайта'
-                            helperText='Пароль не менее 8 символов, с заглавной буквой и цифрой'
                             error={errors.password}
                             {...register('password')}
                             data-test-id={DATA_TEST_IDS.PASSWORD_INPUT}

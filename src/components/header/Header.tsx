@@ -1,12 +1,15 @@
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
+import { Link } from 'react-router';
 
+import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { Z_INDEX_CONFIG } from '~/constants/z-index-config';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useAppSelector } from '~/store/hooks';
-import { accessToken } from '~/store/user-slice';
+import { selectCurrentUser } from '~/store/user-slice';
 
-import { ProfileInfo } from '../shared/ProfileInfo';
-import { ProfileNotification } from '../shared/ProfileNotification';
+import { ProfileInfo } from '../shared/profile/ProfileInfo';
+import { ProfileStatistics } from '../shared/profile/ProfileStatistics';
 import { Breadcrumbs } from './Breadcrumbs';
 import { CloseMenuButton } from './CloseMenuButton';
 import { HamburgerButton } from './HamburgerButton';
@@ -21,8 +24,8 @@ export const Header = ({
     isMenuOpen: boolean;
 }) => {
     const [isLargerThanMD] = useBreakpoint('md');
-    const token = useAppSelector(accessToken);
     const toggleMenu = () => setMenuOpen(!isMenuOpen);
+    const user = useAppSelector(selectCurrentUser);
 
     return (
         <Flex
@@ -30,7 +33,7 @@ export const Header = ({
             position='fixed'
             top='0'
             left='0'
-            zIndex={60}
+            zIndex={Z_INDEX_CONFIG.HEADER}
             w='100%'
             h={{
                 base: '64px',
@@ -52,7 +55,18 @@ export const Header = ({
             <Logo />
 
             <Breadcrumbs setMenuOpen={setMenuOpen} />
-            {token && <ProfileInfo login='mozhKa' firstName='Екатерина' lastName='Можанова' />}
+            {user && (
+                <Box display={isLargerThanMD ? 'block' : 'none'}>
+                    <Link to={AppRoutes.PROFILE}>
+                        <ProfileInfo
+                            firstName={user.firstName}
+                            lastName={user.lastName}
+                            login={user.login}
+                            photoLink={user.photoLink}
+                        />
+                    </Link>
+                </Box>
+            )}
 
             {isLargerThanMD && <LogInButton />}
             <Flex
@@ -61,15 +75,7 @@ export const Header = ({
                 align='center'
                 flexGrow={1}
             >
-                {token && (
-                    <ProfileNotification
-                        totalBookmarks={12}
-                        totalSubscribers={500}
-                        totalLikes={1000}
-                        variant='mobile'
-                        isMenuOpen={isMenuOpen}
-                    />
-                )}
+                {!isMenuOpen && <ProfileStatistics />}
                 <Flex gap={6} alignItems='center' justifyContent='center'>
                     <LogInButton />
 

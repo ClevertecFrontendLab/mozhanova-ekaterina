@@ -4,6 +4,7 @@ import { authorizedApi } from '~/query/authorized-api';
 import { unauthorizedApi } from '~/query/unauthorized-api';
 
 import { appSlice } from './app-slice';
+import { blogsSlice } from './blogs-slice';
 import { categorySlice } from './category-slice';
 import { recipesSlice } from './recipe-slice';
 import { userSlice } from './user-slice';
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     [recipesSlice.name]: recipesSlice.reducer,
     [categorySlice.name]: categorySlice.reducer,
     [userSlice.name]: userSlice.reducer,
+    [blogsSlice.name]: blogsSlice.reducer,
 
     [authorizedApi.reducerPath]: authorizedApi.reducer,
     [unauthorizedApi.reducerPath]: unauthorizedApi.reducer,

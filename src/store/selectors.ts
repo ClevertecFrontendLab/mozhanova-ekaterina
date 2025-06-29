@@ -1,17 +1,19 @@
 import { createSelector } from 'reselect';
 
+import { UserDto } from '~/types';
 import {
     getAllSubsByRoots,
     getCategoriesByIds,
     getCategoriesByTitles,
     getCategoryById,
     getCategoryByName,
+    getUsersByIds,
 } from '~/utils/get-categories';
 import { decodeToken } from '~/utils/jwt-utils';
 
 import { selectAllCategories } from './category-slice';
 import { ApplicationState } from './configure-store';
-import { accessToken } from './user-slice';
+import { accessToken, selectAllUsers, selectCurrentUser, selectStatistics } from './user-slice';
 
 export const selectCategories = createSelector([selectAllCategories], (categories) =>
     Array.isArray(categories) ? categories?.filter((category) => !category.rootCategoryId) : [],
@@ -58,7 +60,7 @@ export const selectSubCategoriesByTitles = createSelector(
 );
 
 export const selectRecipeSubCategories = createSelector(
-    [selectSubcategories, (_: ApplicationState, subcategoryIds: string[]) => subcategoryIds],
+    [selectSubcategories, (_: ApplicationState, subcategoryIds?: string[]) => subcategoryIds],
     (categories, ids) =>
         Array.isArray(categories) && Array.isArray(ids) ? getCategoriesByIds(categories, ids) : [],
 );
@@ -67,7 +69,7 @@ export const selectRecipeCategories = createSelector(
     [
         selectSubcategories,
         selectCategories,
-        (_: ApplicationState, categoryIds: string[]) => categoryIds,
+        (_: ApplicationState, categoryIds?: string[]) => categoryIds,
     ],
     (subCategories, categories, ids) => {
         if (!Array.isArray(subCategories) || !Array.isArray(categories) || !Array.isArray(ids))
@@ -78,7 +80,7 @@ export const selectRecipeCategories = createSelector(
     },
 );
 export const selectSubCategoriesTitlesByIds = createSelector(
-    [selectSubcategories, (_: ApplicationState, categoryIds: string[]) => categoryIds],
+    [selectSubcategories, (_: ApplicationState, categoryIds?: string[]) => categoryIds],
     (categories, ids) =>
         Array.isArray(categories) && Array.isArray(ids)
             ? getCategoriesByIds(categories, ids).map((category) => category.title)
@@ -102,6 +104,42 @@ export const selectCategoryById = createSelector(
 export const selectCurrentRootCategory = createSelector(
     [selectCategories, (_: ApplicationState, name: string) => name],
     (categories, name) => (Array.isArray(categories) ? getCategoryByName(categories, name) : null),
+);
+
+export const selectStatisticsCounts = createSelector(
+    [selectStatistics, selectCurrentUser],
+    (statistics, user) => {
+        const likes = statistics?.likes.reduce((acc, like) => acc + like.count, 0) || 0;
+        const bookmarks =
+            statistics?.bookmarks.reduce((acc, bookmark) => acc + bookmark.count, 0) || 0;
+        const subscribersCount = user?.subscribers.length || 0;
+        return {
+            likes,
+            bookmarks,
+            subscribersCount,
+            recommendationsCount: statistics?.recommendationsCount || 0,
+        };
+    },
+);
+
+export const selectSubscribers = createSelector(
+    [selectCurrentUser, selectAllUsers],
+    (user, allUsers) => {
+        if (!user) return [];
+        return user.subscribers
+            .map((subscriber) => allUsers.find((user) => user.id === subscriber))
+            .filter((user): user is UserDto => user !== undefined);
+    },
+);
+
+export const selectRecommenderProfile = createSelector(
+    [selectStatisticsCounts],
+    (statistics) => statistics.subscribersCount > 100 && statistics.bookmarks > 200,
+);
+
+export const selectRecommendedBy = createSelector(
+    [selectAllUsers, (_: ApplicationState, ids?: string[]) => ids],
+    (users, ids) => (ids ? getUsersByIds(users, ids) : null),
 );
 
 export const selectGlobalLoading = createSelector(

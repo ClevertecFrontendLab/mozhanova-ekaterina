@@ -62,6 +62,7 @@ export const BlogsFavoritesList = ({
                         bloggerId={blogger._id}
                         bookmarksCount={blogger.bookmarksCount}
                         subscribersCount={blogger.subscribersCount}
+                        photoLink={blogger.photoLink}
                         isFavorite
                     />
                 ))}

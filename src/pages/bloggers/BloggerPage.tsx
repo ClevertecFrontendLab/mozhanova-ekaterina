@@ -1,21 +1,19 @@
-import { Box, Flex, Grid } from '@chakra-ui/react';
-import { useEffect, useRef, useState } from 'react';
+import { Box, Grid } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router';
 
 import { Hero } from '~/components/shared/blogs/Hero';
-import { NotesList } from '~/components/shared/blogs/NotesList';
 import { OtherBlogsList } from '~/components/shared/blogs/OtherBlogsList';
-import { UiButton } from '~/components/ui/UiButton';
-import { UiCardGrid } from '~/components/ui/UiCardGrid';
-import { DATA_TEST_IDS } from '~/constants/test-ids';
-import { useErrors } from '~/hooks/use-errors';
+import { UiNotesBox } from '~/components/ui/UiNotesBox';
 import { useLazyGetBloggerByIdQuery } from '~/query/blogs-api';
-import { Limit } from '~/query/constants/limits';
+import { useErrors } from '~/query/hooks/use-errors';
 import { useLazyGetRecipesByUserIdQuery } from '~/query/recipe-api';
+import { setBlogger } from '~/store/blogs-slice';
 import { useAppDispatch, useAppSelector } from '~/store/hooks';
 import { selectCurrentUserId } from '~/store/selectors';
-import { setBlogger } from '~/store/user-slice';
-import { ErrorResponse, Recipe } from '~/types';
+import { ErrorResponse } from '~/types';
+
+import { RecipesList } from './RecipesList';
 
 export const BloggerPage = () => {
     const { bloggerId = '' } = useParams();
@@ -24,8 +22,6 @@ export const BloggerPage = () => {
     const { hash } = useLocation();
     const [notesElement, setNotesElement] = useState<HTMLElement | null>(null);
     const { loadBloggerAndRecipesErrorHandler } = useErrors();
-    const showMoreRef = useRef<HTMLButtonElement>(null);
-    const [recipesToShow, setRecipesToShow] = useState<Recipe[]>([]);
 
     const notesRef = (node: HTMLDivElement) => {
         if (node !== null) {
@@ -44,17 +40,6 @@ export const BloggerPage = () => {
     useEffect(() => {
         if (bloggerId && currentUserId) handleLoadData();
     }, [bloggerId, currentUserId]);
-
-    useEffect(() => {
-        if (recipes?.recipes) {
-            setRecipesToShow(recipes.recipes.slice(0, Limit.DEFAULT));
-        }
-    }, [recipes]);
-
-    const handleShowMore = () => {
-        if (recipes) setRecipesToShow(recipes.recipes);
-        showMoreRef.current!.style.display = 'none';
-    };
 
     useEffect(() => {
         if (bloggerError || recipesError) {
@@ -92,25 +77,8 @@ export const BloggerPage = () => {
                 <Hero blogger={blogger} />
             </Box>
             <Grid gap={{ base: 8, md: 10 }}>
-                <Box>
-                    <UiCardGrid dataTest={DATA_TEST_IDS.RECIPE_CARD_LIST} data={recipesToShow} />
-                    <Flex
-                        justifyContent='center'
-                        mt={4}
-                        display={recipesToShow.length < recipes.recipes.length ? 'flex' : 'none'}
-                    >
-                        <UiButton
-                            data-test-id={DATA_TEST_IDS.LOAD_MORE_BUTTON}
-                            onClick={handleShowMore}
-                            ref={showMoreRef}
-                            size='md'
-                            text='Загрузить еще'
-                            variant='primary'
-                        />
-                    </Flex>
-                </Box>
-
-                <NotesList ref={notesRef} notes={blogger.bloggerInfo.notes || []} />
+                <RecipesList recipes={recipes.recipes} />
+                <UiNotesBox ref={notesRef} data={blogger.bloggerInfo.notes} />
                 <OtherBlogsList currentUserId={currentUserId} />
             </Grid>
         </Grid>

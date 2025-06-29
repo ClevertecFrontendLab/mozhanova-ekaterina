@@ -26,7 +26,7 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
                     .unwrap()
                     .then(() => setIsLoading(false));
             } catch {
-                console.log('Auth check failed');
+                console.error('Auth check failed');
                 if (location.pathname !== AppRoutes.HOME) setIsLoading(false);
                 else {
                     navigate(AppRoutes.SIGN_IN);

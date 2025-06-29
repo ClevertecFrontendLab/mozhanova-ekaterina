@@ -1,40 +1,46 @@
 import { Box, Flex } from '@chakra-ui/react';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 
-import { AuthorInfo } from '~/components/recipe/AuthorInfo';
-import { Hero } from '~/components/recipe/Hero';
-import { IngredientsTable } from '~/components/recipe/IngredientsTable';
-import { NutritionValue } from '~/components/recipe/NutritionValue';
-import { Steps } from '~/components/recipe/Steps';
+import { AuthorInfo } from '~/components/shared/recipes/AuthorInfo';
+import { Hero } from '~/components/shared/recipes/Hero';
+import { IngredientsTable } from '~/components/shared/recipes/IngredientsTable';
+import { NutritionValue } from '~/components/shared/recipes/NutritionValue';
+import { Steps } from '~/components/shared/recipes/Steps';
 import { Slider } from '~/components/shared/slider/Slider';
-import { NOTIFICATION_MESSAGES } from '~/constants/notification-config';
-import { useToast } from '~/hooks/use-toast';
-import { useGetRecipeByIdQuery } from '~/query/recipe-api';
+import { ThumbUpIcon } from '~/components/ui/icons/ThumbUpIcon';
+import { UiButton } from '~/components/ui/UiButton';
+import { useEditRecipe } from '~/hooks/use-edit-recipe';
+import { useDeleteRecipe } from '~/query/hooks/use-delete-recipe';
+import { useGetRecipe } from '~/query/hooks/use-get-recipe';
+import { useLikeRecipe } from '~/query/hooks/use-like-recipe';
+import { useRecommendRecipe } from '~/query/hooks/use-recommend-recipe';
+import { useSaveRecipe } from '~/query/hooks/use-save-recipe';
 import { useAppSelector } from '~/store/hooks';
-import { setCurrentRecipe } from '~/store/recipe-slice';
-import { selectCurrentUserId } from '~/store/selectors';
+import { selectCurrentUserId, selectRecommenderProfile } from '~/store/selectors';
 
 export const RecipePage = () => {
-    const { id } = useParams();
-    const { showError } = useToast();
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const { category, subCategory, recipeId } = useParams();
+    const [isRecommended, setIsRecommended] = useState(false);
     const currentUserId = useAppSelector(selectCurrentUserId);
-    const { data, isLoading, isError } = useGetRecipeByIdQuery(id || '', { skip: !id });
+    const isRecommenderProfile = useAppSelector(selectRecommenderProfile);
+    const { data } = useGetRecipe(recipeId);
+    const { handleRecommendRecipe } = useRecommendRecipe();
+    const { handleEdit } = useEditRecipe();
+    const { handleSave } = useSaveRecipe();
+    const { handleLike } = useLikeRecipe();
+    const { handleDelete } = useDeleteRecipe();
+
+    const toggleRecommend = () => {
+        handleRecommendRecipe(recipeId);
+        setIsRecommended(!isRecommended);
+    };
 
     useEffect(() => {
-        if (data) dispatch(setCurrentRecipe(data));
-    });
-    useEffect(() => {
-        if (isError) {
-            showError(NOTIFICATION_MESSAGES.SERVER_ERROR);
-            navigate(-1);
-        }
-    }, [isError, showError, navigate]);
+        if (data?.recommendedByUserId?.includes(currentUserId)) setIsRecommended(true);
+    }, [data]);
 
-    if (isLoading || isError || !data) return null;
+    if (!data) return null;
     return (
         <Box
             as='main'
@@ -44,7 +50,13 @@ export const RecipePage = () => {
                 lg: '56px 24px 0',
             }}
         >
-            <Hero recipe={data} />
+            <Hero
+                recipe={data}
+                onEdit={() => handleEdit(data, category, subCategory)}
+                onSave={() => handleSave(recipeId)}
+                onLike={() => handleLike(recipeId)}
+                onDelete={() => handleDelete(recipeId)}
+            />
             <Box
                 mx='auto'
                 maxW={{
@@ -74,8 +86,28 @@ export const RecipePage = () => {
                 {currentUserId !== data.authorId && (
                     <AuthorInfo currentUserId={currentUserId} authorId={data.authorId} />
                 )}
+                {isRecommenderProfile && (
+                    <>
+                        {isRecommended ? (
+                            <UiButton
+                                text='Вы порекомендовали'
+                                leftIcon={<ThumbUpIcon />}
+                                size='lg'
+                                onClick={toggleRecommend}
+                            />
+                        ) : (
+                            <UiButton
+                                variant='solid'
+                                text='Рекомендовать рецепт'
+                                leftIcon={<ThumbUpIcon />}
+                                size='lg'
+                                onClick={toggleRecommend}
+                            />
+                        )}
+                    </>
+                )}
             </Flex>
-            <Box mt={{ base: 10, lg: 14 }}>
+            <Box mt={{ base: 10, md: 14 }}>
                 <Slider />
             </Box>
         </Box>

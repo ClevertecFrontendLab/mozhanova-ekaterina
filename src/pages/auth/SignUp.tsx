@@ -20,9 +20,9 @@ import { UiPasswordInput } from '~/components/ui/UiPasswordInput';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useModalContext } from '~/contexts/modal-context';
-import { useErrors } from '~/hooks/use-errors';
 import { useSignUpMutation } from '~/query/auth-api';
-import { ErrorResponse, FormInputs, NewUser } from '~/types';
+import { useErrors } from '~/query/hooks/use-errors';
+import { ErrorResponse, FormInputs, NewAuth } from '~/types';
 import { RegistrationSchema } from '~/validation';
 
 export const SignUp = () => {
@@ -79,11 +79,11 @@ export const SignUp = () => {
     const [signIn] = useSignUpMutation();
     const { signUpErrorHandler } = useErrors();
 
-    const onSubmit = async (userData: NewUser) => {
+    const onSubmit = async (userData: NewAuth) => {
         if (!isValid) return;
         try {
             await signIn(userData).unwrap();
-            showSignUpSuccess(getValues('email'));
+            showSignUpSuccess({ email: getValues('email') });
             navigate(AppRoutes.SIGN_IN);
         } catch (error: unknown) {
             signUpErrorHandler(error as ErrorResponse);

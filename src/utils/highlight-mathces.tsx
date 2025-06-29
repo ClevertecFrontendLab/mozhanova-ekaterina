@@ -1,7 +1,8 @@
 import { Text } from '@chakra-ui/react';
 import { JSX } from 'react';
 
-export const highlightMatches = (str: string, substr: string) => {
+export const highlightMatches = (str?: string, substr?: string) => {
+    if (!str || !substr) return null;
     const result: JSX.Element[] = [];
     const lowerStr = str.toLowerCase();
     const lowerSub = substr.toLowerCase();

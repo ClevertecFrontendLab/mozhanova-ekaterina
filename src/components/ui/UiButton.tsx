@@ -52,20 +52,22 @@ const variants = {
 };
 
 type Props = {
-    text?: string;
-    rightIcon?: React.ReactElement;
-    leftIcon?: React.ReactElement;
-    icon?: React.ReactElement;
-    variant?: keyof typeof variants;
-    size?: ResponsiveValue<'xs' | 'sm' | 'md' | 'lg'>;
-    iconButton?: boolean;
-    fontSize?: string;
-    isDisabled?: boolean;
-    type?: 'button' | 'submit' | 'reset';
-    zIndex?: number;
-    ref?: React.Ref<HTMLButtonElement>;
-    'data-test-id'?: string;
-    onClick?: () => void;
+    text: string;
+    rightIcon: React.ReactElement;
+    leftIcon: React.ReactElement;
+    icon: React.ReactElement;
+    variant: keyof typeof variants;
+    size: ResponsiveValue<'xs' | 'sm' | 'md' | 'lg'>;
+    iconButton: boolean;
+    fontSize: string;
+    isDisabled: boolean;
+    type: 'button' | 'submit' | 'reset';
+    zIndex: number;
+    ref: React.Ref<HTMLButtonElement>;
+    cursor: string;
+    hover: boolean;
+    'data-test-id': string;
+    onClick: () => void;
 };
 
 export const UiButton = ({
@@ -73,8 +75,9 @@ export const UiButton = ({
     variant = 'outline',
     iconButton = false,
     type = 'button',
+    hover = true,
     ...props
-}: Props) =>
+}: Partial<Props>) =>
     iconButton ? (
         <IconButton
             size={size}
@@ -100,10 +103,14 @@ export const UiButton = ({
             leftIcon={props.leftIcon}
             color={variants[variant].color}
             fontSize={props.fontSize}
-            _hover={{
-                bg: variants[variant].bg,
-                opacity: 0.8,
-            }}
+            _hover={
+                hover
+                    ? {
+                          bg: variants[variant].bg,
+                          opacity: 0.8,
+                      }
+                    : {}
+            }
             _active={{
                 boxShadow: 'none',
             }}

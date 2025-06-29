@@ -1,20 +1,22 @@
 import { EditIcon } from '@chakra-ui/icons';
-import { Avatar, Grid } from '@chakra-ui/react';
+import { Grid } from '@chakra-ui/react';
 import { Link, useLocation } from 'react-router';
 
 import { HomeIcon } from '~/components/ui/icons/HomeIcon';
 import { UiIconButton } from '~/components/ui/UiIconButton';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { Z_INDEX_CONFIG } from '~/constants/z-index-config';
+import { API_IMAGE_URL } from '~/query/constants/api-config';
 import { useAppSelector } from '~/store/hooks';
-import { selectCurrentUserId } from '~/store/selectors';
-import { routeHelpers } from '~/utils/get-routes';
+import { selectCurrentUser } from '~/store/user-slice';
 
 import { SearchIcon } from '../ui/icons/SearchIcon';
+import { UiAvatar } from '../ui/UiAvatar';
 
 export const FooterMobile = () => {
     const location = useLocation();
-    const currentUserId = useAppSelector(selectCurrentUserId);
+    const currentUser = useAppSelector(selectCurrentUser);
 
     return (
         <Grid
@@ -27,7 +29,7 @@ export const FooterMobile = () => {
             templateColumns='repeat(4, 1fr)'
             pt={2.5}
             pb={2.5}
-            zIndex={20}
+            zIndex={Z_INDEX_CONFIG.FOOTER}
         >
             <Link to={AppRoutes.HOME}>
                 <UiIconButton
@@ -47,9 +49,16 @@ export const FooterMobile = () => {
             <Link to={AppRoutes.CREATE_RECIPE}>
                 <UiIconButton text='Записать' icon={<EditIcon w='24px' h='24px' />} />
             </Link>
-            <Link to={routeHelpers.getBlogPath(currentUserId)}>
+            <Link data-test-id={DATA_TEST_IDS.FOOTER_PROFILE_BUTTON} to={AppRoutes.PROFILE}>
                 <UiIconButton
-                    icon={<Avatar size='md' name='Можанова Екатерина' />}
+                    icon={
+                        <UiAvatar
+                            size='md'
+                            firstName={currentUser?.firstName}
+                            lastName={currentUser?.lastName}
+                            src={API_IMAGE_URL + currentUser?.photoLink}
+                        />
+                    }
                     text='Мой профиль'
                 />
             </Link>

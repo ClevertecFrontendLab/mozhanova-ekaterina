@@ -1,4 +1,4 @@
-import { AppRoutes } from '~/constants/routes-config';
+import { AppRoutes, AppStaticRoutes } from '~/constants/routes-config';
 
 export const routeHelpers = {
     getCategoryPath: (category: string) => `/${category}`,
@@ -6,6 +6,7 @@ export const routeHelpers = {
     getRecipePath: (category: string, subCategory: string, id: string) =>
         `/${category}/${subCategory}/${id}`,
     getEditRecipePath: (category: string, subCategory: string, id: string) =>
-        `${AppRoutes.EDIT}/${category}/${subCategory}/${id}`,
+        `${AppStaticRoutes.EDIT_RECIPE}/${category}/${subCategory}/${id}`,
+    getEditDraftPath: (id: string) => `${AppStaticRoutes.EDIT_DRAFT}/${id}`,
     getBlogPath: (id: string) => `${AppRoutes.BLOGS}/${id}`,
 };

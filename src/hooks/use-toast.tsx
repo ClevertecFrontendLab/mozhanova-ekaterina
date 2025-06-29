@@ -26,14 +26,13 @@ export const useToast = () => {
             return;
         }
         toast({
-            duration: params.duration || NotificationDuration.Short,
+            duration: params.duration || NotificationDuration.Long,
             position: params.position || 'bottom',
             id: toastId,
             containerStyle: { transition: 'none' },
 
             render: ({ onClose }) => (
                 <Alert
-                    zIndex={10}
                     w={{ base: '328px', md: '400px' }}
                     data-test-id={DATA_TEST_IDS.ERROR_NOTIFICATION}
                     variant='solid'

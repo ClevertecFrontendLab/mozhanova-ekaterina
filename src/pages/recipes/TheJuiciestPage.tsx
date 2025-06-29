@@ -1,25 +1,21 @@
-import { Box, Flex } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { Box, Grid } from '@chakra-ui/react';
+import { useSelector } from 'react-redux';
 
-import { RelevantKitchenBlock } from '~/components/shared/RelevantKitchenBlock';
+import { RelevantKitchenBlock } from '~/components/shared/recipes/RelevantKitchenBlock';
 import { SearchBar } from '~/components/shared/search-bar/SearchBar';
-import { UiButton } from '~/components/ui/UiButton';
 import { UiCardGrid } from '~/components/ui/UiCardGrid';
-import { DATA_TEST_IDS } from '~/constants/test-ids';
+import { UiShowMoreButton } from '~/components/ui/UiShowMoreButton';
+import { usePagination } from '~/hooks/use-pagination';
 import { Limit } from '~/query/constants/limits';
 import { useGetPopularRecipesQuery } from '~/query/recipe-api';
-import { paginationSelector, setCurrentPage } from '~/store/recipe-slice';
+import { paginationSelector } from '~/store/recipe-slice';
 import { selectFilters } from '~/store/selectors';
-import { Recipe } from '~/types';
 
 export const TheJuiciestPage = () => {
-    const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
     const pagination = useSelector(paginationSelector);
     const filters = useSelector(selectFilters);
-    const dispatch = useDispatch();
 
-    const { data, isLoading, isError, currentData } = useGetPopularRecipesQuery(
+    const { data, isLoading, isError } = useGetPopularRecipesQuery(
         {
             limit: Limit.DEFAULT,
             page: pagination.currentPage,
@@ -30,54 +26,28 @@ export const TheJuiciestPage = () => {
             refetchOnMountOrArgChange: true,
         },
     );
-    const hasMore = data?.meta ? pagination.currentPage < data.meta.totalPages : false;
 
-    useEffect(() => {
-        if (currentData?.data) {
-            if (pagination.currentPage === 1) {
-                setAllRecipes(currentData.data);
-            } else {
-                setAllRecipes((prev) => [...prev, ...currentData.data]);
-            }
-        }
-    }, [currentData?.data, pagination.currentPage]);
-
-    useEffect(() => {
-        dispatch(setCurrentPage(1));
-    }, [filters, dispatch]);
-
-    const loadMore = () => {
-        if (hasMore) {
-            dispatch(setCurrentPage(pagination.currentPage + 1));
-        }
-    };
+    const { hasMore, loadMore, recipesToShow } = usePagination(data?.data);
 
     if (isError || isLoading) return null;
 
     return (
         <main>
             <SearchBar title='Самое сочное' />
-            <Box
+            <Grid
+                gap={{ base: 8, md: 10 }}
                 padding={{
                     base: '0 16px',
                     md: '0 20px',
                     lg: '0 24px',
                 }}
             >
-                <UiCardGrid data={allRecipes} />
-                {hasMore && (
-                    <Flex justifyContent='center' mt={4} mb={10}>
-                        <UiButton
-                            data-test-id={DATA_TEST_IDS.LOAD_MORE_BUTTON}
-                            onClick={loadMore}
-                            size='md'
-                            text='Загрузка'
-                            variant='primary'
-                        />
-                    </Flex>
-                )}
+                <Box>
+                    <UiCardGrid data={recipesToShow} />
+                    {hasMore && <UiShowMoreButton text='Загрузка' onShowMore={loadMore} />}
+                </Box>
                 <RelevantKitchenBlock />
-            </Box>
+            </Grid>
         </main>
     );
 };

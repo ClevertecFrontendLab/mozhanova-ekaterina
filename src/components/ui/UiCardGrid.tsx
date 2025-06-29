@@ -1,16 +1,42 @@
 import { SimpleGrid } from '@chakra-ui/react';
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 
 import { useBreakpoint } from '~/hooks/use-breakpoint';
-import { Recipe } from '~/types';
+import { useEditRecipe } from '~/hooks/use-edit-recipe';
+import { useSaveRecipe } from '~/query/hooks/use-save-recipe';
+import { Recipe, RecipeDraftDto } from '~/types';
 
 import { UiCard } from '../ui/UiCard';
 
-export const UiCardGrid = memo(
-    ({ data, dataTest }: { data: Recipe[] | undefined; dataTest?: string }) => {
-        const [isLargerThanMD] = useBreakpoint('md');
+type Props = {
+    data: Recipe[] | RecipeDraftDto[];
+    dataTest: string;
+    isDraft: boolean;
+    editable: boolean;
+    isBookmark: boolean;
+};
 
-        if (!data) return null;
+export const UiCardGrid = memo(
+    ({ data = [], dataTest, isDraft, editable, isBookmark }: Partial<Props>) => {
+        const [isLargerThanMD] = useBreakpoint('md');
+        const [recipes, setRecipes] = useState<Recipe[] | RecipeDraftDto[]>([]);
+        const { handleSave } = useSaveRecipe();
+        const { handleEdit } = useEditRecipe(isDraft);
+
+        const toggleSave = (id: string) => {
+            handleSave(id);
+        };
+
+        const removeFromSaved = (id: string) => {
+            handleSave(id);
+            setRecipes((prev) => prev.filter((recipe) => recipe._id !== id));
+        };
+
+        useEffect(() => {
+            if (data.length) setRecipes(data);
+        }, [data.length, data]);
+
+        if (recipes.length === 0) return null;
 
         return (
             <SimpleGrid
@@ -24,14 +50,20 @@ export const UiCardGrid = memo(
                     lg: 2,
                 }}
             >
-                {data.map((recipe, i) => (
+                {recipes.map((recipe, i) => (
                     <UiCard
                         data-test-id={`food-card-${i}`}
-                        key={recipe._id}
+                        key={i}
                         data={recipe}
                         index={i}
                         categoryBgColor='secondary.100'
                         size={isLargerThanMD ? 'lg' : 'sm'}
+                        isDraft={isDraft}
+                        editable={editable}
+                        isBookmark={isBookmark}
+                        toggleSave={toggleSave}
+                        onEdit={handleEdit}
+                        removeFromSaved={removeFromSaved}
                     />
                 ))}
             </SimpleGrid>

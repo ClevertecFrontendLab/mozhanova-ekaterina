@@ -1,10 +1,14 @@
 import { extendTheme } from '@chakra-ui/react';
 
 import { BREAKPOINTS_VALUES } from './constants/breakpoints-config';
+import { Z_INDEX_CONFIG } from './constants/z-index-config';
 
 const theme = extendTheme({
     styles: {
         global: {
+            body: {
+                color: 'neutral.400 !important',
+            },
             '::-webkit-scrollbar': {
                 width: '8px',
                 height: '8px',
@@ -20,11 +24,55 @@ const theme = extendTheme({
                     background: 'primary.300',
                 },
             },
+            '#chakra-toast-manager-bottom-left': {
+                bottom: '80px !important',
+                left: '25% !important',
+                transform: 'translateX(-50%)',
+                'z-index': `${Z_INDEX_CONFIG.TOAST} !important`,
+            },
+            '#chakra-toast-manager-bottom': {
+                bottom: '80px !important',
+                'z-index': `${Z_INDEX_CONFIG.TOAST} !important`,
+            },
+            '.chakra-tooltip__arrow': {
+                'background-color': 'black !important',
+            },
+            '.body-no-scroll': {
+                overflow: 'hidden !important',
+                position: 'fixed',
+                width: '100%',
+                height: '100%',
+            },
+
+            '.swiper-slide': {
+                height: 'auto !important',
+            },
+            '.swiper': {
+                padding: '6px 0 !important',
+            },
+
+            '.chakra-toast': {
+                transition: 'none !important',
+                opacity: '1 !important',
+            },
+
+            '[data-popper-placement]': {
+                'min-width': 'unset !important',
+            },
+            [`@media (max-width: ${BREAKPOINTS_VALUES.md}px)`]: {
+                '#chakra-toast-manager-bottom-left': {
+                    left: '50% !important',
+                },
+            },
+            '.reactEasyCrop_CropArea': {
+                color: 'rgba(45, 177, 0, 0.5) !important',
+            },
         },
     },
     colors: {
         // Основные цвета бренда
         primary: {
+            10: 'rgba(19, 75, 0, 0.5)', // темный полупрозрачный
             50: '#eaffc7', // Самый светлый
             100: '#d7ff94',
             200: '#c4ff61',
@@ -339,6 +387,11 @@ const theme = extendTheme({
             },
         },
         Tag: {
+            baseStyle: {
+                container: {
+                    bg: 'neutral.20',
+                },
+            },
             variants: {
                 outline: {
                     container: {
@@ -399,12 +452,16 @@ const theme = extendTheme({
             baseStyle: {
                 field: {
                     borderWidth: '1px',
+                    borderColor: 'border.light',
                     _focus: {
                         boxShadow: 'none',
                     },
-                },
-                _placeholder: {
-                    fontWeight: '400',
+                    _disabled: {
+                        borderColor: 'transparent',
+                    },
+                    _placeholder: {
+                        fontWeight: '400',
+                    },
                 },
             },
             sizes: {
@@ -432,13 +489,13 @@ const theme = extendTheme({
                 select: {
                     field: {
                         borderColor: 'border.light',
-                        color: 'neutral.300',
+                        color: 'text.secondary',
                         _placeholder: {
                             color: 'primary.700',
                         },
                     },
                 },
-                login: {
+                accent: {
                     field: {
                         borderColor: 'primary.100',
                         color: 'primary.700',
@@ -451,7 +508,7 @@ const theme = extendTheme({
                     field: {
                         borderColor: 'primary.300',
                         _placeholder: {
-                            color: 'neutral.300',
+                            color: 'text.secondary',
                         },
                         _focus: {
                             borderColor: 'primary.300',
@@ -460,7 +517,7 @@ const theme = extendTheme({
                 },
                 tableInput: {
                     field: {
-                        borderColor: 'primary.300',
+                        borderColor: 'border.light',
                         _placeholder: {
                             color: 'text.secondary',
                         },
@@ -478,12 +535,14 @@ const theme = extendTheme({
                 },
             },
             variants: {
-                filter: {
+                custom: {
                     overlay: {
-                        zIndex: 50,
+                        zIndex: Z_INDEX_CONFIG.DRAWER,
+                        backdropFilter: 'blur(4px)',
+                        bg: 'rgba(0, 0, 0, 0.16)',
                     },
                     dialogContainer: {
-                        zIndex: 50,
+                        zIndex: Z_INDEX_CONFIG.DRAWER,
                     },
                     header: {
                         fontSize: '2xl',
@@ -522,16 +581,17 @@ const theme = extendTheme({
         Modal: {
             baseStyle: {
                 overlay: {
-                    zIndex: 30,
+                    zIndex: Z_INDEX_CONFIG.MODAL,
+                    backdropFilter: 'blur(4px)',
                 },
                 dialog: {
                     p: 8,
                     borderRadius: '16px',
                     textAlign: 'center',
-                    zIndex: 30,
+                    zIndex: Z_INDEX_CONFIG.MODAL,
                 },
                 dialogContainer: {
-                    zIndex: 30,
+                    zIndex: Z_INDEX_CONFIG.MODAL,
                 },
                 closeButton: {
                     borderRadius: '50%',

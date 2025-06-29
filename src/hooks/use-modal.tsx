@@ -3,7 +3,7 @@ import React from 'react';
 import { useState } from 'react';
 
 import { modalConfig } from '~/constants/modal-config';
-import { AuthUser, ModalParams, ModalState, ModalType } from '~/types';
+import { Auth, ModalParams, ModalState, ModalType } from '~/types';
 
 export const useModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -14,23 +14,31 @@ export const useModal = () => {
         onOpen();
     };
 
-    const showSignUpSuccess = (email: string) => showModal('signUpSuccess', { email });
+    const showSignUpSuccess = (params: ModalParams<'signUpSuccess'>) =>
+        showModal('signUpSuccess', params);
 
     const showVerificationFailed = () => showModal('verificationFailed', undefined);
 
     const showSendEmail = () => showModal('sendEmail', undefined);
 
-    const showVerificationCode = (email: string) => showModal('verificationCode', { email });
+    const showVerificationCode = (params: ModalParams<'verificationCode'>) =>
+        showModal('verificationCode', params);
 
-    const showResetCredentials = (email: string) => showModal('resetCredentials', { email });
+    const showResetCredentials = (params: ModalParams<'resetCredentials'>) =>
+        showModal('resetCredentials', params);
 
-    const showSignInError = (userData: AuthUser) => showModal('signInError', { userData });
+    const showSignInError = (userData: Auth) => showModal('signInError', { userData });
 
     const showUploadImage = (params: ModalParams<'uploadImage'>) =>
-        showModal('uploadImage', { ...params });
+        showModal('uploadImage', params);
 
     const showRecipePreventive = (params: ModalParams<'recipePreventive'>) =>
-        showModal('recipePreventive', { ...params });
+        showModal('recipePreventive', params);
+
+    const showUpdatePassword = () => showModal('updatePassword', undefined);
+
+    const showDeleteProfile = (params: ModalParams<'deleteProfile'>) =>
+        showModal('deleteProfile', params);
 
     const handleClose = () => {
         setModalState(null);
@@ -44,9 +52,7 @@ export const useModal = () => {
 
         if (!modalConfigItem) return null;
 
-        return React.cloneElement(modalConfigItem.component, {
-            params: modalState.params,
-        });
+        return React.cloneElement(modalConfigItem.component, modalState.params);
     };
 
     return {
@@ -61,5 +67,7 @@ export const useModal = () => {
         showResetCredentials,
         showUploadImage,
         showRecipePreventive,
+        showUpdatePassword,
+        showDeleteProfile,
     };
 };

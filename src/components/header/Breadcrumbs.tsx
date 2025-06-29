@@ -6,9 +6,9 @@ import { Link, useLocation } from 'react-router';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useBreakpoint } from '~/hooks/use-breakpoint';
+import { selectCurrentBlogger } from '~/store/blogs-slice';
 import { currentRecipeSelector } from '~/store/recipe-slice';
 import { selectCategories, selectSubcategories } from '~/store/selectors';
-import { selectCurrentBlogger } from '~/store/user-slice';
 import { defineBreadcrumbLabel } from '~/utils/get-breadcrumb-label';
 import { getBreadcrumbTestId } from '~/utils/test-utils';
 
@@ -64,6 +64,7 @@ export const Breadcrumbs = ({
                         currentRecipe,
                         currentBlogger,
                     );
+                    if (!label) return null;
 
                     return (
                         <BreadcrumbItem
@@ -72,7 +73,10 @@ export const Breadcrumbs = ({
                             isCurrentPage={i === pathnames.length - 1}
                         >
                             <BreadcrumbLink
-                                data-test-id={getBreadcrumbTestId(path, currentBlogger?._id)}
+                                data-test-id={getBreadcrumbTestId(
+                                    path,
+                                    currentBlogger?._id as string,
+                                )}
                                 whiteSpace='nowrap'
                                 overflowX='hidden'
                                 as={Link}

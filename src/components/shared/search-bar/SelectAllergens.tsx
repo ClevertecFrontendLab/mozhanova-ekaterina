@@ -7,7 +7,7 @@ import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { allergens } from '~/mocks/allergens';
 import { ApplicationState } from '~/store/configure-store';
 
-import { SelectOptions } from '../SelectOptions';
+import { SelectOptions } from '../../ui/SelectOptions';
 
 export const SelectAllergens = ({
     selected,

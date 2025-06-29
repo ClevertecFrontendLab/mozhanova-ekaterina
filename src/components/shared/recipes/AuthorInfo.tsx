@@ -1,0 +1,102 @@
+import { Flex, Heading, Text } from '@chakra-ui/react';
+import { Link } from 'react-router';
+
+import { ManIcon } from '~/components/ui/icons/ManIcon';
+import { PeopleOutlineIcon } from '~/components/ui/icons/PeopleOutlineIcon';
+import { PeoplePlusIcon } from '~/components/ui/icons/PeoplePlusIcon';
+import { UiAvatar } from '~/components/ui/UiAvatar';
+import { UiButton } from '~/components/ui/UiButton';
+import { useGetBloggerByIdQuery, useToggleSubscriptionMutation } from '~/query/blogs-api';
+import { API_IMAGE_URL } from '~/query/constants/api-config';
+import { useErrors } from '~/query/hooks/use-errors';
+import { ErrorResponse } from '~/types';
+import { routeHelpers } from '~/utils/get-routes';
+
+export const AuthorInfo = ({
+    authorId,
+    currentUserId,
+}: {
+    authorId: string;
+    currentUserId: string;
+}) => {
+    const { data: author } = useGetBloggerByIdQuery(
+        { bloggerId: authorId, currentUserId },
+        { skip: !authorId },
+    );
+    const { toggleSubscribeErrorHandler } = useErrors();
+    const [toggleSubscribe] = useToggleSubscriptionMutation();
+
+    const handleSubscribe = async () => {
+        try {
+            await toggleSubscribe({
+                fromUserId: currentUserId,
+                toUserId: authorId,
+            });
+        } catch (error) {
+            toggleSubscribeErrorHandler(error as ErrorResponse);
+        }
+    };
+
+    if (!author || !author.bloggerInfo) return null;
+    return (
+        <Flex
+            p={{ base: 3, sm: 6 }}
+            borderRadius='8px'
+            bgColor='primary.200'
+            gap={{ base: 2, sm: 4 }}
+            position='relative'
+        >
+            <UiAvatar
+                src={API_IMAGE_URL + author.bloggerInfo.photoLink}
+                size='xl'
+                firstName={author.bloggerInfo.firstName}
+                lastName={author.bloggerInfo.lastName}
+            />
+
+            <Flex direction='column' grow={1}>
+                <Link to={routeHelpers.getBlogPath(author.bloggerInfo._id)}>
+                    <Heading mt={2} fontSize='lg' fontWeight={600}>
+                        {`${author.bloggerInfo.firstName} ${author.bloggerInfo.lastName}`}
+                    </Heading>
+                </Link>
+                <Text
+                    position='absolute'
+                    top={{ base: '8px', sm: '24px' }}
+                    right={{ base: '8px', sm: '24px' }}
+                    fontSize={{ base: 'xs', sm: 'sm' }}
+                >
+                    Автор рецепта
+                </Text>
+                <Text fontSize='sm' color='neutral.300'>
+                    {`@${author.bloggerInfo.login}`}
+                </Text>
+                <Flex mt={{ base: 4 }} justifyContent='space-between' alignItems='center'>
+                    {author.isFavorite ? (
+                        <UiButton
+                            onClick={handleSubscribe}
+                            leftIcon={<ManIcon />}
+                            size='xs'
+                            variant='outline'
+                            text='Вы подписаны'
+                        />
+                    ) : (
+                        <UiButton
+                            size='xs'
+                            leftIcon={<PeoplePlusIcon />}
+                            variant='solid'
+                            text='Подписаться'
+                            onClick={handleSubscribe}
+                        />
+                    )}
+
+                    <Flex alignItems='center' gap='6px'>
+                        <PeopleOutlineIcon />
+                        <Text fontWeight={600} fontSize='xs' color='primary.700'>
+                            {author.totalSubscribers}
+                        </Text>
+                    </Flex>
+                </Flex>
+            </Flex>
+        </Flex>
+    );
+};
