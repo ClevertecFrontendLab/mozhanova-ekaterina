@@ -2,6 +2,7 @@ import { Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-u
 import { useState } from 'react';
 
 import { UiNumberInput } from '~/components/ui/UiNumberInput';
+import { defineIngredientQuantity } from '~/utils/define-ingredient-quantity';
 
 export const IngredientsTable = ({
     ingredients = [],
@@ -53,9 +54,7 @@ export const IngredientsTable = ({
                                 pl={0}
                                 pr={{ base: 2, sm: 6 }}
                             >
-                                {(Number(ingredient.count) / portions) *
-                                    parseInt(portionsQuantity) || ''}
-                                {' ' + ingredient.measureUnit}
+                                {defineIngredientQuantity(ingredient, portions, portionsQuantity)}
                             </Td>
                         </Tr>
                     ))}

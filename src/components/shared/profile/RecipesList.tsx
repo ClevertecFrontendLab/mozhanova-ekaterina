@@ -37,8 +37,10 @@ export const RecipesList = ({
                 )}
             </Heading>
             <Box>
-                <UiCardGrid editable isDraft data={draftsToShow} />
-                <UiCardGrid editable data={recipesToShow} />
+                <Grid gap={4}>
+                    <UiCardGrid editable isDraft data={draftsToShow} />
+                    <UiCardGrid editable data={recipesToShow} />
+                </Grid>
                 <UiShowMoreButton onShowMore={handleShowMore} ref={showMoreRef} />
             </Box>
         </Grid>

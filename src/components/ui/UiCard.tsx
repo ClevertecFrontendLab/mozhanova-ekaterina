@@ -62,6 +62,7 @@ export const UiCard = ({
 }: Props) => {
     const { category, subCategory } = useParams();
     const [isLargerThanMD] = useBreakpoint('md');
+    const [isLargerThanSM] = useBreakpoint('sm');
     const recommendedBy = useAppSelector((state) =>
         selectRecommendedBy(state, data.recommendedByUserId),
     )?.[0];
@@ -195,7 +196,7 @@ export const UiCard = ({
                                 variant={isDraft ? 'solid' : 'outline'}
                                 size={{ base: 'xs', md: 'sm' }}
                                 text='Убрать из сохранённых'
-                                leftIcon={<BookmarkDeleteIcon />}
+                                leftIcon={isLargerThanSM ? <BookmarkDeleteIcon /> : undefined}
                                 onClick={() => onSave(data._id!)}
                             />
                         </Flex>
