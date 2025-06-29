@@ -37,7 +37,8 @@ import { UiCardInfo } from './UiCardInfo';
 
 type Props = {
     data: Partial<Recipe>;
-    onSave: (id: string) => void;
+    toggleSave: (id: string) => void;
+    removeFromSaved: (id: string) => void;
     onEdit: (recipe: Partial<Recipe>, category: string, subCategory: string) => void;
     size?: 'sm' | 'md' | 'lg';
     recommendation?: string;
@@ -56,7 +57,8 @@ export const UiCard = ({
     isBookmark,
     size = 'lg',
     index,
-    onSave,
+    toggleSave,
+    removeFromSaved,
     onEdit,
     ...props
 }: Props) => {
@@ -197,14 +199,14 @@ export const UiCard = ({
                                 size={{ base: 'xs', md: 'sm' }}
                                 text='Убрать из сохранённых'
                                 leftIcon={<BookmarkDeleteIcon />}
-                                onClick={() => onSave(data._id!)}
+                                onClick={() => removeFromSaved(data._id!)}
                             />
                         </Flex>
                     )}
                     {!isBookmark && !editable && (
                         <Flex gap='8px' justify='flex-end' align='flex-end' w='100%'>
                             <UiButton
-                                onClick={() => onSave(data._id!)}
+                                onClick={() => toggleSave(data._id!)}
                                 size={{ base: 'xs', md: 'sm' }}
                                 text='Сохранить'
                                 leftIcon={isLargerThanMD ? <BookmarkHeartIcon /> : undefined}

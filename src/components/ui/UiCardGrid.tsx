@@ -23,7 +23,11 @@ export const UiCardGrid = memo(
         const { handleSave } = useSaveRecipe();
         const { handleEdit } = useEditRecipe(isDraft);
 
-        const onSave = (id: string) => {
+        const toggleSave = (id: string) => {
+            handleSave(id);
+        };
+
+        const removeFromSaved = (id: string) => {
             handleSave(id);
             setRecipes((prev) => prev.filter((recipe) => recipe._id !== id));
         };
@@ -57,8 +61,9 @@ export const UiCardGrid = memo(
                         isDraft={isDraft}
                         editable={editable}
                         isBookmark={isBookmark}
-                        onSave={onSave}
+                        toggleSave={toggleSave}
                         onEdit={handleEdit}
+                        removeFromSaved={removeFromSaved}
                     />
                 ))}
             </SimpleGrid>
