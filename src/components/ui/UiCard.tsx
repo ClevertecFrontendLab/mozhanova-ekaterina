@@ -87,17 +87,15 @@ export const UiCard = ({
             direction='row'
             overflow='hidden'
             size={isLargerThanMD ? size : 'sm'}
-            h='auto'
             {...props}
         >
             <Image
                 objectFit='cover'
-                minW={{ md: '346px' }}
-                maxW={{
+                w={{
                     base: '158px',
                     md: '346px',
                 }}
-                maxH='100%'
+                h='100%'
                 src={data?.image ? `${API_IMAGE_URL}${data.image}` : default_image}
                 alt='card image'
             />
@@ -127,7 +125,8 @@ export const UiCard = ({
             <Stack spacing={0} flexGrow={1} minW={0}>
                 <CardBody>
                     <Flex justify='space-between'>
-                        <Box
+                        <Flex
+                            w='100%'
                             pb={{
                                 base: 0,
                                 md: 6,
@@ -140,12 +139,12 @@ export const UiCard = ({
                                 bookmarks={data?.bookmarks}
                                 alignItems='flex-start'
                             />
-                        </Box>
-                        {isDraft && (
-                            <Box textAlign='right'>
-                                <Tag>Черновик</Tag>
-                            </Box>
-                        )}
+                            {isDraft && (
+                                <Box textAlign='right'>
+                                    <Tag>Черновик</Tag>
+                                </Box>
+                            )}
+                        </Flex>
                     </Flex>
 
                     <Flex
@@ -213,22 +212,20 @@ export const UiCard = ({
                                 }
                                 iconButton={!isLargerThanMD}
                             />
-                            {((category && subCategories) || (rootCategories && subCategories)) && (
-                                <Link
-                                    to={routeHelpers.getRecipePath(
-                                        categoryRoute,
-                                        subCategoryRoute,
-                                        data!._id!,
-                                    )}
-                                >
-                                    <UiButton
-                                        data-test-id={`card-link-${index}`}
-                                        size={isLargerThanMD ? 'sm' : 'xs'}
-                                        text='Готовить'
-                                        variant='solid'
-                                    />
-                                </Link>
-                            )}
+                            <Link
+                                to={routeHelpers.getRecipePath(
+                                    categoryRoute,
+                                    subCategoryRoute,
+                                    data!._id!,
+                                )}
+                            >
+                                <UiButton
+                                    data-test-id={`card-link-${index}`}
+                                    size={isLargerThanMD ? 'sm' : 'xs'}
+                                    text='Готовить'
+                                    variant='solid'
+                                />
+                            </Link>
                         </Flex>
                     )}
                 </CardFooter>
