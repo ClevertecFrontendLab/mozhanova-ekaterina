@@ -43,7 +43,7 @@ export const SearchBar = ({ title, description }: Props) => {
             borderRadius={{ base: '0 0 8px 8px', lg: '24px' }}
             direction='column'
             alignItems='center'
-            maxW={{
+            minW={{
                 sm: '480px',
                 md: '578px',
                 lg: '898px',
@@ -61,6 +61,7 @@ export const SearchBar = ({ title, description }: Props) => {
                 </Text>
             ) : (
                 <Heading
+                    textAlign='center'
                     as='h1'
                     fontSize={{
                         base: '24px',
