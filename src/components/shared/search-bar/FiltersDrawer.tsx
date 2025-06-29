@@ -27,7 +27,6 @@ import { UiTag } from '~/components/ui/UiTag';
 import { AppRoutes } from '~/constants/routes-config';
 import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { allergens } from '~/mocks/allergens';
-import { authors } from '~/mocks/authors';
 import { garnish } from '~/mocks/garnish';
 import { meat } from '~/mocks/meat';
 import { ApplicationState } from '~/store/configure-store';
@@ -41,6 +40,7 @@ import {
     setSubCategoryFilter,
 } from '~/store/recipe-slice';
 import { selectCategories, selectCategoriesByTitles, selectFilters } from '~/store/selectors';
+import { selectAllUsers } from '~/store/user-slice';
 
 import { SelectOptions } from '../../ui/SelectOptions';
 
@@ -48,6 +48,7 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
     const dispatch = useDispatch();
     const filters = useSelector(selectFilters);
     const categories = useSelector(selectCategories);
+    const authors = useSelector(selectAllUsers).map((user) => user.firstName + ' ' + user.lastName);
 
     const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
     const [selectedAllergens, setSelectedAllergens] = useState<string[]>([]);
