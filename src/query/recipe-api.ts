@@ -1,3 +1,4 @@
+import { setPaginationMeta } from '~/store/recipe-slice';
 import {
     BookmarkResponse,
     LikeResponse,
@@ -41,6 +42,10 @@ export const recipeApi = authorizedApi.injectEndpoints({
                 },
             }),
             providesTags: [Tags.RECIPES],
+            onQueryStarted: async (_args, { queryFulfilled, dispatch }) => {
+                const { data } = await queryFulfilled;
+                dispatch(setPaginationMeta({ totalPages: data.meta.totalPages }));
+            },
         }),
 
         [EndpointNames.GET_RECIPE_BY_ID]: builder.query<Recipe, string>({
@@ -71,6 +76,10 @@ export const recipeApi = authorizedApi.injectEndpoints({
                 },
             }),
             providesTags: [Tags.RECIPES],
+            onQueryStarted: async (_args, { queryFulfilled, dispatch }) => {
+                const { data } = await queryFulfilled;
+                dispatch(setPaginationMeta({ totalPages: data.meta.totalPages }));
+            },
         }),
 
         [EndpointNames.MEASURE_UNITS]: builder.query<MeasureUnit[], void>({

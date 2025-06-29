@@ -10,7 +10,6 @@ import { setPaginationMeta } from '~/store/recipe-slice';
 import { selectFilters } from '~/store/selectors';
 
 export const useRecipesSearch = () => {
-    const dispatch = useAppDispatch();
     const filters = useAppSelector(selectFilters);
     const pagination = useAppSelector((state) => state.recipe.pagination);
     const navigate = useNavigate();
@@ -35,16 +34,6 @@ export const useRecipesSearch = () => {
         useSearchRecipesQuery({
             ...stableArgs,
         });
-
-    useEffect(() => {
-        if (data?.meta) {
-            dispatch(
-                setPaginationMeta({
-                    totalPages: data.meta.totalPages,
-                }),
-            );
-        }
-    }, [data, dispatch]);
 
     useEffect(() => {
         if (isError) {
