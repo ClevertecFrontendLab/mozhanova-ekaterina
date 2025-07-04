@@ -119,6 +119,10 @@ export const FiltersDrawer = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
         setSelectedGarnish(filters.garnish);
     }, [filters.garnish]);
 
+    useEffect(() => {
+        setSelectedCategory(filters.categoryName);
+    }, [filters.categoryName]);
+
     return (
         <Drawer
             size={{
