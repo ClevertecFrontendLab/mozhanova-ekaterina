@@ -26,7 +26,6 @@ type Props = {
     bloggerId: string;
     photoLink: string;
     note?: string;
-    subscribersCount?: number;
     newRecipesCount?: number;
     bookmarksCount?: number;
     isFavorite?: boolean;
@@ -37,7 +36,6 @@ type Props = {
 export const BlogCard = ({
     name,
     login,
-    subscribersCount,
     bookmarksCount,
     note,
     photoLink,
@@ -182,7 +180,7 @@ export const BlogCard = ({
                     <UiReadButton bloggerId={bloggerId} />
                 </Flex>
 
-                <UiCardStats bookmarks={bookmarksCount} subscribersCount={subscribersCount} />
+                <UiCardStats bookmarks={bookmarksCount} />
             </CardFooter>
         );
     }
@@ -199,7 +197,7 @@ export const BlogCard = ({
                     <UiReadButton bloggerId={bloggerId} />
                 </Flex>
 
-                <UiCardStats bookmarks={bookmarksCount} subscribersCount={subscribersCount} />
+                <UiCardStats bookmarks={bookmarksCount} />
             </CardFooter>
         );
     }

@@ -15,6 +15,7 @@ export const NOTIFICATION_TITLES = {
     CREATE_RECIPE_SUCCESS: 'Рецепт успешно опубликован.',
     CREATE_NOTE_SUCCESS: 'Заметка опубликована.',
     CREATE_RECIPE_DRAFT_SUCCESS: 'Черновик успешно сохранен.',
+    DELETE_DRAFT_SUCCESS: 'Черновик успешно удален.',
     DELETE_RECIPE_SUCCESS: 'Рецепт успешно удален.',
     DELETE_NOTE_SUCCESS: 'Заметка удалена.',
     CHANGES_INFO_SUCCESS: 'Изменения сохранены.',
@@ -118,6 +119,9 @@ export const NOTIFICATION_MESSAGES = {
     },
     DELETE_RECIPE_SUCCESS: {
         title: NOTIFICATION_TITLES.DELETE_RECIPE_SUCCESS,
+    },
+    DELETE_DRAFT_SUCCESS: {
+        title: NOTIFICATION_TITLES.DELETE_DRAFT_SUCCESS,
     },
     RECIPE_NOT_FOUND_ERROR: {
         title: NOTIFICATION_TITLES.RECIPE_NOT_FOUND_ERROR,

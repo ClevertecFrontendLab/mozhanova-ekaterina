@@ -36,13 +36,15 @@ export const RecipesList = ({
                     </span>
                 )}
             </Heading>
-            <Box>
-                <Grid gap={4}>
-                    <UiCardGrid editable isDraft data={draftsToShow} />
-                    <UiCardGrid editable data={recipesToShow} />
-                </Grid>
-                <UiShowMoreButton onShowMore={handleShowMore} ref={showMoreRef} />
-            </Box>
+            {(drafts.length > 0 || recipes.length > 0) && (
+                <Box>
+                    <Grid gap={4}>
+                        <UiCardGrid editable isDraft data={draftsToShow} />
+                        <UiCardGrid editable data={recipesToShow} />
+                    </Grid>
+                    <UiShowMoreButton onShowMore={handleShowMore} ref={showMoreRef} />
+                </Box>
+            )}
         </Grid>
     );
 };

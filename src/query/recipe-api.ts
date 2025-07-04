@@ -125,7 +125,14 @@ export const recipeApi = authorizedApi.injectEndpoints({
                 url: `${ApiEndpoints.RECIPE_BY_ID}${id}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: [Tags.RECIPE],
+            invalidatesTags: [Tags.RECIPE, Tags.USER_RECIPES],
+        }),
+        [EndpointNames.DELETE_DRAFT]: builder.mutation<void, string>({
+            query: (id) => ({
+                url: `${ApiEndpoints.CREATE_RECIPE_DRAFT}/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: [Tags.USER_INFO],
         }),
         [EndpointNames.LIKE_UNLIKE_RECIPE]: builder.mutation<LikeResponse, string>({
             query: (id) => ({
@@ -174,4 +181,5 @@ export const {
     useLazyGetRecipesByUserIdQuery,
     useUpdateDraftMutation,
     useRecommendRecipeMutation,
+    useDeleteDraftMutation,
 } = recipeApi;

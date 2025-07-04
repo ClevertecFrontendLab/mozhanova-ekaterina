@@ -50,7 +50,7 @@ type Props = {
 };
 
 export const UiChart = ({ data, colorScheme = 'green' }: Props) => (
-    <Box maxW='1090px' h='304px' overflow='hidden'>
+    <Box maxW='1090px' h='304px' overflowX='auto' overflowY='hidden'>
         <AreaChart
             width={1090}
             height={304}

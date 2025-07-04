@@ -7,7 +7,7 @@ import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { NoteDto } from '~/types';
 import { shouldUseTwoColumns } from '~/utils/should-use-two-columns';
 
-export const NoteCard = ({
+export const UiNoteCard = ({
     note,
     index,
     notesLength,

@@ -4,8 +4,8 @@ import { DATA_TEST_IDS } from '~/constants/test-ids';
 import { useToggleNotes } from '~/hooks/use-toggle-notes';
 import { NoteDto } from '~/types';
 
-import { NoteCard } from '../shared/blogs/NoteCard';
 import { UiButton } from './UiButton';
+import { UiNoteCard } from './UiNoteCard';
 
 export const UiNotesGrid = ({
     notes,
@@ -26,7 +26,7 @@ export const UiNotesGrid = ({
                 gap={{ base: 3, md: 4 }}
             >
                 {notesToShow.map((note, index) => (
-                    <NoteCard
+                    <UiNoteCard
                         key={note.date}
                         index={index}
                         notesLength={notesToShow.length}
@@ -36,7 +36,7 @@ export const UiNotesGrid = ({
                     />
                 ))}
                 {notesToHide.map((note, index) => (
-                    <NoteCard
+                    <UiNoteCard
                         key={note._id}
                         index={index}
                         notesLength={notesToShow.length}

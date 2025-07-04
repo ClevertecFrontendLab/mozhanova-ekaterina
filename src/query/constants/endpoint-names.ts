@@ -17,6 +17,7 @@ export enum EndpointNames {
     UPDATE_RECIPE = 'updateRecipe',
     UPDATE_DRAFT = 'updateDraft',
     DELETE_RECIPE = 'deleteRecipe',
+    DELETE_DRAFT = 'deleteDraft',
     CREATE_RECIPE = 'createRecipe',
     CREATE_RECIPE_DRAFT = 'createRecipeDraft',
     GET_RECIPES_BY_USER_ID = 'getRecipesByUserId',

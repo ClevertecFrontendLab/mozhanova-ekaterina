@@ -3,6 +3,8 @@ import { memo } from 'react';
 
 import { useBreakpoint } from '~/hooks/use-breakpoint';
 import { useEditRecipe } from '~/hooks/use-edit-recipe';
+import { useDeleteDraft } from '~/query/hooks/use-delete-draft';
+import { useDeleteRecipe } from '~/query/hooks/use-delete-recipe';
 import { useSaveRecipe } from '~/query/hooks/use-save-recipe';
 import { Recipe, RecipeDraftDto } from '~/types';
 
@@ -21,6 +23,9 @@ export const UiCardGrid = memo(
         const [isLargerThanMD] = useBreakpoint('md');
         const { handleSave } = useSaveRecipe();
         const { handleEdit } = useEditRecipe(isDraft);
+        const { handleDelete: handleDeleteRecipe } = useDeleteRecipe();
+        const { handleDelete: handleDeleteDraft } = useDeleteDraft();
+        const handleDelete = isDraft ? handleDeleteDraft : handleDeleteRecipe;
 
         if (data.length === 0) return null;
         return (
@@ -44,10 +49,10 @@ export const UiCardGrid = memo(
                         categoryBgColor='secondary.100'
                         size={isLargerThanMD ? 'lg' : 'sm'}
                         isDraft={isDraft}
-                        editable={editable}
                         isBookmark={isBookmark}
                         onSave={handleSave}
-                        onEdit={handleEdit}
+                        onEdit={editable ? handleEdit : undefined}
+                        onDelete={editable ? handleDelete : undefined}
                     />
                 ))}
             </SimpleGrid>

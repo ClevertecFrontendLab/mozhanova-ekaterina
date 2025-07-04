@@ -50,6 +50,7 @@ export const UiPasswordInput = ({
                 />
                 <InputRightElement
                     onMouseDownCapture={() => setShowPassword(true)}
+                    onTouchStartCapture={() => setShowPassword(true)}
                     onMouseUp={() => setShowPassword(false)}
                     cursor='pointer'
                     bgSize='lg'

@@ -45,7 +45,7 @@ export const Slider = () => {
                 <NavigationButtons />
 
                 <Swiper
-                    speed={0}
+                    speed={500}
                     data-test-id={DATA_TEST_IDS.CAROUSEL}
                     modules={[Navigation]}
                     navigation={{

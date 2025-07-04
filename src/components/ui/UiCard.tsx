@@ -31,6 +31,7 @@ import { highlightMatches } from '~/utils/highlight-mathces';
 
 import { BookmarkDeleteIcon } from './icons/BookmarkDeleteIcon';
 import { BookmarkHeartIcon } from './icons/BookmarkHeartIcon';
+import { TrashIcon } from './icons/TrashIcon';
 import { UiAvatar } from './UiAvatar';
 import { UiButton } from './UiButton';
 import { UiCardInfo } from './UiCardInfo';
@@ -39,12 +40,12 @@ type Props = {
     data: Partial<Recipe>;
     onSave: (id: string) => void;
     onEdit?: (recipe: Partial<Recipe>, category: string, subCategory: string) => void;
+    onDelete?: (id?: string) => void;
     size?: 'sm' | 'md' | 'lg';
     recommendation?: string;
     categoryBgColor?: 'secondary.100' | 'primary.100';
     index?: number;
     isDraft?: boolean;
-    editable?: boolean;
     isBookmark?: boolean;
     'data-test-id'?: string;
 };
@@ -52,17 +53,17 @@ type Props = {
 export const UiCard = ({
     data,
     isDraft,
-    editable,
     isBookmark,
     size = 'lg',
     index,
     onSave,
     onEdit,
+    onDelete,
     ...props
 }: Props) => {
     const { category, subCategory } = useParams();
-    const [isLargerThanMD] = useBreakpoint('md');
     const [isLargerThanSM] = useBreakpoint('sm');
+    const [isLargerThanMD] = useBreakpoint('md');
     const recommendedBy = useAppSelector((state) =>
         selectRecommendedBy(state, data.recommendedByUserId),
     )?.[0];
@@ -179,8 +180,15 @@ export const UiCard = ({
                 </CardBody>
 
                 <CardFooter>
-                    {editable && onEdit && (
-                        <Flex justify='flex-end' grow={1}>
+                    {onEdit && onDelete && (
+                        <Flex justify='flex-end' grow={1} align='center' gap={2}>
+                            <Box
+                                data-test-id={DATA_TEST_IDS.NOTE_DELETE_BUTTON}
+                                cursor='pointer'
+                                onClick={() => onDelete(data._id)}
+                            >
+                                <TrashIcon />
+                            </Box>
                             <UiButton
                                 data-test-id={DATA_TEST_IDS.PROFILE_EDIT_BUTTON}
                                 variant={isDraft ? 'solid' : 'outline'}
@@ -201,8 +209,8 @@ export const UiCard = ({
                             />
                         </Flex>
                     )}
-                    {!isBookmark && !editable && (
-                        <Flex gap='8px' justify='flex-end' align='flex-end' w='100%'>
+                    {!isBookmark && !onEdit && (
+                        <Flex gap={2} justify='flex-end' align='flex-end' w='100%'>
                             <UiButton
                                 onClick={() => onSave(data._id!)}
                                 size={{ base: 'xs', md: 'sm' }}
