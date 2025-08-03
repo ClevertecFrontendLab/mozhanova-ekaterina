@@ -88,13 +88,13 @@ export const UserApi = authorizedApi.injectEndpoints({
 });
 
 export const {
-    useGetProfileQuery,
-    useGetStatisticsQuery,
+    useLazyGetProfileQuery,
+    useLazyGetAllUsersQuery,
+    useLazyGetStatisticsQuery,
     useCreateNotesMutation,
     useDeleteNoteMutation,
     useUpdateInfoMutation,
     useUpdatePasswordMutation,
     useUploadUserPhotoMutation,
-    useGetAllUsersQuery,
     useDeleteProfileMutation,
 } = UserApi;

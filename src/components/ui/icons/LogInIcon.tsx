@@ -1,5 +1,5 @@
-export const LogInIcon = () => (
-    <svg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'>
+export const LogInIcon = ({ w = '14px', h = '14px' }: { w?: string; h?: string }) => (
+    <svg width={w} height={h} viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'>
         <path
             d='M7.58325 9.33335L10.4999 7.00002L7.58325 4.66669V6.41669H2.33325V7.58335H7.58325V9.33335Z'
             fill='black'

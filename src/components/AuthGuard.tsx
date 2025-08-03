@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
 
-import { AppRoutes } from '~/constants/routes-config';
 import { useLazyRefreshTokenQuery } from '~/query/auth-api';
 import { useAppSelector } from '~/store/hooks';
 import { accessToken } from '~/store/user-slice';
@@ -11,8 +9,8 @@ import { GlobalLoader } from './GlobalLoader';
 export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
     const token = useAppSelector(accessToken);
     const [isLoading, setIsLoading] = useState(true);
-    const navigate = useNavigate();
-    const location = useLocation();
+    // const navigate = useNavigate();
+    // const location = useLocation();
     const [refreshToken] = useLazyRefreshTokenQuery();
 
     useEffect(() => {
@@ -27,10 +25,11 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
                     .then(() => setIsLoading(false));
             } catch {
                 console.error('Auth check failed');
-                if (location.pathname !== AppRoutes.HOME) setIsLoading(false);
-                else {
-                    navigate(AppRoutes.SIGN_IN);
-                }
+                setIsLoading(false);
+                // if (location.pathname !== AppRoutes.HOME) setIsLoading(false);
+                // else {
+                //     navigate(AppRoutes.SIGN_IN);
+                // }
             }
         };
         checkAuth();

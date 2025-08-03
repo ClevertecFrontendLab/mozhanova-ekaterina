@@ -11,6 +11,7 @@ import { API_IMAGE_URL } from '~/query/constants/api-config';
 import { useAppSelector } from '~/store/hooks';
 import { selectCurrentUser } from '~/store/user-slice';
 
+import { LogInIcon } from '../ui/icons/LogInIcon';
 import { SearchIcon } from '../ui/icons/SearchIcon';
 import { UiAvatar } from '../ui/UiAvatar';
 
@@ -44,24 +45,38 @@ export const FooterMobile = () => {
                 />
             </Link>
             <Link to={AppRoutes.SEARCH}>
-                <UiIconButton text='Поиск' icon={<SearchIcon />} />
-            </Link>
-            <Link to={AppRoutes.CREATE_RECIPE}>
-                <UiIconButton text='Записать' icon={<EditIcon w='24px' h='24px' />} />
-            </Link>
-            <Link data-test-id={DATA_TEST_IDS.FOOTER_PROFILE_BUTTON} to={AppRoutes.PROFILE}>
                 <UiIconButton
-                    icon={
-                        <UiAvatar
-                            size='md'
-                            firstName={currentUser?.firstName}
-                            lastName={currentUser?.lastName}
-                            src={API_IMAGE_URL + currentUser?.photoLink}
-                        />
-                    }
-                    text='Мой профиль'
+                    variant={location.pathname === '/search' ? 'primary' : 'default'}
+                    text='Поиск'
+                    icon={<SearchIcon />}
                 />
             </Link>
+            <Link to={AppRoutes.CREATE_RECIPE}>
+                <UiIconButton
+                    variant={location.pathname === '/new-recipe' ? 'primary' : 'default'}
+                    text='Записать'
+                    icon={<EditIcon w='24px' h='24px' />}
+                />
+            </Link>
+            {currentUser ? (
+                <Link data-test-id={DATA_TEST_IDS.FOOTER_PROFILE_BUTTON} to={AppRoutes.PROFILE}>
+                    <UiIconButton
+                        icon={
+                            <UiAvatar
+                                size='md'
+                                firstName={currentUser.firstName}
+                                lastName={currentUser.lastName}
+                                src={API_IMAGE_URL + currentUser.photoLink}
+                            />
+                        }
+                        text='Мой профиль'
+                    />
+                </Link>
+            ) : (
+                <Link to={AppRoutes.SIGN_IN}>
+                    <UiIconButton text='Войти' icon={<LogInIcon w='24px' h='24px' />} />
+                </Link>
+            )}
         </Grid>
     );
 };

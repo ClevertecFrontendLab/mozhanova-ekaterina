@@ -12,7 +12,7 @@ export const ProfileStatistics = () => {
     const statistic = useAppSelector(selectStatisticsCounts);
     const isRecommenderProfile = useAppSelector(selectRecommenderProfile);
 
-    if (!statistic) return null;
+    if (Object.values(statistic).every((value) => value === 0)) return null;
     return (
         <Flex
             data-test-id={DATA_TEST_IDS.USER_STATS_BLOCK}
